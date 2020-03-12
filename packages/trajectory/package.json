@@ -1,0 +1,16 @@
+{
+  "name": "@skybrush/trajectory",
+  "version": "0.1.0",
+  "description": "Skybrush trajectory format handling and playback",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.collmot.com:collmot/skybrush.js"
+  },
+  "author": "CollMot Robotics Ltd",
+  "license": "UNLICENSED",
+  "private": true
+}

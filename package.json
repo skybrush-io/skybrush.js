@@ -1,0 +1,10 @@
+{
+  "name": "skybrush",
+  "version": "0.0.0",
+  "description": "Skybrush - The next-generation drone light show software suite",
+  "private": true,
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  }
+}
