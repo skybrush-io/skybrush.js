@@ -1,0 +1,26 @@
+{
+  "name": "@skybrush/show-format",
+  "version": "1.0.0",
+  "description": "Skybrush show format loader",
+  "author": "Tamas Nepusz <ntamas@gmail.com>",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.collmot.com/skybrush/show-format"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
