@@ -2,7 +2,7 @@
   "name": "@skybrush/show-format",
   "version": "1.0.0",
   "description": "Skybrush show format loader",
-  "author": "Tamas Nepusz <ntamas@gmail.com>",
+  "author": "CollMot Robotics Ltd",
   "homepage": "",
   "license": "UNLICENSED",
   "main": "lib/index.js",
@@ -21,6 +21,24 @@
     "url": "https://git.collmot.com/skybrush/show-format"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "lint": "xo",
+    "test": "nyc ava && xo"
+  },
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.1",
+    "jszip": "^3.5.0"
+  },
+  "xo": {
+    "prettier": true,
+    "space": true,
+    "rules": {
+      "no-negated-condition": 0,
+      "no-warning-comments": 0
+    }
+  },
+  "devDependencies": {
+    "ava": "^3.9.0",
+    "nyc": "^15.1.0",
+    "xo": "^0.32.0"
   }
 }
