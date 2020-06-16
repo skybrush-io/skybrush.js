@@ -5,7 +5,6 @@
   "author": "CollMot Robotics Ltd",
   "homepage": "",
   "license": "UNLICENSED",
-  "private": true,
   "main": "lib/index.js",
   "directories": {
     "lib": "lib",
