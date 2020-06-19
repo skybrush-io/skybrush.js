@@ -2,7 +2,7 @@ import {shouldCaptureKeyEvent} from 'aframe/src/utils';
 import {KEYCODE_TO_CODE} from 'aframe/src/constants/keyboardevent';
 import isEmpty from 'lodash-es/isEmpty';
 
-import AFrame from './_aframe';
+import AFrame from '../lib/_aframe';
 
 const {THREE} = AFrame;
 

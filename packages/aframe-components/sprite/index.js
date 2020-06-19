@@ -4,7 +4,7 @@
  * Used to implement a simple glow effect on spheres.
  */
 
-import AFrame from './_aframe';
+import AFrame from '../lib/_aframe';
 
 const {AdditiveBlending, NormalBlending, Sprite, SpriteMaterial} = AFrame.THREE;
 

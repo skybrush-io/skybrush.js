@@ -11,7 +11,11 @@
     "test": "test"
   },
   "files": [
-    "lib"
+    "altitude-control",
+    "better-wasd-controls",
+    "factories",
+    "lib",
+    "sprite"
   ],
   "publishConfig": {
     "registry": "https://npm.collmot.com"

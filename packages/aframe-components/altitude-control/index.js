@@ -9,7 +9,7 @@ import isEmpty from 'lodash-es/isEmpty';
 
 import {shouldCaptureKeyEvent} from 'aframe/src/utils';
 
-import AFrame from './_aframe';
+import AFrame from '../lib/_aframe';
 
 const CLAMP_VELOCITY = 0.001;
 const MAX_DELTA = 0.2;
