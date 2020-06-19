@@ -1,0 +1,54 @@
+{
+  "name": "@skybrush/aframe-components",
+  "version": "1.0.0",
+  "description": "AFrame components commonly used in all Skybrush apps",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.collmot.com/skybrush/show-format"
+  },
+  "scripts": {
+    "lint": "xo",
+    "test": "nyc ava && xo"
+  },
+  "peerDependencies": {
+    "aframe": "^1.0.4"
+  },
+  "devDependencies": {
+    "@ava/babel": "^1.0.1",
+    "aframe": "^1.0.4",
+    "ava": "^3.9.0",
+    "nyc": "^15.1.0",
+    "xo": "^0.32.0"
+  },
+  "ava": {
+    "babel": true
+  },
+  "xo": {
+    "envs": [
+      "browser"
+    ],
+    "prettier": true,
+    "space": true,
+    "rules": {
+      "no-negated-condition": 0,
+      "no-warning-comments": 0
+    }
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.15"
+  }
+}
