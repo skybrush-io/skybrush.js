@@ -1,8 +1,8 @@
 import {shouldCaptureKeyEvent} from 'aframe/src/utils';
-import {KEYCODE_TO_CODE} from 'aframe/src/constants/keyboardevent';
 import isEmpty from 'lodash-es/isEmpty';
 
 import AFrame from '../lib/_aframe';
+import {KEYCODE_TO_CODE} from '../lib/constants';
 
 const {THREE} = AFrame;
 
@@ -16,7 +16,9 @@ const KEYS = new Set([
   'ArrowUp',
   'ArrowLeft',
   'ArrowRight',
-  'ArrowDown'
+  'ArrowDown',
+  'ShiftLeft',
+  'ShiftRight'
 ]);
 
 /**
@@ -108,8 +110,10 @@ AFrame.registerComponent('better-wasd-controls', {
       return;
     }
 
+    const isRunning = keys.ShiftLeft || keys.ShiftRight;
+
     // https://gamedev.stackexchange.com/questions/151383/frame-rate-independant-movement-with-acceleration
-    const scaledEasing = (1 / this.easing) ** (delta * 60);
+    const scaledEasing = (1 / this.easing) ** (delta * (isRunning ? 1 : 60));
     // Velocity Easing.
     if (velocity[adAxis] !== 0) {
       velocity[adAxis] *= scaledEasing;
@@ -133,7 +137,7 @@ AFrame.registerComponent('better-wasd-controls', {
     }
 
     // Update velocity using keys pressed.
-    const acceleration = data.acceleration;
+    const acceleration = data.acceleration * (isRunning ? 10 : 1);
     if (data.adEnabled) {
       adSign = data.adInverted ? -1 : 1;
       if (keys.KeyA || keys.ArrowLeft) {
