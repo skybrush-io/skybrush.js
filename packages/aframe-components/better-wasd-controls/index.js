@@ -113,7 +113,7 @@ AFrame.registerComponent('better-wasd-controls', {
     const isRunning = keys.ShiftLeft || keys.ShiftRight;
 
     // https://gamedev.stackexchange.com/questions/151383/frame-rate-independant-movement-with-acceleration
-    const scaledEasing = (1 / this.easing) ** (delta * (isRunning ? 1 : 60));
+    const scaledEasing = (1 / this.easing) ** (delta * (isRunning ? 20 : 60));
     // Velocity Easing.
     if (velocity[adAxis] !== 0) {
       velocity[adAxis] *= scaledEasing;
@@ -137,7 +137,7 @@ AFrame.registerComponent('better-wasd-controls', {
     }
 
     // Update velocity using keys pressed.
-    const acceleration = data.acceleration * (isRunning ? 10 : 1);
+    const acceleration = data.acceleration * (isRunning ? 5 : 1);
     if (data.adEnabled) {
       adSign = data.adInverted ? -1 : 1;
       if (keys.KeyA || keys.ArrowLeft) {
