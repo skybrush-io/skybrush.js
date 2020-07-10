@@ -25,7 +25,7 @@
     "test": "nyc ava && xo"
   },
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^9.0.1",
+    "@apidevtools/json-schema-ref-parser": "^9.0.3",
     "core-js-pure": "^3.6.5",
     "jszip": "^3.5.0"
   },
