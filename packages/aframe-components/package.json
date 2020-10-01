@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.collmot.com/skybrush/show-format"
+    "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
     "lint": "xo",
