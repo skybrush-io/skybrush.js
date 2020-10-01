@@ -7,5 +7,5 @@ export const KEYCODE_TO_CODE = {
   '65': 'KeyA',
   '83': 'KeyS',
   '68': 'KeyD',
-  '16': 'ShiftLeft'
+  '16': 'ShiftLeft',
 };

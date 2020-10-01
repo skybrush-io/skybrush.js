@@ -10,5 +10,5 @@ const MAX_DRONE_COUNT = 1000;
 
 module.exports = {
   COORDINATE_SYSTEM_TYPE,
-  MAX_DRONE_COUNT
+  MAX_DRONE_COUNT,
 };

@@ -1,10 +1,10 @@
-import {shouldCaptureKeyEvent} from 'aframe/src/utils';
+import { shouldCaptureKeyEvent } from 'aframe/src/utils';
 import isEmpty from 'lodash-es/isEmpty';
 
 import AFrame from '../lib/_aframe';
-import {KEYCODE_TO_CODE} from '../lib/constants';
+import { KEYCODE_TO_CODE } from '../lib/constants';
 
-const {THREE} = AFrame;
+const { THREE } = AFrame;
 
 const CLAMP_VELOCITY = 0.001;
 const MAX_DELTA = 0.2;
@@ -18,7 +18,7 @@ const KEYS = new Set([
   'ArrowRight',
   'ArrowDown',
   'ShiftLeft',
-  'ShiftRight'
+  'ShiftRight',
 ]);
 
 /**
@@ -26,15 +26,15 @@ const KEYS = new Set([
  */
 AFrame.registerComponent('better-wasd-controls', {
   schema: {
-    acceleration: {default: 65},
-    adAxis: {default: 'x', oneOf: ['x', 'y', 'z']},
-    adEnabled: {default: true},
-    adInverted: {default: false},
-    enabled: {default: true},
-    fly: {default: false},
-    wsAxis: {default: 'z', oneOf: ['x', 'y', 'z']},
-    wsEnabled: {default: true},
-    wsInverted: {default: false}
+    acceleration: { default: 65 },
+    adAxis: { default: 'x', oneOf: ['x', 'y', 'z'] },
+    adEnabled: { default: true },
+    adInverted: { default: false },
+    enabled: { default: true },
+    fly: { default: false },
+    wsAxis: { default: 'z', oneOf: ['x', 'y', 'z'] },
+    wsEnabled: { default: true },
+    wsInverted: { default: false },
   },
 
   init() {
@@ -242,5 +242,5 @@ AFrame.registerComponent('better-wasd-controls', {
   onKeyUp(event) {
     const code = event.code || KEYCODE_TO_CODE[event.keyCode];
     delete this.keys[code];
-  }
+  },
 });

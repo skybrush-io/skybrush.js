@@ -1,6 +1,6 @@
 import createColor from 'color';
-import {lightBlue, grey, green, yellow} from '@material-ui/core/colors';
-import {Status} from './semantics';
+import { lightBlue, grey, green, yellow } from '@material-ui/core/colors';
+import { Status } from './semantics';
 
 /**
  * Enum containing commonly used semantic color names throughout Skybrush apps.
@@ -18,14 +18,14 @@ export const Colors = {
   axes: {
     x: '#f44',
     y: '#4f4',
-    z: '#06f'
+    z: '#06f',
   },
 
   markers: {
     landing: '#3c3',
     origin: '#f44',
-    takeoff: '#fc0'
-  }
+    takeoff: '#fc0',
+  },
 };
 
 Colors.seriousWarning = createColor(Colors.warning)
@@ -53,7 +53,7 @@ const statusColorMap = new Map([
   [Status.NEXT, Colors.info],
   [Status.WAITING, Colors.info],
   [Status.RTH, Colors.warning],
-  [Status.SKIPPED, Colors.warning]
+  [Status.SKIPPED, Colors.warning],
 ]);
 
 /**

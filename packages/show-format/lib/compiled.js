@@ -6,8 +6,8 @@ const RefParser = require('@apidevtools/json-schema-ref-parser');
 const JSZip = require('jszip');
 
 const Asset = require('./asset');
-const {idle} = require('./utils');
-const {validateShowSpecification} = require('./validation');
+const { idle } = require('./utils');
+const { validateShowSpecification } = require('./validation');
 
 /**
  * Helper function that returns whether a given file is likely to be data
@@ -24,7 +24,7 @@ const isBinaryAsset = (file) =>
 const dummyAssetResolver = {
   order: 1,
   canRead: (file) => file.url.startsWith('zip:') && isBinaryAsset(file),
-  read: (file) => new Asset(file.url.slice('zip:'.length))
+  read: (file) => new Asset(file.url.slice('zip:'.length)),
 };
 
 /**
@@ -57,7 +57,7 @@ function createZIPResolver(zip) {
       return zip
         .file(url.pathname)
         .async(isBinaryAsset(file) ? 'uint8array' : 'string');
-    }
+    },
   };
 }
 
@@ -71,26 +71,26 @@ function createZIPResolver(zip) {
  *         Defaults to false because it can be time- and memory-consuming.
  * @return {object} the parsed show specification
  */
-async function loadCompiledShow(file, {assets = false} = {}) {
+async function loadCompiledShow(file, { assets = false } = {}) {
   const zip = await JSZip.loadAsync(file);
 
   // Create a JSON reference to the main show specification file and then
   // let the JSONRef parser handle the rest
-  const root = {$ref: 'zip:show.json'};
+  const root = { $ref: 'zip:show.json' };
 
   // Configure the parsers. This is static; we simply extend the binary
   // parser not to check the extension of the file that we are about to parse.
   const parsers = {
     binary: {
-      canParse: (file) => Buffer.isBuffer(file.data)
-    }
+      canParse: (file) => Buffer.isBuffer(file.data),
+    },
   };
 
   // Configure the resolvers. If we want to prevent the loading of the assets,
   // we have to catch them early in the resolving phase so we don't even
   // attempt extracting them from the ZIP.
   const resolvers = {
-    zip: createZIPResolver(zip)
+    zip: createZIPResolver(zip),
   };
 
   if (!assets) {
@@ -100,7 +100,7 @@ async function loadCompiledShow(file, {assets = false} = {}) {
   // Resolve all $ref references in the show specification
   const showSpec = await RefParser.dereference(root, {
     parse: parsers,
-    resolve: resolvers
+    resolve: resolvers,
   });
 
   validateShowSpecification(showSpec);

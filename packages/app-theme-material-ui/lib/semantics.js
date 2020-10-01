@@ -12,5 +12,5 @@ export const Status = {
   SUCCESS: 'success',
   WAITING: 'waiting',
   WARNING: 'warning',
-  MISSING: 'missing'
+  MISSING: 'missing',
 };

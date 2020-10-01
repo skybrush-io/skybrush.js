@@ -9,9 +9,12 @@
  *         arguments to store the current pose of the camera in the
  *         state store
  */
-const createSyncPoseWithStoreComponent = ({getCameraPose, setCameraPose}) => ({
+const createSyncPoseWithStoreComponent = ({
+  getCameraPose,
+  setCameraPose,
+}) => ({
   schema: {
-    interval: {type: 'number', default: 1000}
+    interval: { type: 'number', default: 1000 },
   },
 
   init() {
@@ -20,7 +23,7 @@ const createSyncPoseWithStoreComponent = ({getCameraPose, setCameraPose}) => ({
 
     // Get the pose from the store and update the object if needed
     const pose = getCameraPose();
-    const {position, rotation} = pose || {position: null, rotation: null};
+    const { position, rotation } = pose || { position: null, rotation: null };
     if (position && Array.isArray(position)) {
       this.el.object3D.position.fromArray(position);
     }
@@ -30,7 +33,7 @@ const createSyncPoseWithStoreComponent = ({getCameraPose, setCameraPose}) => ({
 
       // Make sure that we play along nicely with look-controls
       if (this.el.components['look-controls']) {
-        const {pitchObject, yawObject} = this.el.components['look-controls'];
+        const { pitchObject, yawObject } = this.el.components['look-controls'];
         pitchObject.rotation.x = this.el.object3D.rotation.x;
         yawObject.rotation.y = this.el.object3D.rotation.y;
       }
@@ -58,7 +61,7 @@ const createSyncPoseWithStoreComponent = ({getCameraPose, setCameraPose}) => ({
   },
 
   _synchronize() {
-    const {position, rotation} = this.el.object3D;
+    const { position, rotation } = this.el.object3D;
 
     if (
       !this._lastPosition.equals(position) ||
@@ -68,7 +71,7 @@ const createSyncPoseWithStoreComponent = ({getCameraPose, setCameraPose}) => ({
       this._lastRotation.copy(rotation);
 
       // Propagate the new pose to the store
-      setCameraPose({position, rotation});
+      setCameraPose({ position, rotation });
     }
   },
 
@@ -85,7 +88,7 @@ const createSyncPoseWithStoreComponent = ({getCameraPose, setCameraPose}) => ({
     if (this.data.interval && this.data.interval > 0) {
       this._intervalHandle = setInterval(this._synchronize, this.data.interval);
     }
-  }
+  },
 });
 
 export default createSyncPoseWithStoreComponent;

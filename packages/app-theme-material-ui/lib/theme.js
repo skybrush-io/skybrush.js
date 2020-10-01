@@ -5,12 +5,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {blue, lightBlue, orange, blueGrey} from '@material-ui/core/colors';
+import { blue, lightBlue, orange, blueGrey } from '@material-ui/core/colors';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import {ThemeProvider} from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 
-import {Colors} from './colors';
-import {defaultFont} from './fonts';
+import { Colors } from './colors';
+import { defaultFont } from './fonts';
 import useDarkMode from './hooks/useDarkMode';
 
 /**
@@ -20,7 +20,7 @@ export const isThemeDark = (theme) => theme.palette.type === 'dark';
 
 const themeProviderDefaults = {
   primaryColor: (isDark) => (isDark ? orange : blue),
-  secondaryColor: (isDark) => (isDark ? lightBlue : blueGrey)
+  secondaryColor: (isDark) => (isDark ? lightBlue : blueGrey),
 };
 
 /**
@@ -36,9 +36,9 @@ const themeProviderDefaults = {
  */
 export const createThemeProvider = ({
   primaryColor = themeProviderDefaults.primaryColor,
-  secondaryColor = themeProviderDefaults.secondaryColor
-}) => {
-  const DarkModeAwareThemeProvider = ({children, type}) => {
+  secondaryColor = themeProviderDefaults.secondaryColor,
+} = {}) => {
+  const DarkModeAwareThemeProvider = ({ children, type }) => {
     const osHasDarkMode = useDarkMode();
     const isThemeDark = (type === 'auto' && osHasDarkMode) || type === 'dark';
 
@@ -56,20 +56,20 @@ export const createThemeProvider = ({
             : secondaryColor,
 
         success: {
-          main: Colors.success
-        }
+          main: Colors.success,
+        },
       },
 
       typography: {
-        fontFamily: defaultFont
+        fontFamily: defaultFont,
       },
 
       overrides: {
         MuiList: {
           root: {
-            background: isThemeDark ? '#424242' : '#fff'
-          }
-        }
+            background: isThemeDark ? '#424242' : '#fff',
+          },
+        },
       },
 
       // Customize z indices to ensure that react-toast-notifications appear
@@ -82,8 +82,8 @@ export const createThemeProvider = ({
         drawer: 800,
         modal: 900,
         snackbar: 1000,
-        tooltip: 1100
-      }
+        tooltip: 1100,
+      },
     });
 
     /* Request from Ubi and Soma: selection should have more contrast; 0.08 is
@@ -93,15 +93,15 @@ export const createThemeProvider = ({
       : 'rgba(0, 0, 0, 0.16)';
     theme.palette.action.selectedOpacity = 0.16;
 
-    return React.createElement(ThemeProvider, {theme}, children);
+    return React.createElement(ThemeProvider, { theme }, children);
   };
 
   DarkModeAwareThemeProvider.propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node
+      PropTypes.node,
     ]),
-    type: PropTypes.oneOf(['auto', 'dark', 'light'])
+    type: PropTypes.oneOf(['auto', 'dark', 'light']),
   };
 
   return DarkModeAwareThemeProvider;

@@ -11,5 +11,5 @@ const idle = () =>
   });
 
 module.exports = {
-  idle
+  idle,
 };

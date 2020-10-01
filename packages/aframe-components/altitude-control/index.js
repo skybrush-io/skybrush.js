@@ -7,7 +7,7 @@
 
 import isEmpty from 'lodash-es/isEmpty';
 
-import {shouldCaptureKeyEvent} from 'aframe/src/utils';
+import { shouldCaptureKeyEvent } from 'aframe/src/utils';
 
 import AFrame from '../lib/_aframe';
 
@@ -16,17 +16,17 @@ const MAX_DELTA = 0.2;
 const KEYS = new Set(['KeyE', 'KeyC']);
 const KEYCODE_TO_CODE = {
   '67': 'KeyC',
-  '69': 'KeyE'
+  '69': 'KeyE',
 };
 
-const {THREE} = AFrame;
+const { THREE } = AFrame;
 
 AFrame.registerComponent('altitude-control', {
   schema: {
-    acceleration: {default: 65} /* [m/s] */,
-    enabled: {default: true},
-    max: {default: Number.NaN, type: 'number'},
-    min: {default: Number.NaN, type: 'number'}
+    acceleration: { default: 65 } /* [m/s] */,
+    enabled: { default: true },
+    max: { default: Number.NaN, type: 'number' },
+    min: { default: Number.NaN, type: 'number' },
   },
 
   init() {
@@ -59,7 +59,7 @@ AFrame.registerComponent('altitude-control', {
     }
 
     // Get movement vector and add translate position.
-    const {position} = this.el.object3D;
+    const { position } = this.el.object3D;
 
     position.add(this.getMovementVector(delta));
 
@@ -91,7 +91,7 @@ AFrame.registerComponent('altitude-control', {
   },
 
   updateVelocity(delta) {
-    const {data, keys} = this;
+    const { data, keys } = this;
 
     // If FPS too low, reset velocity.
     if (delta > MAX_DELTA) {
@@ -185,5 +185,5 @@ AFrame.registerComponent('altitude-control', {
   onKeyUp(event) {
     const code = event.code || KEYCODE_TO_CODE[event.keyCode];
     delete this.keys[code];
-  }
+  },
 });

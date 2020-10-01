@@ -1,6 +1,6 @@
 import AFrame from './_aframe';
-import {objectToString} from './utils';
+import { objectToString } from './utils';
 
-export {AFrame, objectToString};
+export { AFrame, objectToString };
 
 export default AFrame;

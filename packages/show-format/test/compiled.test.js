@@ -1,4 +1,4 @@
-const {Asset, loadCompiledShow} = require('..');
+const { Asset, loadCompiledShow } = require('..');
 
 const test = require('ava');
 const fs = require('fs');
@@ -18,7 +18,7 @@ test('valid show file', async (t) => {
 });
 
 test('valid show file with assets', async (t) => {
-  const show = await load('test-show-with-assets', {assets: true});
+  const show = await load('test-show-with-assets', { assets: true });
   const audio = show.media.audio.data;
   t.assert(audio instanceof Uint8Array);
   t.assert(Buffer.from('lalalalalaaaaa').equals(audio));

@@ -1,4 +1,4 @@
-const {MAX_DRONE_COUNT} = require('./constants');
+const { MAX_DRONE_COUNT } = require('./constants');
 
 /**
  * Runs some basic checks on a JSON-based show specification to see whether it
@@ -10,7 +10,7 @@ const {MAX_DRONE_COUNT} = require('./constants');
  * @param {object} spec  the specification to validate
  */
 function validateShowSpecification(spec) {
-  const {version} = spec;
+  const { version } = spec;
 
   // TODO(ntamas): write a proper JSON-Schema specification for the show files
   // and use that.
@@ -27,7 +27,7 @@ function validateShowSpecification(spec) {
     throw new Error('Show specification contains no drones');
   }
 
-  const {drones} = spec.swarm;
+  const { drones } = spec.swarm;
 
   if (drones.length > MAX_DRONE_COUNT) {
     throw new Error(
@@ -55,7 +55,7 @@ function validateShowSpecification(spec) {
     throw new TypeError('Invalid environment in show specification');
   }
 
-  const {environment} = spec;
+  const { environment } = spec;
 
   if (environment.type === undefined) {
     environment.type = 'outdoor';
@@ -66,4 +66,4 @@ function validateShowSpecification(spec) {
   }
 }
 
-module.exports = {validateShowSpecification};
+module.exports = { validateShowSpecification };
