@@ -1,0 +1,30 @@
+{
+  "name": "@skybrush/redux-toolkit",
+  "version": "1.0.0",
+  "description": "Redux-related tools for Skybrush apps",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.collmot.com/collmot/skybrush.js"
+  },
+  "scripts": {
+    "lint": "xo",
+    "test": "nyc ava && xo"
+  },
+  "ava": {
+    "babel": true
+  }
+}
