@@ -5,6 +5,51 @@
   "private": true,
   "license": "UNLICENSED",
   "devDependencies": {
-    "lerna": "^3.20.2"
+    "@ava/babel": "^1.0.1",
+    "@material-ui/core": "^4.10",
+    "aframe": "^1.0.4",
+    "ava": "^3.13.0",
+    "eslint-config-xo-react": "git+https://github.com/xojs/eslint-config-xo-react",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "lerna": "^3.20.2",
+    "nyc": "^15.1.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.8.0",
+    "xo": "^0.33.1"
+  },
+  "dependencies": {
+    "@skybrush/aframe-components": "file:packages/aframe-components",
+    "@skybrush/app-theme-material-ui": "file:packages/app-theme-material-ui",
+    "@skybrush/show-format": "file:packages/show-format"
+  },
+  "scripts": {
+    "lint": "xo"
+  },
+  "xo": {
+    "extends": [
+      "xo",
+      "xo-react"
+    ],
+    "settings": {
+      "import/resolver": "node"
+    },
+    "env": [
+      "browser",
+      "node"
+    ],
+    "prettier": true,
+    "space": true,
+    "rules": {
+      "no-negated-condition": 0,
+      "no-warning-comments": 0,
+      "unicorn/filename-case": 0,
+      "import/no-unresolved": [
+        2,
+        {
+          "commonjs": true
+        }
+      ]
+    }
   }
 }

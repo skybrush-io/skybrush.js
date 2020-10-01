@@ -1,0 +1,44 @@
+{
+  "name": "@skybrush/app-theme-material-ui",
+  "version": "1.0.0",
+  "description": "Common theme for Material UI based Skybrush apps",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.collmot.com/skybrush/app-theme-material-ui"
+  },
+  "scripts": {
+    "lint": "xo",
+    "test": "nyc ava && xo"
+  },
+  "ava": {
+    "babel": true
+  },
+  "devDependencies": {
+    "@material-ui/core": "^4.11.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.10",
+    "react": "^16.13",
+    "react-dom": "^16.8"
+  },
+  "dependencies": {
+    "color": "^3.1.2",
+    "prop-types": "^15.7.2"
+  }
+}

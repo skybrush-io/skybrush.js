@@ -32,18 +32,11 @@
   "ava": {
     "babel": true
   },
-  "xo": {
-    "prettier": true,
-    "space": true,
-    "rules": {
-      "no-negated-condition": 0,
-      "no-warning-comments": 0
-    }
-  },
   "devDependencies": {
     "@ava/babel": "^1.0.1",
     "ava": "^3.9.0",
     "nyc": "^15.1.0",
+    "undefined": "https://github.com/xojs/eslint-config-xo-react.git",
     "xo": "^0.32.0"
   }
 }
