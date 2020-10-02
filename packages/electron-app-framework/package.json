@@ -1,0 +1,41 @@
+{
+  "name": "@skybrush/electron-app-framework",
+  "version": "1.0.0",
+  "description": "Basic Electron app framework for Skybrush desktop applications",
+  "author": "Tamas Nepusz <ntamas@gmail.com>",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.collmot.com/collmot/skybrush.js"
+  },
+  "scripts": {
+    "lint": "xo",
+    "test": "nyc ava && xo"
+  },
+  "ava": {
+    "babel": true
+  },
+  "devDependencies": {
+    "electron": "^10.1.3"
+  },
+  "peerDependencies": {
+    "electron": "^10.0"
+  },
+  "dependencies": {
+    "commander": "^6.1.0",
+    "electron-unhandled": "^3.0.2",
+    "electron-window-state": "^5.0.3"
+  }
+}

@@ -55,3 +55,6 @@ jspm_packages
 # Show files used as examples during testing
 assets/shows/
 
+# Packages created with npm pack
+*.tgz
+
