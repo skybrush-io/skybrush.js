@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/electron-app-framework",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Basic Electron app framework for Skybrush desktop applications",
   "author": "Tamas Nepusz <ntamas@gmail.com>",
   "homepage": "",
