@@ -25,24 +25,18 @@
     "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
-    "lint": "xo",
     "test": "nyc ava && xo"
   },
   "peerDependencies": {
     "aframe": "^1.0.4"
-  },
-  "devDependencies": {
-    "@ava/babel": "^1.0.1",
-    "aframe": "^1.0.4",
-    "ava": "^3.9.0",
-    "nyc": "^15.1.0",
-    "undefined": "https://github.com/xojs/eslint-config-xo-react.git",
-    "xo": "^0.32.0"
   },
   "ava": {
     "babel": true
   },
   "dependencies": {
     "lodash-es": "^4.17.15"
+  },
+  "devDependencies": {
+    "aframe": "^1.0.4"
   }
 }

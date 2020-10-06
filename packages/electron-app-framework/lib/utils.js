@@ -4,6 +4,14 @@
 const isProduction =
   process.env.NODE_ENV === 'production' || process.env.DEPLOYMENT === '1';
 
+// Returns whether the app is running on macOS
+const isRunningOnMac =
+  typeof navigator !== 'undefined'
+    ? navigator.platform.includes('Mac')
+    : typeof process !== 'undefined'
+    ? process.platform === 'darwin'
+    : false;
+
 // Decide whether we will connect to the Webpack dev server in development
 // mode or not
 const usingWebpackDevServer =
@@ -27,6 +35,7 @@ function logErrorToConsole(error) {
 module.exports = {
   defaultUnsafeUrlHandler,
   isProduction,
+  isRunningOnMac,
   logErrorToConsole,
   usingWebpackDevServer,
 };

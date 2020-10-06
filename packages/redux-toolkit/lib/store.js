@@ -47,7 +47,7 @@ export const configureStoreAndPersistence = ({
   ignoredPaths = [],
   middleware = [],
   reducer,
-  sagas,
+  sagas = [],
   sagaOptions = {},
   storage,
 } = {}) => {

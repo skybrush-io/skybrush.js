@@ -82,6 +82,12 @@ function setupApp({
   // Prevent the creation of additional windows or web views. Also prevent
   // navigation.
   app.on('web-contents-created', (_event, webContents) => {
+    const isUrlAllowedForNavigation = (url) =>
+      typeof url === 'string' &&
+      (url.startsWith('file://') ||
+        url.startsWith('http://localhost') ||
+        url.startsWith('https://localhost'));
+
     webContents.on(
       'will-attach-webview',
       (event, webPreferences, parameters) => {
@@ -93,11 +99,7 @@ function setupApp({
 
         if (!enableNavigation) {
           // Prevent creating web views that point outside
-          if (
-            !parameters.src.startsWith('file://') &&
-            !parameters.src.startsWith('http://localhost') &&
-            !parameters.src.startsWith('https://localhost')
-          ) {
+          if (!isUrlAllowedForNavigation(parameters.src)) {
             event.preventDefault();
           }
         }
@@ -106,8 +108,10 @@ function setupApp({
 
     if (!enableNavigation) {
       const openWithShell = async (event, navigationUrl) => {
-        event.preventDefault();
-        await shell.openExternal(navigationUrl);
+        if (!isUrlAllowedForNavigation(navigationUrl)) {
+          event.preventDefault();
+          await shell.openExternal(navigationUrl);
+        }
       };
 
       webContents.on('will-navigate', openWithShell);

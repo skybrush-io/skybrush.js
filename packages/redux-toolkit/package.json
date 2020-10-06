@@ -21,7 +21,6 @@
     "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
-    "lint": "xo",
     "test": "nyc ava && xo"
   },
   "ava": {
@@ -37,5 +36,11 @@
     "redux-persist": "^6.0.0",
     "redux-persist-transform-filter": "0.0.20",
     "redux-saga": "^1.1.3"
+  },
+  "peerDependencies": {
+    "redux": "^4.0.0"
+  },
+  "devDependencies": {
+    "redux": "^4.0.5"
   }
 }

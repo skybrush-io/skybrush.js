@@ -13,3 +13,8 @@ import isFunction from 'lodash-es/isFunction';
  */
 export const isAllowedInRedux = (value) =>
   isPlain(value) || isFunction(value) || isPromise(value) || isError(value);
+
+export const noPayload = (func) => ({
+  prepare: () => ({}),
+  reducer: func,
+});
