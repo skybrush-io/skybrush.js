@@ -14,6 +14,20 @@ class UdpOutput {
       offset += 2;
     }
 
+    // ArduCopter allows us to send 8 or 16 channels only, so fill the rest
+    // with zeros
+    if (channels.length < 8) {
+      while (offset < 16) {
+        this._buffer.writeInt16LE(0, offset);
+        offset += 2;
+      }
+    } else if (channels.length > 8 && channels.length < 16) {
+      while (offset < 16) {
+        this._buffer.writeInt16LE(0, offset);
+        offset += 2;
+      }
+    }
+
     return offset;
   }
 

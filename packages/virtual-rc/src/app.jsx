@@ -8,8 +8,9 @@ import { persistor, store } from './store';
 import ThemeProvider from './theme';
 import TopLevelView from './views';
 
-// eslint-disable-next-line import/no-unassigned-import
+/* eslint-disable import/no-unassigned-import */
 require('typeface-fira-sans');
+/* eslint-enable import/no-unassigned-import */
 
 const App = () => (
   <StoreProvider store={store}>

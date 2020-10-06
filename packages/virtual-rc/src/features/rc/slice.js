@@ -61,11 +61,20 @@ const { actions, reducer } = createSlice({
       1500,
       1500,
     ],
-    numChannels: 8,
+    numChannels: 16,
     on: true,
   },
 
   reducers: {
+    setNumberOfRCChannels(state, action) {
+      let value = Number.parseInt(action.payload, 10);
+      if (!Number.isNaN(value)) {
+        value = Math.max(Math.min(value, 16), 1);
+      }
+
+      state.numChannels = value;
+    },
+
     setRCChannelValue(state, action) {
       const { index, value } = action.payload;
       if (
@@ -83,6 +92,10 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export const { setPowerSwitch, setRCChannelValue } = actions;
+export const {
+  setNumberOfRCChannels,
+  setPowerSwitch,
+  setRCChannelValue,
+} = actions;
 
 export default reducer;

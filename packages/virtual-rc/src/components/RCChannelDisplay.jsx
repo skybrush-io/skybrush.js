@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -56,17 +56,17 @@ const createChangeHandler = (callback, index) =>
   callback ? (_event, value) => callback(index, value) : undefined;
 
 const RCChannelDisplay = ({ labels, onChangeChannel, values, ...rest }) => (
-  <Box flex={1} p={2}>
+  <Box flex={1} p={2} overflow='auto'>
     <Grid container {...rest}>
       {labels.map((item, index) => (
-        // eslint-disable-next-line react/no-array-index-key
+        /* eslint-disable react/no-array-index-key */
         <RCSlider
           key={index}
           label={item}
-          name={`ch${index}`}
           value={values[index]}
           onChange={createChangeHandler(onChangeChannel, index)}
         />
+        /* eslint-enable react/no-array-index-key */
       ))}
     </Grid>
   </Box>

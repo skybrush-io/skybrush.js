@@ -4,9 +4,11 @@
 
 import { connect } from 'react-redux';
 
+import { lightBlue, green } from '@material-ui/core/colors';
+
 import { createThemeProvider } from '@skybrush/app-theme-material-ui';
 
-import { lightBlue, green } from '@material-ui/core/colors';
+import { getTheme } from './features/settings/selectors';
 
 /**
  * Helper function that returns whether the given Material UI theme is a dark theme.
@@ -23,8 +25,8 @@ const DarkModeAwareThemeProvider = createThemeProvider({
 });
 
 export default connect(
-  // MapStateToProps
-  () => ({
-    type: 'dark',
+  // mapStateToProps
+  (state) => ({
+    type: getTheme(state),
   })
 )(DarkModeAwareThemeProvider);
