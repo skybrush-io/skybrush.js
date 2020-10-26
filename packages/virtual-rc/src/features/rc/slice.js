@@ -28,17 +28,15 @@ const { actions, reducer } = createSlice({
         numStates: 6,
       },
       {
+        label: 'Tuning',
+      },
+      {
         label: 'Aux1',
         type: 'discrete',
         numStates: 2,
       },
       {
         label: 'Aux2',
-        type: 'discrete',
-        numStates: 2,
-      },
-      {
-        label: 'Aux3',
         type: 'discrete',
         numStates: 2,
       },
@@ -86,6 +84,14 @@ const { actions, reducer } = createSlice({
       }
     },
 
+    setRCChannelValues(state, action) {
+      const channels = action.payload;
+      const numberOfChannels = channels.length;
+      for (let index = 0; index < numberOfChannels; index++) {
+        state.channelValues[index] = channels[index];
+      }
+    },
+
     setPowerSwitch(state, action) {
       state.on = Boolean(action.payload);
     },
@@ -96,6 +102,7 @@ export const {
   setNumberOfRCChannels,
   setPowerSwitch,
   setRCChannelValue,
+  setRCChannelValues,
 } = actions;
 
 export default reducer;

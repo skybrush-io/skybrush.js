@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 
+import { InputManager } from './features/inputs/components';
 import { RCOutputManager } from './features/rc/components';
 import { persistor, store } from './store';
 import ThemeProvider from './theme';
@@ -18,6 +19,7 @@ const App = () => (
       <PersistGate persistor={persistor}>
         <CssBaseline />
         <TopLevelView />
+        <InputManager />
         <RCOutputManager />
       </PersistGate>
     </ThemeProvider>
