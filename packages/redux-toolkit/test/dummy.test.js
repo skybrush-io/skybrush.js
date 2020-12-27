@@ -1,6 +1,7 @@
-/* globals describe it */
 'use strict';
 
-describe('@skybrush/app-theme-material-ui', () => {
-  it('needs tests');
+const test = require('ava');
+
+test('has no tests yet', (t) => {
+  t.assert(true);
 });
