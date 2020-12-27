@@ -27,6 +27,19 @@ test('drone without trajectory', (t) => {
   });
 });
 
+test('drone with invalid trajectory', (t) => {
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: { drones: [{ settings: { trajectory: 123 } }] },
+      }),
+    {
+      message: /must be an object/i,
+    }
+  );
+});
+
 test('trajectory with invalid version', (t) => {
   t.throws(
     () =>
@@ -40,21 +53,85 @@ test('trajectory with invalid version', (t) => {
   );
 });
 
+test('trajectory with invalid items', (t) => {
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: {
+          drones: [
+            {
+              settings: {
+                trajectory: { version: 1, points: 123 },
+              },
+            },
+          ],
+        },
+      }),
+    {
+      message: /schema/i,
+    }
+  );
+});
+
+test('trajectory with invalid takeoff time', (t) => {
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: {
+          drones: [
+            {
+              settings: {
+                trajectory: { version: 1, points: [], takeoffTime: 'foo' },
+              },
+            },
+          ],
+        },
+      }),
+    {
+      message: /schema/i,
+    }
+  );
+});
+
+test('trajectory with invalid landing time', (t) => {
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: {
+          drones: [
+            {
+              settings: {
+                trajectory: { version: 1, points: [], landingTime: 'foo' },
+              },
+            },
+          ],
+        },
+      }),
+    {
+      message: /schema/i,
+    }
+  );
+});
+
 test('invalid environment', (t) => {
-  t.throws(() =>
-    validate(
-      { version: 1, swarm: { drones: [] }, environment: 'hell' },
-      { message: /environment/ }
-    )
+  t.throws(
+    () => validate({ version: 1, swarm: { drones: [] }, environment: 'hell' }),
+    { message: /environment/ }
   );
 });
 
 test('invalid environment type', (t) => {
-  t.throws(() =>
-    validate(
-      { version: 1, swarm: { drones: [] }, environment: { type: 'hell' } },
-      { message: /environment type/ }
-    )
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: { drones: [] },
+        environment: { type: 'hell' },
+      }),
+    { message: /environment type/ }
   );
 });
 

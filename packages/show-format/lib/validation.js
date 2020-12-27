@@ -1,4 +1,5 @@
 const { MAX_DRONE_COUNT } = require('./constants');
+const { isNil } = require('./utils');
 
 /**
  * Runs some basic checks on a JSON-based show specification to see whether it
@@ -39,14 +40,12 @@ function validateShowSpecification(spec) {
     if (
       !drone.settings ||
       typeof drone.settings !== 'object' ||
-      typeof drone.settings.trajectory !== 'object'
+      isNil(drone.settings.trajectory)
     ) {
       throw new Error('Found drone without trajectory in show specification');
     }
 
-    if (drone.settings.trajectory.version !== 1) {
-      throw new Error('Only version 1 trajectories are supported');
-    }
+    validateTrajectory(drone.settings.trajectory);
   }
 
   if (spec.environment === undefined) {
@@ -66,4 +65,46 @@ function validateShowSpecification(spec) {
   }
 }
 
-module.exports = { validateShowSpecification };
+/**
+ * Runs some basic checks on a JSON-based trajectory specification to see
+ * whether it looks like a valid trajectory specification.
+ *
+ * Raises appropriate errors if the trajectory specification does not look like a
+ * valid one.
+ *
+ * @param {object} spec  the specification to validate
+ */
+function validateTrajectory(trajectory) {
+  if (typeof trajectory !== 'object') {
+    throw new TypeError('Trajectory must be an object');
+  }
+
+  if (trajectory.version !== 1) {
+    throw new Error('Only version 1 trajectories are supported');
+  }
+
+  const items = trajectory.points;
+
+  if (!Array.isArray(items)) {
+    throw new TypeError('Trajectory schema mismatch');
+  }
+
+  if (
+    !isNil(trajectory.takeoffTime) &&
+    typeof trajectory.takeoffTime !== 'number'
+  ) {
+    throw new Error('Trajectory schema mismatch');
+  }
+
+  if (
+    !isNil(trajectory.landingTime) &&
+    typeof trajectory.landingTime !== 'number'
+  ) {
+    throw new Error('Trajectory schema mismatch');
+  }
+}
+
+module.exports = {
+  validateShowSpecification,
+  validateTrajectory,
+};
