@@ -260,7 +260,7 @@ const expectedVelocities = {
   6: [0, 0, 0],
   8: [0, 0, 8 / 3],
   10: [0, 0, 8 / 3],
-  12: [0, 0, 0], // or [-0.75, -3.75] from the right
+  12: [-0.75, -3.75, 0], // or [0, 0, 0] from the left
   14: [0.84375, -1.40625, 0],
   16: [1.875, 0.375, 0],
   18: [2.34375, 1.59375, 0],
@@ -268,7 +268,7 @@ const expectedVelocities = {
   22: [1.59375, 2.34375, 0],
   24: [0.375, 1.875, 0],
   26: [-1.40625, 0.84375, 0],
-  28: [-3.75, -0.75, 0], // or [-2.25, 0.75] from the right
+  28: [-2.25, 0.75, 0], // or [-3.75, -0.75, 0] from the left
   30: [-1.875, 0.375, 0],
   32: [-1.5, 0, 0],
   34: [-1.125, -0.375, 0],
@@ -278,11 +278,11 @@ const expectedVelocities = {
   42: [0.375, -1.875, 0],
   44: [-0.5, -0.5, 0.5], // or [0.75, -2.25, 0] from the left
   50: [-0.5, -0.5, 0.5],
-  56: [-0.5, -0.5, 0.5], // or [0, 0, 0] from the right
+  56: [0, 0, 0], // or [-0.5, -0.5, 0.5] from the left
   57: [0, 0, 0],
   58: [0, 0, 0],
   59: [0, 0, 0],
-  60: [12288, 9216, -6144], // or [0, 0, 0] from the right,
+  60: [0, 0, 0], // or [12288, 9216, -6144] from the left
   62: [0, 0, -8 / 3],
   64: [0, 0, -8 / 3],
   66: [0, 0, 0],
@@ -380,9 +380,7 @@ test('velocity evaluation, constant segment', (t) => {
   const ev = createVelocityEvaluator(trajectory);
   const eq = almostEquals(t);
 
-  // Not evaluating at t=56 because the velocity from the left is not the same
-  // as the velocity from the right
-  const ts = [57, 58, 59, 60];
+  const ts = [56, 57, 58, 59, 60];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
@@ -392,9 +390,7 @@ test('velocity evaluation, landing segment', (t) => {
   const ev = createVelocityEvaluator(trajectory);
   const eq = almostEquals(t);
 
-  // Not evaluating at t=60 because the velocity from the left is not the same
-  // as the velocity from the right
-  const ts = [62, 64, 66];
+  const ts = [60, 62, 64, 66];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
@@ -439,9 +435,7 @@ test('velocity evaluation, shuffled', (t) => {
   const ev = createVelocityEvaluator(trajectory);
   const eq = almostEquals(t);
 
-  const ts = Object.keys(expectedVelocities)
-    .map((x) => Number.parseInt(x, 10))
-    .filter((x) => ![12, 28, 44, 56, 60].includes(x));
+  const ts = Object.keys(expectedVelocities).map((x) => Number.parseInt(x, 10));
 
   for (let i = 0; i < 5; i++) {
     shuffle(ts);

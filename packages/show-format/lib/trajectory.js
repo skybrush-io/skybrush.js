@@ -1,5 +1,4 @@
 const { Bezier } = require('./bezier');
-const { isNil } = require('./utils');
 const { validateTrajectory } = require('./validation');
 
 /**
@@ -53,13 +52,15 @@ class TrajectoryPlayer {
   }
 
   /**
-   * Returns the velocity of the drone at the given time instant.
+   * Returns the velocity of the drone at the given time instant. If the
+   * velocity is discontinuous at the time instant, the velocity "from the right"
+   * takes precedence.
    *
    * @param {number}        time    the time instant, measured in seconds
    * @param {THREE.Vector}  result  the vector that should be updated with the
    *        velocity
    */
-  getVelocityAt(time, result) {
+  getVelocityFromRightAt(time, result) {
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[1](result, ratio);
   }
@@ -78,15 +79,17 @@ class TrajectoryPlayer {
     let found = false;
 
     if (time >= this._currentSegmentStartTime) {
-      if (time <= this._currentSegmentEndTime) {
-        // We are done.
+      if (time < this._currentSegmentEndTime) {
+        // We are done. Note the strict comparison; this is to ensure that we
+        // always return the velocity from the right side consistently.
         found = true;
       } else if (this._segmentIndex < this._numSegments - 2) {
         // Maybe we only need to step to the next segment? This is the common
         // case.
         const nextEnd = this._startTimes[this._segmentIndex + 2];
-        if (nextEnd >= time) {
-          // We are done.
+        if (nextEnd > time) {
+          // We are done. Note the strict comparison; this is to ensure that we
+          // always return the velocity from the right side consistently.
           this._selectSegment(this._segmentIndex + 1);
           found = true;
         }
@@ -254,7 +257,7 @@ function createCurvedSegmentFunctions(curve, dt) {
       vec.y = result.y;
       vec.z = result.z;
     },
-    dt != 0
+    dt !== 0
       ? function (vec, ratio) {
           const result = curve.derivative(ratio);
           vec.x = result.x / dt;
@@ -316,15 +319,21 @@ function createSegmentFunctions(start, end, controlPoints, dt) {
 
 /**
  * Factory function that creates a new trajectory player object with a
- * single `getPositionAt()` function that evaluates the trajectory at a given
- * timestamp.
+ * `getPositionAt()` function that evaluates the trajectory at a given
+ * timestamp, and a `getVelocityAt()` function that evaluates the velocity
+ * of a drone traversing the trajectory at a given timestamp.
  */
 function createTrajectoryPlayer(trajectory) {
   const player = new TrajectoryPlayer(trajectory);
 
+  const getPositionAt = player.getPositionAt.bind(player);
+  const getVelocityFromRightAt = player.getVelocityFromRightAt.bind(player);
+  const getVelocityAt = getVelocityFromRightAt;
+
   return {
-    getPositionAt: player.getPositionAt.bind(player),
-    getVelocityAt: player.getVelocityAt.bind(player),
+    getPositionAt,
+    getVelocityAt,
+    getVelocityFromRightAt,
   };
 }
 
