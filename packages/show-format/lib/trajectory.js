@@ -33,8 +33,8 @@ class TrajectoryPlayer {
     this._segmentFuncs.length = this._numSegments;
 
     this._specialSegmentFuncs = {
-      beforeFirst: createConstantSegmentFunction(firstPoint),
-      afterLast: createConstantSegmentFunction(lastPoint),
+      beforeFirst: createConstantSegmentFunctions(firstPoint),
+      afterLast: createConstantSegmentFunctions(lastPoint),
     };
 
     this._reset();
@@ -48,18 +48,20 @@ class TrajectoryPlayer {
    *        position
    */
   getPositionAt(time, result) {
-    let ratio;
+    const ratio = this._seekTo(time);
+    this._currentSegmentFunc[0](result, ratio);
+  }
 
-    this._seekTo(time);
-
-    if (this._currentSegmentLength > 0) {
-      ratio =
-        (time - this._currentSegmentStartTime) / this._currentSegmentLength;
-    } else {
-      ratio = 0;
-    }
-
-    this._currentSegmentFunc(result, ratio);
+  /**
+   * Returns the velocity of the drone at the given time instant.
+   *
+   * @param {number}        time    the time instant, measured in seconds
+   * @param {THREE.Vector}  result  the vector that should be updated with the
+   *        velocity
+   */
+  getVelocityAt(time, result) {
+    const ratio = this._seekTo(time);
+    this._currentSegmentFunc[1](result, ratio);
   }
 
   _reset() {
@@ -73,35 +75,48 @@ class TrajectoryPlayer {
    * @param  {number} time  the timestamp to seek to
    */
   _seekTo(time) {
+    let found = false;
+
     if (time >= this._currentSegmentStartTime) {
       if (time <= this._currentSegmentEndTime) {
         // We are done.
-        return;
-      }
-
-      if (this._segmentIndex < this._numSegments - 2) {
+        found = true;
+      } else if (this._segmentIndex < this._numSegments - 2) {
         // Maybe we only need to step to the next segment? This is the common
         // case.
         const nextEnd = this._startTimes[this._segmentIndex + 2];
         if (nextEnd >= time) {
           // We are done.
           this._selectSegment(this._segmentIndex + 1);
+          found = true;
         }
       } else {
         // Reached the end of the trajectory
         this._selectSegment(this._numSegments);
+        found = true;
       }
     }
 
     // Do things the hard way, with binary search
-    const index = bisect(this._startTimes, time);
-    this._selectSegment(index - 1);
+    if (!found) {
+      const index = bisect(this._startTimes, time);
+      this._selectSegment(index - 1);
+    }
+
+    // Return the relative time into the current segment
+    if (this._currentSegmentLength > 0) {
+      return (
+        (time - this._currentSegmentStartTime) / this._currentSegmentLength
+      );
+    }
+
+    return 0;
   }
 
   /**
-   *  Updates the state variables of the current trajectory if needed to ensure
-   *  that the segmet with the given index is the one that is currently
-   *  selected.
+   * Updates the state variables of the current trajectory if needed to ensure
+   * that the segment with the given index is the one that is currently
+   * selected.
    */
   _selectSegment(index) {
     this._segmentIndex = index;
@@ -138,13 +153,14 @@ class TrajectoryPlayer {
 
       if (!this._segmentFuncs[index]) {
         if (index < this._numSegments - 1) {
-          this._segmentFuncs[index] = createSegmentFunction(
+          this._segmentFuncs[index] = createSegmentFunctions(
             this._currentSegment[0],
             this._segments[index + 1][0],
-            this._segments[index + 1][1]
+            this._segments[index + 1][1],
+            this._currentSegmentLength
           );
         } else {
-          this._segmentFuncs[index] = createConstantSegmentFunction(
+          this._segmentFuncs[index] = createConstantSegmentFunctions(
             this._currentSegment[0]
           );
         }
@@ -177,40 +193,84 @@ function bisect(items, x, lo = 0, hi = items.length) {
   return lo;
 }
 
-function createConstantSegmentFunction(point) {
+/**
+ * Creates a position and a velocity function for a constant segment.
+ */
+function createConstantSegmentFunctions(point) {
   const [x, y, z] = point;
 
-  return function (vec) {
-    vec.x = x;
-    vec.y = y;
-    vec.z = z;
-  };
+  return [
+    function (vec) {
+      vec.x = x;
+      vec.y = y;
+      vec.z = z;
+    },
+    function (vec) {
+      vec.x = 0;
+      vec.y = 0;
+      vec.z = 0;
+    },
+  ];
 }
 
-function createLinearSegmentFunction(start, end) {
+/**
+ * Creates a position and a velocity function for a linear segment between
+ * the given start and end points with the given duration.
+ */
+function createLinearSegmentFunctions(start, end, dt) {
   const [x, y, z] = start;
   const dx = end[0] - x;
   const dy = end[1] - y;
   const dz = end[2] - z;
 
-  return function (vec, ratio) {
-    vec.x = x + ratio * dx;
-    vec.y = y + ratio * dy;
-    vec.z = z + ratio * dz;
-  };
+  const vx = dt > 0 ? dx / dt : 0;
+  const vy = dt > 0 ? dy / dt : 0;
+  const vz = dt > 0 ? dz / dt : 0;
+
+  return [
+    function (vec, ratio) {
+      vec.x = x + ratio * dx;
+      vec.y = y + ratio * dy;
+      vec.z = z + ratio * dz;
+    },
+    function (vec) {
+      vec.x = vx;
+      vec.y = vy;
+      vec.z = vz;
+    },
+  ];
 }
 
-function createCurvedSegmentFunction(curve) {
-  return function (vec, ratio) {
-    // TODO(ntamas): find a way to avoid allocations!
-    const result = curve.compute(ratio);
-    vec.x = result.x;
-    vec.y = result.y;
-    vec.z = result.z;
-  };
+/**
+ * Creates a position and a velocity function for a Bézier curve segment with
+ * the given duration.
+ */
+function createCurvedSegmentFunctions(curve, dt) {
+  return [
+    function (vec, ratio) {
+      // TODO(ntamas): find a way to avoid allocations!
+      const result = curve.compute(ratio);
+      vec.x = result.x;
+      vec.y = result.y;
+      vec.z = result.z;
+    },
+    dt != 0
+      ? function (vec, ratio) {
+          const result = curve.derivative(ratio);
+          vec.x = result.x / dt;
+          vec.y = result.y / dt;
+          vec.z = result.z / dt;
+        }
+      : // istanbul ignore next
+        function (vec) {
+          vec.x = 0;
+          vec.y = 0;
+          vec.z = 0;
+        },
+  ];
 }
 
-function createSegmentFunction(start, end, controlPoints) {
+function createSegmentFunctions(start, end, controlPoints, dt) {
   if (Array.isArray(controlPoints) && controlPoints.length > 0) {
     if (controlPoints.length === 2) {
       const via1 = controlPoints[0];
@@ -229,7 +289,7 @@ function createSegmentFunction(start, end, controlPoints) {
         end[1],
         end[2]
       );
-      return createCurvedSegmentFunction(curve);
+      return createCurvedSegmentFunctions(curve, dt);
     }
 
     if (controlPoints.length === 1) {
@@ -245,12 +305,12 @@ function createSegmentFunction(start, end, controlPoints) {
         end[1],
         end[2]
       );
-      return createCurvedSegmentFunction(curve);
+      return createCurvedSegmentFunctions(curve, dt);
     }
 
     throw new Error('Only quadratic and cubic Bezier segments are supported');
   } else {
-    return createLinearSegmentFunction(start, end);
+    return createLinearSegmentFunctions(start, end, dt);
   }
 }
 
@@ -264,6 +324,7 @@ function createTrajectoryPlayer(trajectory) {
 
   return {
     getPositionAt: player.getPositionAt.bind(player),
+    getVelocityAt: player.getVelocityAt.bind(player),
   };
 }
 

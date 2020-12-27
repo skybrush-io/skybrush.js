@@ -662,8 +662,8 @@ const utils = {
     //                     (x'² + y'² + z'²)^(3/2)
     //
 
-    const d = utils.compute(t, d1);
-    const dd = utils.compute(t, d2);
+    const d = utils.compute(t, d1, _3d);
+    const dd = utils.compute(t, d2, _3d);
     const qdsum = d.x * d.x + d.y * d.y;
 
     if (_3d) {
@@ -1331,11 +1331,11 @@ class Bezier {
   }
 
   derivative(t) {
-    return utils.compute(t, this.dpoints[0]);
+    return utils.compute(t, this.dpoints[0], this._3d);
   }
 
   dderivative(t) {
-    return utils.compute(t, this.dpoints[1]);
+    return utils.compute(t, this.dpoints[1], this._3d);
   }
 
   align() {
