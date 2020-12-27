@@ -18,3 +18,5 @@ export const noPayload = (func) => ({
   prepare: () => ({}),
   reducer: func,
 });
+
+export const stripEvent = (func) => (event, ...args) => func(...args);

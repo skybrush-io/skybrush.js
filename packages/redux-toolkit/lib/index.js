@@ -7,6 +7,6 @@ export {
 } from './naming';
 export { createStorageConfiguration } from './persistence';
 export { configureStoreAndPersistence } from './store';
-export { isAllowedInRedux } from './utils';
+export { isAllowedInRedux, noPayload, stripEvent } from './utils';
 
 export default configureStoreAndPersistence;
