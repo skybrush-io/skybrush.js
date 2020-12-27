@@ -7,10 +7,12 @@ const WebpackShellPlugin = require('webpack-shell-plugin');
 const baseConfig = require('./base.config.js');
 const { getHtmlMetaTags, projectRoot } = require('./helpers');
 
+const { productName } = require('../package.json');
+
 const htmlWebPackPluginConfiguration = {
   meta: getHtmlMetaTags(),
   template: path.resolve(projectRoot, 'index.html'),
-  title: 'Skybrush Viewer',
+  title: productName
 };
 
 const plugins = [
