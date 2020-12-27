@@ -32,7 +32,8 @@ const trajectory = {
     // Straight line from (0, 0, 12) to (-6, -6, 18), starts at T=44, ends at T=56
     [50, [-6, -6, 18], []],
     // Sudden jump from (-6, -6, 18) to (6, 3, 12), starts at T=56, jump happens at T=60
-    [54, [6, 3, 12], null],
+    [53.9999, [-6, -6, 18], []],
+    [54, [6, 3, 12], []],
     // Landing to Z=0, starts at T=60, ends at T=66
     [
       60,
@@ -157,7 +158,7 @@ test('trajectory evaluation, linear segment', (t) => {
   }
 });
 
-test('trajectory evaluation, jumping segment', (t) => {
+test('trajectory evaluation, constant segment', (t) => {
   const ev = createPositionEvaluator(trajectory);
   const eq = almostEquals(t);
 

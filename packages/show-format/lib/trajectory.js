@@ -187,23 +187,6 @@ function createConstantSegmentFunction(point) {
   };
 }
 
-function createJumpSegmentFunction(start, end) {
-  const [x, y, z] = start;
-  const [endX, endY, endZ] = end;
-
-  return function (vec, ratio) {
-    if (ratio >= 1) {
-      vec.x = endX;
-      vec.y = endY;
-      vec.z = endZ;
-    } else {
-      vec.x = x;
-      vec.y = y;
-      vec.z = z;
-    }
-  };
-}
-
 function createLinearSegmentFunction(start, end) {
   const [x, y, z] = start;
   const dx = end[0] - x;
@@ -266,8 +249,6 @@ function createSegmentFunction(start, end, controlPoints) {
     }
 
     throw new Error('Only quadratic and cubic Bezier segments are supported');
-  } else if (isNil(controlPoints)) {
-    return createJumpSegmentFunction(start, end);
   } else {
     return createLinearSegmentFunction(start, end);
   }
