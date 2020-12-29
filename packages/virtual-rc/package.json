@@ -1,7 +1,7 @@
 {
   "name": "@skybrush/virtual-rc",
   "productName": "Skybrush Virtual RC",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Skybrush virtual remote controller app",
   "author": "CollMot Robotics Ltd",
   "homepage": "https://skybrush.io",
@@ -32,7 +32,7 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@reduxjs/toolkit": "^1.4.0",
-    "@skybrush/app-theme-material-ui": "^1.1.0",
+    "@skybrush/app-theme-material-ui": "^1.1.1",
     "@skybrush/electron-app-framework": "^1.0.1",
     "@skybrush/redux-toolkit": "^1.0.1",
     "electron": "^10.1.3",
