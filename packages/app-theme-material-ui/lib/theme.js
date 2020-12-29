@@ -70,6 +70,12 @@ export const createThemeProvider = ({
             background: isThemeDark ? '#424242' : '#fff',
           },
         },
+
+        MuiTab: {
+          root: {
+            minWidth: 80,
+          },
+        },
       },
 
       // Customize z indices to ensure that react-toast-notifications appear
@@ -92,6 +98,13 @@ export const createThemeProvider = ({
       ? 'rgba(255, 255, 255, 0.16)'
       : 'rgba(0, 0, 0, 0.16)';
     theme.palette.action.selectedOpacity = 0.16;
+
+    /* This is needed to make sure that the tab width we prescribed is not
+     * overwritten by more specific media queries */
+
+    theme.overrides.MuiTab.root[theme.breakpoints.up('xs')] = {
+      minWidth: theme.overrides.MuiTab.root.minWidth,
+    };
 
     return React.createElement(ThemeProvider, { theme }, children);
   };
