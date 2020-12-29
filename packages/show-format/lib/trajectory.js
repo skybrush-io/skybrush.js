@@ -49,6 +49,7 @@ class TrajectoryPlayer {
   getPositionAt(time, result) {
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[0](result, ratio);
+    return result;
   }
 
   /**
@@ -63,6 +64,7 @@ class TrajectoryPlayer {
   getVelocityFromRightAt(time, result) {
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[1](result, ratio);
+    return result;
   }
 
   _reset() {
