@@ -41,7 +41,7 @@ function createZIPResolver(zip) {
     canRead: /^zip:/,
 
     async read(file) {
-      const url = new URL(file.url);
+      const url = new URL(decodeURI(file.url));
 
       /* istanbul ignore if */
       if (url.protocol !== 'zip:') {
