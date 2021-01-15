@@ -11,7 +11,58 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import { Colors } from './colors';
 import { defaultFont } from './fonts';
+import useConditionalCSS from './hooks/useConditionalCSS';
 import useDarkMode from './hooks/useDarkMode';
+
+/**
+ * Constant that decides whether we are on macOS (where we don't need extra
+ * scrollbar styling).
+ */
+const isMacOs = navigator.platform.toUpperCase().includes('MAC');
+
+/**
+ * CSS for scrollbars.
+ */
+const cssForScrollbars = {
+  light: `
+  /* Nicer scroll bars on Windows */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  /* Change the color of the scrollbar track */
+  ::-webkit-scrollbar-track {
+    background: rgb(244, 244, 244);
+  }
+  /* Change the color of the scrollbar handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.26);
+    border: 1px solid rgb(244, 244, 244);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.54);
+  }
+  `,
+  dark: `
+  /* Nicer scroll bars on Windows */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  /* Change the color of the scrollbar track */
+  ::-webkit-scrollbar-track {
+    background: rgb(68, 68, 68) !important;
+  }
+  /* Change the color of the scrollbar handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.26) !important;
+    border: 1px solid rgb(68, 68, 68) !important;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.54) !important;
+  }
+  `,
+};
 
 /**
  * Helper function that returns whether the given Material UI theme is a dark theme.
@@ -105,6 +156,9 @@ export const createThemeProvider = ({
     theme.overrides.MuiTab.root[theme.breakpoints.up('xs')] = {
       minWidth: theme.overrides.MuiTab.root.minWidth,
     };
+
+    useConditionalCSS(cssForScrollbars.dark, !isMacOs && isThemeDark);
+    useConditionalCSS(cssForScrollbars.light, !isMacOs && !isThemeDark);
 
     return React.createElement(ThemeProvider, { theme }, children);
   };
