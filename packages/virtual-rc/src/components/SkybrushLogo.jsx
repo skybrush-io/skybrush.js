@@ -4,9 +4,12 @@ import Box from '@material-ui/core/Box';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { isThemeDark } from '@skybrush/app-theme-material-ui';
 
+import lightLogo from '~/../assets/img/logo.png';
+import darkLogo from '~/../assets/img/logo-dark.png';
+
 const logos = {
-  light: require('~/../assets/img/logo.png').default,
-  dark: require('~/../assets/img/logo-dark.png').default,
+  light: lightLogo,
+  dark: darkLogo
 };
 
 const useStyles = makeStyles({

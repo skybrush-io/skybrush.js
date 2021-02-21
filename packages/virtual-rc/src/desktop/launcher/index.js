@@ -1,4 +1,5 @@
 const { setupApp, setupCli } = require('@skybrush/electron-app-framework');
+const ElectronStore = require('electron-store');
 
 /**
  * Main entry point of the application.
@@ -6,6 +7,9 @@ const { setupApp, setupCli } = require('@skybrush/electron-app-framework');
  * @param  {Object}  argv  the parsed command line arguments
  */
 function run(argv) {
+  // Allow the Electron state store to be created in the renderer process
+  ElectronStore.initRenderer();
+
   setupApp({
     mainWindow: {
       debug: argv.debug,
