@@ -34,7 +34,7 @@
     "babel": true
   },
   "dependencies": {
-    "lodash-es": "^4.17.15"
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "aframe": "^1.0.4"
