@@ -32,9 +32,4 @@ export const { store, persistor } = configureStoreAndPersistence({
   devTools: {},
 });
 
-// Send the store dispatcher function back to the preloader
-if (window.bridge) {
-  window.bridge.dispatch = store.dispatch;
-}
-
 export default store;
