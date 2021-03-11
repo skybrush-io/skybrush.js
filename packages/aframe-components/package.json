@@ -37,6 +37,6 @@
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "aframe": "^1.0.4"
+    "aframe": "^1.2.0"
   }
 }
