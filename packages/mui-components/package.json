@@ -1,0 +1,45 @@
+{
+  "name": "@skybrush/mui-components",
+  "version": "1.0.0",
+  "description": "Material UI components for Skybrush apps",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.collmot.com/collmot/skybrush.js"
+  },
+  "scripts": {
+    "test": "nyc ava && xo"
+  },
+  "ava": {
+    "babel": true
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.10",
+    "react": "^16.13 || ^17",
+    "react-dom": "^16.8 || ^17"
+  },
+  "dependencies": {
+    "@tippyjs/react": "^4.2.5",
+    "clsx": "^1.1.1",
+    "prop-types": "^15.7.2",
+    "tippy.js": "^6.3.1"
+  },
+  "devDependencies": {
+    "@material-ui/core": "^4.11.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
