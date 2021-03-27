@@ -88,7 +88,10 @@
       "import/no-unresolved": [
         2,
         {
-          "commonjs": true
+          "commonjs": true,
+          "ignore": [
+            "^~/"
+          ]
         }
       ],
       "node/file-extension-in-import": 0,
