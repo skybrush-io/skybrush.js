@@ -19,6 +19,7 @@ const useStyles = makeStyles(
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      position: 'relative',
 
       '&:hover': {
         background: 'linear-gradient(to bottom, #06c 0%, #25a 100%)',
