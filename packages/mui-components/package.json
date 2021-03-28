@@ -24,7 +24,7 @@
     "build": "babel --config-file ../../babel.config.json src -d lib",
     "clean": "rimraf lib/** dist/** *.tgz",
     "test": "nyc ava && xo",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepack": "npm run clean && npm run build"
   },
   "ava": {
     "babel": true
