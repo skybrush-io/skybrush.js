@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-import GenericHeaderButton from '@skybrush/mui-components/lib/GenericHeaderButton';
+import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
 
 import { showPreferencesDialog } from '~/features/ui/slice';
 

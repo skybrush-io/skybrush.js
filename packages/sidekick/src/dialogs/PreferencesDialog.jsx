@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Tab from '@material-ui/core/Tab';
-import DialogTabs from '@skybrush/mui-components/lib/DialogTabs';
+import DialogTabs from '@skybrush/mui-components/src/DialogTabs';
 
 import { isPreferencesDialogVisible } from '~/features/ui/selectors';
 import { closePreferencesDialog } from '~/features/ui/slice';
