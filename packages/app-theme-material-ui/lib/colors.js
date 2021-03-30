@@ -32,7 +32,7 @@ Colors.seriousWarning = createColor(Colors.warning)
   .mix(createColor(Colors.error))
   .string();
 
-// Compatibility aliases
+// Compatibility aliases -- can be removed in @2.0.0
 Colors.axisColors = Colors.axes;
 Colors.landingMarker = Colors.markers.landing;
 Colors.originMarker = Colors.markers.origin;
@@ -47,7 +47,7 @@ const statusColorMap = new Map([
   [Status.INFO, Colors.info],
   [Status.SUCCESS, Colors.success],
   [Status.WARNING, Colors.warning],
-  [Status.CRITICAL, Colors.seriousWarning],
+  [Status.CRITICAL, Colors.error],
 
   [Status.MISSING, Colors.missing],
   [Status.NEXT, Colors.info],
