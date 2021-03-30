@@ -14,7 +14,7 @@ const PreferencesButton = (props) => (
 
 export default connect(
   // mapStateToProps
-  () => {},
+  null,
   // mapDispatchToProps
   {
     onClick: showPreferencesDialog,

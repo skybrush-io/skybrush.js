@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PreferencesDialog from './PreferencesDialog';
+import PreferencesDialog from './preferences/PreferencesDialog';
 
 const DialogsContainer = () => <PreferencesDialog />;
 

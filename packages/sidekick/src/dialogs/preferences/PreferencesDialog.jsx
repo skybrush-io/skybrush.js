@@ -10,13 +10,15 @@ import DialogTabs from '@skybrush/mui-components/src/DialogTabs';
 import { isPreferencesDialogVisible } from '~/features/ui/selectors';
 import { closePreferencesDialog } from '~/features/ui/slice';
 
+import DisplayTab from './DisplayTab';
+
 const PreferencesDialog = ({ open, onClose }) => (
   <Dialog fullWidth maxWidth='sm' open={open} onClose={onClose}>
     <DialogTabs alignment='center' value='display'>
       <Tab value='display' label='Display' />
     </DialogTabs>
     <DialogContent>
-      <div>Foobar</div>
+      <DisplayTab />
     </DialogContent>
   </Dialog>
 );

@@ -76,14 +76,19 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              configFile: path.join(projectRoot, '..', '..', '.babelrc'),
+              configFile: path.join(
+                projectRoot,
+                '..',
+                '..',
+                'babel.config.json'
+              ),
             },
           },
         ],
         include: [
           path.join(projectRoot, 'config'),
           path.join(projectRoot, 'src'),
-          path.join(projectRoot, '..', 'mui-components', 'lib'),
+          path.join(projectRoot, '..', 'mui-components', 'src'),
         ],
       },
       {

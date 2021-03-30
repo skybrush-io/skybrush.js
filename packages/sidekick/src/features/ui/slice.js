@@ -13,6 +13,8 @@ const { actions, reducer } = createSlice({
       visible: false,
       selectedTab: 'display',
     },
+
+    sidebarWidth: 240,
   },
 
   reducers: {
@@ -20,12 +22,25 @@ const { actions, reducer } = createSlice({
       state.preferencesDialog.visible = false;
     }),
 
+    setSidebarWidth: (state, action) => {
+      const { payload } = action;
+      const width =
+        typeof payload === 'number' && payload > 0 ? payload : Number.NaN;
+      if (!Number.isNaN(width)) {
+        state.sidebarWidth = width;
+      }
+    },
+
     showPreferencesDialog: noPayload((state) => {
       state.preferencesDialog.visible = true;
     }),
   },
 });
 
-export const { closePreferencesDialog, showPreferencesDialog } = actions;
+export const {
+  closePreferencesDialog,
+  setSidebarWidth,
+  showPreferencesDialog,
+} = actions;
 
 export default reducer;
