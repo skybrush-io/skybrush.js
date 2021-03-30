@@ -5256,6 +5256,13 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
+electron-better-ipc@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/electron-better-ipc/-/electron-better-ipc-1.1.1.tgz#bbb1aa567b97a0cdcf61bcc464a35df4ec6fd664"
+  integrity sha512-Y8Ty54HJtzT6aWNTyE092W/7q8y3+yJz0XvRpOKGIsLDL2H7oWIFkUegmB+6h5SszjtBiQFpmNmHOKfkDZ8HbQ==
+  dependencies:
+    serialize-error "^5.0.0"
+
 electron-is-dev@^1.0.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.2.0.tgz#2e5cea0a1b3ccf1c86f577cee77363ef55deb05e"
@@ -10481,7 +10488,7 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
-prop-types@^15.5.4, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.4, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -10717,6 +10724,13 @@ react-gamepads@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-gamepads/-/react-gamepads-1.0.0.tgz#72373c6bd332e0c42bb2d1584413d71fdb34f5da"
   integrity sha512-jfmIBHI1EgjhEUOGTYnrzfhM6fV75d/rZAEuG90fwYBJ2mP2z+Z42UoodXa3OD00q9zGFeQCESlSY20UjAIGzA==
+
+react-hotkeys@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-2.0.0.tgz#a7719c7340cbba888b0e9184f806a9ec0ac2c53f"
+  integrity sha512-3n3OU8vLX/pfcJrR3xJ1zlww6KS1kEJt0Whxc4FiGV+MJrQ1mYSYI3qS/11d2MJDFm8IhOXMTFQirfu6AVOF6Q==
+  dependencies:
+    prop-types "^15.6.1"
 
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
@@ -11543,6 +11557,13 @@ send@0.17.1:
     on-finished "~2.3.0"
     range-parser "~1.2.1"
     statuses "~1.5.0"
+
+serialize-error@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/serialize-error/-/serialize-error-5.0.0.tgz#a7ebbcdb03a5d71a6ed8461ffe0fc1a1afed62ac"
+  integrity sha512-/VtpuyzYf82mHYTtI4QKtwHa79vAdU5OQpNPAmE/0UDdlGT0ZxHwC+J6gXkw29wwoVI8fMPsfcVHOwXtUQYYQA==
+  dependencies:
+    type-fest "^0.8.0"
 
 serialize-error@^7.0.1:
   version "7.0.1"
