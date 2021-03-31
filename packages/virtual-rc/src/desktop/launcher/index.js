@@ -23,8 +23,8 @@ function run(argv) {
   });
 }
 
-module.exports = (argv) => {
+module.exports = () => {
   const parser = setupCli();
-  parser.parse(argv || process.argv);
+  parser.parse();
   run(parser.opts());
 };
