@@ -6,6 +6,7 @@ import SplitPane from 'react-split-pane';
 import { getSidebarWidth } from '~/features/ui/selectors';
 import { setSidebarWidth } from '~/features/ui/slice';
 
+import ActionButtonsPanel from './ActionButtonsPanel';
 import DroneButtonGrid from './DroneButtonGrid';
 
 const MainSplitPane = ({ onSidebarResized, sidebarWidth }) => (
@@ -17,7 +18,7 @@ const MainSplitPane = ({ onSidebarResized, sidebarWidth }) => (
     onDragFinished={onSidebarResized}
   >
     <DroneButtonGrid />
-    <div>B</div>
+    <ActionButtonsPanel />
   </SplitPane>
 );
 
