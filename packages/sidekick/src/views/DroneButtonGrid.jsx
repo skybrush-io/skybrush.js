@@ -1,29 +1,29 @@
 import range from 'lodash-es/range';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { HotKeys } from 'react-hotkeys';
 import { useMeasure } from 'react-use';
 
 import Box from '@material-ui/core/Box';
-import SemanticAvatar from '@skybrush/mui-components/src/SemanticAvatar';
+
+import DroneButton from '~/components/DroneButton';
+import useCaretIndex from '~/hooks/useCaretIndex';
+import useScrollChildIntoView from '~/hooks/useScrollChildIntoView';
 
 const BOX_SIZE = 56;
 
 const IDS = range(1, 251);
 
-const DroneButton = ({ id, style }) => (
-  <div style={style}>
-    <SemanticAvatar>{id}</SemanticAvatar>
-  </div>
-);
-
-DroneButton.propTypes = {
-  id: PropTypes.number,
-};
-
 const DroneButtonGrid = React.forwardRef(({ columnCount, ids }, ref) => {
+  const idCount = ids ? ids.length : 0;
+  const [caretIndex, caretManager] = useCaretIndex(idCount);
+
   const items = [];
   let rowIndex = 0;
   let colIndex = 0;
+
+  const selectedId =
+    caretIndex >= 0 && caretIndex < idCount ? ids[caretIndex] : undefined;
 
   for (const id of ids) {
     const style = {
@@ -35,7 +35,16 @@ const DroneButtonGrid = React.forwardRef(({ columnCount, ids }, ref) => {
       position: 'absolute',
     };
 
-    items.push(<DroneButton key={id} id={id} style={style} />);
+    items.push(
+      <DroneButton
+        key={id}
+        id={id}
+        selected={id === selectedId}
+        style={style}
+        onClick={() => caretManager.set(ids.indexOf(id))}
+      />
+    );
+
     colIndex++;
 
     if (colIndex >= columnCount) {
@@ -44,9 +53,49 @@ const DroneButtonGrid = React.forwardRef(({ columnCount, ids }, ref) => {
     }
   }
 
+  const handlers = useMemo(
+    () => ({
+      CLEAR_SELECTION: caretManager.clear,
+      MOVE_CARET_LEFT: (event) => {
+        event.preventDefault();
+        caretManager.adjust(-1);
+      },
+      MOVE_CARET_RIGHT: (event) => {
+        event.preventDefault();
+        caretManager.adjust(1);
+      },
+      MOVE_CARET_UP: (event) => {
+        event.preventDefault();
+        caretManager.adjust(-columnCount);
+      },
+      MOVE_CARET_DOWN: (event) => {
+        event.preventDefault();
+        caretManager.adjust(columnCount);
+      },
+      MOVE_HOME: (event) => {
+        event.preventDefault();
+        if (columnCount > 0) {
+          caretManager.adjust((index) => -(index % columnCount));
+        }
+      },
+      MOVE_END: (event) => {
+        event.preventDefault();
+        if (columnCount > 0) {
+          caretManager.adjust(
+            (index) => columnCount - (index % columnCount) - 1
+          );
+        }
+      },
+    }),
+    [caretManager, columnCount]
+  );
+
+  const itemsRef = useScrollChildIntoView(caretIndex);
   return (
     <Box ref={ref} position='relative' height='100%' overflow='auto'>
-      {items}
+      <HotKeys allowChanges handlers={handlers} innerRef={itemsRef}>
+        {items}
+      </HotKeys>
     </Box>
   );
 });
