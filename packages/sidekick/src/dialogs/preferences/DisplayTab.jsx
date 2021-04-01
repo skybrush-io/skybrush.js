@@ -8,10 +8,16 @@ import ThemeSelector from '@skybrush/mui-components/lib/ThemeSelector';
 import { getTheme } from '~/features/settings/selectors';
 import { setTheme } from '~/features/settings/slice';
 
+import UAVIdSpecificationEditor from './UAVIdSpecificationEditor';
+
 const DisplayTab = ({ onFieldChanged, theme }) => (
   <Box>
     <Box py={2}>
       <ThemeSelector value={theme} onChange={onFieldChanged} />
+    </Box>
+
+    <Box pb={2}>
+      <UAVIdSpecificationEditor />
     </Box>
   </Box>
 );

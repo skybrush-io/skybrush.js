@@ -9,15 +9,20 @@ const { actions, reducer } = createSlice({
 
   initialState: {
     theme: 'auto',
+    uavIdSpec: '1-250',
   },
 
   reducers: {
     setTheme(state, action) {
       state.theme = String(action.payload);
     },
+
+    setUAVIdSpecification(state, action) {
+      state.uavIdSpec = String(action.payload);
+    },
   },
 });
 
-export const { setTheme } = actions;
+export const { setTheme, setUAVIdSpecification } = actions;
 
 export default reducer;
