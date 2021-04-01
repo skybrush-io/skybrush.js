@@ -2,11 +2,13 @@ import range from 'lodash-es/range';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { HotKeys } from 'react-hotkeys';
+import { connect } from 'react-redux';
 import { useMeasure } from 'react-use';
 
 import Box from '@material-ui/core/Box';
 
 import DroneButton from '~/components/DroneButton';
+import { getVisibleUAVIds } from '~/features/settings/selectors';
 import useCaretIndex from '~/hooks/useCaretIndex';
 import useScrollChildIntoView from '~/hooks/useScrollChildIntoView';
 
@@ -105,10 +107,21 @@ DroneButtonGrid.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.number),
 };
 
-const ResponsiveDroneButtonGrid = () => {
+const ResponsiveDroneButtonGrid = ({ ids }) => {
   const [ref, { width }] = useMeasure();
   const columnCount = Math.max(0, Math.floor(width / BOX_SIZE));
-  return <DroneButtonGrid ref={ref} columnCount={columnCount} ids={IDS} />;
+  return <DroneButtonGrid ref={ref} columnCount={columnCount} ids={ids} />;
 };
 
-export default ResponsiveDroneButtonGrid;
+ResponsiveDroneButtonGrid.propTypes = {
+  ids: PropTypes.arrayOf(PropTypes.number),
+};
+
+export default connect(
+  // mapStateToProps
+  (state) => ({
+    ids: getVisibleUAVIds(state),
+  }),
+  // mapDispatchToProps
+  {}
+)(ResponsiveDroneButtonGrid);

@@ -1,4 +1,4 @@
-import React, { useMemo, useReducer } from 'react';
+import { useMemo, useReducer } from 'react';
 
 /**
  * Creates a reducer function that manages a caret index in a collection

@@ -1,3 +1,6 @@
+import range from 'lodash-es/range';
+import { createSelector } from '@reduxjs/toolkit';
+
 /**
  * Returns the current UI theme to use.
  */
@@ -123,3 +126,29 @@ export function parseUAVIdSpecification(value) {
 
   return ranges;
 }
+
+/**
+ * Selector that returns the list of UAV IDs to show in the main window of the
+ * application.
+ */
+export const getVisibleUAVIds = createSelector(
+  getUAVIdSpecification,
+  (spec) => {
+    const result = [];
+    let ranges;
+
+    try {
+      ranges = parseUAVIdSpecification(spec);
+    } catch {
+      /* UAV ID specification invalid */
+      ranges = [];
+    }
+
+    for (const rangeSpec of ranges) {
+      const [start, end] = rangeSpec;
+      result.push(...range(start, end));
+    }
+
+    return result;
+  }
+);
