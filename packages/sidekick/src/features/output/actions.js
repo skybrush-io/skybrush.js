@@ -8,8 +8,27 @@ import { setSerialPorts } from './slice';
  */
 export function requestSerialPortsAndShowOutputDeviceDialog() {
   return async (dispatch) => {
+    await dispatch(refreshSerialPortList());
+    dispatch(showOutputDeviceDialog());
+  };
+}
+
+/**
+ * Action creator that refreshes the list of serial ports from Electron.
+ */
+export function refreshSerialPortList() {
+  return async (dispatch) => {
     const ports = await window.bridge.getSerialPorts();
     dispatch(setSerialPorts(ports));
-    dispatch(showOutputDeviceDialog());
+  };
+}
+
+/**
+ * Thunk action creator that attempts to connect to an output device
+ */
+export function tryConnectToOutputDevice({ serialPort, baudRate } = {}) {
+  return (dispatch) => {
+    console.log(serialPort);
+    console.log(baudRate);
   };
 }

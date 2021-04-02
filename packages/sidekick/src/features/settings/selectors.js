@@ -2,6 +2,21 @@ import range from 'lodash-es/range';
 import { createSelector } from '@reduxjs/toolkit';
 
 /**
+ * Returns the properties of the output device preferred by the user.
+ *
+ * The returned object will have two properties: `serialPort` (the unique ID of
+ * the port to connect to) and `baudRate` (the baud rate to use when opening
+ * the port).
+ */
+export function getPreferredOutputDevice(state) {
+  return {
+    baudRate: 57600,
+    serialPort: null,
+    ...state.settings.preferredOutputDevice,
+  };
+}
+
+/**
  * Returns the current UI theme to use.
  */
 export function getTheme(state) {

@@ -27,8 +27,6 @@ const { actions, reducer } = createSlice({
           newPorts.push({ ...port });
         }
 
-        console.log(newPorts);
-
         state.serialPorts = newPorts;
       }
     },

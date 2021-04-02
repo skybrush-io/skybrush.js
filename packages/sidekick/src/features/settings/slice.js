@@ -10,6 +10,10 @@ const { actions, reducer } = createSlice({
   initialState: {
     theme: 'auto',
     uavIdSpec: '1-250',
+    preferredOutputDevice: {
+      serialPort: null,
+      baudRate: 57600,
+    },
   },
 
   reducers: {
