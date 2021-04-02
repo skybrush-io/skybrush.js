@@ -7,5 +7,8 @@ export const getSidebarWidth = (state) => {
   return width;
 };
 
+export const isOutputDeviceDialogVisible = (state) =>
+  state.ui.outputDeviceDialog.visible;
+
 export const isPreferencesDialogVisible = (state) =>
   state.ui.preferencesDialog.visible;

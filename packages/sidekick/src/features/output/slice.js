@@ -8,16 +8,33 @@ import { createSlice } from '@reduxjs/toolkit';
 const { actions, reducer } = createSlice({
   name: 'output',
 
-  initialState: {},
+  initialState: {
+    device: null,
+    serialPorts: [],
+  },
 
   reducers: {
     sendMessage: {
       reducer: () => {},
       prepare: (type, args = {}) => ({ payload: { type, args } }),
     },
+
+    setSerialPorts(state, action) {
+      const { payload } = action;
+      if (Array.isArray(payload)) {
+        const newPorts = [];
+        for (const port of payload) {
+          newPorts.push({ ...port });
+        }
+
+        console.log(newPorts);
+
+        state.serialPorts = newPorts;
+      }
+    },
   },
 });
 
-export const { sendMessage } = actions;
+export const { sendMessage, setSerialPorts } = actions;
 
 export default reducer;

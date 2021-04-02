@@ -1,4 +1,3 @@
-import range from 'lodash-es/range';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { HotKeys } from 'react-hotkeys';
@@ -13,8 +12,6 @@ import useCaretIndex from '~/hooks/useCaretIndex';
 import useScrollChildIntoView from '~/hooks/useScrollChildIntoView';
 
 const BOX_SIZE = 56;
-
-const IDS = range(1, 251);
 
 const DroneButtonGrid = React.forwardRef(({ columnCount, ids }, ref) => {
   const idCount = ids ? ids.length : 0;

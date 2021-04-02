@@ -9,6 +9,10 @@ const { actions, reducer } = createSlice({
   name: 'ui',
 
   initialState: {
+    outputDeviceDialog: {
+      visible: false,
+    },
+
     preferencesDialog: {
       visible: false,
       selectedTab: 'display',
@@ -18,6 +22,10 @@ const { actions, reducer } = createSlice({
   },
 
   reducers: {
+    closeOutputDeviceDialog: noPayload((state) => {
+      state.outputDeviceDialog.visible = false;
+    }),
+
     closePreferencesDialog: noPayload((state) => {
       state.preferencesDialog.visible = false;
     }),
@@ -31,6 +39,10 @@ const { actions, reducer } = createSlice({
       }
     },
 
+    showOutputDeviceDialog: noPayload((state) => {
+      state.outputDeviceDialog.visible = true;
+    }),
+
     showPreferencesDialog: noPayload((state) => {
       state.preferencesDialog.visible = true;
     }),
@@ -38,8 +50,10 @@ const { actions, reducer } = createSlice({
 });
 
 export const {
+  closeOutputDeviceDialog,
   closePreferencesDialog,
   setSidebarWidth,
+  showOutputDeviceDialog,
   showPreferencesDialog,
 } = actions;
 
