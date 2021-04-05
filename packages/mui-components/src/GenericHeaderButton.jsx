@@ -38,7 +38,7 @@ const useStyles = makeStyles(
     },
 
     label: {
-      marginLeft: theme.spacing(0.5),
+      margin: theme.spacing(0, 0.5),
       userSelect: 'none',
     },
   }),
