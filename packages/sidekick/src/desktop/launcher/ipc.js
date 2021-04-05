@@ -1,7 +1,10 @@
 const { ipcMain } = require('electron');
 const { ipcMain: ipc } = require('electron-better-ipc');
 
-const { getSerialPorts } = require('./serial');
+const {
+  getSerialPorts,
+  notifyRequestingAccessToSerialPortByName,
+} = require('./serial');
 
 module.exports = () => {
   // HACK for https://github.com/sindresorhus/electron-better-ipc/issues/35
@@ -12,4 +15,8 @@ module.exports = () => {
 
   // Normal electron-better-ipc code comes here
   ipc.answerRenderer('getSerialPorts', getSerialPorts);
+  ipc.answerRenderer(
+    'notifyRequestingAccessToSerialPortByName',
+    notifyRequestingAccessToSerialPortByName
+  );
 };

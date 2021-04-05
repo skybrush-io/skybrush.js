@@ -9,10 +9,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DraggableDialog from '@skybrush/mui-components/src/DraggableDialog';
 
 import { tryConnectToOutputDevice } from '~/features/output/actions';
+import { isConnectionInTransientState } from '~/features/output/selectors';
 import { getPreferredOutputDevice } from '~/features/settings/selectors';
 import { isOutputDeviceDialogVisible } from '~/features/ui/selectors';
 import { closeOutputDeviceDialog } from '~/features/ui/slice';
 
+import ConnectionStatusIndicator from './ConnectionStatusIndicator';
 import OutputDeviceForm from './OutputDeviceForm';
 
 const OutputDeviceDialog = ({
@@ -20,6 +22,7 @@ const OutputDeviceDialog = ({
   open,
   onClose,
   onSubmit,
+  submissionPrevented,
 }) => (
   <DraggableDialog
     fullWidth
@@ -35,7 +38,9 @@ const OutputDeviceDialog = ({
       />
     </DialogContent>
     <DialogActions>
+      <ConnectionStatusIndicator pl={2} flex={1} />
       <Button
+        disabled={submissionPrevented}
         onClick={() => {
           document
             .querySelector('#output-device-form')
@@ -59,6 +64,7 @@ OutputDeviceDialog.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
+  submissionPrevented: PropTypes.bool,
 };
 
 export default connect(
@@ -66,10 +72,14 @@ export default connect(
   (state) => ({
     preferredOutputDevice: getPreferredOutputDevice(state),
     open: isOutputDeviceDialogVisible(state),
+    submissionPrevented: isConnectionInTransientState(state),
   }),
   // mapDispatchToProps
   {
     onClose: closeOutputDeviceDialog,
-    onSubmit: tryConnectToOutputDevice,
+    onSubmit: (...args) => async (dispatch) => {
+      await tryConnectToOutputDevice(...args);
+      dispatch(closeOutputDeviceDialog());
+    },
   }
 )(OutputDeviceDialog);

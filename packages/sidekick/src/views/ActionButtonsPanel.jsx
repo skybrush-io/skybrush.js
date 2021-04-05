@@ -136,6 +136,7 @@ const ActionButtonsPanel = ({
 };
 
 ActionButtonsPanel.propTypes = {
+  flashColor: PropTypes.func,
   sendMessage: PropTypes.func,
   setColor: PropTypes.func,
   setFlightMode: PropTypes.func,

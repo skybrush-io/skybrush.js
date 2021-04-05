@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PreferencesButton from './PreferencesButton';
+import SerialPortHeaderButton from './SerialPortHeaderButton';
 
 const useStyles = makeStyles({
   root: {
@@ -13,6 +14,15 @@ const useStyles = makeStyles({
     flexGrow: 0,
     minHeight: 48,
     overflow: 'hidden',
+
+    '& > hr': {
+      alignSelf: 'stretch',
+      width: 1,
+      margin: '0 0.25em',
+      border: 'none',
+      background: '#444',
+      boxShadow: '-1px 0 4px rgba(0, 0, 0, 0.65)',
+    },
   },
 });
 
@@ -21,7 +31,10 @@ const Header = () => {
 
   return (
     <Box className={classes.root}>
+      <SerialPortHeaderButton />
+      <hr />
       <Box flex={1} />
+      <hr />
       <PreferencesButton />
     </Box>
   );

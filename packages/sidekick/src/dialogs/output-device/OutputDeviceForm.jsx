@@ -9,16 +9,14 @@ import SerialPortSelector from './SerialPortSelector';
 
 const validate = ({ baudRate, serialPort }) => {
   const result = {};
-
-  if (typeof serialPort !== 'string' || serialPort.length === 0) {
-    result.serialPort = 'A serial port must be selected';
-  }
+  const hasSerialPort = typeof serialPort === 'string' && serialPort.length > 0;
 
   if (
-    typeof baudRate !== 'number' ||
-    !Number.isFinite(baudRate) ||
-    baudRate <= 0 ||
-    !Number.isInteger(baudRate)
+    hasSerialPort &&
+    (typeof baudRate !== 'number' ||
+      !Number.isFinite(baudRate) ||
+      baudRate <= 0 ||
+      !Number.isInteger(baudRate))
   ) {
     result.baudRate = 'Invalid baud rate';
   }

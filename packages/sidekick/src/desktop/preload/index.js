@@ -29,10 +29,26 @@ function createStateStore() {
 async function getSerialPorts() {
   try {
     await navigator.serial.requestPort();
-  } catch {}
+  } catch {
+    // This is okay; we did not want to select a serial port explicitly so
+    // the main process makes the call above throw an exception, which we
+    // now ignore
+  }
 
   const result = await ipc.callMain('getSerialPorts');
   return result;
+}
+
+/**
+ * Requests the main process to provide access to a serial port, given its name.
+ * The port can then be retrieved by calling `navigator.serial.requestPort()`
+ * from the renderer process.
+ *
+ * Note that we cannot call `navigator.serial.requestPort()` here because of
+ * context isolation; serial ports cannot be passed between isolated contexts.
+ */
+async function requestAccessToSerialPortByName(name) {
+  await ipc.callMain('notifyRequestingAccessToSerialPortByName', name);
 }
 
 // Inject the bridge functions between the main and the renderer processes.
@@ -42,6 +58,7 @@ async function getSerialPorts() {
 contextBridge.exposeInMainWorld('bridge', {
   createStateStore,
   getSerialPorts,
+  requestAccessToSerialPortByName,
 });
 
 // Set up IPC handlers

@@ -1,5 +1,6 @@
 import { showOutputDeviceDialog } from '~/features/ui/slice';
 
+import { startHandlingSerialPort, stopHandlingSerialPort } from './saga';
 import { setSerialPorts } from './slice';
 
 /**
@@ -24,11 +25,28 @@ export function refreshSerialPortList() {
 }
 
 /**
- * Thunk action creator that attempts to connect to an output device
+ * Attempts to connect to an output device and returns a promise that resolves
+ * when the connection was successful.
+ *
+ * It is assumed that this action creator is invoked in response to a user
+ * action and thus we can safely call `navigator.serial.requestPort()` from
+ * the action.
  */
-export function tryConnectToOutputDevice({ serialPort, baudRate } = {}) {
-  return (dispatch) => {
-    console.log(serialPort);
-    console.log(baudRate);
-  };
+export async function tryConnectToOutputDevice({ serialPort, baudRate } = {}) {
+  if (serialPort) {
+    try {
+      // Try to get hold of the SerialPort instance
+      await window.bridge.requestAccessToSerialPortByName(serialPort);
+      const nativePortObject = await navigator.serial.requestPort();
+      await startHandlingSerialPort({
+        serialPort,
+        baudRate,
+        nativePortObject,
+      });
+    } catch {
+      console.error('Failed to connect to serial port');
+    }
+  } else {
+    await stopHandlingSerialPort();
+  }
 }
