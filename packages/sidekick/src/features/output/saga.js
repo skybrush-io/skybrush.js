@@ -1,6 +1,15 @@
 import deferred from 'p-defer';
 import { channel } from 'redux-saga';
-import { call, delay, fork, join, put, race, take } from 'redux-saga/effects';
+import {
+  call,
+  delay,
+  fork,
+  join,
+  put,
+  race,
+  select,
+  take,
+} from 'redux-saga/effects';
 
 import {
   mavlink20,
@@ -8,6 +17,10 @@ import {
 } from '@skybrush/mavlink/lib/dialects/v20/ardupilotmega';
 
 import { createMAVLinkMessagesFromCommand } from '~/commands';
+import {
+  getEffectiveCommandRepeatCount,
+  getEffectiveCommandRepeatDelay,
+} from '~/features/settings/selectors';
 
 import {
   closeConnection,
@@ -131,10 +144,27 @@ function* serialPortWriterSaga(port) {
           break;
         }
 
+        // TODO(ntamas): fork and do the sending in the forked generator
+
         const { payload } = action;
-        const messages = createMAVLinkMessagesFromCommand(payload);
-        for (const message of messages) {
-          yield call([mavlinkEncoder, mavlinkEncoder.send], message);
+        let repeatCount = yield select(getEffectiveCommandRepeatCount);
+        const repeatDelay = yield select(getEffectiveCommandRepeatDelay);
+
+        while (repeatCount > 0) {
+          const messages = createMAVLinkMessagesFromCommand(payload);
+          const startedAt = performance.now();
+
+          for (const message of messages) {
+            yield call([mavlinkEncoder, mavlinkEncoder.send], message);
+          }
+
+          repeatCount--;
+
+          if (repeatCount > 0 && repeatDelay > 0) {
+            const expectedEnd = startedAt + repeatDelay;
+            const toSleep = Math.max(expectedEnd - performance.now(), 0);
+            yield delay(toSleep);
+          }
         }
       }
     } catch {
