@@ -26,7 +26,9 @@ cd pymavlink
 but this requires one to patch the `gen_js.sh` shell script to look for
 `message_definitions` in the appropriate folder of the `mavlink` repo.
 
-Anyhow, the generated implementations are not exactly modern idiomatic
+## Chnages made to the generated implementations
+
+The generated implementations are not exactly modern idiomatic
 JavaScript (to put it mildly), and they use a patched version of the
 third-party `jspack` and `long` libraries. The patches to `long` are relatively
 benign and they can easily be traced by diffing the source against the original
@@ -34,14 +36,24 @@ benign and they can easily be traced by diffing the source against the original
 extremely hard to figure out where the real changes are. Therefore, I have
 simply vendored `long` and `jspack` in the source tree and modified the
 generated JavaScript implementations of the MAVLink message processors to use
-the venodred variants.
+the vendored variants.
 
-The generated implementations also depend on `underscore`, which is
-unfortunate because `lodash` would be so much better, but alas.
+* The generated implementations also depend on `underscore`, which is
+  unfortunate because `lodash` would be so much better, but alas.
 
-The generated implementations import the `util` module from Node.js, but the
-only function they use from it is `inherits`, which is provided by a separate
-package on NPM. To avoid having to shim the entire `util` module in browser
-environments, I have modified the generated impleemntation to depend on
-`inherits` only.
+* The generated implementations import the `util` module from Node.js, but the
+  only function they use from it is `inherits`, which is provided by a separate
+  package on NPM. To avoid having to shim the entire `util` module in browser
+  environments, I have modified the generated implementation to depend on
+  `inherits` only.
+
+* The generated implementations assume that `Buffer` is in the global
+  namespace, which is true for Node.js but not for browser environments.
+  Therefore, we explicitly import `Buffer` from the `buffer` module to cater
+  for both environments.
+
+## Additional caveats
+
+When using this module in a browser environment. `crypto` and `stream` have to
+be polyfilled from `crypto-browserify` and `stream-browserify`.
 

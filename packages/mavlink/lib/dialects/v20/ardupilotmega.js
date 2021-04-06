@@ -9,7 +9,8 @@ Note: this file has been auto-generated. DO NOT EDIT
 jspack = require("../../vendor/jspack").jspack,
     underscore = require("underscore"),
     events = require("events"), // for .emit(..), MAVLink20Processor inherits from events.EventEmitter
-    inherits = require("inherits");
+    inherits = require("inherits"),
+    Buffer = require("buffer").Buffer;
 
 var Long = require('../../vendor/long');
 
