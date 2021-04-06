@@ -78,6 +78,10 @@
     ],
     "prettier": true,
     "space": true,
+    "ignores": [
+      "packages/mavlink/lib/dialects",
+      "packages/mavlink/lib/vendor"
+    ],
     "rules": {
       "capitalized-comments": 0,
       "no-negated-condition": 0,
