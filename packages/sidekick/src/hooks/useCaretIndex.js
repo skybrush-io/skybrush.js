@@ -1,37 +1,51 @@
 import { useMemo, useReducer } from 'react';
 
+const isDeltaValid = (delta) =>
+  typeof delta === 'number' && Number.isFinite(delta);
+
 /**
  * Creates a reducer function that manages a caret index in a collection
  * containing a given number of items.
  */
-const createCaretIndexReducer = ({ itemCount }) => (state, action) => {
+const createCaretIndexReducer = ({ itemCount, onChanged }) => (
+  state,
+  action
+) => {
   const isIndexValid = (index) =>
     typeof index === 'number' &&
     Number.isFinite(index) &&
     index >= 0 &&
     index < itemCount;
-  const isDeltaValid = (delta) =>
-    typeof delta === 'number' && Number.isFinite(delta);
 
   const { type, payload } = action;
   let delta;
   let newIndex;
+  let newState;
 
   switch (type) {
     case 'clear':
-      return -1;
+      newState = -1;
+      break;
 
     case 'set':
-      return isIndexValid(payload) || payload === -1 ? payload : state;
+      newState = isIndexValid(payload) || payload === -1 ? payload : state;
+      break;
 
     case 'adjust':
       delta = typeof payload === 'function' ? payload(state) : payload;
       newIndex = isDeltaValid(delta) ? (state < 0 ? 0 : state + delta) : state;
-      return isIndexValid(newIndex) ? newIndex : state;
+      newState = isIndexValid(newIndex) ? newIndex : state;
+      break;
 
     default:
-      return state;
+      newState = state;
   }
+
+  if (onChanged && newState !== state) {
+    onChanged(newState, state);
+  }
+
+  return newState;
 };
 
 /**
@@ -41,10 +55,10 @@ const createCaretIndexReducer = ({ itemCount }) => (state, action) => {
  *
  * The callbacks object contains an 'adjust', a 'clear' and a 'set' function.
  */
-const useCaretIndex = (itemCount) => {
+const useCaretIndex = (itemCount, onChanged = null) => {
   const caretIndexReducer = useMemo(
-    () => createCaretIndexReducer({ itemCount }),
-    [itemCount]
+    () => createCaretIndexReducer({ itemCount, onChanged }),
+    [itemCount, onChanged]
   );
   const [caretIndex, dispatch] = useReducer(caretIndexReducer, -1);
   const callbacks = useMemo(

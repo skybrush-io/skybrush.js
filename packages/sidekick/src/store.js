@@ -25,7 +25,7 @@ export const { store, persistor } = configureStoreAndPersistence({
   storage: {
     key: 'skybrush-sidekick',
     version: 1,
-    blacklist: ['output'],
+    blacklist: ['output', 'ui.selectedUAVId'],
   },
 
   devTools: {},

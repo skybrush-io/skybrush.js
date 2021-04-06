@@ -2,6 +2,8 @@
  * @file Slice of the state object that stores the application settings.
  */
 
+import isNil from 'lodash-es/isNil';
+
 import { createSlice } from '@reduxjs/toolkit';
 import { noPayload } from '@skybrush/redux-toolkit';
 
@@ -18,6 +20,8 @@ const { actions, reducer } = createSlice({
       selectedTab: 'display',
     },
 
+    selectedUAVId: null,
+
     sidebarWidth: 240,
   },
 
@@ -29,6 +33,13 @@ const { actions, reducer } = createSlice({
     closePreferencesDialog: noPayload((state) => {
       state.preferencesDialog.visible = false;
     }),
+
+    setSelectedUAVId: (state, action) => {
+      const { payload } = action;
+      if (isNil(payload) || typeof payload === 'number') {
+        state.selectedUAVId = payload;
+      }
+    },
 
     setSidebarWidth: (state, action) => {
       const { payload } = action;
@@ -52,6 +63,7 @@ const { actions, reducer } = createSlice({
 export const {
   closeOutputDeviceDialog,
   closePreferencesDialog,
+  setSelectedUAVId,
   setSidebarWidth,
   showOutputDeviceDialog,
   showPreferencesDialog,

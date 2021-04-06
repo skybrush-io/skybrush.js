@@ -117,6 +117,7 @@ function* serialPortWriterSaga(port) {
       write: (buf) => {
         if (Array.isArray(buf)) {
           console.log('Writing', buf.length, 'bytes to serial port');
+          console.log(buf);
           return writer.write(new Uint8Array(buf));
         }
       },

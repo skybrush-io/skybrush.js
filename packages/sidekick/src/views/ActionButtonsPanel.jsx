@@ -1,3 +1,4 @@
+import isNil from 'lodash-es/isNil';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -14,16 +15,11 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import { Colors } from '@skybrush/app-theme-material-ui';
 import FormHeader from '@skybrush/mui-components/src/FormHeader';
 
-import { FLIGHT_MODE } from '~/ardupilot';
-import {
-  bindToAction,
-  disarm,
-  flashColor,
-  setColor,
-  setFlightMode,
-} from '~/commands';
+import { FLIGHT_MODE, isValidMAVLinkId } from '~/ardupilot';
+import { disarm, flashColor, setColor, setFlightMode } from '~/commands';
 import ColoredButton from '~/components/ColoredButton';
 import { sendMessage } from '~/features/output/slice';
+import { getSelectedUAVId } from '~/features/ui/selectors';
 
 const ActionButton = ({ children, ...rest }) => (
   <Box mb={1} display='flex' flexDirection='column'>
@@ -149,9 +145,33 @@ ActionButtonsPanel.propTypes = {
   setFlightMode: PropTypes.func,
 };
 
+const createMessageDispatcherThunk = (messageFactory) => (...args) => {
+  const thunk = (dispatch, getState) => {
+    const selectedId = getSelectedUAVId(getState());
+    if (!isNil(selectedId) && !isValidMAVLinkId(selectedId)) {
+      return;
+    }
+
+    const message = { ...messageFactory(...args) };
+
+    if (!isNil(selectedId)) {
+      message.to = selectedId;
+    }
+
+    dispatch(sendMessage(message));
+  };
+
+  return thunk;
+};
+
 export default connect(
   // mapStateToProps
   () => ({}),
   // mapDispatchToProps
-  bindToAction(sendMessage, { disarm, flashColor, setColor, setFlightMode })
+  {
+    disarm: createMessageDispatcherThunk(disarm),
+    flashColor: createMessageDispatcherThunk(flashColor),
+    setColor: createMessageDispatcherThunk(setColor),
+    setFlightMode: createMessageDispatcherThunk(setFlightMode),
+  }
 )(ActionButtonsPanel);

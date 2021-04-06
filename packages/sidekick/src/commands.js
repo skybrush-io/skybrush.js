@@ -5,9 +5,11 @@
 
 import arrify from 'arrify';
 import createColor from 'color';
+import isNil from 'lodash-es/isNil';
+
 import { mavlink20 } from '@skybrush/mavlink/lib/dialects/v20/ardupilotmega';
 
-import { createCommandLong, FORCE_MAGIC } from './ardupilot';
+import { createCommandLong, FORCE_MAGIC, isValidMAVLinkId } from './ardupilot';
 
 const createCommand = (type, args) => ({ type, args });
 
@@ -17,15 +19,6 @@ export const flashColor = (color) =>
 export const setColor = (color) =>
   createCommand('setColor', { color, duration: 60000, flash: false });
 export const setFlightMode = (mode) => createCommand('setFlightMode', { mode });
-
-export const bindToAction = (action, factories) => {
-  const result = {};
-  for (const [key, value] of Object.entries(factories)) {
-    result[key] = (...args) => action(value(...args));
-  }
-
-  return result;
-};
 
 const COMMAND_TO_MAVLINK_TABLE = {
   disarm: ({ force }) =>
@@ -67,12 +60,30 @@ const COMMAND_TO_MAVLINK_TABLE = {
 };
 
 export function createMAVLinkMessagesFromCommand(command) {
-  const { type, args } = command;
+  const { type, args, to } = command;
+  if (!isNil(to) && !isValidMAVLinkId(to)) {
+    console.warn(`Skipping invalid command target: ${to}`);
+    return;
+  }
+
   const func = COMMAND_TO_MAVLINK_TABLE[type];
   const messages = func ? arrify(func(args, type)) : [];
 
-  // TODO(ntamas): rewrite target_system and target_component in
-  // each message if we are targeting a specific drone
+  // Re-write the target system and component of those messages that can have a
+  // target (most messages that we need are like these)
+  for (const message of messages) {
+    if (Object.prototype.hasOwnProperty.call(message, 'target_system')) {
+      /* eslint-disable camelcase */
+      if (isNil(to)) {
+        message.target_system = 0;
+        message.target_component = 0;
+      } else {
+        message.target_system = to;
+        message.target_component = mavlink20.MAV_COMP_ID_AUTOPILOT1;
+      }
+      /* eslint-enable camelcase */
+    }
+  }
 
   if (!func) {
     console.warn(`Unknown command type: ${type}`);

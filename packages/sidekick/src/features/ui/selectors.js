@@ -1,3 +1,7 @@
+export const getSelectedUAVId = (state) => {
+  return state.ui.selectedUAVId;
+};
+
 export const getSidebarWidth = (state) => {
   const width = state.ui.sidebarWidth;
   if (typeof width !== 'number' || width <= 0) {

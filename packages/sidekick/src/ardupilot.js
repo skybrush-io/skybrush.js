@@ -51,3 +51,7 @@ export const createCommandLong = ({
     ...params
   );
 };
+
+export function isValidMAVLinkId(id) {
+  return typeof id === 'number' && id >= 1 && id <= 255 && Number.isInteger(id);
+}
