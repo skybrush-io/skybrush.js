@@ -3,6 +3,13 @@ import { channel } from 'redux-saga';
 import { call, delay, fork, join, put, race, take } from 'redux-saga/effects';
 
 import {
+  mavlink20,
+  MAVLink20Processor,
+} from '@skybrush/mavlink/lib/dialects/v20/ardupilotmega';
+
+import { createMAVLinkMessagesFromCommand } from '~/commands';
+
+import {
   closeConnection,
   sendMessage,
   setConnectionState,
@@ -70,20 +77,16 @@ function* serialPortReaderSaga(port) {
   // Outer loop keeps constructing a reader as long as the port is readable.
   // When a fatal, non-recoverable error occurs, port.readable will become
   // falsy
-  console.log('Serial port reader started.');
-
   while (port.readable) {
     const reader = port.readable.getReader();
 
     try {
       while (true) {
-        const { done, value } = yield call(() => reader.read());
+        const { done } = yield call(() => reader.read());
         if (done) {
           // Reader was instructed to terminate
           break;
         }
-
-        console.log('Read', value.length, 'bytes');
       }
     } catch {
       console.error('Error while reading from serial port.');
@@ -92,18 +95,32 @@ function* serialPortReaderSaga(port) {
     }
   }
 
-  console.log('Serial port reader stopped.');
+  console.warn('Serial port reader stopped.');
 }
 
 function* serialPortWriterSaga(port) {
+  const mavlinkEncoder = new MAVLink20Processor(
+    /* logger */ null,
+    /* srcSystem */ 253 /* TODO(ntamas): make  this configurable! */,
+    /* srcComponent */ mavlink20.MAV_COMP_ID_MISSIONPLANNER
+  );
+
   // Outer loop keeps constructing a writer and an encoder as long as the port
   // is writable. When a fatal, non-recoverable error occurs, port.writable
   // will become falsy
-  console.log('Serial port writer started.');
-
   while (port.writable) {
-    const textEncoder = new TextEncoder();
     const writer = port.writable.getWriter();
+
+    // Provide a fake file for the MAVLink encoder that forwards everything to our
+    // serial port writer
+    mavlinkEncoder.file = {
+      write: (buf) => {
+        if (Array.isArray(buf)) {
+          console.log('Writing', buf.length, 'bytes to serial port');
+          return writer.write(new Uint8Array(buf));
+        }
+      },
+    };
 
     try {
       while (true) {
@@ -113,12 +130,11 @@ function* serialPortWriterSaga(port) {
           break;
         }
 
-        const data = textEncoder.encode(JSON.stringify(action) + '\n');
-
-        yield call(() => writer.write(data));
-        console.log('Written', data.length, 'bytes');
-
-        // TODO(ntamas): handle setColor, setFlightMode, disarm
+        const { payload } = action;
+        const messages = createMAVLinkMessagesFromCommand(payload);
+        for (const message of messages) {
+          yield call([mavlinkEncoder, mavlinkEncoder.send], message);
+        }
       }
     } catch {
       console.error('Error while writing to serial port.');
@@ -127,7 +143,7 @@ function* serialPortWriterSaga(port) {
     }
   }
 
-  console.log('Serial port writer stopped.');
+  console.warn('Serial port writer stopped.');
 }
 
 function* outputSaga() {

@@ -20,9 +20,8 @@ const { actions, reducer } = createSlice({
       // Nop; it is only used in the output saga
     },
 
-    sendMessage: {
-      reducer: () => {},
-      prepare: (type, args = {}) => ({ payload: { type, args } }),
+    sendMessage() {
+      // Nop; it is only used in the output saga
     },
 
     setConnectionState(state, action) {

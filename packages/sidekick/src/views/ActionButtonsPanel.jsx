@@ -15,6 +15,13 @@ import { Colors } from '@skybrush/app-theme-material-ui';
 import FormHeader from '@skybrush/mui-components/src/FormHeader';
 
 import { FLIGHT_MODE } from '~/ardupilot';
+import {
+  bindToAction,
+  disarm,
+  flashColor,
+  setColor,
+  setFlightMode,
+} from '~/commands';
 import ColoredButton from '~/components/ColoredButton';
 import { sendMessage } from '~/features/output/slice';
 
@@ -51,8 +58,8 @@ SetColorButton.defaultProps = {
 };
 
 const ActionButtonsPanel = ({
+  disarm,
   flashColor,
-  sendMessage,
   setColor,
   setFlightMode,
 }) => {
@@ -69,7 +76,7 @@ const ActionButtonsPanel = ({
       <ActionButton
         color={Colors.info}
         icon={<Flag />}
-        onClick={() => setFlightMode(FLIGHT_MODE.LOITEr)}
+        onClick={() => setFlightMode(FLIGHT_MODE.LOITER)}
       >
         Position hold
       </ActionButton>
@@ -90,7 +97,7 @@ const ActionButtonsPanel = ({
       <ActionButton
         color={Colors.error}
         icon={<Clear />}
-        onClick={() => sendMessage('disarm', { force: true })}
+        onClick={() => disarm({ force: true })}
       >
         Disarm
       </ActionButton>
@@ -136,8 +143,8 @@ const ActionButtonsPanel = ({
 };
 
 ActionButtonsPanel.propTypes = {
+  disarm: PropTypes.func,
   flashColor: PropTypes.func,
-  sendMessage: PropTypes.func,
   setColor: PropTypes.func,
   setFlightMode: PropTypes.func,
 };
@@ -146,12 +153,5 @@ export default connect(
   // mapStateToProps
   () => ({}),
   // mapDispatchToProps
-  {
-    flashColor: (color = '#ffffff') =>
-      sendMessage('setColor', { color, flash: true }),
-    sendMessage,
-    setColor: (color = '#ffffff') =>
-      sendMessage('setColor', { color, flash: false }),
-    setFlightMode: (mode) => sendMessage('setFlightMode', { mode }),
-  }
+  bindToAction(sendMessage, { disarm, flashColor, setColor, setFlightMode })
 )(ActionButtonsPanel);
