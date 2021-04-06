@@ -11,6 +11,7 @@ import DraggableDialog from '@skybrush/mui-components/src/DraggableDialog';
 import { tryConnectToOutputDevice } from '~/features/output/actions';
 import { isConnectionInTransientState } from '~/features/output/selectors';
 import { getPreferredOutputDevice } from '~/features/settings/selectors';
+import { setPreferredOutputDevice } from '~/features/settings/slice';
 import { isOutputDeviceDialogVisible } from '~/features/ui/selectors';
 import { closeOutputDeviceDialog } from '~/features/ui/slice';
 
@@ -79,6 +80,7 @@ export default connect(
     onClose: closeOutputDeviceDialog,
     onSubmit: (...args) => async (dispatch) => {
       await tryConnectToOutputDevice(...args);
+      dispatch(setPreferredOutputDevice(...args));
       dispatch(closeOutputDeviceDialog());
     },
   }

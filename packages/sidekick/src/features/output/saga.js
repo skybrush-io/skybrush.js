@@ -19,7 +19,6 @@ function* deviceHandlerSaga({
 }) {
   const port = nativePortObject;
   let portOpen = false;
-  let writer;
 
   try {
     yield put(
@@ -44,24 +43,10 @@ function* deviceHandlerSaga({
 
     yield put(setConnectionState('connected'));
 
-    writer = port.writable.getWriter();
-    const textEncoder = new TextEncoder();
-
-    while (true) {
-      const action = yield take([sendMessage.type, closeConnection.type]);
-      console.log(action);
-
-      if (action.type === closeConnection.type) {
-        break;
-      }
-
-      const data = textEncoder.encode(JSON.stringify(action) + '\n');
-      console.log(data);
-
-      yield call(() => writer.write(data));
-
-      // TODO(ntamas): handle setColor, setFlightMode, disarm
-    }
+    // The reader saga ensures that we can detect when the serial port is
+    // disconnected. When the serial port is disconnected, the reader saga
+    // exits, and race() will ensure that the writer saga is cancelled.
+    yield race([serialPortReaderSaga(port), serialPortWriterSaga(port)]);
   } catch {
     // An error happened while handling the serial port. If we did not even
     // manage to open it, we need to reject the deferred so the caller knows
@@ -70,12 +55,6 @@ function* deviceHandlerSaga({
       deferred.reject(new Error('Failed to open serial port.'));
     }
   } finally {
-    // Release the writer so the port can be closed later
-    if (writer) {
-      writer.releaseLock();
-      writer = null;
-    }
-
     // If we have opened the port, close it
     if (portOpen) {
       yield put(setConnectionState('disconnecting'));
@@ -85,6 +64,70 @@ function* deviceHandlerSaga({
     yield put(setConnectionState('disconnected'));
     yield put(setDevice(null));
   }
+}
+
+function* serialPortReaderSaga(port) {
+  // Outer loop keeps constructing a reader as long as the port is readable.
+  // When a fatal, non-recoverable error occurs, port.readable will become
+  // falsy
+  console.log('Serial port reader started.');
+
+  while (port.readable) {
+    const reader = port.readable.getReader();
+
+    try {
+      while (true) {
+        const { done, value } = yield call(() => reader.read());
+        if (done) {
+          // Reader was instructed to terminate
+          break;
+        }
+
+        console.log('Read', value.length, 'bytes');
+      }
+    } catch {
+      console.error('Error while reading from serial port.');
+    } finally {
+      reader.releaseLock();
+    }
+  }
+
+  console.log('Serial port reader stopped.');
+}
+
+function* serialPortWriterSaga(port) {
+  // Outer loop keeps constructing a writer and an encoder as long as the port
+  // is writable. When a fatal, non-recoverable error occurs, port.writable
+  // will become falsy
+  console.log('Serial port writer started.');
+
+  while (port.writable) {
+    const textEncoder = new TextEncoder();
+    const writer = port.writable.getWriter();
+
+    try {
+      while (true) {
+        const action = yield take([sendMessage.type, closeConnection.type]);
+
+        if (action.type === closeConnection.type) {
+          break;
+        }
+
+        const data = textEncoder.encode(JSON.stringify(action) + '\n');
+
+        yield call(() => writer.write(data));
+        console.log('Written', data.length, 'bytes');
+
+        // TODO(ntamas): handle setColor, setFlightMode, disarm
+      }
+    } catch {
+      console.error('Error while writing to serial port.');
+    } finally {
+      writer.releaseLock();
+    }
+  }
+
+  console.log('Serial port writer stopped.');
 }
 
 function* outputSaga() {

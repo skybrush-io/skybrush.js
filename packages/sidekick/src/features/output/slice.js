@@ -21,9 +21,7 @@ const { actions, reducer } = createSlice({
     },
 
     sendMessage: {
-      reducer: () => {
-        console.log('sendMessage called');
-      },
+      reducer: () => {},
       prepare: (type, args = {}) => ({ payload: { type, args } }),
     },
 
