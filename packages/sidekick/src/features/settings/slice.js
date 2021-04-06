@@ -22,7 +22,7 @@ const { actions, reducer } = createSlice({
       repeat: {
         enabled: true,
         count: 5,
-        delay: 100 /* currently unused, maybe in the future */,
+        delay: 100,
       },
     },
   },
@@ -63,7 +63,7 @@ const { actions, reducer } = createSlice({
           payload.delay >= 0 &&
           Number.isFinite(payload.delay)
         ) {
-          state.commands.repeat.delay = payload.delay;
+          state.commands.repeat.delay = Math.min(1000, payload.delay);
         }
       }
     },
