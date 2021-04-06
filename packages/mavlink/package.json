@@ -1,0 +1,32 @@
+{
+  "name": "@skybrush/mavlink",
+  "version": "1.0.0",
+  "description": "MAVLink message handling in Skybrush applications",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.collmot.com/collmot/skybrush.js"
+  },
+  "scripts": {
+    "test": "nyc ava && xo"
+  },
+  "ava": {
+    "babel": true
+  },
+  "dependencies": {
+    "underscore": "^1.12.1"
+  }
+}
