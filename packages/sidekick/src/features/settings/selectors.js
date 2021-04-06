@@ -1,5 +1,38 @@
+import isNil from 'lodash-es/isNil';
 import range from 'lodash-es/range';
 import { createSelector } from '@reduxjs/toolkit';
+
+/**
+ * Returns the number of times each command should be repeated, irrespectively
+ * of whether the repeating is enabled in general or not.
+ */
+export function getCommandRepeatCountEvenIfDisabled(state) {
+  const { count } = getCommandRepeatingProperties(state);
+  return typeof count === 'number' && count >= 1 && Number.isFinite(count)
+    ? Math.floor(count)
+    : 1;
+}
+
+/**
+ * Returns the delay between repeated commands, irrespectively
+ * of whether the repeating is enabled in general or not.
+ */
+export function getCommandRepeatDelayEvenIfDisabled(state) {
+  const { delay } = getCommandRepeatingProperties(state);
+  return typeof delay === 'number' && delay >= 0 && Number.isFinite(delay)
+    ? delay
+    : 0;
+}
+
+/**
+ * Returns an object describing the generic command repeating properties from
+ * the state store.
+ */
+function getCommandRepeatingProperties(state) {
+  const { commands } = state.settings;
+  const { repeat } = commands || {};
+  return typeof repeat === 'object' && !isNil(repeat) ? repeat : {};
+}
 
 /**
  * Returns the properties of the output device preferred by the user.
@@ -22,6 +55,14 @@ export function getPreferredOutputDevice(state) {
 export function getTheme(state) {
   const { theme } = state.settings;
   return theme || 'auto';
+}
+
+/**
+ * Returns whether command repeating is enabled.
+ */
+export function isCommandRepeatingEnabled(state) {
+  const { enabled } = getCommandRepeatingProperties(state);
+  return Boolean(enabled);
 }
 
 /**

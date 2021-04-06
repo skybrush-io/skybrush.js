@@ -14,9 +14,38 @@ const { actions, reducer } = createSlice({
       serialPort: null,
       baudRate: 57600,
     },
+    commands: {
+      repeat: {
+        enabled: true,
+        count: 5,
+        delay: 100 /* currently unused, maybe in the future */,
+      },
+    },
   },
 
   reducers: {
+    setCommandRepeatingProperties(state, action) {
+      const { payload } = action;
+
+      if (typeof payload === 'object') {
+        if (typeof payload.enabled !== 'undefined') {
+          state.commands.repeat.enabled = Boolean(payload.enabled);
+        }
+
+        if (typeof payload.count === 'number' && payload.count >= 1) {
+          state.commands.repeat.count = Math.floor(payload.count);
+        }
+
+        if (
+          typeof payload.delay === 'number' &&
+          payload.delay >= 0 &&
+          Number.isFinite(payload.delay)
+        ) {
+          state.commands.repeat.delay = payload.delay;
+        }
+      }
+    },
+
     setPreferredOutputDevice(state, action) {
       const { payload } = action;
       if (typeof payload === 'object') {
@@ -39,6 +68,7 @@ const { actions, reducer } = createSlice({
 });
 
 export const {
+  setCommandRepeatingProperties,
   setPreferredOutputDevice,
   setTheme,
   setUAVIdSpecification,
