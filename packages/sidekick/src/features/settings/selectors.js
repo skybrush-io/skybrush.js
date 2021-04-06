@@ -3,6 +3,25 @@ import range from 'lodash-es/range';
 import { createSelector } from '@reduxjs/toolkit';
 
 /**
+ * Returns whether the app asks for confirmation before sending broadcast
+ * commands.
+ */
+export function getBroadcastCommandRequiresConfirmation(state) {
+  const { broadcast = true } = getCommandConfirmationProperties(state);
+  return Boolean(broadcast);
+}
+
+/**
+ * Returns an object describing the generic command confirmation properties from
+ * the state store.
+ */
+function getCommandConfirmationProperties(state) {
+  const { commands } = state.settings;
+  const { confirm } = commands || {};
+  return typeof confirm === 'object' && !isNil(confirm) ? confirm : {};
+}
+
+/**
  * Returns the number of times each command should be repeated, irrespectively
  * of whether the repeating is enabled in general or not.
  */
@@ -35,6 +54,32 @@ function getCommandRepeatingProperties(state) {
 }
 
 /**
+ * Returns how many times a given command should be sent, taking into account
+ * whether command repeating is enabled in general or not.
+ */
+export function getEffectiveCommandRepeatCount(state) {
+  return Math.max(
+    isCommandRepeatingEnabled(state)
+      ? getCommandRepeatCountEvenIfDisabled(state)
+      : 1,
+    1
+  );
+}
+
+/**
+ * Returns the number of milliseconds to wait between sending two consecutive
+ * commands in the same batch.
+ */
+export function getEffectiveCommandRepeatDelay(state) {
+  return Math.max(
+    isCommandRepeatingEnabled(state)
+      ? getCommandRepeatDelayEvenIfDisabled(state)
+      : 0,
+    0
+  );
+}
+
+/**
  * Returns the properties of the output device preferred by the user.
  *
  * The returned object will have two properties: `serialPort` (the unique ID of
@@ -55,6 +100,15 @@ export function getPreferredOutputDevice(state) {
 export function getTheme(state) {
   const { theme } = state.settings;
   return theme || 'auto';
+}
+
+/**
+ * Returns whether the app asks for confirmation before sending broadcast
+ * commands.
+ */
+export function getUnicastCommandRequiresConfirmation(state) {
+  const { unicast = false } = getCommandConfirmationProperties(state);
+  return Boolean(unicast);
 }
 
 /**

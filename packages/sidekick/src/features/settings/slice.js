@@ -15,6 +15,10 @@ const { actions, reducer } = createSlice({
       baudRate: 57600,
     },
     commands: {
+      confirm: {
+        broadcast: true,
+        unicast: false,
+      },
       repeat: {
         enabled: true,
         count: 5,
@@ -24,6 +28,24 @@ const { actions, reducer } = createSlice({
   },
 
   reducers: {
+    setCommandConfirmationProperties(state, action) {
+      const { payload } = action;
+
+      if (typeof payload === 'object') {
+        if (typeof state.commands.confirm === 'undefined') {
+          state.commands.confirm = {};
+        }
+
+        if (typeof payload.broadcast !== 'undefined') {
+          state.commands.confirm.broadcast = Boolean(payload.broadcast);
+        }
+
+        if (typeof payload.unicast !== 'undefined') {
+          state.commands.confirm.unicast = Boolean(payload.unicast);
+        }
+      }
+    },
+
     setCommandRepeatingProperties(state, action) {
       const { payload } = action;
 
@@ -68,6 +90,7 @@ const { actions, reducer } = createSlice({
 });
 
 export const {
+  setCommandConfirmationProperties,
   setCommandRepeatingProperties,
   setPreferredOutputDevice,
   setTheme,
