@@ -66,7 +66,10 @@ function* deviceHandlerSaga({
     // The reader saga ensures that we can detect when the serial port is
     // disconnected. When the serial port is disconnected, the reader saga
     // exits, and race() will ensure that the writer saga is cancelled.
-    yield race([serialPortReaderSaga(port), serialPortWriterSaga(port)]);
+    yield race({
+      reader: call(serialPortReaderSaga, port),
+      writer: call(serialPortWriterSaga, port),
+    });
   } catch {
     // An error happened while handling the serial port. If we did not even
     // manage to open it, we need to reject the deferred so the caller knows
@@ -97,13 +100,26 @@ function* serialPortReaderSaga(port) {
       while (true) {
         const { done } = yield call(() => reader.read());
         if (done) {
-          // Reader was instructed to terminate
           break;
         }
       }
     } catch {
       console.error('Error while reading from serial port.');
     } finally {
+      // We need to call reader.cancel() because of the following scenario.
+      // When redux-saga decides to cancel the reader saga, it will throw an
+      // exception from the yield call(() => reader.read()) line above. If we
+      // try to call reader.releaseLock() first, it will block forever (if there
+      // is nothing to read) because it is waiting for reader.read() to return.
+      // Therefore, we need to force reader.read() to return by calling
+      // reader.cancel(). We wrap the whole thing in a try..catch block in case
+      // this behaviour changes in some later version of Chrome where calling
+      // cancel() on a ReadableStream that was already cancelled will throw an
+      // exception.
+      try {
+        reader.cancel();
+      } catch {}
+
       reader.releaseLock();
     }
   }
@@ -117,55 +133,36 @@ function* serialPortWriterSaga(port) {
     /* srcSystem */ 253 /* TODO(ntamas): make  this configurable! */,
     /* srcComponent */ mavlink20.MAV_COMP_ID_MISSIONPLANNER
   );
+  let finished = false;
 
   // Outer loop keeps constructing a writer and an encoder as long as the port
   // is writable. When a fatal, non-recoverable error occurs, port.writable
   // will become falsy
-  while (port.writable) {
+  while (!finished && port.writable) {
     const writer = port.writable.getWriter();
 
-    // Provide a fake file for the MAVLink encoder that forwards everything to our
-    // serial port writer
-    mavlinkEncoder.file = {
-      write: (buf) => {
-        if (Array.isArray(buf)) {
-          console.log('Writing', buf.length, 'bytes to serial port');
-          console.log(buf);
-          return writer.write(new Uint8Array(buf));
-        }
-      },
-    };
-
     try {
+      // Provide a fake file for the MAVLink encoder that forwards everything to our
+      // serial port writer
+      mavlinkEncoder.file = {
+        write: (buf) => {
+          if (Array.isArray(buf)) {
+            console.log('Writing', buf.length, 'bytes to serial port');
+            console.log(buf);
+            return writer.write(new Uint8Array(buf));
+          }
+        },
+      };
+
       while (true) {
         const action = yield take([sendMessage.type, closeConnection.type]);
 
         if (action.type === closeConnection.type) {
+          finished = true;
           break;
         }
 
-        // TODO(ntamas): fork and do the sending in the forked generator
-
-        const { payload } = action;
-        let repeatCount = yield select(getEffectiveCommandRepeatCount);
-        const repeatDelay = yield select(getEffectiveCommandRepeatDelay);
-
-        while (repeatCount > 0) {
-          const messages = createMAVLinkMessagesFromCommand(payload);
-          const startedAt = performance.now();
-
-          for (const message of messages) {
-            yield call([mavlinkEncoder, mavlinkEncoder.send], message);
-          }
-
-          repeatCount--;
-
-          if (repeatCount > 0 && repeatDelay > 0) {
-            const expectedEnd = startedAt + repeatDelay;
-            const toSleep = Math.max(expectedEnd - performance.now(), 0);
-            yield delay(toSleep);
-          }
-        }
+        yield fork(serveMessageRequestSaga, action, mavlinkEncoder);
       }
     } catch {
       console.error('Error while writing to serial port.');
@@ -174,7 +171,32 @@ function* serialPortWriterSaga(port) {
     }
   }
 
-  console.warn('Serial port writer stopped.');
+  if (!finished) {
+    console.warn('Serial port writer stopped unexpectedly.');
+  }
+}
+
+function* serveMessageRequestSaga(action, mavlinkEncoder) {
+  const { payload } = action;
+  let repeatCount = yield select(getEffectiveCommandRepeatCount);
+  const repeatDelay = yield select(getEffectiveCommandRepeatDelay);
+
+  while (repeatCount > 0) {
+    const messages = createMAVLinkMessagesFromCommand(payload);
+    const startedAt = performance.now();
+
+    for (const message of messages) {
+      yield call([mavlinkEncoder, mavlinkEncoder.send], message);
+    }
+
+    repeatCount--;
+
+    if (repeatCount > 0 && repeatDelay > 0) {
+      const expectedEnd = startedAt + repeatDelay;
+      const toSleep = Math.max(expectedEnd - performance.now(), 0);
+      yield delay(toSleep);
+    }
+  }
 }
 
 function* outputSaga() {
