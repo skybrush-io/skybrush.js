@@ -173,15 +173,18 @@ const createMessageDispatcherThunk = ({ factory, confirmation }) => (
       : getUnicastCommandRequiresConfirmation(state);
 
     if (needsConfirmation && confirmation) {
-      const message =
+      const text =
         typeof confirmation === 'function'
           ? confirmation(selectedId, args)
-          : message;
+          : confirmation;
 
       dispatch(
         requestConfirmation({
           title: 'Are you sure?',
-          message,
+          message: {
+            text,
+            format: 'markdown',
+          },
           action,
         })
       );
@@ -195,7 +198,7 @@ const createMessageDispatcherThunk = ({ factory, confirmation }) => (
 
 const getConfirmationMessageForFlightMode = (modeNumber, id) => {
   const isBroadcast = isNil(id);
-  const target = isBroadcast ? 'ALL the drones' : `drone ${id}`;
+  const target = isBroadcast ? '**ALL the drones**' : `**drone ${id}**`;
 
   switch (modeNumber) {
     case FlightMode.SHOW:

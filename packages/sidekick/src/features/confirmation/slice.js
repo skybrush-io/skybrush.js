@@ -27,7 +27,7 @@ const { actions, reducer } = createSlice({
       const { action: actionToConfirm, message, title } = payload;
 
       state.actionToConfirm = actionToConfirm;
-      state.message = String(message || '');
+      state.message = message;
       state.title = String(title || '');
     },
   },

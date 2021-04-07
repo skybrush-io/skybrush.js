@@ -52,6 +52,7 @@
     "react-final-form": "^6.5.3",
     "react-flexible-workbench": "^5.4.1",
     "react-hotkeys": "^2.0.0",
+    "react-markdown": "^5.0.3",
     "react-redux": "^7.2.3",
     "react-split-pane": "^0.1.92",
     "react-use": "^17.2.1",
