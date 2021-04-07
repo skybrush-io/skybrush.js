@@ -15,10 +15,15 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import { Colors } from '@skybrush/app-theme-material-ui';
 import FormHeader from '@skybrush/mui-components/src/FormHeader';
 
-import { FLIGHT_MODE, isValidMAVLinkId } from '~/ardupilot';
+import { FlightMode, isValidMAVLinkId } from '~/ardupilot';
 import { disarm, flashColor, setColor, setFlightMode } from '~/commands';
 import ColoredButton from '~/components/ColoredButton';
+import { requestConfirmation } from '~/features/confirmation/actions';
 import { sendMessage } from '~/features/output/slice';
+import {
+  getBroadcastCommandRequiresConfirmation,
+  getUnicastCommandRequiresConfirmation,
+} from '~/features/settings/selectors';
 import { getSelectedUAVId } from '~/features/ui/selectors';
 
 const ActionButton = ({ children, ...rest }) => (
@@ -65,28 +70,28 @@ const ActionButtonsPanel = ({
       <ActionButton
         color={Colors.success}
         icon={<PlayArrow />}
-        onClick={() => setFlightMode(FLIGHT_MODE.SHOW)}
+        onClick={() => setFlightMode(FlightMode.SHOW)}
       >
         Show mode
       </ActionButton>
       <ActionButton
         color={Colors.info}
         icon={<Flag />}
-        onClick={() => setFlightMode(FLIGHT_MODE.LOITER)}
+        onClick={() => setFlightMode(FlightMode.LOITER)}
       >
         Position hold
       </ActionButton>
       <ActionButton
         color={Colors.warning}
         icon={<Home />}
-        onClick={() => setFlightMode(FLIGHT_MODE.RETURN_TO_HOME)}
+        onClick={() => setFlightMode(FlightMode.RETURN_TO_HOME)}
       >
         Return to home
       </ActionButton>
       <ActionButton
         color={Colors.seriousWarning}
         icon={<FlightLand />}
-        onClick={() => setFlightMode(FLIGHT_MODE.LAND)}
+        onClick={() => setFlightMode(FlightMode.LAND)}
       >
         Land
       </ActionButton>
@@ -145,23 +150,72 @@ ActionButtonsPanel.propTypes = {
   setFlightMode: PropTypes.func,
 };
 
-const createMessageDispatcherThunk = (messageFactory) => (...args) => {
+const createMessageDispatcherThunk = ({ factory, confirmation }) => (
+  ...args
+) => {
   const thunk = (dispatch, getState) => {
-    const selectedId = getSelectedUAVId(getState());
+    const state = getState();
+    const selectedId = getSelectedUAVId(state);
     if (!isNil(selectedId) && !isValidMAVLinkId(selectedId)) {
       return;
     }
 
-    const message = { ...messageFactory(...args) };
+    const isBroadcast = isNil(selectedId);
 
-    if (!isNil(selectedId)) {
+    const message = { ...factory(...args) };
+    if (!isBroadcast) {
       message.to = selectedId;
     }
 
-    dispatch(sendMessage(message));
+    const action = sendMessage(message);
+    const needsConfirmation = isBroadcast
+      ? getBroadcastCommandRequiresConfirmation(state)
+      : getUnicastCommandRequiresConfirmation(state);
+
+    if (needsConfirmation && confirmation) {
+      const message =
+        typeof confirmation === 'function'
+          ? confirmation(selectedId, args)
+          : message;
+
+      dispatch(
+        requestConfirmation({
+          title: 'Are you sure?',
+          message,
+          action,
+        })
+      );
+    } else {
+      dispatch(action);
+    }
   };
 
   return thunk;
+};
+
+const getConfirmationMessageForFlightMode = (modeNumber, id) => {
+  const isBroadcast = isNil(id);
+  const target = isBroadcast ? 'ALL the drones' : `drone ${id}`;
+
+  switch (modeNumber) {
+    case FlightMode.SHOW:
+      return `This action will switch ${target} to drone show mode.`;
+
+    case FlightMode.LOITER:
+      return `This action will switch ${target} to loiter mode. If the drone is currently airborne, it will hover in place at its current position.`;
+
+    case FlightMode.POSITION_HOLD:
+      return `This action will switch ${target} to position hold mode. If the drone is currently airborne, it will hover in place at its current position.`;
+
+    case FlightMode.RETURN_TO_HOME:
+      return `This action will instruct ${target} to return to their home positions in a straight line.`;
+
+    case FlightMode.LAND:
+      return `This action will instruct ${target} to land at their current location.`;
+
+    default:
+      return `This action will change the flight mode on ${target}.`;
+  }
 };
 
 export default connect(
@@ -169,9 +223,21 @@ export default connect(
   () => ({}),
   // mapDispatchToProps
   {
-    disarm: createMessageDispatcherThunk(disarm),
-    flashColor: createMessageDispatcherThunk(flashColor),
-    setColor: createMessageDispatcherThunk(setColor),
-    setFlightMode: createMessageDispatcherThunk(setFlightMode),
+    disarm: createMessageDispatcherThunk({
+      factory: disarm,
+      confirmation: (id) =>
+        isNil(id)
+          ? 'This action will disarm ALL the drones.'
+          : `This action will disarm drone ${id}.`,
+    }),
+    flashColor: createMessageDispatcherThunk({ factory: flashColor }),
+    setColor: createMessageDispatcherThunk({ factory: setColor }),
+    setFlightMode: createMessageDispatcherThunk({
+      factory: setFlightMode,
+      confirmation: (id, args) => {
+        const modeNumber = args && args.length > 0 ? args[0] : -1;
+        return getConfirmationMessageForFlightMode(modeNumber, id);
+      },
+    }),
   }
 )(ActionButtonsPanel);

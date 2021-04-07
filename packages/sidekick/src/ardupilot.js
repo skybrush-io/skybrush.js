@@ -6,7 +6,7 @@ import { mavlink20 } from '@skybrush/mavlink/lib/dialects/v20/ardupilotmega';
 /**
  * Known ArduPilot flight mode constants that we need.
  */
-export const FLIGHT_MODE = {
+export const FlightMode = {
   LOITER: 5,
   RETURN_TO_HOME: 6,
   LAND: 9,

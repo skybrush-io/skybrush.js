@@ -27,10 +27,8 @@ const ConfirmationDialogBody = () => {
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={() => dispatch(reject())}>
-          Cancel
-        </Button>
-        <Button color='primary' onClick={() => dispatch(confirm())}>
+        <Button onClick={() => dispatch(reject())}>Cancel</Button>
+        <Button autoFocus color='primary' onClick={() => dispatch(confirm())}>
           Confirm
         </Button>
       </DialogActions>
