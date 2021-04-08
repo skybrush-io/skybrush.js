@@ -1,15 +1,16 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
-import { HotKeys } from 'react-hotkeys';
 import { Provider as StoreProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 
 import DialogsContainer from './dialogs';
-import keyMap from './keymap';
+import AppHotkeys from './hotkeys';
 import { persistor, store } from './store';
 import ThemeProvider from './theme';
+import PendingUAVIdOverlay from './views/PendingUAVIdOverlay';
 import TopLevelView from './views/TopLevelView';
 
+// eslint-disable-next-line import/no-unassigned-import
 import 'typeface-fira-sans';
 
 import '../assets/css/screen.less';
@@ -21,10 +22,11 @@ const App = () => (
     <ThemeProvider>
       <PersistGate persistor={persistor}>
         <CssBaseline />
-        <HotKeys root keyMap={keyMap}>
+        <AppHotkeys>
           <TopLevelView />
-        </HotKeys>
+        </AppHotkeys>
         <DialogsContainer />
+        <PendingUAVIdOverlay />
       </PersistGate>
     </ThemeProvider>
   </StoreProvider>

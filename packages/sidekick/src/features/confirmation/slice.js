@@ -18,8 +18,9 @@ const { actions, reducer } = createSlice({
   reducers: {
     clearConfirmation: noPayload((state) => {
       state.actionToConfirm = null;
-      state.message = '';
-      state.title = '';
+
+      // Keep the last message and title so the confirmation dialog won't
+      // collapse into the void while it is being animated away
     }),
 
     requestConfirmation(state, action) {

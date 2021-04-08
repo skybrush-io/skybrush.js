@@ -21,6 +21,11 @@ export const FlightMode = {
 export const FORCE_MAGIC = 21196;
 
 /**
+ * Maximum allowe size of a MAVLink network.
+ */
+export const MAVLINK_NETWORK_SIZE = 256;
+
+/**
  * Convenience method to create a MAVLink COMMAND_LONG message with a nicer
  * API than what the raw MAVLink module provides us.
  */
@@ -53,5 +58,10 @@ export const createCommandLong = ({
 };
 
 export function isValidMAVLinkId(id) {
-  return typeof id === 'number' && id >= 1 && id <= 255 && Number.isInteger(id);
+  return (
+    typeof id === 'number' &&
+    id >= 1 &&
+    id <= MAX_MAVLINK_ID &&
+    Number.isInteger(id)
+  );
 }

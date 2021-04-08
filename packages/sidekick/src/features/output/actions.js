@@ -43,7 +43,8 @@ export async function tryConnectToOutputDevice({ serialPort, baudRate } = {}) {
         baudRate,
         nativePortObject,
       });
-    } catch {
+    } catch (error) {
+      console.error(error);
       console.error('Failed to connect to serial port');
     }
   } else {

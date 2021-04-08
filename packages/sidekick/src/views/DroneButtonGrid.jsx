@@ -53,7 +53,6 @@ const DroneButtonGrid = React.forwardRef(
 
     const handlers = useMemo(
       () => ({
-        CLEAR_SELECTION: caretManager.clear,
         MOVE_CARET_LEFT: (event) => {
           event.preventDefault();
           caretManager.adjust(-1);

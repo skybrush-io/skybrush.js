@@ -2,6 +2,8 @@ import isNil from 'lodash-es/isNil';
 import range from 'lodash-es/range';
 import { createSelector } from '@reduxjs/toolkit';
 
+import { MAVLINK_NETWORK_SIZE } from '~/ardupilot';
+
 /**
  * Returns whether the app asks for confirmation before sending broadcast
  * commands.
@@ -171,7 +173,6 @@ export function parseUAVIdSpecification(value) {
   const parts = (value || '').split(',');
   const selected = [];
   const ranges = [];
-  const MAVLINK_NETWORK_SIZE = 256;
 
   selected.length = MAVLINK_NETWORK_SIZE;
   for (let part of parts) {

@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   backdropOpen: {
     opacity: 1,
     pointerEvents: 'auto',
+    zIndex: theme.zIndex.drawer + 1,
   },
 }));
 
