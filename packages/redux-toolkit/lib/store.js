@@ -13,7 +13,7 @@ import noop from 'lodash-es/noop';
 import createDeferred from 'p-defer';
 import { persistStore, persistReducer } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
-import { all } from 'redux-saga/effects';
+import { all, call } from 'redux-saga/effects';
 
 import { createActionScrubber, resolveActionTypes } from './actions';
 import { createStorageConfiguration } from './persistence';
@@ -167,7 +167,7 @@ export const configureStoreAndPersistence = ({
       sagas.length === 1
         ? sagas[0]
         : function* () {
-            yield all(sagas);
+            yield all(sagas.map((saga) => call(saga)));
           };
 
     store.runSaga = sagaMiddleware.run;
