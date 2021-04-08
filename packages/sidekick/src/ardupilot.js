@@ -61,7 +61,7 @@ export function isValidMAVLinkId(id) {
   return (
     typeof id === 'number' &&
     id >= 1 &&
-    id <= MAX_MAVLINK_ID &&
+    id <= MAVLINK_NETWORK_SIZE &&
     Number.isInteger(id)
   );
 }

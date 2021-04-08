@@ -13,6 +13,7 @@ import TopLevelView from './views/TopLevelView';
 // eslint-disable-next-line import/no-unassigned-import
 import 'typeface-fira-sans';
 
+import '../assets/css/kbd.css';
 import '../assets/css/screen.less';
 import '../assets/css/split-pane.less';
 import '../assets/css/tooltips.less';

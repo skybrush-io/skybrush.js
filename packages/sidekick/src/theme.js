@@ -4,7 +4,13 @@
 
 import { connect } from 'react-redux';
 
-import { common, green, lime, lightGreen } from '@material-ui/core/colors';
+import {
+  common,
+  green,
+  blueGrey,
+  lightGreen,
+  amber,
+} from '@material-ui/core/colors';
 
 import { createThemeProvider } from '@skybrush/app-theme-material-ui';
 
@@ -20,11 +26,11 @@ export const isDark = (theme) => theme.palette.type === 'dark';
  * preference about whether to use a dark or a light theme.
  */
 const DarkModeAwareThemeProvider = createThemeProvider({
-  primaryColor: () => ({
-    main: green[500],
+  primaryColor: (isDark) => ({
+    main: isDark ? green[500] : green[700],
     contrastText: common.white,
   }),
-  secondaryColor: (isDark) => (isDark ? lightGreen : lime),
+  secondaryColor: (isDark) => (isDark ? lightGreen : green),
 });
 
 export default connect(

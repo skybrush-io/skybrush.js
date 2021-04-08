@@ -16,7 +16,7 @@ import {
   MAVLink20Processor,
 } from '@skybrush/mavlink/lib/dialects/v20/ardupilotmega';
 
-import { createMAVLinkMessagesFromCommand } from '~/commands';
+import { createMAVLinkMessagesFromCommand } from '~/features/flight/commands';
 import {
   getEffectiveCommandRepeatCount,
   getEffectiveCommandRepeatDelay,

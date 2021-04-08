@@ -9,7 +9,7 @@ import isNil from 'lodash-es/isNil';
 
 import { mavlink20 } from '@skybrush/mavlink/lib/dialects/v20/ardupilotmega';
 
-import { createCommandLong, FORCE_MAGIC, isValidMAVLinkId } from './ardupilot';
+import { createCommandLong, FORCE_MAGIC, isValidMAVLinkId } from '~/ardupilot';
 
 const createCommand = (type, args) => ({ type, args });
 
