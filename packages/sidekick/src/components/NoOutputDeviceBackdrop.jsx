@@ -46,7 +46,7 @@ const NoOutputDeviceBackdrop = ({ onShowOutputDeviceDialog, open }) => {
   return (
     <Box className={clsx(classes.backdrop, open && classes.backdropOpen)}>
       <BackgroundHint
-        header='Disconnected'
+        header='No output device'
         text='You need to select an output device to communicate with the drones'
         icon={<Power />}
         button={

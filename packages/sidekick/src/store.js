@@ -13,6 +13,8 @@ import keyboardReducer from './features/keyboard/slice';
 import outputSaga from './features/output/saga';
 import outputReducer from './features/output/slice';
 import settingsReducer from './features/settings/slice';
+import statsSaga from './features/stats/saga';
+import statsReducer from './features/stats/slice';
 import uiReducer from './features/ui/slice';
 
 const reducer = combineReducers({
@@ -21,6 +23,7 @@ const reducer = combineReducers({
   keyboard: keyboardReducer,
   output: outputReducer,
   settings: settingsReducer,
+  stats: statsReducer,
   ui: uiReducer,
 });
 
@@ -38,13 +41,14 @@ export const { store, persistor } = configureStoreAndPersistence({
       'input',
       'keyboard',
       'output',
+      'stats',
       'ui.selectedUAVId',
     ],
   },
 
   devTools: {},
 
-  sagas: [keyboardSaga, inputSaga, outputSaga],
+  sagas: [keyboardSaga, inputSaga, outputSaga, statsSaga],
 });
 
 export default store;

@@ -26,6 +26,13 @@ const { actions, reducer } = createSlice({
       // Nop; it is only used in the output saga
     },
 
+    sendRawMessage: {
+      prepare: (type, fields) => ({ payload: [type, fields] }),
+      reducer() {
+        // Nop; it is only used in the output saga
+      },
+    },
+
     setConnectionState(state, action) {
       const { payload } = action;
 
@@ -62,6 +69,7 @@ const { actions, reducer } = createSlice({
 export const {
   closeConnection,
   sendMessage,
+  sendRawMessage,
   setConnectionState,
   setDevice,
   setSerialPorts,

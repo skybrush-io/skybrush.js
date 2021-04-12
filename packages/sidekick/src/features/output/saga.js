@@ -26,6 +26,7 @@ import ConnectionState from '~/model/ConnectionState';
 import {
   closeConnection,
   sendMessage,
+  sendRawMessage,
   setConnectionState,
   setDevice,
 } from './slice';
@@ -156,14 +157,26 @@ function* serialPortWriterSaga(port) {
       };
 
       while (true) {
-        const action = yield take([sendMessage.type, closeConnection.type]);
+        const action = yield take([
+          sendMessage.type,
+          sendRawMessage.type,
+          closeConnection.type,
+        ]);
 
-        if (action.type === closeConnection.type) {
-          finished = true;
-          break;
+        switch (action.type) {
+          case sendMessage.type:
+            yield fork(serveMessageRequest, action, mavlinkEncoder);
+            break;
+
+          case sendRawMessage.type:
+            yield call(serveRawMessageRequest, action, mavlinkEncoder);
+            break;
+
+          case closeConnection.type:
+          default:
+            finished = true;
+            break;
         }
-
-        yield fork(serveMessageRequestSaga, action, mavlinkEncoder);
       }
     } catch {
       console.error('Error while writing to serial port.');
@@ -177,7 +190,7 @@ function* serialPortWriterSaga(port) {
   }
 }
 
-function* serveMessageRequestSaga(action, mavlinkEncoder) {
+function* serveMessageRequest(action, mavlinkEncoder) {
   const { payload } = action;
   let repeatCount = yield select(getEffectiveCommandRepeatCount);
   const repeatDelay = yield select(getEffectiveCommandRepeatDelay);
@@ -197,6 +210,25 @@ function* serveMessageRequestSaga(action, mavlinkEncoder) {
       const toSleep = Math.max(expectedEnd - performance.now(), 0);
       yield delay(toSleep);
     }
+  }
+}
+
+function* serveRawMessageRequest(action, mavlinkEncoder) {
+  const { payload } = action;
+
+  if (!Array.isArray(payload) || payload.length !== 2) {
+    return;
+  }
+
+  const type = payload[0];
+  const fields = payload[1];
+  const MessageClass = mavlink20.messages[type.toLowerCase()];
+
+  if (MessageClass) {
+    const message = new MessageClass(...fields);
+    yield call([mavlinkEncoder, mavlinkEncoder.send], message);
+  } else {
+    console.warn(`Dropped MAVLink message request with unknown type: ${type}`);
   }
 }
 

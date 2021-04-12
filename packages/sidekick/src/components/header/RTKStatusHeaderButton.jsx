@@ -5,8 +5,11 @@ import { connect } from 'react-redux';
 import Antenna from '@material-ui/icons/SettingsInputAntenna';
 
 import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
+import LazyTooltip from '@skybrush/mui-components/src/LazyTooltip';
 import SidebarBadge from '@skybrush/mui-components/src/SidebarBadge';
 
+import RTKStatisticsMiniList from '~/components/RTKStatisticsMiniList';
+import { getRTKConnectionState } from '~/features/stats/selectors';
 import ConnectionState from '~/model/ConnectionState';
 
 const connectionStateToColor = (state) => {
@@ -22,15 +25,20 @@ const connectionStateToColor = (state) => {
 const BADGE_OFFSET = [24, 8];
 
 const RTKStatusHeaderButton = ({ connectionState }) => (
-  <GenericHeaderButton label='RTK'>
-    <Antenna />
-    <SidebarBadge
-      anchor='topLeft'
-      color={connectionStateToColor(connectionState)}
-      offset={BADGE_OFFSET}
-      visible={connectionState !== ConnectionState.DISCONNECTED}
-    />
-  </GenericHeaderButton>
+  <LazyTooltip content={<RTKStatisticsMiniList />}>
+    <GenericHeaderButton
+      disabled={connectionState === ConnectionState.DISCONNECTED}
+      label='RTK'
+    >
+      <Antenna />
+      <SidebarBadge
+        anchor='topLeft'
+        color={connectionStateToColor(connectionState)}
+        offset={BADGE_OFFSET}
+        visible={connectionState !== ConnectionState.DISCONNECTED}
+      />
+    </GenericHeaderButton>
+  </LazyTooltip>
 );
 
 RTKStatusHeaderButton.propTypes = {
@@ -39,8 +47,8 @@ RTKStatusHeaderButton.propTypes = {
 
 export default connect(
   // mapStateToProps
-  () => ({
-    connectionState: 'disconnected',
+  (state) => ({
+    connectionState: getRTKConnectionState(state),
   }),
   // mapDispatchToProps
   {}
