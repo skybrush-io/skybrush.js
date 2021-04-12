@@ -12,7 +12,12 @@ const { actions, reducer } = createSlice({
 
   initialState: {
     server: {
-      active: false,
+      // 'active' is a tri-state variable. false means "connection is not active",
+      // "true" means "connection should be active, try to reconnect if the
+      // connection breaks". "null" is a special value meaning "Sidekick has
+      // just started, so try connecting once and if it did not work, don't
+      // try again"
+      active: null,
       connectionState: ConnectionState.DISCONNECTED,
     },
   },

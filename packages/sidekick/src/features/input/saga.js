@@ -13,8 +13,12 @@ import {
 
 import { getServerConnectionSettings } from '~/features/settings/selectors';
 import ConnectionState from '~/model/ConnectionState';
+import { setServerConnectionActive } from './actions';
 
-import { isServerConnectionActive } from './selectors';
+import {
+  isServerConnectionActive,
+  wasConnectionAttemptedAfterStartup,
+} from './selectors';
 import {
   connectToServer,
   disconnectFromServer,
@@ -59,6 +63,15 @@ function* attemptSingleConnection() {
     if (result.connection) {
       connection = result.connection;
       yield put(setServerConnectionState(ConnectionState.CONNECTED));
+
+      // Successful connection. If this was the first attempt right after
+      // startup, let's make ourselves permanently active.
+      const wasConnectionAttempted = yield select(
+        wasConnectionAttemptedAfterStartup
+      );
+      if (!wasConnectionAttempted) {
+        yield put(setServerConnectionActive(true));
+      }
     }
 
     // Read incoming messages in a separate task if we are still active and
@@ -87,7 +100,11 @@ function* attemptSingleConnection() {
 
 function* connectionSaga() {
   const { host, port } = yield select(getServerConnectionSettings);
-  let isActive = true;
+  let isActive = typeof host === 'string' && host.length > 0;
+
+  // Note that we attempt to connect unconditionally. This is good because we
+  // always want to try to connect when the app starts and we already have a
+  // configured host.
 
   while (isActive) {
     // Run a single connection attempt
@@ -129,7 +146,16 @@ function* inputSaga() {
   let connectionTask = null;
 
   while (true) {
-    const isActive = yield select(isServerConnectionActive);
+    let isActive = yield select(isServerConnectionActive);
+
+    if (!isActive) {
+      const wasConnectionAttempted = yield select(
+        wasConnectionAttemptedAfterStartup
+      );
+      if (!wasConnectionAttempted) {
+        isActive = true;
+      }
+    }
 
     if (isActive && !connectionTask) {
       connectionTask = yield fork(connectionSaga);

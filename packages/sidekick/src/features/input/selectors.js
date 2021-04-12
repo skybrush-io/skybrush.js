@@ -11,3 +11,7 @@ export function isServerConnectionActive(state) {
 export function isServerConnectionInTransientState(state) {
   return ConnectionState.isTransient(getServerConnectionState(state));
 }
+
+export function wasConnectionAttemptedAfterStartup(state) {
+  return state.input.server.active !== null;
+}
