@@ -11,6 +11,7 @@ import SemanticAvatar from './SemanticAvatar';
 import StatusLight from './StatusLight';
 import ThemeSelector from './ThemeSelector';
 import Tooltip from './Tooltip';
+import TransparentList from './TransparentList';
 
 export {
   BackgroundHint,
@@ -26,4 +27,5 @@ export {
   StatusLight,
   ThemeSelector,
   Tooltip,
+  TransparentList,
 };
