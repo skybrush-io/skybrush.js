@@ -97,6 +97,23 @@ export function getPreferredOutputDevice(state) {
 }
 
 /**
+ * Returns the settings of the Skybrush server to connect to.
+ */
+export const getServerConnectionSettings = createSelector(
+  (state) => state.settings.server,
+  (server) => ({
+    host: server.host || '',
+    port: typeof server.port !== 'number' ? 5002 : server.port,
+  })
+);
+
+/**
+ * Returns the initial values of the server connection form when it is displayed
+ * for the first time.
+ */
+export const getInitialValuesForServerConnectionForm = getServerConnectionSettings;
+
+/**
  * Returns the current UI theme to use.
  */
 export function getTheme(state) {

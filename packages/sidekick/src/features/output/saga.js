@@ -21,6 +21,7 @@ import {
   getEffectiveCommandRepeatCount,
   getEffectiveCommandRepeatDelay,
 } from '~/features/settings/selectors';
+import ConnectionState from '~/model/ConnectionState';
 
 import {
   closeConnection,
@@ -48,7 +49,7 @@ function* deviceHandlerSaga({
         baudRate,
       })
     );
-    yield put(setConnectionState('connecting'));
+    yield put(setConnectionState(ConnectionState.CONNECTING));
 
     yield call(async () => {
       await port.open({ baudRate });
@@ -61,7 +62,7 @@ function* deviceHandlerSaga({
       deferred.resolve();
     }
 
-    yield put(setConnectionState('connected'));
+    yield put(setConnectionState(ConnectionState.CONNECTED));
 
     // The reader saga ensures that we can detect when the serial port is
     // disconnected. When the serial port is disconnected, the reader saga
@@ -80,11 +81,11 @@ function* deviceHandlerSaga({
   } finally {
     // If we have opened the port, close it
     if (portOpen) {
-      yield put(setConnectionState('disconnecting'));
+      yield put(setConnectionState(ConnectionState.DISCONNECTING));
       yield call(() => port.close());
     }
 
-    yield put(setConnectionState('disconnected'));
+    yield put(setConnectionState(ConnectionState.DISCONNECTED));
     yield put(setDevice(null));
   }
 }

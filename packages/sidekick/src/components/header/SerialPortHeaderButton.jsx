@@ -13,24 +13,7 @@ import {
   getConnectionState,
   hasOutputDevice,
 } from '~/features/output/selectors';
-import { Colors } from '@skybrush/app-theme-material-ui';
-
-const connectionStateToColor = (state) => {
-  switch (state) {
-    case 'connected':
-      return Colors.success;
-
-    case 'disconnected':
-      return Colors.error;
-
-    case 'connecting':
-    case 'disconnecting':
-      return Colors.warning;
-
-    default:
-      return Colors.missing;
-  }
-};
+import ConnectionState from '~/model/ConnectionState';
 
 const BADGE_OFFSET = [24, 8];
 
@@ -43,7 +26,7 @@ const SerialPortHeaderButton = ({
     <Power />
     <SidebarBadge
       anchor='topLeft'
-      color={connectionStateToColor(connectionState)}
+      color={ConnectionState.toColor(connectionState)}
       offset={BADGE_OFFSET}
       visible={hasOutputDevice}
     />

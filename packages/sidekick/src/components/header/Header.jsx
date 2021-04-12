@@ -4,7 +4,9 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PreferencesButton from './PreferencesButton';
+import RTKStatusHeaderButton from './RTKStatusHeaderButton';
 import SerialPortHeaderButton from './SerialPortHeaderButton';
+import ServerHeaderButton from './ServerHeaderButton';
 
 const useStyles = makeStyles({
   root: {
@@ -32,6 +34,10 @@ const Header = () => {
   return (
     <Box className={classes.root}>
       <SerialPortHeaderButton />
+      <hr />
+      <ServerHeaderButton />
+      <hr />
+      <RTKStatusHeaderButton />
       <hr />
       <Box flex={1} />
       <hr />

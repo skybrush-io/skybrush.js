@@ -1,3 +1,7 @@
+export const getSelectedTabInPreferencesDialog = (state) => {
+  return state.ui.preferencesDialog.selectedTab;
+};
+
 export const getSelectedUAVId = (state) => {
   return state.ui.selectedUAVId;
 };

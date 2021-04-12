@@ -1,6 +1,6 @@
 import isNil from 'lodash-es/isNil';
 
-const TRANSIENT_STATES = new Set(['connecting', 'disconnecting']);
+import ConnectionState from '~/model/ConnectionState';
 
 export function describeOutputDevice(state) {
   if (!hasOutputDevice(state)) {
@@ -23,7 +23,7 @@ export function getDetectedSerialPortList(state) {
 }
 
 export function getConnectionState(state) {
-  return state.output.connectionState || 'disconnected';
+  return state.output.connectionState || ConnectionState.DISCONNECTED;
 }
 
 export function hasOutputDevice(state) {
@@ -31,9 +31,12 @@ export function hasOutputDevice(state) {
 }
 
 export function hasConnectedOutputDevice(state) {
-  return hasOutputDevice(state) && getConnectionState(state) === 'connected';
+  return (
+    hasOutputDevice(state) &&
+    getConnectionState(state) === ConnectionState.CONNECTED
+  );
 }
 
 export function isConnectionInTransientState(state) {
-  return TRANSIENT_STATES.has(getConnectionState(state));
+  return ConnectionState.isTransient(getConnectionState(state));
 }

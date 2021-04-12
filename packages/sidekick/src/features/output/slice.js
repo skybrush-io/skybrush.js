@@ -6,12 +6,14 @@
 import isNil from 'lodash-es/isNil';
 import { createSlice } from '@reduxjs/toolkit';
 
+import ConnectionState from '~/model/ConnectionState';
+
 const { actions, reducer } = createSlice({
   name: 'output',
 
   initialState: {
     device: null, // must be of the format: { "type": "serial", "serialPort": ..., "baudRate": ... }
-    connectionState: 'disconnected',
+    connectionState: ConnectionState.DISCONNECTED,
     serialPorts: [],
   },
 
@@ -27,11 +29,7 @@ const { actions, reducer } = createSlice({
     setConnectionState(state, action) {
       const { payload } = action;
 
-      if (
-        ['connecting', 'connected', 'disconnecting', 'disconnected'].includes(
-          payload
-        )
-      ) {
+      if (ConnectionState.isValid(payload)) {
         state.connectionState = payload;
       }
     },

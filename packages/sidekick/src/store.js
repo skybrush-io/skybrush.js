@@ -6,6 +6,8 @@ import { combineReducers } from 'redux';
 import { configureStoreAndPersistence } from '@skybrush/redux-toolkit';
 
 import confirmationReducer from './features/confirmation/slice';
+import inputSaga from './features/input/saga';
+import inputReducer from './features/input/slice';
 import keyboardSaga from './features/keyboard/saga';
 import keyboardReducer from './features/keyboard/slice';
 import outputSaga from './features/output/saga';
@@ -15,6 +17,7 @@ import uiReducer from './features/ui/slice';
 
 const reducer = combineReducers({
   confirmation: confirmationReducer,
+  input: inputReducer,
   keyboard: keyboardReducer,
   output: outputReducer,
   settings: settingsReducer,
@@ -30,12 +33,18 @@ export const { store, persistor } = configureStoreAndPersistence({
   storage: {
     key: 'skybrush-sidekick',
     version: 1,
-    blacklist: ['confirmation', 'keyboard', 'output', 'ui.selectedUAVId'],
+    blacklist: [
+      'confirmation',
+      'input',
+      'keyboard',
+      'output',
+      'ui.selectedUAVId',
+    ],
   },
 
   devTools: {},
 
-  sagas: [keyboardSaga, outputSaga],
+  sagas: [keyboardSaga, inputSaga, outputSaga],
 });
 
 export default store;

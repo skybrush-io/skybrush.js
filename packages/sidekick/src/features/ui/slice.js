@@ -34,6 +34,13 @@ const { actions, reducer } = createSlice({
       state.preferencesDialog.visible = false;
     }),
 
+    setSelectedTabInPreferencesDialog: (state, action) => {
+      const { payload } = action;
+      if (payload && typeof payload === 'string') {
+        state.preferencesDialog.selectedTab = payload;
+      }
+    },
+
     setSelectedUAVId: (state, action) => {
       const { payload } = action;
       if (isNil(payload) || typeof payload === 'number') {
@@ -64,6 +71,7 @@ export const {
   closeOutputDeviceDialog,
   closePreferencesDialog,
   setSelectedUAVId,
+  setSelectedTabInPreferencesDialog,
   setSidebarWidth,
   showOutputDeviceDialog,
   showPreferencesDialog,

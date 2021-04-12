@@ -8,15 +8,27 @@ import DialogContent from '@material-ui/core/DialogContent';
 
 import DraggableDialog from '@skybrush/mui-components/src/DraggableDialog';
 
+import ConnectionStatusIndicator from '~/components/ConnectionStatusIndicator';
 import { tryConnectToOutputDevice } from '~/features/output/actions';
-import { isConnectionInTransientState } from '~/features/output/selectors';
+import {
+  getConnectionState,
+  isConnectionInTransientState,
+} from '~/features/output/selectors';
 import { getPreferredOutputDevice } from '~/features/settings/selectors';
 import { setPreferredOutputDevice } from '~/features/settings/slice';
 import { isOutputDeviceDialogVisible } from '~/features/ui/selectors';
 import { closeOutputDeviceDialog } from '~/features/ui/slice';
 
-import ConnectionStatusIndicator from './ConnectionStatusIndicator';
 import OutputDeviceForm from './OutputDeviceForm';
+
+const OutputConnectionStatusIndicator = connect(
+  // mapStateToProps
+  (state) => ({
+    status: getConnectionState(state),
+  }),
+  // mapDispatchToProps
+  {}
+)(ConnectionStatusIndicator);
 
 const OutputDeviceDialog = ({
   preferredOutputDevice,
@@ -39,7 +51,7 @@ const OutputDeviceDialog = ({
       />
     </DialogContent>
     <DialogActions>
-      <ConnectionStatusIndicator pl={2} flex={1} />
+      <OutputConnectionStatusIndicator pl={2} flex={1} />
       <Button
         disabled={submissionPrevented}
         onClick={() => {

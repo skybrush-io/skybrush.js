@@ -25,6 +25,10 @@ const { actions, reducer } = createSlice({
         delay: 100,
       },
     },
+    server: {
+      host: 'localhost',
+      port: 5002,
+    },
   },
 
   reducers: {
@@ -79,6 +83,21 @@ const { actions, reducer } = createSlice({
       }
     },
 
+    setServerConnectionSettings(state, action) {
+      const { payload } = action;
+
+      if (typeof payload === 'object') {
+        if (typeof payload.host !== 'undefined') {
+          state.server.host = String(payload.host);
+        }
+
+        const port = Number.parseInt(payload.port, 10);
+        if (Number.isFinite(port) && port > 0 && port < 65536) {
+          state.server.port = port;
+        }
+      }
+    },
+
     setTheme(state, action) {
       state.theme = String(action.payload);
     },
@@ -93,6 +112,7 @@ export const {
   setCommandConfirmationProperties,
   setCommandRepeatingProperties,
   setPreferredOutputDevice,
+  setServerConnectionSettings,
   setTheme,
   setUAVIdSpecification,
 } = actions;

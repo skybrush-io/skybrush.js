@@ -4,6 +4,7 @@ const unhandled = require('electron-unhandled');
 const createStorageEngine = require('redux-persist-electron-storage');
 
 const setupIpc = require('./ipc');
+const createServerConnection = require('./server');
 
 unhandled({
   logger: (error) => console.error(error.stack),
@@ -56,6 +57,7 @@ async function requestAccessToSerialPortByName(name) {
 // any functionality that requires Node.js -- they are not allowed to use
 // Node.js modules themselves
 contextBridge.exposeInMainWorld('bridge', {
+  createServerConnection,
   createStateStore,
   getSerialPorts,
   requestAccessToSerialPortByName,

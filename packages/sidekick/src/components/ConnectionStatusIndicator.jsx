@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -8,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import { Status } from '@skybrush/app-theme-material-ui';
 import LabeledStatusLight from '@skybrush/mui-components/src/LabeledStatusLight';
 
-import { getConnectionState } from '~/features/output/selectors';
 import ConnectionState from '~/model/ConnectionState';
 
 const statusToLabel = (status) => {
@@ -63,11 +61,4 @@ ConnectionStatusIndicator.propTypes = {
   status: PropTypes.oneOf(ConnectionState.ALL),
 };
 
-export default connect(
-  // mapStateToProps
-  (state) => ({
-    status: getConnectionState(state),
-  }),
-  // mapDispatchToProps
-  {}
-)(ConnectionStatusIndicator);
+export default ConnectionStatusIndicator;
