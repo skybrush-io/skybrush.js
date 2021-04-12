@@ -1,3 +1,7 @@
+export function getOutputStatistics(state) {
+  return state.stats.output;
+}
+
 export function getRTKConnectionState(state) {
   switch (state.stats.rtk.recency) {
     case 0:

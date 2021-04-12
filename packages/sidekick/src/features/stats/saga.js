@@ -1,8 +1,8 @@
 import { delay, put } from 'redux-saga/effects';
 
 import { updateRecencyScores } from './actions';
-import { getCounterIfDirty } from './counters';
-import { updateRTKStatistics } from './slice';
+import { getCounterIfDirty, Counters } from './counters';
+import { updateOutputStatistics, updateRTKStatistics } from './slice';
 
 /**
  * Specifies how many times per second we are updating the statistics.
@@ -23,7 +23,8 @@ function extendRecencyUpdates(numberOfSeconds = 15) {
  * Synchronizes the counters to the appropriate parts of the state store.
  */
 function* syncCountersToStore() {
-  const rtkCounter = getCounterIfDirty('rtk');
+  const rtkCounter = getCounterIfDirty(Counters.RTK);
+  const outputCounter = getCounterIfDirty(Counters.OUTPUT);
 
   if (rtkCounter) {
     yield put(
@@ -34,6 +35,15 @@ function* syncCountersToStore() {
       })
     );
     extendRecencyUpdates();
+  }
+
+  if (outputCounter) {
+    yield put(
+      updateOutputStatistics({
+        packetsSent: outputCounter.packets,
+        bytesSent: outputCounter.bytes,
+      })
+    );
   }
 }
 

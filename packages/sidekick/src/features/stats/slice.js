@@ -27,6 +27,18 @@ const { actions, reducer } = createSlice({
   },
 
   reducers: {
+    updateOutputStatistics(state, action) {
+      const { payload } = action;
+
+      if (typeof payload.packetsSent === 'number') {
+        state.output.packetsSent = payload.packetsSent;
+      }
+
+      if (typeof payload.bytesSent === 'number') {
+        state.output.bytesSent = payload.bytesSent;
+      }
+    },
+
     updateRTKStatistics(state, action) {
       const { payload } = action;
 
@@ -49,6 +61,6 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export const { updateRTKStatistics } = actions;
+export const { updateOutputStatistics, updateRTKStatistics } = actions;
 
 export default reducer;

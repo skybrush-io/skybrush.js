@@ -2,6 +2,7 @@ const _counters = {};
 
 export const Counters = {
   RTK: 'rtk',
+  OUTPUT: 'output',
 };
 
 function ensureCounter(key) {
@@ -34,7 +35,7 @@ export function clearCounter(key) {
   const item = ensureCounter(key);
   item.packets = 0;
   item.bytes = 0;
-  stamp(item);
+  item.dirty = true;
   return item;
 }
 

@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import Power from '@material-ui/icons/Power';
 
 import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
+import LazyTooltip from '@skybrush/mui-components/src/LazyTooltip';
 import SidebarBadge from '@skybrush/mui-components/src/SidebarBadge';
 
+import OutputStatisticsMiniList from '~/components/OutputStatisticsMiniList';
 import { requestSerialPortsAndShowOutputDeviceDialog } from '~/features/output/actions';
 import {
   describeOutputDevice,
@@ -22,15 +24,17 @@ const SerialPortHeaderButton = ({
   hasOutputDevice,
   ...rest
 }) => (
-  <GenericHeaderButton {...rest}>
-    <Power />
-    <SidebarBadge
-      anchor='topLeft'
-      color={ConnectionState.toColor(connectionState)}
-      offset={BADGE_OFFSET}
-      visible={hasOutputDevice}
-    />
-  </GenericHeaderButton>
+  <LazyTooltip content={<OutputStatisticsMiniList />}>
+    <GenericHeaderButton {...rest}>
+      <Power />
+      <SidebarBadge
+        anchor='topLeft'
+        color={ConnectionState.toColor(connectionState)}
+        offset={BADGE_OFFSET}
+        visible={hasOutputDevice}
+      />
+    </GenericHeaderButton>
+  </LazyTooltip>
 );
 
 SerialPortHeaderButton.propTypes = {

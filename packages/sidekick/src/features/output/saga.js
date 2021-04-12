@@ -21,6 +21,11 @@ import {
   getEffectiveCommandRepeatCount,
   getEffectiveCommandRepeatDelay,
 } from '~/features/settings/selectors';
+import {
+  addToCounter,
+  clearCounter,
+  Counters,
+} from '~/features/stats/counters';
 import ConnectionState from '~/model/ConnectionState';
 
 import {
@@ -51,6 +56,9 @@ function* deviceHandlerSaga({
       })
     );
     yield put(setConnectionState(ConnectionState.CONNECTING));
+
+    // Reset the packet counts when we are connecting to the serial port
+    clearCounter(Counters.OUTPUT);
 
     yield call(async () => {
       await port.open({ baudRate });
@@ -149,14 +157,13 @@ function* serialPortWriterSaga(port) {
       mavlinkEncoder.file = {
         write: (buf) => {
           if (Array.isArray(buf)) {
-            console.log('Writing', buf.length, 'bytes to serial port');
-            console.log(buf);
+            addToCounter(Counters.OUTPUT, buf.length);
             return writer.write(new Uint8Array(buf));
           }
         },
       };
 
-      while (true) {
+      while (!finished) {
         const action = yield take([
           sendMessage.type,
           sendRawMessage.type,
