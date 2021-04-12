@@ -6,6 +6,7 @@ import DraggableDialog from './DraggableDialog';
 import FormHeader from './FormHeader';
 import GenericHeaderButton from './GenericHeaderButton';
 import LabeledStatusLight from './LabeledStatusLight';
+import LazyTooltip from './LazyTooltip';
 import SemanticAvatar from './SemanticAvatar';
 import StatusLight from './StatusLight';
 import ThemeSelector from './ThemeSelector';
@@ -20,6 +21,7 @@ export {
   FormHeader,
   GenericHeaderButton,
   LabeledStatusLight,
+  LazyTooltip,
   SemanticAvatar,
   StatusLight,
   ThemeSelector,
