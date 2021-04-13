@@ -2,7 +2,7 @@ import { getRTKStatistics } from './selectors';
 import { updateRTKStatistics } from './slice';
 
 function getRecencyScoreFromTimestamp(timestamp) {
-  const now = performance.now();
+  const now = Date.now();
   if (now - timestamp < 3000) {
     return 2;
   }

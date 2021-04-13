@@ -67,8 +67,6 @@ const { actions, reducer } = createSlice({
     updateServerStatistics(state, action) {
       const { payload } = action;
 
-      console.log(payload);
-
       if (typeof payload.packetsReceived === 'number') {
         state.server.packetsReceived = payload.packetsReceived;
       }
