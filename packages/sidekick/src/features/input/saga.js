@@ -13,7 +13,11 @@ import {
 } from 'redux-saga/effects';
 
 import { getServerConnectionSettings } from '~/features/settings/selectors';
-import { addToCounter, Counters } from '~/features/stats/counters';
+import {
+  addToCounter,
+  clearCounter,
+  Counters,
+} from '~/features/stats/counters';
 import { sendRawMessage } from '~/features/output/slice';
 import ConnectionState from '~/model/ConnectionState';
 
@@ -100,6 +104,9 @@ function* attemptSingleConnection() {
       connection = result.connection;
       yield put(setServerConnectionState(ConnectionState.CONNECTED));
 
+      // Reset the packet counts when we have connected to the server
+      clearCounter(Counters.SERVER);
+
       // Successful connection. If this was the first attempt right after
       // startup, let's make ourselves permanently active.
       const wasConnectionAttempted = yield select(
@@ -144,6 +151,8 @@ function* messageReaderSaga(connection) {
   try {
     while (true) {
       const { type, data } = yield take(channel);
+
+      addToCounter(Counters.SERVER, 1);
 
       if (type === 'error' || type === 'end') {
         /* Connection closed, stop the task */
@@ -209,7 +218,7 @@ function* inputSaga() {
       }
     }
 
-    if (isActive && !connectionTask) {
+    if (isActive && (!connectionTask || !connectionTask.isRunning())) {
       connectionTask = yield fork(connectionSaga);
     } else if (!isActive && connectionTask) {
       yield put(disconnectFromServer());

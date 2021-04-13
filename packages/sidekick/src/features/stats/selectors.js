@@ -18,3 +18,7 @@ export function getRTKConnectionState(state) {
 export function getRTKStatistics(state) {
   return state.stats.rtk;
 }
+
+export function getServerStatistics(state) {
+  return state.stats.server;
+}

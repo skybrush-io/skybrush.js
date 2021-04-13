@@ -3,6 +3,7 @@ const _counters = {};
 export const Counters = {
   RTK: 'rtk',
   OUTPUT: 'output',
+  SERVER: 'server',
 };
 
 function ensureCounter(key) {
@@ -19,7 +20,7 @@ function ensureCounter(key) {
 }
 
 function stamp(item) {
-  item.timestamp = performance.now();
+  item.timestamp = Date.now();
   item.dirty = true;
 }
 

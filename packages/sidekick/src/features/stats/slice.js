@@ -18,11 +18,12 @@ const { actions, reducer } = createSlice({
     output: {
       packetsSent: 0,
       bytesSent: 0,
+      timestamp: null,
     },
     server: {
       packetsReceived: 0,
       bytesReceived: 0,
-      lastStatusUpdateReceivedAt: null,
+      timestamp: null,
     },
   },
 
@@ -36,6 +37,10 @@ const { actions, reducer } = createSlice({
 
       if (typeof payload.bytesSent === 'number') {
         state.output.bytesSent = payload.bytesSent;
+      }
+
+      if (typeof payload.timestamp === 'number') {
+        state.output.timestamp = payload.timestamp;
       }
     },
 
@@ -58,9 +63,31 @@ const { actions, reducer } = createSlice({
         state.rtk.recency = payload.recency;
       }
     },
+
+    updateServerStatistics(state, action) {
+      const { payload } = action;
+
+      console.log(payload);
+
+      if (typeof payload.packetsReceived === 'number') {
+        state.server.packetsReceived = payload.packetsReceived;
+      }
+
+      if (typeof payload.bytesReceived === 'number') {
+        state.server.bytesReceived = payload.bytesReceived;
+      }
+
+      if (typeof payload.timestamp === 'number') {
+        state.server.timestamp = payload.timestamp;
+      }
+    },
   },
 });
 
-export const { updateOutputStatistics, updateRTKStatistics } = actions;
+export const {
+  updateServerStatistics,
+  updateOutputStatistics,
+  updateRTKStatistics,
+} = actions;
 
 export default reducer;

@@ -1,4 +1,3 @@
-import prettyBytes from 'pretty-bytes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -8,13 +7,16 @@ import MiniList from '@skybrush/mui-components/src/MiniList';
 import MiniListDivider from '@skybrush/mui-components/src/MiniListDivider';
 import MiniListItem from '@skybrush/mui-components/src/MiniListItem';
 
-import { getConnectionState } from '~/features/output/selectors';
-import { getOutputStatistics } from '~/features/stats/selectors';
+import {
+  getServerConnectionState,
+  isServerConnectionActive,
+} from '~/features/input/selectors';
+import { getServerStatistics } from '~/features/stats/selectors';
 import ConnectionState from '~/model/ConnectionState';
 import { longTimeAgoFormatter } from '~/utils/formatting';
 
 const connectionStateToIconPreset = (state) => state;
-const connectionStateToLabel = (state) => {
+const connectionStateToLabel = (state, active) => {
   switch (state) {
     case ConnectionState.CONNECTED:
       return 'Connection established';
@@ -23,7 +25,7 @@ const connectionStateToLabel = (state) => {
       return 'Connecting...';
 
     case ConnectionState.DISCONNECTED:
-      return 'Disconnected';
+      return active ? 'Disconnected, reconnection pending' : 'Disconnected';
 
     case ConnectionState.DISCONNECTING:
       return 'Disconnecting...';
@@ -35,29 +37,25 @@ const connectionStateToLabel = (state) => {
 
 const listStyle = { minWidth: 300 };
 
-const OutputStatisticsMiniList = ({
-  bytesSent,
+const ServerStatisticsMiniList = ({
+  connectionActive,
   connectionState,
-  packetsSent,
+  packetsReceived,
   timestamp,
 }) => {
   return (
     <MiniList style={listStyle}>
       <MiniListItem
         iconPreset={connectionStateToIconPreset(connectionState)}
-        primaryText={connectionStateToLabel(connectionState)}
+        primaryText={connectionStateToLabel(connectionState, connectionActive)}
       />
       <MiniListDivider />
       <MiniListItem
-        primaryText='Packets sent'
-        secondaryText={String(packetsSent || 0)}
+        primaryText='Packets received'
+        secondaryText={String(packetsReceived || 0)}
       />
       <MiniListItem
-        primaryText='Bytes sent'
-        secondaryText={prettyBytes(bytesSent || 0)}
-      />
-      <MiniListItem
-        primaryText='Last packet sent'
+        primaryText='Last packet received'
         secondaryText={
           <TimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
         }
@@ -66,19 +64,20 @@ const OutputStatisticsMiniList = ({
   );
 };
 
-OutputStatisticsMiniList.propTypes = {
-  bytesSent: PropTypes.number,
+ServerStatisticsMiniList.propTypes = {
+  connectionActive: PropTypes.bool,
   connectionState: PropTypes.string,
-  packetsSent: PropTypes.number,
+  packetsReceived: PropTypes.number,
   timestamp: PropTypes.number,
 };
 
 export default connect(
   // mapStateToProps
   (state) => ({
-    ...getOutputStatistics(state),
-    connectionState: getConnectionState(state),
+    ...getServerStatistics(state),
+    connectionState: getServerConnectionState(state),
+    connectionActive: isServerConnectionActive(state),
   }),
   // mapDispatchToProps
   {}
-)(OutputStatisticsMiniList);
+)(ServerStatisticsMiniList);

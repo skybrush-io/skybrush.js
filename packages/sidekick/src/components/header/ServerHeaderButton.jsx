@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import ServerIcon from '@material-ui/icons/Dns';
 
 import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
+import LazyTooltip from '@skybrush/mui-components/src/LazyTooltip';
 import SidebarBadge from '@skybrush/mui-components/src/SidebarBadge';
 
+import ServerStatisticsMiniList from '~/components/ServerStatisticsMiniList';
 import { getServerConnectionState } from '~/features/input/selectors';
 import ConnectionState from '~/model/ConnectionState';
 import { showPreferencesDialogWithSelectedTab } from '../../features/ui/actions';
@@ -24,15 +26,17 @@ const connectionStateToColor = (state) => {
 const BADGE_OFFSET = [24, 8];
 
 const ServerHeaderButton = ({ connectionState, ...rest }) => (
-  <GenericHeaderButton label='Server' {...rest}>
-    <ServerIcon />
-    <SidebarBadge
-      anchor='topLeft'
-      color={connectionStateToColor(connectionState)}
-      offset={BADGE_OFFSET}
-      visible={connectionState !== ConnectionState.DISCONNECTED}
-    />
-  </GenericHeaderButton>
+  <LazyTooltip content={<ServerStatisticsMiniList />}>
+    <GenericHeaderButton label='Server' {...rest}>
+      <ServerIcon />
+      <SidebarBadge
+        anchor='topLeft'
+        color={connectionStateToColor(connectionState)}
+        offset={BADGE_OFFSET}
+        visible={connectionState !== ConnectionState.DISCONNECTED}
+      />
+    </GenericHeaderButton>
+  </LazyTooltip>
 );
 
 ServerHeaderButton.propTypes = {
