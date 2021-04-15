@@ -1,26 +1,80 @@
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Status } from '@skybrush/app-theme-material-ui';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { Colors, Status } from '@skybrush/app-theme-material-ui';
 import SemanticAvatar from '@skybrush/mui-components/src/SemanticAvatar';
 
+import { getUAVStateById } from '~/features/uavs/selectors';
 import { getSelectedUAVId } from '~/features/ui/selectors';
-import { setSelectedUAVId } from '../features/ui/slice';
+import { setSelectedUAVId } from '~/features/ui/slice';
 
-const DroneButton = ({ id, selected, ...rest }) => {
-  console.log('Re-rendering', id);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    transition: theme.transitions.create(['background-color']),
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+
+  selected: {
+    backgroundColor: Colors.info,
+    '&:hover': {
+      backgroundColor: Colors.info,
+    },
+  },
+
+  inactive: {
+    opacity: 0.5,
+  },
+}));
+
+const statusForItem = (item) => {
+  if (item.errorCode === 0) {
+    return item.active ? Status.SUCCESS : Status.OFF;
+  }
+
+  if (item.errorCode >= 192) {
+    return Status.CRITICAL;
+  }
+
+  if (item.errorCode >= 128) {
+    return Status.ERROR;
+  }
+
+  if (item.errorCode >= 64) {
+    return Status.WARNING;
+  }
+
+  return Status.INFO;
+};
+
+const DroneButton = ({ id, item, selected, ...rest }) => {
+  const classes = useStyles();
+
   return (
-    <div {...rest}>
-      <SemanticAvatar status={selected ? Status.NEXT : Status.OFF}>
-        {id}
-      </SemanticAvatar>
+    <div
+      className={clsx(
+        classes.root,
+        (!item || (!item.active && item.errorCode !== 0)) && classes.inactive,
+        selected && classes.selected
+      )}
+      {...rest}
+    >
+      <SemanticAvatar status={statusForItem(item)}>{id}</SemanticAvatar>
     </div>
   );
 };
 
 DroneButton.propTypes = {
   id: PropTypes.number,
+  item: PropTypes.shape({
+    active: PropTypes.bool,
+    errorCode: PropTypes.number,
+  }),
   selected: PropTypes.bool,
 };
 
@@ -29,6 +83,7 @@ export default connect(
   (_state, ownProps) => {
     const { id } = ownProps;
     return (state) => ({
+      item: getUAVStateById(state, id),
       selected: getSelectedUAVId(state) === id,
     });
   },

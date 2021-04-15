@@ -26,10 +26,30 @@ const { actions, reducer } = createSlice({
   }),
 
   reducers: {
+    applyUAVStateDiff: (state, action) => {
+      const { payload } = action;
+
+      if (Array.isArray(payload)) {
+        const numberOfUAVs = state.byId.length;
+
+        for (let i = 0; i < payload.length; i += 2) {
+          const uavId = payload[i];
+          const updates = payload[i + 1];
+
+          if (uavId >= 0 && uavId < numberOfUAVs) {
+            state.byId[uavId] = {
+              ...state.byId[uavId],
+              ...updates,
+            };
+          }
+        }
+      }
+    },
+
     resetUAVState: noPayload(clearState),
   },
 });
 
-export const { resetUAVState } = actions;
+export const { applyUAVStateDiff, resetUAVState } = actions;
 
 export default reducer;

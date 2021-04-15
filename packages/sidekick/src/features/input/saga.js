@@ -19,7 +19,7 @@ import {
   Counters,
 } from '~/features/stats/counters';
 import { sendRawMessage } from '~/features/output/slice';
-import { updateDroneErrorCodes } from '~/features/uavs/actions';
+import { updateUAVErrorCodes } from '~/features/uavs/actions';
 import ConnectionState from '~/model/ConnectionState';
 
 import { setServerConnectionActive } from './actions';
@@ -236,7 +236,7 @@ function* processStatusSummaryMessage(data) {
     return;
   }
 
-  yield put(updateDroneErrorCodes(startIndex, errorCodes));
+  yield put(updateUAVErrorCodes(startIndex, errorCodes));
 }
 
 function* inputSaga() {

@@ -1,19 +1,54 @@
 import isNil from 'lodash-es/isNil';
 
-export function updateDroneErrorCodes(offset, updates) {
-  return () => {
+import { MAVLINK_NETWORK_SIZE } from '~/ardupilot';
+
+import { getUAVState } from './selectors';
+import { applyUAVStateDiff } from './slice';
+
+export function updateUAVErrorCodes(startUAVId, updates) {
+  return (dispatch, getState) => {
+    const diff = [];
+    const uavStates = getUAVState(getState());
+    const endUAVId = startUAVId + updates.length;
+
     for (const [index, errorCode] of updates.entries()) {
-      const uavId = index + offset;
+      const uavId = index + startUAVId;
+      if (uavId >= MAVLINK_NETWORK_SIZE) {
+        break;
+      }
+
       if (isNil(errorCode)) {
-        console.log(uavId, 'went inactive');
-      } else if (errorCode === 0) {
-        console.log(uavId, 'is now online');
-      } else {
-        console.log(uavId, 'has error', errorCode);
+        /* UAV became inactive */
+        if (uavStates[uavId].active) {
+          diff.push(uavId, { active: false });
+        }
+      } else if (
+        !uavStates[uavId].active ||
+        uavStates[uavId].errorCode !== errorCode
+      ) {
+        /* UAV is active and has an error code */
+        diff.push(uavId, { active: true, errorCode });
       }
     }
 
-    /* TODO(ntamas): any drones that are outside the range covered by 'updates'
-     * are now disconnected */
+    /* Any drones whose ID falls in the range [0; startUAVId) are to be
+     * marked inactive if they are not inactive yet */
+    for (let uavId = 0; uavId < startUAVId; uavId++) {
+      if (uavStates[uavId].active) {
+        diff.push(uavId, { active: false });
+      }
+    }
+
+    /* Any drones whose ID falls in the range [endUAVId; MAVLINK_NETWORK_SIZE) are to be
+     * marked inactive if they are not inactive yet */
+    for (let uavId = endUAVId; uavId < MAVLINK_NETWORK_SIZE; uavId++) {
+      if (uavStates[uavId].active) {
+        diff.push(uavId, { active: false });
+      }
+    }
+
+    if (diff.length > 0) {
+      dispatch(applyUAVStateDiff(diff));
+    }
   };
 }
