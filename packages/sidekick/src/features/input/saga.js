@@ -20,6 +20,7 @@ import {
 } from '~/features/stats/counters';
 import { sendRawMessage } from '~/features/output/slice';
 import { updateUAVErrorCodes } from '~/features/uavs/actions';
+import { resetUAVState } from '~/features/uavs/slice';
 import ConnectionState from '~/model/ConnectionState';
 
 import { setServerConnectionActive } from './actions';
@@ -110,6 +111,10 @@ function* attemptSingleConnection() {
 
       // Reset the packet counts when we have connected to the server
       clearCounter(Counters.SERVER);
+
+      // Also clear any previous known states -- we may have connected to
+      // a different server now so anything we know is outdated
+      yield put(resetUAVState());
 
       // Successful connection. If this was the first attempt right after
       // startup, let's make ourselves permanently active.
