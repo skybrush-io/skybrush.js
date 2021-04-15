@@ -19,6 +19,7 @@ import {
   Counters,
 } from '~/features/stats/counters';
 import { sendRawMessage } from '~/features/output/slice';
+import { updateDroneErrorCodes } from '~/features/uavs/actions';
 import ConnectionState from '~/model/ConnectionState';
 
 import { setServerConnectionActive } from './actions';
@@ -72,7 +73,10 @@ function* connectionSaga() {
     try {
       yield call(attemptSingleConnection, { host, port });
     } catch (error) {
-      console.error(error);
+      const message = String(error);
+      if (!message.includes('ECONNREFUSED')) {
+        console.error(error);
+      }
     }
 
     // Connection closed, wait a bit and then see if we need to retry.
@@ -177,30 +181,62 @@ function* processMessage({ type, data }) {
     case 'rtk':
       // MAVLink specifications of RTK correction packets, to be forwarded
       // to the radio
-      for (const spec of Array.isArray(data) ? data : []) {
-        if (Array.isArray(spec) && spec.length === 2) {
-          const messageType = spec[0];
+      yield* processRTKMessage(data);
+      break;
 
-          let fields = spec[1];
-          const length = fields.len;
-          const payload = Array.from(toByteArray(fields.data));
-          fields =
-            messageType === 'GPS_RTCM_DATA'
-              ? [fields.flags, length, payload]
-              : null;
-
-          if (fields) {
-            yield put(sendRawMessage(messageType, fields));
-            addToCounter(Counters.RTK, length);
-          }
-        }
-      }
-
+    case 'status.v1':
+      // Status summary packet that we use to update the UI
+      yield* processStatusSummaryMessage(data);
       break;
 
     default:
       console.warn('Unhandled message type:', type);
   }
+}
+
+/**
+ * Processes a single RTK correction message that was received from the
+ * Skybrush server.
+ */
+function* processRTKMessage(data) {
+  for (const spec of Array.isArray(data) ? data : []) {
+    if (Array.isArray(spec) && spec.length === 2) {
+      const messageType = spec[0];
+
+      let fields = spec[1];
+      const length = fields.len;
+      const payload = Array.from(toByteArray(fields.data));
+      fields =
+        messageType === 'GPS_RTCM_DATA'
+          ? [fields.flags, length, payload]
+          : null;
+
+      if (fields) {
+        yield put(sendRawMessage(messageType, fields));
+        addToCounter(Counters.RTK, length);
+      }
+    }
+  }
+}
+
+/**
+ * Processes a single status summary message that was received from the
+ * Skybrush server.
+ */
+function* processStatusSummaryMessage(data) {
+  if (!Array.isArray(data) && data.length < 2) {
+    // Malformed packet, ignore it
+    return;
+  }
+
+  // For the time being we ignore the network ID; this means that we can only
+  // safely support one MAVLink network. This will be fixed later.
+  const [networkId, startIndex, ...errorCodes] = data;
+  if (typeof networkId !== 'string') {
+    return;
+  }
+
+  yield put(updateDroneErrorCodes(startIndex, errorCodes));
 }
 
 function* inputSaga() {

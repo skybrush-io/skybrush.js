@@ -15,9 +15,10 @@ const useControlledCaret = (ids, selectedId, onSetSelectedId) => {
 
     return {
       adjust: (delta) => {
+        const currentIndex = getIndex();
+
         delta = typeof delta === 'function' ? delta(currentIndex) : delta;
 
-        const currentIndex = getIndex();
         const newIndex = isDeltaValid(delta)
           ? currentIndex < 0
             ? 0

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import TimeAgo from 'react-timeago';
 
 import MiniList from '@skybrush/mui-components/src/MiniList';
 import MiniListDivider from '@skybrush/mui-components/src/MiniListDivider';
 import MiniListItem from '@skybrush/mui-components/src/MiniListItem';
 
+import NullSafeTimeAgo from '~/components/NullSafeTimeAgo';
 import {
   getServerConnectionState,
   isServerConnectionActive,
@@ -57,7 +57,7 @@ const ServerStatisticsMiniList = ({
       <MiniListItem
         primaryText='Last packet received'
         secondaryText={
-          <TimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
+          <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
         }
       />
     </MiniList>

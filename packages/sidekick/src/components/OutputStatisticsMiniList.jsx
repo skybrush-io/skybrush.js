@@ -2,12 +2,12 @@ import prettyBytes from 'pretty-bytes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import TimeAgo from 'react-timeago';
 
 import MiniList from '@skybrush/mui-components/src/MiniList';
 import MiniListDivider from '@skybrush/mui-components/src/MiniListDivider';
 import MiniListItem from '@skybrush/mui-components/src/MiniListItem';
 
+import NullSafeTimeAgo from '~/components/NullSafeTimeAgo';
 import { getConnectionState } from '~/features/output/selectors';
 import { getOutputStatistics } from '~/features/stats/selectors';
 import ConnectionState from '~/model/ConnectionState';
@@ -59,7 +59,7 @@ const OutputStatisticsMiniList = ({
       <MiniListItem
         primaryText='Last packet sent'
         secondaryText={
-          <TimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
+          <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
         }
       />
     </MiniList>

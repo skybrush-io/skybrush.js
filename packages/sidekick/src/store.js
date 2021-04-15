@@ -15,6 +15,7 @@ import outputReducer from './features/output/slice';
 import settingsReducer from './features/settings/slice';
 import statsSaga from './features/stats/saga';
 import statsReducer from './features/stats/slice';
+import uavsReducer from './features/uavs/slice';
 import uiReducer from './features/ui/slice';
 
 const reducer = combineReducers({
@@ -24,6 +25,7 @@ const reducer = combineReducers({
   output: outputReducer,
   settings: settingsReducer,
   stats: statsReducer,
+  uavs: uavsReducer,
   ui: uiReducer,
 });
 
@@ -42,6 +44,7 @@ export const { store, persistor } = configureStoreAndPersistence({
       'keyboard',
       'output',
       'stats',
+      'uavs',
       'ui.selectedUAVId',
     ],
   },
