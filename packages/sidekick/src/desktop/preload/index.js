@@ -52,6 +52,23 @@ async function requestAccessToSerialPortByName(name) {
   await ipc.callMain('notifyRequestingAccessToSerialPortByName', name);
 }
 
+/**
+ * Requests the main process to prevent the display from going to sleep.
+ *
+ * Returns a token that can be used to restore the sleep mode. This token must
+ * be passed to `restoreDisplaySleep()`.
+ */
+function preventDisplaySleep() {
+  return ipc.callMain('preventDisplaySleep');
+}
+
+/**
+ * Requests the main process to restore the normal display sleep mode.
+ */
+function restoreDisplaySleep(token) {
+  return ipc.callMain('restoreDisplaySleep', token);
+}
+
 // Inject the bridge functions between the main and the renderer processes.
 // These are the only functions that the renderer processes may call to access
 // any functionality that requires Node.js -- they are not allowed to use
@@ -60,7 +77,9 @@ contextBridge.exposeInMainWorld('bridge', {
   createServerConnection,
   createStateStore,
   getSerialPorts,
+  preventDisplaySleep,
   requestAccessToSerialPortByName,
+  restoreDisplaySleep,
 });
 
 // Set up IPC handlers

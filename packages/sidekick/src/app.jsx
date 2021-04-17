@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 
+import PreventDisplaySleep from './components/PreventDisplaySleep';
 import DialogsContainer from './dialogs';
 import AppHotkeys from './hotkeys';
 import { persistor, store } from './store';
@@ -28,6 +29,7 @@ const App = () => (
         </AppHotkeys>
         <DialogsContainer />
         <PendingUAVIdOverlay />
+        <PreventDisplaySleep />
       </PersistGate>
     </ThemeProvider>
   </StoreProvider>

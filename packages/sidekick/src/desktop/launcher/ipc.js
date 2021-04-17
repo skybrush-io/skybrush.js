@@ -5,6 +5,7 @@ const {
   getSerialPorts,
   notifyRequestingAccessToSerialPortByName,
 } = require('./serial');
+const { preventDisplaySleep, restoreDisplaySleep } = require('./sleep-mode');
 
 module.exports = () => {
   // HACK for https://github.com/sindresorhus/electron-better-ipc/issues/35
@@ -19,4 +20,6 @@ module.exports = () => {
     'notifyRequestingAccessToSerialPortByName',
     notifyRequestingAccessToSerialPortByName
   );
+  ipc.answerRenderer('preventDisplaySleep', preventDisplaySleep);
+  ipc.answerRenderer('restoreDisplaySleep', restoreDisplaySleep);
 };
