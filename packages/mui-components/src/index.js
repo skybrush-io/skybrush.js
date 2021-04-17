@@ -7,6 +7,7 @@ import FormHeader from './FormHeader';
 import GenericHeaderButton from './GenericHeaderButton';
 import LabeledStatusLight from './LabeledStatusLight';
 import LazyTooltip from './LazyTooltip';
+import PreventDisplaySleep from './PreventDisplaySleep';
 import SemanticAvatar from './SemanticAvatar';
 import StatusLight from './StatusLight';
 import ThemeSelector from './ThemeSelector';
@@ -23,6 +24,7 @@ export {
   GenericHeaderButton,
   LabeledStatusLight,
   LazyTooltip,
+  PreventDisplaySleep,
   SemanticAvatar,
   StatusLight,
   ThemeSelector,
