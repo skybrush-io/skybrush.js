@@ -37,6 +37,14 @@ function createServerConnection({
       try {
         const stream = socket.pipe(ndjson.parse());
 
+        // We close the connection to the server after some seconds of inactivity.
+        // Server is supposed to send keepalive packets (newlines) every 5
+        // seconds.
+        socket.setTimeout(timeout, async () => {
+          stream.end();
+          await closeGracefully(socket);
+        });
+
         // We need to return a proxy object to the stream because the stream itself
         // cannot pass the context boundary between the preload script and the
         // main web page
@@ -44,6 +52,11 @@ function createServerConnection({
           close: () => closeGracefully(socket),
           off: (event, ...args) => stream.off(event, ...args),
           on: (event, ...args) => stream.on(event, ...args),
+        });
+
+        // We also need to close the stream if the socket emits an error
+        socket.on('error', () => {
+          stream.end();
         });
       } catch (error) {
         reject(error);
