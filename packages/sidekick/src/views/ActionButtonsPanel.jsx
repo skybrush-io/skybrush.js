@@ -19,7 +19,7 @@ import ColoredButton from '~/components/ColoredButton';
 import HotkeysTable from '~/components/HotkeysTable';
 import {
   disarm,
-  flashColor,
+  flashLED,
   setColor,
   setFlightMode,
 } from '~/features/flight/actions';
@@ -56,12 +56,7 @@ SetColorButton.defaultProps = {
   label: '\u00A0',
 };
 
-const ActionButtonsPanel = ({
-  disarm,
-  flashColor,
-  setColor,
-  setFlightMode,
-}) => (
+const ActionButtonsPanel = ({ disarm, flashLED, setColor, setFlightMode }) => (
   <Box display='flex' flexDirection='column' px={2} overflow='auto'>
     <FormHeader>Actions</FormHeader>
     <ActionButton
@@ -109,7 +104,7 @@ const ActionButtonsPanel = ({
           dense
           fullWidth
           color={Colors.warning}
-          onClick={() => flashColor('#ffffff')}
+          onClick={() => flashLED()}
         >
           Flash
         </ColoredButton>
@@ -143,7 +138,7 @@ const ActionButtonsPanel = ({
 
 ActionButtonsPanel.propTypes = {
   disarm: PropTypes.func,
-  flashColor: PropTypes.func,
+  flashLED: PropTypes.func,
   setColor: PropTypes.func,
   setFlightMode: PropTypes.func,
 };
@@ -154,7 +149,7 @@ export default connect(
   // mapDispatchToProps
   {
     disarm,
-    flashColor,
+    flashLED,
     setColor,
     setFlightMode,
   }

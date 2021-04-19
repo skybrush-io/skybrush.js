@@ -90,8 +90,8 @@ export const disarm = createMessageDispatcherThunkFactory({
       : `This action will disarm drone ${id}.`,
 });
 
-export const flashColor = createMessageDispatcherThunkFactory({
-  factory: commands.flashColor,
+export const flashLED = createMessageDispatcherThunkFactory({
+  factory: commands.flashLED,
 });
 
 export const setColor = createMessageDispatcherThunkFactory({
@@ -106,7 +106,7 @@ export const setFlightMode = createMessageDispatcherThunkFactory({
   },
 });
 
-export const flashLights = () => flashColor('#ffffff');
+export const flashLights = () => flashLED();
 export const land = () => setFlightMode(FlightMode.LAND);
 export const returnToHome = () => setFlightMode(FlightMode.RETURN_TO_HOME);
 export const switchToPositionHold = () =>

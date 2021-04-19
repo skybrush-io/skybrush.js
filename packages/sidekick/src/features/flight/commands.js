@@ -14,8 +14,7 @@ import { createCommandLong, FORCE_MAGIC, isValidMAVLinkId } from '~/ardupilot';
 const createCommand = (type, args) => ({ type, args });
 
 export const disarm = ({ force } = {}) => createCommand('disarm', { force });
-export const flashColor = (color) =>
-  createCommand('setColor', { color, duration: 1500, flash: true });
+export const flashLED = () => createCommand('flashLED', {});
 export const setColor = (color) =>
   createCommand('setColor', { color, duration: 60000, flash: false });
 export const setFlightMode = (mode) => createCommand('setFlightMode', { mode });
@@ -26,6 +25,21 @@ const COMMAND_TO_MAVLINK_TABLE = {
       command: mavlink20.MAV_CMD_COMPONENT_ARM_DISARM,
       params: [0 /* 0 = disarm, 1 = arm */, force ? FORCE_MAGIC : 0],
     }),
+
+  flashLED: () => {
+    const command = Array.from({ length: 24 }).fill(0);
+    const commandLength = 0;
+
+    // eslint-disable-next-line new-cap
+    return new mavlink20.messages.led_control(
+      /* target_system */ 0,
+      /* target_component */ 0,
+      /* instance */ 42,
+      /* pattern */ 42,
+      /* custom_len */ commandLength,
+      /* custom_bytes */ command
+    );
+  },
 
   setColor: ({ color, duration, flash }) => {
     const command = Array.from({ length: 24 }).fill(0);
