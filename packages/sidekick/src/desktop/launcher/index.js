@@ -22,6 +22,7 @@ function run(argv) {
     debug: argv.debug,
     rootDir: __dirname,
     size: [1024, 768],
+    showMenuBar: false,
     webPreferences: {
       backgroundThrottling: false, // to keep radio packets flowing when the app is not in focus
       enableBlinkFeatures: 'Serial',
