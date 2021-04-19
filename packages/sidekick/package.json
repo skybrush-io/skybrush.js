@@ -6,11 +6,7 @@
   "author": "CollMot Robotics Ltd",
   "homepage": "https://skybrush.io",
   "license": "UNLICENSED",
-  "main": "launcher.js",
-  "directories": {
-    "lib": "src",
-    "test": "test"
-  },
+  "main": "launcher.bundle.js",
   "files": [
     "src"
   ],
@@ -23,7 +19,8 @@
   },
   "scripts": {
     "test": "nyc ava && xo",
-    "start": "webpack serve --https --config webpack/electron.config.js --progress"
+    "start": "webpack serve --https --config webpack/electron.config.js --progress",
+    "dist": "node scripts/deploy.js -p"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -40,7 +37,6 @@
     "clsx": "^1.1.1",
     "color": "^3.1.3",
     "crypto-browserify": "^3.12.0",
-    "electron": "^12.0.2",
     "electron-better-ipc": "^1.1.1",
     "electron-store": "^7.0.2",
     "electron-unhandled": "^3.0.2",
@@ -69,5 +65,9 @@
     "redux-saga": "^1.1.3",
     "stream-browserify": "^3.0.0",
     "typeface-fira-sans": "^1.1.13"
+  },
+  "devDependencies": {
+    "electron": "12.0.2",
+    "electron-builder": "^22.10.5"
   }
 }

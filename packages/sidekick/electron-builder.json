@@ -1,0 +1,44 @@
+{
+  "appId": "com.collmot.skybrush.sidekick",
+  "productName": "Skybrush Sidekick",
+
+  "artifactName": "${productName} ${version}.${ext}",
+
+  "files": [
+    {
+      "filter": ["assets/**/*", "!node_modules"]
+    },
+    {
+      "from": "build",
+      "filter": [
+        "*.bundle.js",
+        "index.html",
+        "*.png",
+        "*.ttf",
+        "*.woff",
+        "*.woff2"
+      ]
+    }
+  ],
+
+  "linux": {
+    "category": "Utility",
+    "target": "AppImage",
+    "executableName": "skybrush-sidekick"
+  },
+
+  "mac": {
+    "category": "public.app-category.utilities",
+    "target": "dmg"
+  },
+
+  "win": {
+    "target": "nsis"
+  },
+
+  "nsis": {
+    "artifactName": "${productName} Setup ${version}.${ext}",
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  }
+}

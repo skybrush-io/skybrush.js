@@ -24,7 +24,7 @@ module.exports = {
     filename: '[name].bundle.js',
   },
 
-  devtool: enableSourceMap ? 'cheap-module-source-map' : undefined,
+  devtool: enableSourceMap ? 'eval-cheap-module-source-map' : undefined,
 
   devServer: {
     hot: true,
