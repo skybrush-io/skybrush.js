@@ -38,8 +38,12 @@ const useStyles = makeStyles(
     },
 
     label: {
-      margin: theme.spacing(0, 0.5),
+      margin: theme.spacing(0, 0.5, 0, 1),
       userSelect: 'none',
+    },
+
+    secondaryLabel: {
+      color: theme.palette.text.secondary,
     },
   }),
   {
@@ -48,7 +52,7 @@ const useStyles = makeStyles(
 );
 
 export const GenericHeaderButton = React.forwardRef(
-  ({ children, disabled, label, tooltip, ...rest }, ref) => {
+  ({ children, disabled, label, secondaryLabel, tooltip, ...rest }, ref) => {
     const classes = useStyles();
 
     const result = (
@@ -58,7 +62,19 @@ export const GenericHeaderButton = React.forwardRef(
         {...rest}
       >
         <span className={classes.icon}>{children}</span>
-        {label && <span className={classes.label}>{label}</span>}
+        {label && (
+          <span className={classes.label}>
+            {secondaryLabel ? (
+              <>
+                {label}
+                <br />
+                <span className={classes.secondaryLabel}>{secondaryLabel}</span>
+              </>
+            ) : (
+              label
+            )}
+          </span>
+        )}
       </div>
     );
 
@@ -74,6 +90,7 @@ GenericHeaderButton.propTypes = {
   children: PropTypes.node,
   disabled: PropTypes.bool,
   label: PropTypes.string,
+  secondaryLabel: PropTypes.string,
   tooltip: PropTypes.string,
 };
 
