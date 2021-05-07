@@ -78,7 +78,7 @@ module.exports = {
         use: [{
           loader: 'babel-loader',
           options: {
-            configFile: path.join(projectRoot, '..', '..', '.babelrc')
+            configFile: path.join(projectRoot, '..', '..', 'babel.config.json')
           },
         }],
         include: [
