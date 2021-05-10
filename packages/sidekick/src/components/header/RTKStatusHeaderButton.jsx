@@ -2,14 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Antenna from '@material-ui/icons/SettingsInputAntenna';
-
 import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
 import LazyTooltip from '@skybrush/mui-components/src/LazyTooltip';
 import SidebarBadge from '@skybrush/mui-components/src/SidebarBadge';
 
 import RTKStatisticsMiniList from '~/components/RTKStatisticsMiniList';
 import { getRTKConnectionState } from '~/features/stats/selectors';
+import Satellite from '~/icons/Satellite';
 import ConnectionState from '~/model/ConnectionState';
 
 const connectionStateToColor = (state) => {
@@ -30,7 +29,7 @@ const RTKStatusHeaderButton = ({ connectionState }) => (
       disabled={connectionState === ConnectionState.DISCONNECTED}
       label='RTK'
     >
-      <Antenna />
+      <Satellite />
       <SidebarBadge
         anchor='topLeft'
         color={connectionStateToColor(connectionState)}
