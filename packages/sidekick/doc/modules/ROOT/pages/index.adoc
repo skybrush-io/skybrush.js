@@ -2,3 +2,9 @@
 :imagesdir: ../assets/images
 
 This is the main documentation of *Skybrush Sidekick*.
+
+image::skybrush_sidekick_small.jpg[Skybrush Sidekick]
+
+Before you fly with *Skybrush Sidekick*, make sure you have read the entire documentation carefully. Use the left sidebar for browsing and we also encourage you to mailto:support@collmot.com[contact us] in case of any questions.
+
+Remember, drone swarms are great fun but only if you know how to handle them!

@@ -9,7 +9,7 @@
 
 On Windows 10, *Skybrush Sidekick* comes in an installation package. Click on the received single executable (.exe) and follow the steps of the installation.
 
-Select whether you would like to install *Skybrush Sidekicj* for the current user or for all users on your system, select the destination of the installation and press the btn:[Install] button.
+Select whether you would like to install *Skybrush Sidekick* for the current user or for all users on your system, select the destination of the installation and press the btn:[Install] button.
 
 The installation creates a shortcut icon on your Desktop and adds *Skybrush Sidekick* to the list of applications in your Start Menu.
 
