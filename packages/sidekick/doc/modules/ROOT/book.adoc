@@ -1,6 +1,6 @@
-= Skybrush Live User Guide
+= Skybrush Sidekick User Guide
 CollMot Robotics Ltd. <hello@skybrush.io>
-v1.21.0, {docdatetime}
+v1.0.5, {docdatetime}
 :doctype: book
 :encoding: utf-8
 // :front-cover-image: ./assets/images/book/cover-page-image.jpg
@@ -8,6 +8,8 @@ v1.21.0, {docdatetime}
 :lang: en
 :sectnums:
 :toc:
+
+// ============================================================================
 
 :leveloffset: +1
 
@@ -18,153 +20,13 @@ include::pages/overview.adoc[]
 
 include::pages/features.adoc[]
 
-include::pages/install.adoc[]
-
 include::pages/hardware.adoc[]
 
-// ============================================================================
+include::pages/install.adoc[]
 
-include::pages/tutorials/index.adoc[]
+include::pages/operations.adoc[]
 
-:leveloffset: +1
-
-include::pages/tutorials/setup-hardware-for-outdoor-drone-shows.adoc[]
-
-:leveloffset: +1
-
-include::pages/tutorials/setup-hardware/flash_firmware.adoc[]
-
-include::pages/tutorials/setup-hardware/setup_arducopter_params.adoc[]
-
-include::pages/tutorials/setup-hardware/setup_light_module.adoc[]
-
-include::pages/tutorials/setup-hardware/setup_remote_controller.adoc[]
-
-include::pages/tutorials/setup-hardware/setup_wifi.adoc[]
-
-include::pages/tutorials/setup-hardware/setup_rtk_base.adoc[]
-
-include::pages/tutorials/setup-hardware/configure_skybrush_server.adoc[]
-
-include::pages/tutorials/setup-hardware/find_drones_in_skybrush_live.adoc[]
-
-include::pages/tutorials/setup-hardware/perform_unit_tests.adoc[]
-
-:leveloffset: -1
-
-include::pages/tutorials/skybrush-live-10-steps.adoc[]
-
-:leveloffset: +1
-
-include::pages/tutorials/show-in-10-steps/connect_to_skybrush_server.adoc[]
-
-include::pages/tutorials/show-in-10-steps/load_show_file.adoc[]
-
-include::pages/tutorials/show-in-10-steps/fit_show_to_venue.adoc[]
-
-include::pages/tutorials/show-in-10-steps/assing_drones_to_show.adoc[]
-
-include::pages/tutorials/show-in-10-steps/setup_geofence.adoc[]
-
-include::pages/tutorials/show-in-10-steps/upload_mission.adoc[]
-
-include::pages/tutorials/show-in-10-steps/approve_preflight_checks.adoc[]
-
-include::pages/tutorials/show-in-10-steps/choose_start_time.adoc[]
-
-include::pages/tutorials/show-in-10-steps/authorize_show_start.adoc[]
-
-include::pages/tutorials/show-in-10-steps/start_show.adoc[]
-
-:leveloffset: -1
-
-:leveloffset: -1
-
-// ============================================================================
-
-include::pages/panels/index.adoc[]
-
-:leveloffset: +1
-
-include::pages/panels/map.adoc[]
-
-include::pages/panels/3d_view.adoc[]
-
-include::pages/panels/layers.adoc[]
-
-include::pages/panels/features.adoc[]
-
-include::pages/panels/uavs.adoc[]
-
-include::pages/panels/docks.adoc[]
-
-include::pages/panels/light_control.adoc[]
-
-include::pages/panels/show_control.adoc[]
-
-include::pages/panels/clocks.adoc[]
-
-include::pages/panels/locations.adoc[]
-
-:leveloffset: -1
-
-// ============================================================================
-
-include::pages/dialogs/index.adoc[]
-
-:leveloffset: +1
-
-include::pages/dialogs/coordinate_averaging.adoc[]
-
-include::pages/dialogs/geofence.adoc[]
-
-include::pages/dialogs/license_info.adoc[]
-
-include::pages/dialogs/properties.adoc[]
-
-include::pages/dialogs/rtk_status.adoc[]
-
-:leveloffset: -1
-
-// ============================================================================
-
-include::pages/widgets/index.adoc[]
-
-:leveloffset: +1
-
-include::pages/widgets/uav_status.adoc[]
-
-include::pages/widgets/rtk_status.adoc[]
-
-include::pages/widgets/connections.adoc[]
-
-include::pages/widgets/server.adoc[]
-
-include::pages/widgets/geofence.adoc[]
-
-include::pages/widgets/authentication.adoc[]
-
-include::pages/widgets/toolbox.adoc[]
-
-include::pages/widgets/preferences.adoc[]
-
-include::pages/widgets/help.adoc[]
-
-:leveloffset: -1
-
-// ============================================================================
-
-include::pages/troubleshoot/index.adoc[]
-
-:leveloffset: +1
-
-include::pages/troubleshoot/qanda.adoc[]
-
-include::pages/troubleshoot/lights.adoc[]
-
-:leveloffset: -1
-
-// ============================================================================
+include::pages/preferences.adoc[]
 
 include::pages/hotkeys.adoc[]
 
@@ -172,3 +34,5 @@ include::pages/hotkeys.adoc[]
 include::pages/glossary.adoc[]
 
 :leveloffset: -1
+
+// ============================================================================
