@@ -1,7 +1,7 @@
 = Skybrush Sidekick
 :imagesdir: ../assets/images
 
-This is the main documentation of *Skybrush Sidekick*.
+This is the main documentation of *Skybrush Sidekick*, a companion app to be used along with *Skybrush Live* as an independent fallback control suite for safe drone fleet operations.
 
 image::skybrush_sidekick_small.jpg[Skybrush Sidekick]
 
