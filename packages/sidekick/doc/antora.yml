@@ -1,0 +1,6 @@
+name: skybrush-sidekick
+title: Skybrush Sidekick
+version: 'latest'
+nav:
+  - modules/ROOT/nav.adoc
+

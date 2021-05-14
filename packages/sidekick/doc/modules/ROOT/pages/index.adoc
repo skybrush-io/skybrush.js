@@ -1,0 +1,4 @@
+= Skybrush Sidekick
+:imagesdir: ../assets/images
+
+This is the main documentation of *Skybrush Sidekick*.
