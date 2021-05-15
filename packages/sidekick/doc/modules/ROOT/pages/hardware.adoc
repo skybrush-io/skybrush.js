@@ -39,7 +39,16 @@ In all cases, once system components are configured properly (in which we assist
 
 == Supported radio hardware
 
-TODO(ntamas)
+The default radio that can be used as a secondary communication channel is the https://ardupilot.org/copter/docs/common-sik-telemetry-radio.html[3DR SIK Telemetry Radio].
+
+However, several fully functional clones are also available, including, e.g., these:
+
+* https://store.mrobotics.io/product-p/mro-sikv2airgnd-mr.htm[mRobotics SiK Telemetry Radio V2 Air/Ground Bundle]
+* https://shop.holybro.com/transceiver-telemetry-radio-v3_p1103.html[Holybro Transceiver Telemetry Radio V3]
+* https://store.rfdesign.com.au/rfd-868-modem/[RFDesign RFD 868+ Modem]
+* https://store.rfdesign.com.au/rfd-900p-modem/[RFDesign RFD 900+ Modem]
+
+The custom firmware we provide for these radios may be compatible with other radios based on the SiLabs Si10xx chipsets. mailto:support@collmot.com[Contact us] for details in case you wish to use a radio not listed here.
 
 
 == Supported RTK base stations
