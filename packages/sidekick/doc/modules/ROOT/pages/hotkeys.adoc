@@ -1,2 +1,23 @@
 = Hotkeys
 :imagesdir: ../assets/images
+:experimental:
+
+To reduce reaction times of fleet control through *Skybrush Sidekick*, we defined handy hotkeys for all the commands available.
+
+TODO: how to select which drone to send the command to?
+
+.Control command hotkeys
+[%autowidth]
+|===
+|Keyboard shortcut|Function
+
+|kbd:[W]|Flash LED of drones
+|kbd:[S]|Activate _show_ flight mode on drones
+|kbd:[P]|Activate _position hold_ flight mode on drones
+|kbd:[R]|Activate _return to home_ flight mode on drones
+|kbd:[L]|Activate _land_ flight mode on drones
+|kbd:[Ctrl+X]|Disarm motors of drones
+
+|===
+
+Hotkeys are also explicitely listed in the bottom-right corner of the main window for further reaction time speedup.
