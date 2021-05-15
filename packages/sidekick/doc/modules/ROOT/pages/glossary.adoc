@@ -1,3 +1,16 @@
 [glossary]
 = Glossary
 :imagesdir: ../assets/images
+
+[glossary]
+Drone ID:: The drone ID is a fixed unique physical ID that allows the permanent identification of the drone in the swarm. It is different from the *show ID*, which is a temporary value defining which show trajectory a given drone is assigned to.
+
+Flight mode:: The low level firmware of the drones provides different flight modes, which determine the overall behaviour of the drones. Such flight modes are position hold, return to home, land, or show (which is our custom mode for executing drone shows).
+
+Physical ID:: See *Drone ID*.
+
+Show flight mode:: The custom flight mode in which drone shows are executed.
+
+Show ID:: Each drone has a permanent physical ID (sometimes named as drone ID) and a mission-specific show ID. The latter one defines which show trajectory is assigned to the given drone in the actual swarming flight. Show ID representations are always preceeded with an 's' to avoid confusion (e.g. s05).
+
+Skybrush Server:: *Skybrush Server* is the backend part of *Skybrush* that connects to your drones, your RTK base station and other hardware accessories that might be needed for your missions. It ensures the smooth communication between all hardware elements and the connected *Skybrush Live* or *Skybrush Sidekick* clients. *Skybrush Server* is either running on the same computer as one of the clients or on a dedicated local HW device or in the cloud.
