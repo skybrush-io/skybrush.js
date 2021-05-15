@@ -1,2 +1,49 @@
 = Hardware requirements
 :imagesdir: ../assets/images
+
+A full hardware setup needed for *Skybrush Sidekick* to control drone fleets consists of the following components:
+
+*Mandatory requirements*
+
+  * A laptop or desktop machine running *Skybrush Sidekick*
+  * Compatible drone fleet
+  * 433/868/900 MHz radio (depending on local regulatory requirements and your own safety assessment) connected to both the GCS laptop and the drones
+
+*Optional requirements*
+
+  * A laptop or desktop machine or dedicated hardware that runs *Skybrush Server*. This can be the same device running *Skybrush Sidekick* or an independent one.
+  * Wifi network to which both *Skybrush Server* and *Skybrush Sidekick* can be connected in order to receive drone status feed in *Skybrush Sidekick* from the active *Skybrush Server*.
+  * RTK base station or NTRIP-based RTK correction source connected to *Skybrush Server*. If present, corrections can be sent to the drones through the secondary communication channel from *Skybrush Sidekick*.
+
+== Recommended GCS configuration
+
+The recommended configuration for the ground control device (laptop) running *Skybrush Sidekick* is the following:
+
+  * at least an Intel Core i5 or equivalent CPU
+  * At least 2 GB of RAM (4 GB preferred)
+  * Supported OS: Windows 10, Linux or macOS 10.14 or later
+
+== Communication with drones
+
+* *Skybrush Sidekick* communicates with the drones on a 433/866/900 MHz radio channel with unidirectional messages coming from *Skybrush Sidekick* towards the drones. Note that telemetry or any kind of response from the drones towards *Skybrush Sidekick* is _NOT_ available on this channel.
+
+* *Skybrush Sidekick* may receive status messages from the drones through *Skybrush Server* and the primary wifi network behind. This allows for visual status indication in *Skybrush Sidekick* as an optional enhancement, but the core functionality of *Skybrush Sidekick* _DOES NOT_ depend on the state of the *Skybrush Server*.
+
+In all cases, once system components are configured properly (in which we assist) it works plug-and-play. You attach your communication module (e.g. external wifi antenna or radio transmitter), your RTK base station etc., and all these peripherals get autodetected by the system right away.
+
+
+== Supported drones
+
+*Skybrush Sidekick* supports the same drones as *Skybrush Live*. Please see the full list there.
+
+
+== Supported radio hardware
+
+TODO(ntamas)
+
+
+== Supported RTK base stations
+
+*Skybrush Sidekick* supports RTK base stations through *Skybrush Server*. Please check out the related documentation of *Skybrush Live* for more details.
+
+
