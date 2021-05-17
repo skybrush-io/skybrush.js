@@ -16,11 +16,11 @@ Show mode:: Activate the SHOW flight mode on the selected drones. This is a requ
 
 Position hold:: Activate the LOITER flight mode on the selected drones. This will stop the motion of selected drones and will enable manual control for the pilot.
 
-Return to home:: Activate the RTH flight mode on the selected drones. This will bring selected drones home as defined by their RTH-related ArduCopter parameters.
+Return to home:: Activate the RTH flight mode on the selected drones. This will bring selected drones home as defined by their RTH-related firmware parameters.
 
-Land:: Activate the LAND flight mode on the selected drones. This will land selected drones with the speed defined by the related ArduCopter parameters.
+Land:: Activate the LAND flight mode on the selected drones. This will land selected drones with the speed defined by the related firmware parameters.
 
-Disarm:: Disarm motors on the selected drones. This will stop motors even if drones are in mid-air. Use only as an emergency kill switch.
+Disarm:: Disarm motors on the selected drones. This will stop motors even if drones are in mid-air. Use it only as an emergency kill switch.
 
 WARNING: Using these buttons might cause mid-air collisions if operated on multiple drones simultaneously. Use them only as a proper and determined emergency action! Full responsibility is with the operator.
 

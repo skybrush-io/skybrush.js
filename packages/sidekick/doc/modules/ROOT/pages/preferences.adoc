@@ -22,6 +22,7 @@ Setup the list of IDs to appear on the main screen. Use ranges or individual val
 
 image::preferences_commands.jpg[Commands preferences]
 
+[#command-repetition]
 === Command repetition
 
 Repeat every command::
@@ -37,7 +38,7 @@ This value defines the delay between the repetitions
 
 In this section you can customize confirmations when sending commands to individual drones or broadcasting them to all drones.
 
-Enabled confirmations raise the safety of GCS usage by filtering commands sent accidentally, but in the mean time they also increase the reaction time of the control personnell in situations to be handled by the GCS.
+Enabled confirmations raise the safety of GCS usage by potentially preventing an accidental execution of a command, but at the same time they also increase the reaction time of the control personnel in situations to be handled from the GCS.
 
 == Server preferences
 
@@ -45,7 +46,7 @@ image::preferences_server.jpg[server settings]
 
 *Skybrush Sidekick* can receive telemetry data from the drones through *Skybrush Server*. The settings in this panel (hostname and port) control where *Skybrush Sidekick* is looking for the server on the net to communicate with.
 
-The LED indicator in the bottom left corner shows that connection status to *Skybrush Server*.
+The LED indicator in the bottom left corner shows the status of the connection to *Skybrush Server*.
 
 To connect to *Skybrush Server* with the given settings, press the kbd:[CONNECT] button.
 

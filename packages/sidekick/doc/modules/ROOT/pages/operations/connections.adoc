@@ -27,10 +27,10 @@ It is assumed that the output device is connected though a serial or USB-serial 
 
 Connection to *Skybrush Server* is optional but it is recommended, as it feeds useful status information from the drones to *Skybrush Sidekick*. It is also needed if you wish to send RTK correction data through *Skybrush Sidekick* as well.
 
-The connection details can be setup in the SERVER page of the xref:preferences.adoc[Preferences] dialog.
+The connection details can be setup in the SERVER page of the xref:preferences.adoc[Preferences] dialog. *Skybrush Server* typically listens on port 5002 for incoming *Sidekick* connections. The IP address of the machine running *Skybrush Server* has to be specified explicitly. If the server and *Sidekick* are running on the same machine, the IP address can be set to 127.0.0.1 (localhost).
 
 === RTK connection
 
-if *Skybrush Server* is connected and *Skybrush Live* is configured to send RTK correction data to the drones on the primary Wi-Fi connection, these corrections can also be forwarded to *Skybrush Sidekick* to send them to the drones simultaneously on its secondary communication channel as a means of redundancy.
+if *Skybrush Server* is connected and *Skybrush Live* is configured to send RTK correction data to the drones on the primary wi-fi connection, these corrections can also be forwarded to *Skybrush Sidekick* to send them to the drones simultaneously on its secondary communication channel as a means of redundancy.
 
 No explicit configuration is needed in *Skybrush Sidekick* to enable RTK corrections, and enabling them will not interfere with the same corrections sent over the primary channel, but the probability that the corrections with reach the drones will increase.
