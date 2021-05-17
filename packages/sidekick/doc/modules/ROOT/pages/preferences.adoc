@@ -1,2 +1,53 @@
 = Preferences
 :imagesdir: ../assets/images
+:experimental:
+
+image::icons/settings.png[Preferences]
+
+The *Preferences* widget enables you to setup *Skybrush Sidekick* according to your custom needs.
+
+Choose the group of settings on the header of the popup dialog window (DISPLAY, COMMANDS, SERVER) and setup parameters as you wish.
+
+== Display preferences
+
+image::preferences_display.jpg[Display preferences]
+
+Theme::
+set light mode or dark mode depending on external light conditions
+
+Visible UAV IDs::
+Setup the list of IDs to appear on the main screen. Use ranges or individual values between 1 and 255.
+
+== Command preferences
+
+image::preferences_commands.jpg[Commands preferences]
+
+=== Command repetition
+
+Repeat every command::
+Enable to send every command several times in a row
+
+Repeat count::
+This value defines how many times each command is sent
+
+Delay between attempts::
+This value defines the delay between the repetitions
+
+=== Confirmations
+
+In this section you can customize confirmations when sending commands to individual drones or broadcasting them to all drones.
+
+Enabled confirmations raise the safety of GCS usage by filtering commands sent accidentally, but in the mean time they also increase the reaction time of the control personnell in situations to be handled by the GCS.
+
+== Server preferences
+
+image::preferences_server.jpg[server settings]
+
+*Skybrush Sidekick* can receive telemetry data from the drones through *Skybrush Server*. The settings in this panel (hostname and port) control where *Skybrush Sidekick* is looking for the server on the net to communicate with.
+
+The LED indicator in the bottom left corner shows that connection status to *Skybrush Server*.
+
+To connect to *Skybrush Server* with the given settings, press the kbd:[CONNECT] button.
+
+To save the desired configuration, press the kbd:[SAVE] button.
+

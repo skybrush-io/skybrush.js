@@ -7,7 +7,11 @@ Drone ID:: The drone ID is a fixed unique physical ID that allows the permanent 
 
 Flight mode:: The low level firmware of the drones provides different flight modes, which determine the overall behaviour of the drones. Such flight modes are position hold, return to home, land, or show (which is our custom mode for executing drone shows).
 
+GCS:: Ground control station
+
 Physical ID:: See *Drone ID*.
+
+RTH:: Return to home
 
 Show flight mode:: The custom flight mode in which drone shows are executed.
 
