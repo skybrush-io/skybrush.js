@@ -7,8 +7,7 @@ Philosophy::
 * Skybrush Suite and our professional team guides you through the whole process of drone shows from design to execution and beyond
 
 Platform::
-* Platform-independent modular design - Linux, macOS, Windows 10 and cloud/browser based versions available
-* Multiple device types supported: desktops, laptops, touch screens, mobile devices
+* Platform-independent modular design - Linux, macOS and Windows 10 versions available
 * Server-client architecture for flexible support of customer needs
 
 Drone compatibility::
@@ -20,14 +19,13 @@ Drone compatibility::
 
 Layout::
 * Clean GUI with mouse and touch screen support
-* Handy shortkeys enable quick individual or fleet control
+* Handy keyboard shortcuts enable quick individual or fleet control
 
 Dedicated features::
-* RTK correction transmission through the used secondary radio link
+* RTK correction transmission through the secondary radio link
 * Plug-and-play compatiblility with *Skybrush Server* for enhanced status feedback
 
 Safety::
 * Independent secondary communication channel running on independent GCS hardware
-* Encrypted communication channel support
 * Individual and fleet-level control features
 * Operator can interrupt show any time with fleet-level Land / Return-to-home / Halt (kill switch) buttons

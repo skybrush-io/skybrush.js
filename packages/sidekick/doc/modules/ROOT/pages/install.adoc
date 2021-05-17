@@ -39,4 +39,3 @@ Simply remove the AppImage file from your system ot uninstall *Skybrush Sidekick
 === Uninstallation on macOS
 
 Simply drag the *Skybrush Sidekick* icon from your Applications folder to the Bin on the Dock at the bottom of the screen to uninstall *Skybrush Sidekick*.
-
