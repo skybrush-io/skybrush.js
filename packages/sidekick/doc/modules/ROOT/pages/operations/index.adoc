@@ -19,4 +19,4 @@ The operation of *Skybrush Sidekick* is quite simple:
 3. Send the desired command to the selected drones
 
 Note that the communication channel *Skybrush Sidekick* uses is uni-directional, which means that there is no feedback from the drones towards *Skybrush Sidekick* about command acknowledgement, neither can they send telemetry data directly to *Skybrush Sidekick*. Telemetry data is only available through the active *Skybrush Server* if *Skybrush Sidekick* is connected to it. To ensure a reliable delivery of commands over an unreliable radio link without feedback, *Skybrush Sidekick* repeats each command several times in short bursts. You can control the length of these bursts in the
-xref:preferences.adoc#command-repetition[preferences].
+xref:preferences.adoc#command-repetition[Preferences].

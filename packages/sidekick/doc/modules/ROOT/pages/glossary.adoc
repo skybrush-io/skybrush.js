@@ -15,6 +15,8 @@ Physical ID:: See *Drone ID*.
 
 RTH:: Return to home
 
+RTK:: Real-time kinematic (positioning)
+
 Show flight mode:: The custom flight mode in which drone shows are executed.
 
 Skybrush Server:: *Skybrush Server* is the backend part of *Skybrush* that connects to your drones, your RTK base station and other hardware accessories that might be needed for your missions. It ensures the smooth communication between all hardware elements and the connected *Skybrush Live* or *Skybrush Sidekick* clients. *Skybrush Server* is either running on the same computer as one of the clients or on a dedicated local HW device or in the cloud.
