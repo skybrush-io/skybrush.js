@@ -2,22 +2,26 @@
 :imagesdir: ../assets/images
 :experimental:
 
-To reduce reaction times of fleet control through *Skybrush Sidekick*, we defined handy hotkeys for all the commands available.
+The keyboard input of *Skybrush Sidekick* is optimized to reduce reaction time of fleet control as much as possible through the following handy features:
 
-TODO: how to select which drone to send the command to?
+* To select a single drone, just type in its numeric ID and press kbd:[Enter]. Alternatively, you can also use the arrow keys or the cursor (with a mouse, touchpad or touchscreen) to navigate to the desired drone ID.
+
+* To select all drones (broadcast mode without explicit selection) just press kbd:[Esc]
+
+* To send commands to selected drones, press the hotkeys listed at the bottom of the control panel.
 
 .Control command hotkeys
 [%autowidth]
 |===
 |Keyboard shortcut|Function
 
-|kbd:[W]|Flash LED of drones
-|kbd:[S]|Activate _show_ flight mode on drones
-|kbd:[P]|Activate _position hold_ flight mode on drones
-|kbd:[R]|Activate _return to home_ flight mode on drones
-|kbd:[L]|Activate _land_ flight mode on drones
-|kbd:[Ctrl+X]|Disarm motors of drones
+|kbd:[W]|Flash LED of selected/all drones
+|kbd:[S]|Activate _show_ flight mode on selected/all drones
+|kbd:[P]|Activate _position hold_ flight mode on selected/all drones
+|kbd:[R]|Activate _return to home_ flight mode on selected/all drones
+|kbd:[L]|Activate _land_ flight mode on selected/all drones
+|kbd:[Ctrl+X]|Disarm motors of selected/all drones
 
 |===
 
-Hotkeys are also explicitely listed in the bottom-right corner of the main window for further reaction time speedup.
+WARNING: The hotkey descriptions on the control panel explicitely define whether the hotkeys refer to the selection or all drones. Always double check that you send commands to only those drones that you really want to control.
