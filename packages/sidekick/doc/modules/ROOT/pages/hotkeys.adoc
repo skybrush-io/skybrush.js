@@ -20,7 +20,7 @@ The keyboard input of *Skybrush Sidekick* is optimized to reduce reaction time o
 |kbd:[P]|Activate _position hold_ flight mode on selected/all drones
 |kbd:[R]|Activate _return to home_ flight mode on selected/all drones
 |kbd:[L]|Activate _land_ flight mode on selected/all drones
-|kbd:[Ctrl+X]|Disarm motors of selected/all drones
+|kbd:[Shift+X]|Disarm motors of selected/all drones
 
 |===
 

@@ -1,0 +1,21 @@
+= Operations
+:imagesdir: ../../assets/images
+:experimental:
+
+*Skybrush Sidekick* is a secondary, independent safety fallback option besides our main GCS software *Skybrush Live*. *Skybrush Sidekick* provides access to the drone fleet with specific individual or fleet level commands through a preferably long-range, independent radio channel.
+
+*Skybrush Sidekick* is designed as a fallback control option, so it can run on hardware completely independent from the main GCS that hosts *Skybrush Server* and *Skybrush Live*.
+
+== Basic usage
+
+*Skybrush Sidekick* has a fixed single page layout with connection and preferences widgets at the top, drone IDs on the left and a control panel on the right.
+
+image::skybrush_sidekick_small.jpg[Skybrush Sidekick]
+
+The operation of *Skybrush Sidekick* is quite simple:
+
+1. Connect to your radio device (and optionally *Skybrush Server*)
+2. Select the drone you wish to control or unselect to control all drones
+3. Send the desired command to the selected drones
+
+Note that the communication channel *Skybrush Sidekick* uses is uni-directional, which means that there is no feedback from the drones towards *Skybrush Sidekick* about command acknowledgement, neither can they send telemetry data directly to *Skybrush Sidekick*. Telemetry data is only available through the active *Skybrush Server* if *Skybrush Sidekick* is connected to it.

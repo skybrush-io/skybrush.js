@@ -1,8 +1,6 @@
 = Feature highlights
 :imagesdir: ../assets/images
 
-*Skybrush Sidekick* is a secondary, independent safety fallback option besides our main GCS software *Skybrush Live*. *Skybrush Sidekick* provides access to the drone fleet with specific individual or fleet level commands through a preferably long-range, independent radio channel, sent from a possibly independent ground station device.
-
 Philosophy::
 * Our mindset is based on decade long world-leading drone swarm research plus drone show services since 2015
 * We only sell software that we test and use actively ourselves

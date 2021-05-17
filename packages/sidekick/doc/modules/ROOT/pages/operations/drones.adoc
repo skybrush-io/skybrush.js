@@ -1,0 +1,27 @@
+= Drones
+:imagesdir: ../../assets/images
+:experimental:
+
+== Drone IDs
+
+While *Skybrush Server* can handle basically any number of drones, a single instance of *Skybrush Sidekick* can handle only up to 255 drones, which comes from a hard limitation in ArduCopter (the firmware running on the drones) and MAVLink (the communication protocol used by the radio channel). Drones with the ArduCopter firmware are associated with a single physical drone ID stored in the `SYSID_THISMAV` parameter, ranging between 1 and 255. This ID corresponds to the IDs listed in the main screen of *Skybrush Sidekick*.
+
+TIP: IF you wish to operate swarms with more than 255 drones, you need to separate them into subgroups of up to 255 drones, bind different radios to the different groups (with different `NETID` parameter in the radio firmware) and use multiple instances of *Skybrush Sidekick* paralelly for each subgroup.
+
+== Modes of operation
+
+There are two modes of operation in *Skybrush Sidekick*. You can either select a single drone or remove the selection and broadcast commands to all drones associated with the used radio.
+
+WARNING: In broadcast mode commands are sent to _ALL_ drones associated with the given radio, regardless of the drone ID filter specified in the xref:preferences.adoc[Display preferences].
+
+== Drone selection
+
+The selection is always visible in the list of drone IDS, while hotkey descriptions at the bottom of the control panel also detail their meaning based on the actual selection.
+
+image::operations/drone_selection.jpg[Drone selection]
+
+Please see the xref:hotkeys.adoc[Hotkeys] section for details on how to select drones.
+
+== Drone status information
+
+If *Skybrush Server* is connected to *Skybrush Sidekick*, overall status of the drones will be indicated with different colors around their IDs, following the general coloring scheme of the *Skybrush Suite* (green: OK, blue: PREARM, yellow: WARNING, red: ERROR)

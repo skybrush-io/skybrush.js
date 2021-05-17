@@ -1,0 +1,45 @@
+= Control panel
+:imagesdir: ../../assets/images
+:experimental:
+
+The control panel on the left side of the main window enables you to send commands to the selected drone or to all drones.
+
+== Actions
+
+The actions group contains big colorful buttons for each available command to send. The coloring of the buttons indicate the severity of the command execution.
+
+image::operations/control_panel_actions.jpg[Actions]
+
+The following control commands are available from *Skybrush Sidekick*:
+
+Show mode:: Activate the SHOW flight mode on the selected drones. This is a required step as part of the prearm preparations for drone shows (but can be automated in *Skybrush Live*). Since drone shows managed by the *Skybrush Suite* are preprogrammed from takeoff to landing, if SHOW mode is activated in mid-air, it will act as a simple position hold mode.
+
+Position hold:: Activate the LOITER flight mode on the selected drones. This will stop the motion of selected drones and will enable manual control for the pilot.
+
+Return to home:: Activate the RTH flight mode on the selected drones. This will bring selected drones home as defined by their RTH-related ArduCopter parameters.
+
+Land:: Activate the LAND flight mode on the selected drones. This will land selected drones with the speed defined by the related ArduCopter parameters.
+
+Disarm:: Disarm motors on the selected drones. This will stop motors even if drones are in mid-air. Use only as an emergency kill switch.
+
+WARNING: Using these buttons might cause mid-air collisions if operated on multiple drones simultaneously. Use them only as a proper and determined emergency action! Full responsibility is with the operator.
+
+== Lights
+
+Lights of selected drones can be overridden by *Skybrush Sidekick* by clicking on the desired color.
+
+image::operations/control_panel_lights.jpg[Lights]
+
+The btn:[FLASH] button is special in the sense that it is only a temporary override with a quick black and white rapid flashing to be able to identify a single drone quickly on the field.
+
+The rest of the buttons will cause a color override that is sustained for one minute. After that the coloring will be controlled onboard again (light show in show flight mode, solid color in other flight modes etc.).
+
+== Hotkeys
+
+The hotkeys group lists the hotkeys associated with the available command actions.
+
+image::operations/control_panel_hotkeys.jpg[Hotkeys]
+
+The text descriptor of the hotkeys explicitely states whether the actual command is applicable for a single selected drone or for all drones.
+
+Read more about hotkeys in the xref:hotkeys.adoc[Hotkeys] section.

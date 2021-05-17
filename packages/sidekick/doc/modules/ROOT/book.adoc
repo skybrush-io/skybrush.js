@@ -24,7 +24,21 @@ include::pages/hardware.adoc[]
 
 include::pages/install.adoc[]
 
-include::pages/operations.adoc[]
+// ============================================================================
+
+include::pages/operations/index.adoc[]
+
+:leveloffset: +1
+
+include::pages/operations/connections.adoc[Connections]
+
+include::pages/operations/drones.adoc[Drones]
+
+include::pages/operations/control_panel.adoc[Control panel]
+
+:leveloffset: -1
+
+// ============================================================================
 
 include::pages/preferences.adoc[]
 

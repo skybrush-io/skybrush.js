@@ -1,0 +1,36 @@
+= Connection widgets
+:imagesdir: ../../assets/images
+:experimental:
+
+There are three connection widgets on the top left corner of the main window. Each of them has a LED indicator to show their overall status with the following color codes:
+
+[%autowidth]
+|===
+|[red]*red*|error
+|[yellow]*yellow*|warning
+|[green]*green*|status OK
+|===
+
+TIP: For a more detailed connection status move your cursor over the connection widgets and wait for the tooltips to appear.
+
+== Output device connection
+
+The only strictly required hardware component for *Skybrush Sidekick* is a radio module connected to the computer running *Skybrush Sidekick*. Please check our the xref:hardware.adoc[Hardware requirements] section for the list of supported radio modules.
+
+If you click on the output device connection widget, a popup dialog appears to setup the connection.
+
+image::operations/output_device_connection.jpg[]
+
+It is assumed that the output device is connected though a serial or USB-serial port with a given port name and baud rate. Set these up properly and press the kbd:[CONNECT] button to connect to the device. The green status LED on the bottom left corner indicates connection status.
+
+=== Skybrush Server connection
+
+Connection to *Skybrush Server* is optional but it is recommended, as it feeds useful status information from the drones to *Skybrush Sidekick*. It is also needed if you wish to send RTK correction data through *Skybrush Sidekick* as well.
+
+The connection details can be setup in the SERVER page of the xref:preferences.adoc[Preferences] dialog.
+
+=== RTK connection
+
+if *Skybrush Server* is connected and *Skybrush Live* is configured to send RTK correction data to the drones on the primary Wi-Fi connection, these corrections can also be forwarded to *Skybrush Sidekick* to send them to the drones simultaneously on its secondary communication channel as a means of redundancy.
+
+No explicit configuration is needed in *Skybrush Sidekick* to enable RTK corrections, and enabling them will not interfere with the same corrections sent over the primary channel, but the probability that the corrections with reach the drones will increase.
