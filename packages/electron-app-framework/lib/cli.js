@@ -25,7 +25,7 @@ function setupCli(parser = program) {
   if (process.platform === 'darwin') {
     // Override .parse() method to strip macOS -psn_ arguments from argv
     const { parse } = parser;
-    parser.parse = (argv, parseOptions, ...rest) => {
+    parser.parse = (argv, parseOptions = {}, ...rest) => {
       if (argv === undefined) {
         argv = process.argv;
         if (process.versions && process.versions.electron) {
