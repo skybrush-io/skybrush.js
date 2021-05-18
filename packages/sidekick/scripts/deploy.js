@@ -25,7 +25,10 @@ const outputDir = path.resolve(projectRoot, 'dist');
 
 program
   .storeOptionsAsProperties(false)
-  .option('-p, --production', 'whether to build the application in production mode')
+  .option(
+    '-p, --production',
+    'whether to build the application in production mode'
+  )
   .parse(process.argv);
 
 const options = program.opts();
@@ -100,25 +103,25 @@ const electronBuilderSpawnOptions = {
 async function invokeElectronBuilder(appConfig) {
   const tasks = [];
 
-  tasks.push({
-    task: () => invokeElectronBuilderForMacOS(appConfig),
-    title: 'macOS',
-    skip: () => {
-      if (process.platform !== 'darwin') {
-        return 'macOS packages can only be built on macOS';
-      }
+  tasks.push(
+    {
+      task: () => invokeElectronBuilderForMacOS(appConfig),
+      title: 'macOS',
+      skip: () => {
+        if (process.platform !== 'darwin') {
+          return 'macOS packages can only be built on macOS';
+        }
+      },
     },
-  });
-
-  tasks.push({
-    task: () => invokeElectronBuilderForWindows(appConfig),
-    title: 'Windows',
-  });
-
-  tasks.push({
-    task: () => invokeElectronBuilderForLinux(appConfig),
-    title: 'Linux',
-  });
+    {
+      task: () => invokeElectronBuilderForWindows(appConfig),
+      title: 'Windows',
+    },
+    {
+      task: () => invokeElectronBuilderForLinux(appConfig),
+      title: 'Linux',
+    }
+  );
 
   if (tasks.length > 0) {
     return new Listr(tasks);
@@ -128,7 +131,11 @@ async function invokeElectronBuilder(appConfig) {
 }
 
 async function invokeElectronBuilderForMacOS() {
-  await execa('electron-builder', ['-m', '--universal'], electronBuilderSpawnOptions);
+  await execa(
+    'electron-builder',
+    ['-m', '--universal'],
+    electronBuilderSpawnOptions
+  );
 }
 
 async function invokeElectronBuilderForLinux() {

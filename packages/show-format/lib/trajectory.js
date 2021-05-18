@@ -186,7 +186,7 @@ function bisect(items, x, lo = 0, hi = items.length) {
   }
 
   while (lo < hi) {
-    const mid = ((lo + hi) / 2) | 0;
+    const mid = Math.trunc((lo + hi) / 2);
 
     if (x < items[mid]) {
       hi = mid;

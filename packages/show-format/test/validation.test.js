@@ -16,9 +16,13 @@ test('no drones', (t) => {
 });
 
 test('too many drones', (t) => {
-  t.throws(() => validate({ version: 1, swarm: { drones: new Array(5000) } }), {
-    message: /too many drones/i,
-  });
+  t.throws(
+    () =>
+      validate({ version: 1, swarm: { drones: Array.from({ length: 5000 }) } }),
+    {
+      message: /too many drones/i,
+    }
+  );
 });
 
 test('drone without trajectory', (t) => {

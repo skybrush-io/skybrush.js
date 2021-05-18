@@ -4,7 +4,7 @@ import Switch from '@material-ui/core/Switch';
 
 import { isThemeDark } from '@skybrush/app-theme-material-ui';
 
-const MasterSwitch = withStyles((theme) => ({
+const MainSwitch = withStyles((theme) => ({
   root: {
     width: 36,
     height: 20,
@@ -60,4 +60,4 @@ const MasterSwitch = withStyles((theme) => ({
   );
 });
 
-export default MasterSwitch;
+export default MainSwitch;

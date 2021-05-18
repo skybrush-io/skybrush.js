@@ -37,11 +37,7 @@ function sendRCChannelValues(values) {
 // These are the only functions that the renderer processes may call to access
 // any functionality that requires Node.js -- they are not allowed to use
 // Node.js modules themselves
-contextBridge.exposeInMainWorld(
-  'bridge',
-  {
-    createStateStore,
-    sendRCChannelValues,
-  }
-);
-
+contextBridge.exposeInMainWorld('bridge', {
+  createStateStore,
+  sendRCChannelValues,
+});

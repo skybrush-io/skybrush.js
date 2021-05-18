@@ -43,7 +43,7 @@ module.exports = {
     // default values
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
-      DEPLOYMENT: '0'
+      DEPLOYMENT: '0',
     }),
 
     // Resolve the git version number and commit hash in the code
@@ -75,12 +75,19 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            configFile: path.join(projectRoot, '..', '..', 'babel.config.json')
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              configFile: path.join(
+                projectRoot,
+                '..',
+                '..',
+                'babel.config.json'
+              ),
+            },
           },
-        }],
+        ],
         include: [
           path.join(projectRoot, 'config'),
           path.join(projectRoot, 'src'),
@@ -102,7 +109,7 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg|mp3|wav|ogg|gltf|obj)$/,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
     ],
   },

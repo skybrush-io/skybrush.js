@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { connect, useSelector, useStore } from 'react-redux';
 
-import MasterSwitch_ from '../../components/MasterSwitch';
+import MainSwitch_ from '../../components/MainSwitch';
 import RCChannelDisplay_ from '../../components/RCChannelDisplay';
 import RCOutputManager_ from '../../components/RCOutputManager';
 
@@ -12,7 +12,7 @@ import {
 } from './selectors';
 import { setPowerSwitch, setRCChannelValue } from './slice';
 
-export const MasterSwitch = connect(
+export const MainSwitch = connect(
   // mapStateToProps
   (state) => ({
     checked: isRCPowerSwitchOn(state),
@@ -21,7 +21,7 @@ export const MasterSwitch = connect(
   {
     onChange: (event) => setPowerSwitch(event.target.checked),
   }
-)(MasterSwitch_);
+)(MainSwitch_);
 
 export const RCChannelDisplay = connect(
   // mapStateToProps

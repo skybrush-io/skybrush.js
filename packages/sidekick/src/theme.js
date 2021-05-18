@@ -4,13 +4,7 @@
 
 import { connect } from 'react-redux';
 
-import {
-  common,
-  green,
-  blueGrey,
-  lightGreen,
-  amber,
-} from '@material-ui/core/colors';
+import { common, green, lightGreen } from '@material-ui/core/colors';
 
 import { createThemeProvider } from '@skybrush/app-theme-material-ui';
 

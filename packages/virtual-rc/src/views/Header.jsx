@@ -5,7 +5,7 @@ import React from 'react';
 import { isThemeDark } from '@skybrush/app-theme-material-ui';
 
 import WindowDragHandle from '../components/WindowDragHandle';
-import { MasterSwitch } from '../features/rc/components';
+import { MainSwitch } from '../features/rc/components';
 import { isRunningOnMac } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ const Header = () => {
     <Box className={classes.root}>
       {isRunningOnMac && <WindowDragHandle />}
       <Box flex={1} />
-      <MasterSwitch />
+      <MainSwitch />
     </Box>
   );
 };

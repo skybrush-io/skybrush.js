@@ -1,4 +1,4 @@
-import { delay, put, takeLatest } from '@redux-saga/core/effects';
+import { delay, put, takeLatest } from 'redux-saga/effects';
 
 import { clearPendingUAVId } from './actions';
 import { startPendingUAVIdTimeout } from './slice';

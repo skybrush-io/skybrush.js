@@ -81,7 +81,10 @@
     "space": true,
     "ignores": [
       "packages/mavlink/lib/dialects",
-      "packages/mavlink/lib/vendor"
+      "packages/mavlink/lib/vendor",
+      "packages/show-format/lib/bezier.js",
+      "packages/**/test/dummy.test.js",
+      "packages/**/webpack/*.config.js"
     ],
     "rules": {
       "capitalized-comments": 0,

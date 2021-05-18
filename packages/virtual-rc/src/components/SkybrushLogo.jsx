@@ -9,7 +9,7 @@ import darkLogo from '~/../assets/img/logo-dark.png';
 
 const logos = {
   light: lightLogo,
-  dark: darkLogo
+  dark: darkLogo,
 };
 
 const useStyles = makeStyles({

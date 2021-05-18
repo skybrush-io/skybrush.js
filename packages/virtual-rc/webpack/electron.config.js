@@ -13,7 +13,7 @@ const { productName } = require('../package.json');
 const htmlWebPackPluginConfiguration = {
   meta: getHtmlMetaTags(),
   template: path.resolve(projectRoot, 'index.html'),
-  title: productName
+  title: productName,
 };
 
 const plugins = [
@@ -30,7 +30,7 @@ if (process.env.NODE_ENV !== 'production' && process.env.DEPLOYMENT !== '1') {
         blocking: false,
         dev: true,
         parallel: true,
-      }
+      },
     })
   );
 }

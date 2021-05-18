@@ -23,7 +23,7 @@ const UAVIdSpecificationEditor = ({ onChange, uavIdSpecification }) => {
       setValue(newValue);
 
       try {
-        const parsed = parseUAVIdSpecification(newValue);
+        parseUAVIdSpecification(newValue);
         setValid(true);
       } catch {
         setValid(false);
@@ -56,6 +56,7 @@ const UAVIdSpecificationEditor = ({ onChange, uavIdSpecification }) => {
 };
 
 UAVIdSpecificationEditor.propTypes = {
+  onChange: PropTypes.func,
   uavIdSpecification: PropTypes.string,
 };
 

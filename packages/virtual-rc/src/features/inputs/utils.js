@@ -99,7 +99,7 @@ const mapButtonToNarrowPwmRange = createScaler(
  * Returns the preferred PWM values for an RC switch with the given number of
  * discrete states.
  */
-const getValuesForStateCount = memoize(function (numberOfStates) {
+const getValuesForStateCount = memoize((numberOfStates) => {
   if (numberOfStates < 1) {
     throw new Error('need at least one state');
   } else if (numberOfStates === 1) {
