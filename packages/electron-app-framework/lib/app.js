@@ -97,11 +97,9 @@ function setupApp({
         webPreferences.spellcheck = false;
         webPreferences.worldSafeExecuteJavaScript = true;
 
-        if (!enableNavigation) {
+        if (!enableNavigation && !isUrlAllowedForNavigation(parameters.src)) {
           // Prevent creating web views that point outside
-          if (!isUrlAllowedForNavigation(parameters.src)) {
-            event.preventDefault();
-          }
+          event.preventDefault();
         }
       }
     );
