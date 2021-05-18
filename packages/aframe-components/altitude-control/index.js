@@ -99,8 +99,10 @@ AFrame.registerComponent('altitude-control', {
       return;
     }
 
+    const isRunning = keys.ShiftLeft || keys.ShiftRight;
+
     // https://gamedev.stackexchange.com/questions/151383/frame-rate-independant-movement-with-acceleration
-    const scaledEasing = (1 / this.easing) ** (delta * 60);
+    const scaledEasing = (1 / this.easing) ** (delta * (isRunning ? 20 : 60));
     // Velocity easing.
     if (this.velocity !== 0) {
       this.velocity *= scaledEasing;
@@ -116,12 +118,13 @@ AFrame.registerComponent('altitude-control', {
     }
 
     // Update velocity using keys pressed
+    const acceleration = data.acceleration * (isRunning ? 5 : 1);
     if (keys.KeyE) {
-      this.velocity += data.acceleration * delta;
+      this.velocity += acceleration * delta;
     }
 
     if (keys.KeyC) {
-      this.velocity -= data.acceleration * delta;
+      this.velocity -= acceleration * delta;
     }
   },
 
