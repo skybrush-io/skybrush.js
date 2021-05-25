@@ -1,7 +1,7 @@
 {
   "name": "@skybrush/sidekick",
   "productName": "Skybrush Sidekick",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Companion app to Skybrush Live to handle a secondary radio channel",
   "author": "CollMot Robotics Ltd",
   "homepage": "https://skybrush.io",
@@ -27,7 +27,7 @@
     "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.5.1",
     "@skybrush/app-theme-material-ui": "^1.2.3",
-    "@skybrush/electron-app-framework": "^2.0.3",
+    "@skybrush/electron-app-framework": "^2.0.4",
     "@skybrush/mavlink": "^1.0.2",
     "@skybrush/mui-components": "^1.8.0",
     "@skybrush/redux-toolkit": "^1.3.2",
