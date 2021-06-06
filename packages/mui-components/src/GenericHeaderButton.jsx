@@ -44,6 +44,8 @@ const useStyles = makeStyles(
 
     secondaryLabel: {
       color: theme.palette.text.secondary,
+      userSelect: 'none',
+      whiteSpace: 'nowrap',
     },
   }),
   {
