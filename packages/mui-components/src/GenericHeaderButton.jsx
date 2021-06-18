@@ -43,7 +43,7 @@ const useStyles = makeStyles(
     },
 
     secondaryLabel: {
-      color: theme.palette.text.secondary,
+      color: 'rgba(255, 255, 255, 0.54)',
       userSelect: 'none',
       whiteSpace: 'nowrap',
     },
