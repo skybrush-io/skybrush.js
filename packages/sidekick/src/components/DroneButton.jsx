@@ -14,7 +14,11 @@ import { setSelectedUAVId } from '~/features/ui/slice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    /*
+    // Transition turned off because it is hard to follow where the selection
+    // is when the user is holding down a keyboard navigation key
     transition: theme.transitions.create(['background-color']),
+    */
     '&:hover': {
       backgroundColor: theme.palette.action.hover,
     },

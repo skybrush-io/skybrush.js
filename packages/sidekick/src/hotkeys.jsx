@@ -31,6 +31,10 @@ configureHotkeys({
   // event of the first key, and react-hotkeys would then be evaluating the
   // key combination only
   allowCombinationSubmatches: true,
+
+  // Make sure that repeated key-down events are triggered when the user holds
+  // down the arrow keys for a longer period
+  ignoreRepeatedEventsWhenKeyHeldDown: false,
 });
 
 // Create the default keymap mapping keys to actions
@@ -67,18 +71,18 @@ export const keyMap = {
 
 // Helper function that creates a Redux thunk that selects the pending UAV _and_
 // triggers another action
-const createKeyboardHandlerForAction = (action) => (...args) => (
-  dispatch,
-  getState
-) => {
-  const uavId = getPendingUAVId(getState());
-  if (!isNil(uavId)) {
-    dispatch(clearPendingUAVId());
-    dispatch(setSelectedUAVId(uavId));
-  }
+const createKeyboardHandlerForAction =
+  (action) =>
+  (...args) =>
+  (dispatch, getState) => {
+    const uavId = getPendingUAVId(getState());
+    if (!isNil(uavId)) {
+      dispatch(clearPendingUAVId());
+      dispatch(setSelectedUAVId(uavId));
+    }
 
-  dispatch(action(...args));
-};
+    dispatch(action(...args));
+  };
 
 const AppHotkeys = ({
   appendDigit,
