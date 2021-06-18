@@ -47,7 +47,7 @@
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.8.0",
     "webpack-shell-plugin-next": "^2.2.2",
-    "xo": "^0.40.2"
+    "xo": "0.39.1"
   },
   "scripts": {
     "lint": "xo",
