@@ -67,7 +67,7 @@
     "typeface-fira-sans": "^1.1.13"
   },
   "devDependencies": {
-    "electron": "13.1.1",
-    "electron-builder": "22.10.4"
+    "electron": "13.1.2",
+    "electron-builder": "22.11.7"
   }
 }
