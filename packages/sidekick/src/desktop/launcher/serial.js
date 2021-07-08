@@ -21,9 +21,7 @@ const notifyRequestingAccessToSerialPortByName = (name) => {
 /**
  * Returns a list of currently known serial port objects.
  */
-const getSerialPorts = () => {
-  return serialPorts.concat();
-};
+const getSerialPorts = () => serialPorts.concat();
 
 /**
  * Sets the list of currently known serial port objects.

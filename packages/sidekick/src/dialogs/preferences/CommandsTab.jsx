@@ -115,9 +115,8 @@ CommandsTab.propTypes = {
 export default connect(
   // mapStateToProps
   (state) => ({
-    confirmationNeededForBroadcast: getBroadcastCommandRequiresConfirmation(
-      state
-    ),
+    confirmationNeededForBroadcast:
+      getBroadcastCommandRequiresConfirmation(state),
     confirmationNeededForUnicast: getUnicastCommandRequiresConfirmation(state),
     isCommandRepeatingEnabled: isCommandRepeatingEnabled(state),
     repeatCount: getCommandRepeatCountEvenIfDisabled(state),

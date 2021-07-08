@@ -16,7 +16,7 @@ const createCommand = (type, args) => ({ type, args });
 export const disarm = ({ force } = {}) => createCommand('disarm', { force });
 export const flashLED = () => createCommand('flashLED', {});
 export const setColor = (color) =>
-  createCommand('setColor', { color, duration: 60000, flash: false });
+  createCommand('setColor', { color, duration: 60_000, flash: false });
 export const setFlightMode = (mode) => createCommand('setFlightMode', { mode });
 
 const COMMAND_TO_MAVLINK_TABLE = {

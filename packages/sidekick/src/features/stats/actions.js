@@ -7,7 +7,7 @@ function getRecencyScoreFromTimestamp(timestamp) {
     return 2;
   }
 
-  if (now - timestamp < 10000) {
+  if (now - timestamp < 10_000) {
     return 1;
   }
 

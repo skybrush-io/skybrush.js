@@ -40,31 +40,29 @@ const OutputStatisticsMiniList = ({
   connectionState,
   packetsSent,
   timestamp,
-}) => {
-  return (
-    <MiniList style={listStyle}>
-      <MiniListItem
-        iconPreset={connectionStateToIconPreset(connectionState)}
-        primaryText={connectionStateToLabel(connectionState)}
-      />
-      <MiniListDivider />
-      <MiniListItem
-        primaryText='Packets sent'
-        secondaryText={String(packetsSent || 0)}
-      />
-      <MiniListItem
-        primaryText='Bytes sent'
-        secondaryText={prettyBytes(bytesSent || 0)}
-      />
-      <MiniListItem
-        primaryText='Last packet sent'
-        secondaryText={
-          <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
-        }
-      />
-    </MiniList>
-  );
-};
+}) => (
+  <MiniList style={listStyle}>
+    <MiniListItem
+      iconPreset={connectionStateToIconPreset(connectionState)}
+      primaryText={connectionStateToLabel(connectionState)}
+    />
+    <MiniListDivider />
+    <MiniListItem
+      primaryText='Packets sent'
+      secondaryText={String(packetsSent || 0)}
+    />
+    <MiniListItem
+      primaryText='Bytes sent'
+      secondaryText={prettyBytes(bytesSent || 0)}
+    />
+    <MiniListItem
+      primaryText='Last packet sent'
+      secondaryText={
+        <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
+      }
+    />
+  </MiniList>
+);
 
 OutputStatisticsMiniList.propTypes = {
   bytesSent: PropTypes.number,

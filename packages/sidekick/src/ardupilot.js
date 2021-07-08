@@ -18,7 +18,7 @@ export const FlightMode = {
  * Magic constant used in ArduCopter COMPONENT_ARM_DISARM commands to force
  * arming or disarming.
  */
-export const FORCE_MAGIC = 21196;
+export const FORCE_MAGIC = 21_196;
 
 /**
  * Maximum allowe size of a MAVLink network.

@@ -42,27 +42,25 @@ const ServerStatisticsMiniList = ({
   connectionState,
   packetsReceived,
   timestamp,
-}) => {
-  return (
-    <MiniList style={listStyle}>
-      <MiniListItem
-        iconPreset={connectionStateToIconPreset(connectionState)}
-        primaryText={connectionStateToLabel(connectionState, connectionActive)}
-      />
-      <MiniListDivider />
-      <MiniListItem
-        primaryText='Packets received'
-        secondaryText={String(packetsReceived || 0)}
-      />
-      <MiniListItem
-        primaryText='Last packet received'
-        secondaryText={
-          <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
-        }
-      />
-    </MiniList>
-  );
-};
+}) => (
+  <MiniList style={listStyle}>
+    <MiniListItem
+      iconPreset={connectionStateToIconPreset(connectionState)}
+      primaryText={connectionStateToLabel(connectionState, connectionActive)}
+    />
+    <MiniListDivider />
+    <MiniListItem
+      primaryText='Packets received'
+      secondaryText={String(packetsReceived || 0)}
+    />
+    <MiniListItem
+      primaryText='Last packet received'
+      secondaryText={
+        <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
+      }
+    />
+  </MiniList>
+);
 
 ServerStatisticsMiniList.propTypes = {
   connectionActive: PropTypes.bool,

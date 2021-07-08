@@ -18,43 +18,41 @@ const RTKStatisticsMiniList = ({
   packetsSent,
   recency,
   timestamp,
-}) => {
-  return (
-    <MiniList style={listStyle}>
-      {recency >= 2 ? (
-        <MiniListItem
-          iconPreset='connected'
-          primaryText='Receiving RTK corrections'
-        />
-      ) : recency >= 1 ? (
-        <MiniListItem
-          iconPreset='warning'
-          primaryText='RTK corrections stalled'
-        />
-      ) : (
-        <MiniListItem
-          iconPreset='disconnected'
-          primaryText='No RTK corrections received recently'
-        />
-      )}
-      <MiniListDivider />
+}) => (
+  <MiniList style={listStyle}>
+    {recency >= 2 ? (
       <MiniListItem
-        primaryText='Packets sent'
-        secondaryText={String(packetsSent || 0)}
+        iconPreset='connected'
+        primaryText='Receiving RTK corrections'
       />
+    ) : recency >= 1 ? (
       <MiniListItem
-        primaryText='Bytes sent'
-        secondaryText={prettyBytes(bytesSent || 0)}
+        iconPreset='warning'
+        primaryText='RTK corrections stalled'
       />
+    ) : (
       <MiniListItem
-        primaryText='Last correction sent'
-        secondaryText={
-          <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
-        }
+        iconPreset='disconnected'
+        primaryText='No RTK corrections received recently'
       />
-    </MiniList>
-  );
-};
+    )}
+    <MiniListDivider />
+    <MiniListItem
+      primaryText='Packets sent'
+      secondaryText={String(packetsSent || 0)}
+    />
+    <MiniListItem
+      primaryText='Bytes sent'
+      secondaryText={prettyBytes(bytesSent || 0)}
+    />
+    <MiniListItem
+      primaryText='Last correction sent'
+      secondaryText={
+        <NullSafeTimeAgo date={timestamp} formatter={longTimeAgoFormatter} />
+      }
+    />
+  </MiniList>
+);
 
 RTKStatisticsMiniList.propTypes = {
   bytesSent: PropTypes.number,
