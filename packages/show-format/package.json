@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "9.0.9",
-    "core-js-pure": "^3.14.0",
+    "core-js-pure": "^3.15.2",
     "jszip": "^3.6.0"
   },
   "ava": {

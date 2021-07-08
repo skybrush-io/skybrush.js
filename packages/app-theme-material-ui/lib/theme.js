@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { blue, lightBlue, orange, blueGrey } from '@material-ui/core/colors';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import createTheme from '@material-ui/core/styles/createTheme';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import { Colors } from './colors';
@@ -94,7 +94,7 @@ export const createThemeProvider = ({
     const isThemeDark = (type === 'auto' && osHasDarkMode) || type === 'dark';
 
     // Create the Material-UI theme that we are going to use
-    const theme = createMuiTheme({
+    const theme = createTheme({
       palette: {
         type: isThemeDark ? 'dark' : 'light',
         primary:
