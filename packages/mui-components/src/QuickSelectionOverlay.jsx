@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Box from '@material-ui/core/Box';
+import Portal from '@material-ui/core/Portal';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { isThemeDark } from '@skybrush/app-theme-material-ui';
@@ -38,9 +39,11 @@ const QuickSelectionOverlay = ({ text, open }) => {
   const classes = useStyles();
   return (
     open && (
-      <Box className={classes.root}>
-        <Box className={classes.inner}>{text}</Box>
-      </Box>
+      <Portal>
+        <Box className={classes.root} zIndex='tooltip'>
+          <Box className={classes.inner}>{text}</Box>
+        </Box>
+      </Portal>
     )
   );
 };
