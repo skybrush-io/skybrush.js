@@ -7,14 +7,18 @@ v1.0.5, {docdatetime}
 :homepage: https://skybrush.io
 :lang: en
 :sectnums:
-:toc:
+:toc: macro
 
 // ============================================================================
 
 :leveloffset: +1
 
+include::copyright.adoc[]
+
+toc::[]
+
 [preface]
-include::pages/index.adoc[]
+include::pages/preface.adoc[]
 
 include::pages/overview.adoc[]
 
