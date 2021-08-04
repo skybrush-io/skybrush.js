@@ -30,6 +30,7 @@ AFrame.registerComponent('better-wasd-controls', {
     adAxis: { default: 'x', oneOf: ['x', 'y', 'z'] },
     adEnabled: { default: true },
     adInverted: { default: false },
+    embedded: { default: false },
     enabled: { default: true },
     fly: { default: false },
     wsAxis: { default: 'z', oneOf: ['x', 'y', 'z'] },
@@ -203,13 +204,15 @@ AFrame.registerComponent('better-wasd-controls', {
   },
 
   attachKeyEventListeners() {
-    window.addEventListener('keydown', this.onKeyDown);
-    window.addEventListener('keyup', this.onKeyUp);
+    const target = this.data.embedded ? this.el.sceneEl : window;
+    target.addEventListener('keydown', this.onKeyDown);
+    target.addEventListener('keyup', this.onKeyUp);
   },
 
   removeKeyEventListeners() {
-    window.removeEventListener('keydown', this.onKeyDown);
-    window.removeEventListener('keyup', this.onKeyUp);
+    const target = this.data.embedded ? this.el.sceneEl : window;
+    target.removeEventListener('keydown', this.onKeyDown);
+    target.removeEventListener('keyup', this.onKeyUp);
   },
 
   onBlur() {
@@ -229,7 +232,7 @@ AFrame.registerComponent('better-wasd-controls', {
   },
 
   onKeyDown(event) {
-    if (!shouldCaptureKeyEvent(event)) {
+    if (!this.data.embedded && !shouldCaptureKeyEvent(event)) {
       return;
     }
 
