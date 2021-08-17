@@ -11,51 +11,51 @@ import { getSelectedUAVId } from '~/features/ui/selectors';
 
 import * as commands from './commands';
 
-const createMessageDispatcherThunkFactory = ({ factory, confirmation }) => (
-  ...args
-) => {
-  const thunk = (dispatch, getState) => {
-    const state = getState();
-    const selectedId = getSelectedUAVId(state);
-    if (!isNil(selectedId) && !isValidMAVLinkId(selectedId)) {
-      return;
-    }
+const createMessageDispatcherThunkFactory =
+  ({ factory, confirmation }) =>
+  (...args) => {
+    const thunk = (dispatch, getState) => {
+      const state = getState();
+      const selectedId = getSelectedUAVId(state);
+      if (!isNil(selectedId) && !isValidMAVLinkId(selectedId)) {
+        return;
+      }
 
-    const isBroadcast = isNil(selectedId);
+      const isBroadcast = isNil(selectedId);
 
-    const message = { ...factory(...args) };
-    if (!isBroadcast) {
-      message.to = selectedId;
-    }
+      const message = { ...factory(...args) };
+      if (!isBroadcast) {
+        message.to = selectedId;
+      }
 
-    const action = sendMessage(message);
-    const needsConfirmation = isBroadcast
-      ? getBroadcastCommandRequiresConfirmation(state)
-      : getUnicastCommandRequiresConfirmation(state);
+      const action = sendMessage(message);
+      const needsConfirmation = isBroadcast
+        ? getBroadcastCommandRequiresConfirmation(state)
+        : getUnicastCommandRequiresConfirmation(state);
 
-    if (needsConfirmation && confirmation) {
-      const text =
-        typeof confirmation === 'function'
-          ? confirmation(selectedId, args)
-          : confirmation;
+      if (needsConfirmation && confirmation) {
+        const text =
+          typeof confirmation === 'function'
+            ? confirmation(selectedId, args)
+            : confirmation;
 
-      dispatch(
-        requestConfirmation({
-          title: 'Are you sure?',
-          message: {
-            text,
-            format: 'markdown',
-          },
-          action,
-        })
-      );
-    } else {
-      dispatch(action);
-    }
+        dispatch(
+          requestConfirmation({
+            title: 'Are you sure?',
+            message: {
+              text,
+              format: 'markdown',
+            },
+            action,
+          })
+        );
+      } else {
+        dispatch(action);
+      }
+    };
+
+    return thunk;
   };
-
-  return thunk;
-};
 
 const getConfirmationMessageForFlightMode = (modeNumber, id) => {
   const isBroadcast = isNil(id);

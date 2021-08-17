@@ -7,46 +7,49 @@ const isDeltaValid = (delta) =>
  * Creates a reducer function that manages a caret index in a collection
  * containing a given number of items.
  */
-const createCaretIndexReducer = ({ itemCount, onChanged }) => (
-  state,
-  action
-) => {
-  const isIndexValid = (index) =>
-    typeof index === 'number' &&
-    Number.isFinite(index) &&
-    index >= 0 &&
-    index < itemCount;
+const createCaretIndexReducer =
+  ({ itemCount, onChanged }) =>
+  (state, action) => {
+    const isIndexValid = (index) =>
+      typeof index === 'number' &&
+      Number.isFinite(index) &&
+      index >= 0 &&
+      index < itemCount;
 
-  const { type, payload } = action;
-  let delta;
-  let newIndex;
-  let newState;
+    const { type, payload } = action;
+    let delta;
+    let newIndex;
+    let newState;
 
-  switch (type) {
-    case 'clear':
-      newState = -1;
-      break;
+    switch (type) {
+      case 'clear':
+        newState = -1;
+        break;
 
-    case 'set':
-      newState = isIndexValid(payload) || payload === -1 ? payload : state;
-      break;
+      case 'set':
+        newState = isIndexValid(payload) || payload === -1 ? payload : state;
+        break;
 
-    case 'adjust':
-      delta = typeof payload === 'function' ? payload(state) : payload;
-      newIndex = isDeltaValid(delta) ? (state < 0 ? 0 : state + delta) : state;
-      newState = isIndexValid(newIndex) ? newIndex : state;
-      break;
+      case 'adjust':
+        delta = typeof payload === 'function' ? payload(state) : payload;
+        newIndex = isDeltaValid(delta)
+          ? state < 0
+            ? 0
+            : state + delta
+          : state;
+        newState = isIndexValid(newIndex) ? newIndex : state;
+        break;
 
-    default:
-      newState = state;
-  }
+      default:
+        newState = state;
+    }
 
-  if (onChanged && newState !== state) {
-    onChanged(newState, state);
-  }
+    if (onChanged && newState !== state) {
+      onChanged(newState, state);
+    }
 
-  return newState;
-};
+    return newState;
+  };
 
 /**
  * Hook that takes an item count and returns a state variable containing the

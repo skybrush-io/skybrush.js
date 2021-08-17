@@ -90,10 +90,12 @@ export default connect(
   // mapDispatchToProps
   {
     onClose: closeOutputDeviceDialog,
-    onSubmit: (...args) => async (dispatch) => {
-      await tryConnectToOutputDevice(...args);
-      dispatch(setPreferredOutputDevice(...args));
-      dispatch(closeOutputDeviceDialog());
-    },
+    onSubmit:
+      (...args) =>
+      async (dispatch) => {
+        await tryConnectToOutputDevice(...args);
+        dispatch(setPreferredOutputDevice(...args));
+        dispatch(closeOutputDeviceDialog());
+      },
   }
 )(OutputDeviceDialog);

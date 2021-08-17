@@ -27,7 +27,7 @@
     "babel": true
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.6.0",
+    "@reduxjs/toolkit": "^1.6.1",
     "immer": "^9.0.5",
     "is-promise": "^4.0.0",
     "localforage": "^1.9.0",

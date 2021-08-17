@@ -1,7 +1,7 @@
+const test = require('ava');
+
 const { createTrajectoryPlayer } = require('..');
 const { shuffle } = require('../lib/utils');
-
-const test = require('ava');
 
 const trajectory = {
   version: 1,
@@ -46,12 +46,14 @@ const trajectory = {
   ],
 };
 
-const almostEquals = (t) => (value, expected, eps = 1e-5) => {
-  const message = `Points do not match, expected [${expected}], got [${value}]`;
-  t.assert(Math.abs(value[0] - expected[0]) < eps, message);
-  t.assert(Math.abs(value[1] - expected[1]) < eps, message);
-  t.assert(Math.abs(value[2] - expected[2]) < eps, message);
-};
+const almostEquals =
+  (t) =>
+  (value, expected, eps = 1e-5) => {
+    const message = `Points do not match, expected [${expected}], got [${value}]`;
+    t.assert(Math.abs(value[0] - expected[0]) < eps, message);
+    t.assert(Math.abs(value[1] - expected[1]) < eps, message);
+    t.assert(Math.abs(value[2] - expected[2]) < eps, message);
+  };
 
 /* ************************************************************************ */
 /* Tests related to evaluating the trajectory at a given point              */
@@ -147,23 +149,7 @@ test('trajectory evaluation, first and second curve', (t) => {
   const eq = almostEquals(t);
 
   const ts = [
-    12,
-    14,
-    16,
-    18,
-    20,
-    22,
-    24,
-    26,
-    28,
-    30,
-    32,
-    34,
-    36,
-    38,
-    40,
-    42,
-    44,
+    12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44,
   ];
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
@@ -343,22 +329,7 @@ test('velocity evaluation, first and second curve', (t) => {
   const eq = almostEquals(t);
 
   const ts = [
-    12,
-    14,
-    16,
-    18,
-    20,
-    22,
-    24,
-    26,
-    28,
-    30,
-    32,
-    34,
-    36,
-    38,
-    40,
-    42,
+    12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42,
     // 44 left out because the left and the right velocities are not equal
   ];
   for (const t of ts) {

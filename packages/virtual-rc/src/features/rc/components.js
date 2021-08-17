@@ -38,9 +38,10 @@ export const RCChannelDisplay = connect(
 export const RCOutputManager = () => {
   const store = useStore();
   const enabled = useSelector(isRCPowerSwitchOn);
-  const getter = useCallback(() => getRCChannelValues(store.getState()), [
-    store,
-  ]);
+  const getter = useCallback(
+    () => getRCChannelValues(store.getState()),
+    [store]
+  );
   const sender = window.bridge.sendRCChannelValues;
 
   return React.createElement(RCOutputManager_, {
