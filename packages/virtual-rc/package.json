@@ -53,7 +53,7 @@
     "typeface-fira-sans": "1.1.13"
   },
   "devDependencies": {
-    "css-loader": "^5.2.6",
+    "css-loader": "^6.2.0",
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
     "style-loader": "^3.2.1"

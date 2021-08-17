@@ -37,6 +37,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       ReactDOM: 'react-dom',
       React: 'react',
+      process: 'process/browser',
     }),
 
     // Resolve process.env in the code; ; the object below provides the
@@ -67,6 +68,7 @@ module.exports = {
     },
     extensions: ['.webpack.js', '.web.js', '.js', '.jsx', '.json'],
     fallback: {
+      assert: require.resolve('assert'),
       crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
     },
