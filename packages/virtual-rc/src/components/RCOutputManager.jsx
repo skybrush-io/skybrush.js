@@ -29,7 +29,7 @@ RCOutputMainLoop.propTypes = {
 };
 
 RCOutputMainLoop.defaultProps = {
-  fps: 10,
+  fps: 25,
 };
 
 const RCOutputManager = ({ enabled, ...props }) =>
