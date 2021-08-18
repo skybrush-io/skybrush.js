@@ -1,3 +1,4 @@
+const { Buffer } = require('buffer');
 const dgram = require('dgram');
 const { MAX_RC_CHANNEL_COUNT } = require('../../constants');
 
