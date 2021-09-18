@@ -1,14 +1,9 @@
 const { contextBridge } = require('electron');
 const { ipcRenderer: ipc } = require('electron-better-ipc');
-const unhandled = require('electron-unhandled');
 const createStorageEngine = require('redux-persist-electron-storage');
 
 const setupIpc = require('./ipc');
 const createServerConnection = require('./server');
-
-unhandled({
-  logger: (error) => console.error(error.stack),
-});
 
 /**
  * Creates a Redux state store object that stores the Redux state in an

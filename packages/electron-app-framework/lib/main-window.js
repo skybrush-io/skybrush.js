@@ -79,9 +79,6 @@ const createMainWindowFactory = ({
       ...rest,
       webPreferences: {
         contextIsolation: true,
-        enableRemoteModule: true, // electron-unhandled still uses it
-        worldSafeExecuteJavaScript: true,
-
         ...webPreferences,
       },
     });

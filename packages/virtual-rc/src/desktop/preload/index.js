@@ -1,12 +1,7 @@
 const { contextBridge } = require('electron');
-const unhandled = require('electron-unhandled');
 const createStorageEngine = require('redux-persist-electron-storage');
 
 const createUdpOutput = require('./udp-output');
-
-unhandled({
-  logger: (error) => console.error(error.stack),
-});
 
 /**
  * Creates a Redux state store object that stores the Redux state in an
