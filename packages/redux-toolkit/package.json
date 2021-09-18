@@ -30,7 +30,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "immer": "^9.0.6",
     "is-promise": "^4.0.0",
-    "localforage": "^1.9.0",
+    "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
     "natural-orderby": "^2.0.3",
     "p-defer": "^4.0.0",
