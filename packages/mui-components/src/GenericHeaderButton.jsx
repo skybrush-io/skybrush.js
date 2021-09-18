@@ -91,8 +91,8 @@ export const GenericHeaderButton = React.forwardRef(
 GenericHeaderButton.propTypes = {
   children: PropTypes.node,
   disabled: PropTypes.bool,
-  label: PropTypes.string,
-  secondaryLabel: PropTypes.string,
+  label: PropTypes.node,
+  secondaryLabel: PropTypes.node,
   tooltip: PropTypes.string,
 };
 
