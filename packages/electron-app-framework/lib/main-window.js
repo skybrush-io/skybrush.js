@@ -79,6 +79,7 @@ const createMainWindowFactory = ({
       ...rest,
       webPreferences: {
         contextIsolation: true,
+        nativeWindowOpen: true,
         ...webPreferences,
       },
     });
