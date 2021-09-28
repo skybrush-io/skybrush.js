@@ -55,6 +55,6 @@
     "css-loader": "^6.3.0",
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
-    "style-loader": "^3.2.1"
+    "style-loader": "^3.3.0"
   }
 }
