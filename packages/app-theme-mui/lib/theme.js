@@ -6,7 +6,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { blue, lightBlue, orange, blueGrey } from '@mui/material/colors';
-import { ThemeProvider, StyledEngineProvider, adaptV4Theme, createTheme } from '@mui/material/styles';
+import {
+  ThemeProvider,
+  StyledEngineProvider,
+  adaptV4Theme,
+  createTheme,
+} from '@mui/material/styles';
 
 import { Colors } from './colors';
 import { defaultFont } from './fonts';
@@ -93,55 +98,57 @@ export const createThemeProvider = ({
     const isThemeDark = (type === 'auto' && osHasDarkMode) || type === 'dark';
 
     // Create the Material-UI theme that we are going to use
-    const theme = createTheme(adaptV4Theme({
-      palette: {
-        type: isThemeDark ? 'dark' : 'light',
-        primary:
-          typeof primaryColor === 'function'
-            ? primaryColor(isThemeDark)
-            : primaryColor,
-        secondary:
-          typeof secondaryColor === 'function'
-            ? secondaryColor(isThemeDark)
-            : secondaryColor,
+    const theme = createTheme(
+      adaptV4Theme({
+        palette: {
+          type: isThemeDark ? 'dark' : 'light',
+          primary:
+            typeof primaryColor === 'function'
+              ? primaryColor(isThemeDark)
+              : primaryColor,
+          secondary:
+            typeof secondaryColor === 'function'
+              ? secondaryColor(isThemeDark)
+              : secondaryColor,
 
-        success: {
-          main: Colors.success,
-        },
-      },
-
-      typography: {
-        fontFamily: defaultFont,
-        fontSize: 14,
-      },
-
-      overrides: {
-        MuiList: {
-          root: {
-            background: isThemeDark ? '#424242' : '#fff',
+          success: {
+            main: Colors.success,
           },
         },
 
-        MuiTab: {
-          root: {
-            minWidth: 80,
+        typography: {
+          fontFamily: defaultFont,
+          fontSize: 14,
+        },
+
+        overrides: {
+          MuiList: {
+            root: {
+              background: isThemeDark ? '#424242' : '#fff',
+            },
+          },
+
+          MuiTab: {
+            root: {
+              minWidth: 80,
+            },
           },
         },
-      },
 
-      // Customize z indices to ensure that react-toast-notifications appear
-      // above Material-UI stuff. (react-toast-notifications has a Z index of
-      // 1000 and it is hard to customize)
-      zIndex: {
-        mobileStepper: 600,
-        speedDial: 650,
-        appBar: 700,
-        drawer: 800,
-        modal: 900,
-        snackbar: 1000,
-        tooltip: 1100,
-      },
-    }));
+        // Customize z indices to ensure that react-toast-notifications appear
+        // above Material-UI stuff. (react-toast-notifications has a Z index of
+        // 1000 and it is hard to customize)
+        zIndex: {
+          mobileStepper: 600,
+          speedDial: 650,
+          appBar: 700,
+          drawer: 800,
+          modal: 900,
+          snackbar: 1000,
+          tooltip: 1100,
+        },
+      })
+    );
 
     /* Request from Ubi and Soma: selection should have more contrast; 0.08 is
      * the default */
