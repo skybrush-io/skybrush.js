@@ -1,45 +1,40 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Slider from '@material-ui/core/Slider';
-import { makeStyles } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Slider from '@mui/material/Slider';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => ({
-  label: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    lineHeight: '28px',
-    overflow: 'hidden',
-    margin: theme.spacing(0, 0.5),
-    textAlign: 'right',
-    textTransform: 'uppercase',
-    whiteSpace: 'nowrap',
-  },
+const StyledLabel = styled(Box)(({ theme }) => ({
+  alignItems: 'center',
+  flexDirection: 'row',
+  lineHeight: '28px',
+  overflow: 'hidden',
+  margin: theme.spacing(0, 0.5),
+  textAlign: 'right',
+  textTransform: 'uppercase',
+  whiteSpace: 'nowrap',
 }));
 
-const RCSlider = ({ label, ...rest }) => {
-  const classes = useStyles();
-  return (
-    <>
-      <Grid item xs={2} sm={1}>
-        <Box className={classes.label}>{label}</Box>
-      </Grid>
-      <Grid item xs={4} sm={2}>
-        <Box
-          height='100%'
-          display='flex'
-          flexDirection='row'
-          alignItems='center'
-          px={1}
-        >
-          <Slider {...rest} />
-        </Box>
-      </Grid>
-    </>
-  );
-};
+const RCSlider = ({ label, ...rest }) => (
+  <>
+    <Grid item xs={2} sm={1}>
+      <StyledLabel>{label}</StyledLabel>
+    </Grid>
+    <Grid item xs={4} sm={2}>
+      <Box
+        height='100%'
+        display='flex'
+        flexDirection='row'
+        alignItems='center'
+        px={1}
+      >
+        <Slider {...rest} />
+      </Box>
+    </Grid>
+  </>
+);
 
 RCSlider.propTypes = {
   label: PropTypes.string,
@@ -63,6 +58,7 @@ const RCChannelDisplay = ({ labels, onChangeChannel, values, ...rest }) => (
         <RCSlider
           key={index}
           label={item}
+          size='small'
           value={values[index]}
           onChange={createChangeHandler(onChangeChannel, index)}
         />

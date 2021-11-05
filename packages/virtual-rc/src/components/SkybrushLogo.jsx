@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { isThemeDark } from '@skybrush/app-theme-material-ui';
+import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import { isThemeDark } from '@skybrush/app-theme-mui';
 
 import lightLogo from '~/../assets/img/logo.png';
 import darkLogo from '~/../assets/img/logo-dark.png';
@@ -12,20 +12,16 @@ const logos = {
   dark: darkLogo,
 };
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-  },
-});
-
 const SkybrushLogo = React.memo(({ height, style, url, width, ...rest }) => {
-  const classes = useStyles();
   const theme = useTheme();
   const imageStyle = {};
-  const boxStyle = { ...style };
+  const boxStyle = {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    ...style,
+  };
   const navigateToUrl = url
     ? () => {
         window.location.href = url;
@@ -45,12 +41,7 @@ const SkybrushLogo = React.memo(({ height, style, url, width, ...rest }) => {
   }
 
   return (
-    <Box
-      className={classes.root}
-      style={boxStyle}
-      onClick={navigateToUrl}
-      {...rest}
-    >
+    <Box style={boxStyle} onClick={navigateToUrl} {...rest}>
       <img
         src={isThemeDark(theme) ? logos.dark : logos.light}
         alt='Skybrush Virtual RC'

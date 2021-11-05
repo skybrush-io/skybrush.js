@@ -1,7 +1,9 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 import { InputManager } from './features/inputs/components';
 import { RCOutputManager } from './features/rc/components';
@@ -15,14 +17,16 @@ require('typeface-fira-sans');
 
 const App = () => (
   <StoreProvider store={store}>
-    <ThemeProvider>
-      <PersistGate persistor={persistor}>
-        <CssBaseline />
-        <TopLevelView />
-        <InputManager />
-        <RCOutputManager />
-      </PersistGate>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider>
+        <PersistGate persistor={persistor}>
+          <CssBaseline />
+          <TopLevelView />
+          <InputManager />
+          <RCOutputManager />
+        </PersistGate>
+      </ThemeProvider>
+    </StyledEngineProvider>
   </StoreProvider>
 );
 

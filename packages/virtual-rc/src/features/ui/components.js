@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import GamepadIcon from '@material-ui/icons/SportsEsports';
-import RemoteIcon from '@material-ui/icons/SettingsRemote';
+import GamepadIcon from '@mui/icons-material/SportsEsports';
+import RemoteIcon from '@mui/icons-material/SettingsRemote';
 
 import HorizontalButtonBar from '../../components/HorizontalButtonBar';
 

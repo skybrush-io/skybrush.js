@@ -3,9 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup } from 'react-transition-group';
 
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 
-import { FadeAndSlide } from '@skybrush/app-theme-material-ui/lib/transitions';
+import { FadeAndSlide } from '@skybrush/app-theme-mui/lib/transitions';
 
 import { RCChannelDisplay } from '../features/rc/components';
 import { getCurrentScreen } from '../features/ui/selectors';
