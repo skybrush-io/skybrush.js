@@ -1,4 +1,4 @@
-const setImmediate = require('core-js-pure/features/set-immediate');
+const setImmediate = require('core-js/features/set-immediate');
 
 /**
  * Async function that blocks until the next idle cycle of the browser or the
