@@ -11,13 +11,10 @@ import { Transition } from 'react-transition-group';
 import { elementAcceptingRef } from '@mui/utils';
 import { duration } from '@mui/material/styles/createTransitions';
 import useTheme from '@mui/material/styles/useTheme';
-import {
-  reflow,
-  getTransitionProps,
-} from '@mui/material/transitions/utils';
+import { reflow, getTransitionProps } from '@mui/material/transitions/utils';
 import useForkRef from '@mui/material/utils/useForkRef';
 
-const styles = {
+const transitionStyles = {
   up: {
     entering: {
       opacity: 1,
@@ -124,7 +121,7 @@ const FadeAndSlide = React.forwardRef((props, ref) => {
 
   const enableStrictModeCompat = true;
   const nodeRef = React.useRef(null);
-  const foreigneRef = useForkRef(children.ref, ref);
+  const foreignRef = useForkRef(children.ref, ref);
   const handleRef = useForkRef(nodeRef, foreignRef);
   const transitionStyle = transitionStyles[direction];
 
@@ -171,7 +168,7 @@ const FadeAndSlide = React.forwardRef((props, ref) => {
 
   const handleExiting = normalizedTransitionCallback(onExiting);
 
-  const handleExit = (node) => {
+  const handleExit = normalizedTransitionCallback((node) => {
     const transitionProps = getTransitionProps(
       { style, timeout, easing },
       {
@@ -191,7 +188,7 @@ const FadeAndSlide = React.forwardRef((props, ref) => {
     if (onExit) {
       onExit(node);
     }
-  };
+  });
 
   const handleExited = normalizedTransitionCallback(onExited);
 
@@ -299,7 +296,11 @@ FadeAndSlide.propTypes = {
    */
   timeout: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.shape({ appear: PropTypes.number, enter: PropTypes.number, exit: PropTypes.number }),
+    PropTypes.shape({
+      appear: PropTypes.number,
+      enter: PropTypes.number,
+      exit: PropTypes.number,
+    }),
   ]),
 };
 
