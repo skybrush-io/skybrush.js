@@ -92,6 +92,8 @@ export const createThemeProvider = ({
     const osHasDarkMode = useDarkMode();
     const isThemeDark = (type === 'auto' && osHasDarkMode) || type === 'dark';
 
+    const muiV4Compat = (props) => props;
+
     // Create the Material-UI theme that we are going to use
     const baseTheme = createTheme({
       palette: {
@@ -201,7 +203,20 @@ export const createThemeProvider = ({
               },
             },
           ],
+
+          ...muiV4Compat({
+            defaultProps: {
+              color: 'grey',
+            },
+          }),
         },
+
+        // Checkboxes should use the secondary color by default (Material UI v4 compatibility)
+        MuiCheckbox: muiV4Compat({
+          defaultProps: {
+            color: 'secondary',
+          },
+        }),
 
         // Override list background
         MuiList: {
@@ -212,6 +227,24 @@ export const createThemeProvider = ({
           },
         },
 
+        // MUI 5 lightens the background of MuiPaper when the elevation
+        // increases, which tints the UI in an undesired manner if the theme
+        // was originally designed for MUI 4.
+        MuiPaper: muiV4Compat({
+          styleOverrides: {
+            root: {
+              backgroundImage: 'none',
+            },
+          },
+        }),
+
+        // Radio buttons should use the secondary color by default (Material UI v4 compatibility)
+        MuiRadio: muiV4Compat({
+          defaultProps: {
+            color: 'secondary',
+          },
+        }),
+
         // Decrease tab width
         MuiTab: {
           styleOverrides: {
@@ -220,6 +253,36 @@ export const createThemeProvider = ({
             },
           },
         },
+
+        // Tabs should use the secondary color by default for the indicator
+        // and plain white for the text (Material UI v4 compatibility)
+        MuiTabs: muiV4Compat({
+          defaultProps: {
+            indicatorColor: 'secondary',
+            textColor: 'inherit',
+          },
+        }),
+
+        // Captions should be mapped to a <div> tag, not to a <span>
+        // (Material UI v4 compatibility)
+        MuiTypography: muiV4Compat({
+          defaultProps: {
+            variantMapping: {
+              h1: 'h1',
+              h2: 'h2',
+              h3: 'h3',
+              h4: 'h4',
+              h5: 'h5',
+              h6: 'h6',
+              subtitle1: 'h6',
+              subtitle2: 'h6',
+              body1: 'p',
+              body2: 'p',
+              caption: 'div',
+              inherit: 'p',
+            },
+          },
+        }),
       },
     });
 
