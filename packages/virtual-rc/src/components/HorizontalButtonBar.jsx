@@ -20,7 +20,6 @@ const HorizontalButtonBar = ({ buttons, onClick }) => (
     {buttons.map((button) => (
       <Button
         key={button.id}
-        color='grey'
         disabled={button.disabled}
         startIcon={button.icon}
         onClick={() => onClick(button.id)}
