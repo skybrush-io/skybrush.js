@@ -2,17 +2,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Draggable from 'react-draggable';
 
-import Box from '@material-ui/core/Box';
-import Dialog from '@material-ui/core/Dialog';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
-import { createSecondaryAreaStyle } from '@skybrush/app-theme-material-ui';
+import { createSecondaryAreaStyle } from '@skybrush/app-theme-mui';
 
 import DialogToolbar from './DialogToolbar';
 
-const PaperComponent = (props) => (
+const DraggablePaper = (props) => (
   <Draggable
     handle='#draggable-dialog-title'
     cancel={'[class*="MuiDialogContent-root"]'}
@@ -21,21 +21,15 @@ const PaperComponent = (props) => (
   </Draggable>
 );
 
-const useStyles = makeStyles(
-  (theme) => ({
-    sidebar: {
-      ...createSecondaryAreaStyle(theme, { inset: 'right' }),
-      display: 'flex',
-    },
+const styles = {
+  draggableTitle: {
+    flex: 1,
+    cursor: 'move',
+  },
+};
 
-    draggableTitle: {
-      flex: 1,
-      cursor: 'move',
-    },
-  }),
-  {
-    name: 'DraggableDialog',
-  }
+const DraggableDialogSidebar = styled('div')(({ theme }) =>
+  createSecondaryAreaStyle(theme, { inset: 'right' })
 );
 
 const DraggableDialog = ({
@@ -46,8 +40,6 @@ const DraggableDialog = ({
   toolbarComponent,
   ...rest
 }) => {
-  const classes = useStyles();
-
   const titleTypography = (
     <Typography noWrap variant='subtitle1'>
       {title}
@@ -65,16 +57,13 @@ const DraggableDialog = ({
     <>
       {titleComponents ? (
         <DialogToolbar>
-          <Box className={classes.draggableTitle} id='draggable-dialog-title'>
+          <Box sx={styles.draggableTitle} id='draggable-dialog-title'>
             {titleTypography}
           </Box>
           {titleComponents}
         </DialogToolbar>
       ) : (
-        <DialogToolbar
-          className={classes.draggableTitle}
-          id='draggable-dialog-title'
-        >
+        <DialogToolbar sx={styles.draggableTitle} id='draggable-dialog-title'>
           {titleTypography}
         </DialogToolbar>
       )}
@@ -83,10 +72,10 @@ const DraggableDialog = ({
   );
 
   return (
-    <Dialog PaperComponent={PaperComponent} {...rest}>
+    <Dialog PaperComponent={DraggablePaper} {...rest}>
       {sidebarComponents ? (
         <Box display='flex' flexDirection='row' alignItems='stretch'>
-          <Box className={classes.sidebar}>{sidebarComponents}</Box>
+          <DraggableDialogSidebar>{sidebarComponents}</DraggableDialogSidebar>
           <Box flex={1} overflow='auto'>
             {dialogBody}
           </Box>

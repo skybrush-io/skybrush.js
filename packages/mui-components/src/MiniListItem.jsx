@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Box from '@material-ui/core/Box';
-import ListItem from '@material-ui/core/ListItem';
+import Box from '@mui/material/Box';
+import ListItem from '@mui/material/ListItem';
 
 import MiniListItemIcon from './MiniListItemIcon';
 

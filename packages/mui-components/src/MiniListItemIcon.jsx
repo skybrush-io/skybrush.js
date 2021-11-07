@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { colorForStatus, Status } from '@skybrush/app-theme-material-ui';
+import { colorForStatus, Status } from '@skybrush/app-theme-mui';
 
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ActionDone from '@material-ui/icons/Done';
-import ActionSettingsEthernet from '@material-ui/icons/SettingsEthernet';
-import ContentClear from '@material-ui/icons/Clear';
-import PriorityHigh from '@material-ui/icons/PriorityHigh';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ActionDone from '@mui/icons-material/Done';
+import ActionSettingsEthernet from '@mui/icons-material/SettingsEthernet';
+import ContentClear from '@mui/icons-material/Clear';
+import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
 const presets = {
   connected: {

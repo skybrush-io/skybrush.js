@@ -30,24 +30,29 @@
     "babel": true
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.10",
-    "react": "^16.13 || ^17",
-    "react-dom": "^16.8 || ^17"
+    "@mui/icons-material": "^5",
+    "@mui/material": "^5",
+    "@mui/styled-engine": "^5",
+    "react": "^17",
+    "react-dom": "^17"
   },
   "dependencies": {
-    "@material-ui/icons": "^4.11.2",
-    "@skybrush/app-theme-material-ui": "^1.2.7",
+    "@skybrush/app-theme-mui": "^1.0.0",
     "@tippyjs/react": "^4.2.6",
     "clsx": "^1.1.1",
     "color": "^4.0.1",
     "prop-types": "^15.7.2",
     "react-badger": "^2.0.8",
     "react-draggable": "^4.4.4",
-    "tippy.js": "^6.3.4",
+    "tippy.js": "^6.3.5",
     "use-async-effect": "^2.2.3"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.12.1",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.0.5",
+    "@mui/material": "^5.0.6",
+    "@mui/styled-engine": "^5.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }

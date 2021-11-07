@@ -6,21 +6,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    width: '100%',
-    height: '100%',
-    userSelect: 'none',
-  },
-});
+const style = {
+  display: 'flex',
+  alignItems: 'center',
+  color: 'text.secondary',
+  fontSize: 'fontSize',
+  justifyContent: 'center',
+  textAlign: 'center',
+  width: '100%',
+  height: '100%',
+  userSelect: 'none',
+};
 
 /**
  * Component that gives a hint to the user about the usage of the
@@ -32,8 +31,6 @@ const useStyles = makeStyles({
  * @return {Object} the rendered component
  */
 const BackgroundHint = ({ button, header, icon, iconColor, text, ...rest }) => {
-  const classes = useStyles();
-
   const iconStyle = icon
     ? {
         fontSize: 48,
@@ -45,7 +42,7 @@ const BackgroundHint = ({ button, header, icon, iconColor, text, ...rest }) => {
   }
 
   return (
-    <Box color='text.secondary' className={classes.root} {...rest}>
+    <Box sx={style} {...rest}>
       <div>
         {icon && (
           <Box pb={2}>{React.cloneElement(icon, { style: iconStyle })}</Box>

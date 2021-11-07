@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Box from '@material-ui/core/Box';
-import Portal from '@material-ui/core/Portal';
-import { makeStyles } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import Portal from '@mui/material/Portal';
 
-import { isThemeDark } from '@skybrush/app-theme-material-ui';
+import { isThemeDark } from '@skybrush/app-theme-mui';
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     pointerEvents: 'none',
     position: 'absolute',
@@ -15,38 +14,34 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     right: 0,
     bottom: 0,
+    zIndex: 'tooltip',
   },
 
   inner: {
     backdropFilter: 'blur(16px)',
-    backgroundColor: isThemeDark(theme)
-      ? 'rgba(0, 0, 0, 0.5)'
-      : 'rgba(255, 255, 255, 0.5)',
-    borderRadius: 16,
+    backgroundColor: (theme) =>
+      isThemeDark(theme) ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 4,
     boxShadow: '0 0 32px rgba(0, 0, 0, 0.6)',
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     minWidth: 300,
-    padding: theme.spacing(2),
-    fontSize: theme.typography.h1.fontSize,
+    padding: 2,
+    fontSize: 'h1.fontSize',
     textAlign: 'center',
   },
-}));
-
-const QuickSelectionOverlay = ({ text, open }) => {
-  const classes = useStyles();
-  return (
-    open && (
-      <Portal>
-        <Box className={classes.root} zIndex='tooltip'>
-          <Box className={classes.inner}>{text}</Box>
-        </Box>
-      </Portal>
-    )
-  );
 };
+
+const QuickSelectionOverlay = ({ text, open }) =>
+  open && (
+    <Portal>
+      <Box sx={styles.root}>
+        <Box sx={styles.inner}>{text}</Box>
+      </Box>
+    </Portal>
+  );
 
 QuickSelectionOverlay.propTypes = {
   open: PropTypes.bool,

@@ -1,7 +1,7 @@
 import React from 'react';
 import Tippy from '@tippyjs/react';
 
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light-border.css';
@@ -13,7 +13,7 @@ import 'tippy.js/themes/light-border.css';
 const Tooltip = (props) => {
   const appTheme = useTheme();
   const tippyTheme =
-    appTheme.palette.type === 'dark' ? 'dark-border' : 'light-border';
+    appTheme.palette.mode === 'dark' ? 'dark-border' : 'light-border';
   return <Tippy theme={tippyTheme} {...props} />;
 };
 

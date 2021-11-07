@@ -1,83 +1,69 @@
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 import Tooltip from './Tooltip';
 
-const useStyles = makeStyles(
-  (theme) => ({
-    root: {
-      color: 'white',
-      cursor: 'default',
-      minWidth: 48,
-      padding: theme.spacing(0.5, 1),
-      textOverflow: 'ellipsis',
-      textShadow: '0px 1px 2px rgba(0, 0, 0, 0.65)',
+const GenericHeaderButtonBase = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'disabled',
+})(({ disabled, theme }) => ({
+  color: 'white',
+  cursor: 'default',
+  minWidth: 48,
+  opacity: disabled ? 0.25 : 1,
+  padding: theme.spacing(0.5, 1),
+  textOverflow: 'ellipsis',
+  textShadow: '0px 1px 2px rgba(0, 0, 0, 0.65)',
 
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'relative',
 
-      '&:hover': {
-        background: 'linear-gradient(to bottom, #06c 0%, #25a 100%)',
-      },
-    },
+  '&:hover': {
+    background: disabled
+      ? 'none'
+      : 'linear-gradient(to bottom, #06c 0%, #25a 100%)',
+  },
 
-    disabled: {
-      opacity: 0.25,
-      '&:hover': {
-        background: 'none !important',
-      },
-    },
+  '& span.GenericHeaderButton-icon': {
+    lineHeight: 0,
+  },
 
-    icon: {
-      lineHeight: 0,
-    },
+  '& span.GenericHeaderButton-label': {
+    margin: theme.spacing(0, 0.5, 0, 1),
+    userSelect: 'none',
+  },
 
-    label: {
-      margin: theme.spacing(0, 0.5, 0, 1),
-      userSelect: 'none',
-    },
-
-    secondaryLabel: {
-      color: 'rgba(255, 255, 255, 0.54)',
-      userSelect: 'none',
-      whiteSpace: 'nowrap',
-    },
-  }),
-  {
-    name: 'GenericHeaderButton',
-  }
-);
+  '& span.GenericHeaderButton-secondaryLabel': {
+    color: 'rgba(255, 255, 255, 0.54)',
+    userSelect: 'none',
+    whiteSpace: 'nowrap',
+  },
+}));
 
 export const GenericHeaderButton = React.forwardRef(
   ({ children, disabled, label, secondaryLabel, tooltip, ...rest }, ref) => {
-    const classes = useStyles();
-
     const result = (
-      <div
-        ref={ref}
-        className={clsx(classes.root, disabled && classes.disabled)}
-        {...rest}
-      >
-        <span className={classes.icon}>{children}</span>
+      <GenericHeaderButtonBase ref={ref} disabled={disabled} {...rest}>
+        <span className='GenericHeaderButton-icon'>{children}</span>
         {label && (
-          <span className={classes.label}>
+          <span className='GenericHeaderButton-label'>
             {secondaryLabel ? (
               <>
                 {label}
                 <br />
-                <span className={classes.secondaryLabel}>{secondaryLabel}</span>
+                <span className='GenericHeaderButton-secondaryLabel'>
+                  {secondaryLabel}
+                </span>
               </>
             ) : (
               label
             )}
           </span>
         )}
-      </div>
+      </GenericHeaderButtonBase>
     );
 
     if (tooltip) {

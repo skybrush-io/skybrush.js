@@ -1,97 +1,67 @@
-import clsx from 'clsx';
-import createColor from 'color';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  colorForStatus,
-  Colors,
-  Status,
-} from '@skybrush/app-theme-material-ui';
+import Avatar from '@mui/material/Avatar';
+import { styled } from '@mui/material/styles';
 
-const createStyleForStatus = (status, theme, { glow } = {}) => {
-  const backgroundColor = colorForStatus(status);
-  const result = {
-    backgroundColor,
-    color: theme.palette.getContrastText(backgroundColor),
-  };
+import { colorForStatus, Status } from '@skybrush/app-theme-mui';
 
-  if (glow) {
-    result.boxShadow = `0 0 8px 2px ${backgroundColor}`;
-  }
+import { fade, flash } from './keyframes';
+import { createStyleForStatus } from './styles';
 
-  return result;
-};
+const StyledAvatar = styled(Avatar)(({ theme }) => ({
+  border: '1px solid rgba(0, 0, 0, 0.3)',
+  color: 'black',
+  margin: '0 auto',
 
-const useStyles = makeStyles(
-  (theme) => ({
-    avatar: {
-      border: '1px solid rgba(0, 0, 0, 0.3)',
-      color: 'black',
-      margin: '0 auto',
-    },
+  '&.StyledAvatar-critical': {
+    ...createStyleForStatus(Status.CRITICAL, theme, { glow: true }),
+    animation: `${flash} 0.5s infinite`,
+    animationDirection: 'alternate',
+  },
 
-    'avatar-critical': {
-      ...createStyleForStatus(Status.CRITICAL, theme, { glow: true }),
-      animation: '$flash 0.5s infinite',
-      animationDirection: 'alternate',
-    },
-    'avatar-error': createStyleForStatus(Status.ERROR, theme, { glow: true }),
-    'avatar-info': createStyleForStatus(Status.INFO, theme),
-    'avatar-next': {
-      ...createStyleForStatus(Status.NEXT, theme),
-      animation: '$pulse 0.5s infinite',
-      animationDirection: 'alternate',
-    },
-    'avatar-off': createStyleForStatus(Status.OFF, theme),
-    'avatar-rth': {
-      ...createStyleForStatus(Status.WARNING, theme, { glow: true }),
-      animation: '$flash 0.5s infinite',
-      animationDirection: 'alternate',
-    },
-    'avatar-skipped': createStyleForStatus(Status.SKIPPED, theme),
-    'avatar-success': createStyleForStatus(Status.SUCCESS, theme),
-    'avatar-waiting': createStyleForStatus(Status.WAITING, theme),
-    'avatar-warning': createStyleForStatus(Status.WARNING, theme, {
-      glow: true,
-    }),
-    'avatar-missing': createStyleForStatus(Status.MISSING, theme),
-
-    '@keyframes pulse': {
-      '0%': {
-        boxShadow: `0 0 8px 2px ${createColor(Colors.info).alpha(0)}`,
-      },
-      '100%': {
-        boxShadow: `0 0 8px 2px ${Colors.info}`,
-      },
-    },
-
-    '@keyframes flash': {
-      '0%, 49%': {
-        opacity: 0.2,
-      },
-      '50%, 100%': {
-        opacity: 1,
-      },
-    },
+  '&.StyledAvatar-error': createStyleForStatus(Status.ERROR, theme, {
+    glow: true,
   }),
-  { name: 'SemanticAvatar' }
-);
+  '&.StyledAvatar-info': createStyleForStatus(Status.INFO, theme),
+  '&.StyledAvatar-next': {
+    ...createStyleForStatus(Status.NEXT, theme),
+    overflow: 'initial', // needed to let the glow be visible around the edges
+  },
+  '&.StyledAvatar-next::after': {
+    content: '""',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    borderRadius: '50%',
+    boxShadow: `0 0 8px 2px ${colorForStatus(Status.INFO)}`,
+    animation: `${fade} 0.5s infinite`,
+    animationDirection: 'alternate',
+  },
+  '&.StyledAvatar-off': createStyleForStatus(Status.OFF, theme),
+  '&.StyledAvatar-rth': {
+    ...createStyleForStatus(Status.WARNING, theme, { glow: true }),
+    animation: `${flash} 0.5s infinite`,
+    animationDirection: 'alternate',
+  },
+  '&.StyledAvatar-skipped': createStyleForStatus(Status.SKIPPED, theme),
+  '&.StyledAvatar-success': createStyleForStatus(Status.SUCCESS, theme),
+  '&.StyledAvatar-waiting': createStyleForStatus(Status.WAITING, theme),
+  '&.StyledAvatar-warning': createStyleForStatus(Status.WARNING, theme, {
+    glow: true,
+  }),
+  '&.StyledAvatar-missing': createStyleForStatus(Status.MISSING, theme),
+}));
 
 /**
  * Avatar that represents a single drone, docking station or some other object
  * in the system that has an ID.
  */
-const SemanticAvatar = ({ children, status }) => {
-  const classes = useStyles();
-  return (
-    <Avatar className={clsx(classes.avatar, classes[`avatar-${status}`])}>
-      {children}
-    </Avatar>
-  );
-};
+const SemanticAvatar = ({ children, status }) => (
+  <StyledAvatar className={`StyledAvatar-${status}`}>{children}</StyledAvatar>
+);
 
 SemanticAvatar.propTypes = {
   children: PropTypes.node,

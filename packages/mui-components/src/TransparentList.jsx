@@ -1,5 +1,5 @@
-import List from '@material-ui/core/List';
-import { styled } from '@material-ui/core/styles';
+import List from '@mui/material/List';
+import { styled } from '@mui/material/styles';
 
 /**
  * Styled list component where the background color is set to transparent so

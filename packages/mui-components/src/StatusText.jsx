@@ -1,89 +1,42 @@
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { css, styled } from '@mui/material/styles';
+import { Colors, Status } from '@skybrush/app-theme-mui';
 
-import { Colors, Status } from '@skybrush/app-theme-material-ui';
+import { dimFlash } from './keyframes';
 
-const useStyles = makeStyles({
-  'status-info': {
-    color: Colors.info,
-  },
+const cssByColor = Object.fromEntries(
+  ['info', 'warning', 'success', 'error'].map((color) => [
+    color,
+    css({ color: Colors[color] }),
+  ])
+);
 
-  'status-waiting': {
-    color: Colors.info,
-  },
-
-  'status-next': {
-    color: Colors.info,
-  },
-
-  'status-success': {
-    color: Colors.success,
-  },
-
-  'status-skipped': {
-    color: Colors.warning,
-  },
-
-  'status-warning': {
-    color: Colors.warning,
-    fontWeight: 'bold',
-  },
-
-  'status-rth': {
-    animation: '$flash 0.5s infinite',
-    animationDirection: 'alternate',
-    color: Colors.warning,
-    fontWeight: 'bold',
-  },
-
-  'status-error': {
-    color: Colors.error,
-    fontWeight: 'bold',
-  },
-
-  'status-critical': {
-    animation: '$flash 0.5s infinite',
-    animationDirection: 'alternate',
-    color: Colors.error,
-    fontWeight: 'bold',
-  },
-
-  '@keyframes flash': {
-    '0%, 49%': {
-      opacity: 0.5,
-    },
-    '50%, 100%': {
-      opacity: 1,
-    },
-  },
+const boldCss = css({ fontWeight: 'bold' });
+const flashCss = css({
+  animation: `${dimFlash} 0.5s infinite`,
+  animationDirection: 'alternate',
 });
 
-const StatusText = ({ children, className, component, status }) => {
-  const classes = useStyles();
-  return React.createElement(
-    component,
-    {
-      className: clsx(className, status && classes['status-' + status]),
-    },
-    ...children
-  );
+const styles = {
+  info: cssByColor.info,
+  waiting: cssByColor.info,
+  next: cssByColor.info,
+  success: cssByColor.success,
+  skipped: cssByColor.warning,
+  warning: css([cssByColor.warning, boldCss]),
+  rth: css([cssByColor.warning, boldCss, flashCss]),
+  error: css([cssByColor.error, boldCss]),
+  critical: css([cssByColor.error, boldCss, flashCss]),
 };
+
+const StatusText = styled('span', {
+  shouldForwardProp: (name) => name !== 'status',
+})(({ status }) => styles[status]);
 
 StatusText.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]),
   className: PropTypes.string,
-  component: PropTypes.elementType,
   status: PropTypes.oneOf(Object.values(Status)),
-};
-
-StatusText.defaultProps = {
-  component: 'span',
 };
 
 export default StatusText;

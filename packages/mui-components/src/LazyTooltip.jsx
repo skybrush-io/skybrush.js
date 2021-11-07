@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Tippy from '@tippyjs/react';
 
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 
 const LazyTooltip = (props) => {
   const appTheme = useTheme();
   const tippyTheme =
-    appTheme.palette.type === 'dark' ? 'dark-border' : 'light-border';
+    appTheme.palette.mode === 'dark' ? 'dark-border' : 'light-border';
   const [mounted, setMounted] = useState(false);
 
   const lazyPlugin = {

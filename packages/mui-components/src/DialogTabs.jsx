@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Box from '@material-ui/core/Box';
-import Tabs from '@material-ui/core/Tabs';
+import Box from '@mui/material/Box';
+import Tabs from '@mui/material/Tabs';
 
 import DialogAppBar from './DialogAppBar';
 
