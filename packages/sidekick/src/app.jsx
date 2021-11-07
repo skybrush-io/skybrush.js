@@ -1,7 +1,9 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 import PreventDisplaySleep from './components/PreventDisplaySleep';
 import DialogsContainer from './dialogs';
@@ -21,17 +23,19 @@ import '../assets/css/tooltips.less';
 
 const App = () => (
   <StoreProvider store={store}>
-    <ThemeProvider>
-      <PersistGate persistor={persistor}>
-        <CssBaseline />
-        <AppHotkeys>
-          <TopLevelView />
-        </AppHotkeys>
-        <DialogsContainer />
-        <PendingUAVIdOverlay />
-        <PreventDisplaySleep />
-      </PersistGate>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider>
+        <PersistGate persistor={persistor}>
+          <CssBaseline />
+          <AppHotkeys>
+            <TopLevelView />
+          </AppHotkeys>
+          <DialogsContainer />
+          <PendingUAVIdOverlay />
+          <PreventDisplaySleep />
+        </PersistGate>
+      </ThemeProvider>
+    </StyledEngineProvider>
   </StoreProvider>
 );
 

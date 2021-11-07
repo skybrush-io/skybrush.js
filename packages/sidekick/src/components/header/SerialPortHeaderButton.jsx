@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Power from '@material-ui/icons/Power';
+import Power from '@mui/icons-material/Power';
 
 import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
 import LazyTooltip from '@skybrush/mui-components/src/LazyTooltip';

@@ -1,77 +1,55 @@
-import clsx from 'clsx';
 import createColor from 'color';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ButtonBase from '@material-ui/core/ButtonBase';
-import { makeStyles } from '@material-ui/core/styles';
+import ButtonBase from '@mui/material/ButtonBase';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(
-  (theme) => ({
-    icon: {
+const ColoredButtonBase = styled(ButtonBase, {
+  shouldForwardProp: (name) =>
+    name !== 'color' && name !== 'dense' && name !== 'fullWidth',
+})(({ color, dense, fullWidth, theme }) => {
+  const parsedColor = createColor(color);
+  const result = {
+    ...theme.typography.button,
+    backgroundColor: color,
+    borderRadius: theme.spacing(0.5),
+    boxShadow: theme.shadows[2],
+    boxSizing: 'border-box',
+    color: parsedColor.isLight()
+      ? 'rgba(0, 0, 0, 0.87)'
+      : 'rgba(255, 255, 255, 0.87)',
+    flexDirection: 'row',
+    padding: theme.spacing(1, dense ? 1 : 3),
+    textDecoration: 'none',
+    transition: theme.transitions.create(['background-color', 'box-shadow'], {
+      duration: theme.transitions.duration.short,
+    }),
+
+    '&:hover': {
+      backgroundColor: parsedColor.darken(0.16).string(),
+      boxShadow: theme.shadows[4],
+    },
+
+    '& .ColoredButton-icon': {
       lineHeight: 1,
       paddingRight: theme.spacing(0.5),
     },
+  };
 
-    root: ({ color, dense }) => {
-      const parsedColor = createColor(color);
-      return {
-        ...theme.typography.button,
-        backgroundColor: color,
-        borderRadius: theme.spacing(0.5),
-        boxShadow: theme.shadows[2],
-        boxSizing: 'border-box',
-        color: parsedColor.isLight()
-          ? 'rgba(0, 0, 0, 0.87)'
-          : 'rgba(255, 255, 255, 0.87)',
-        flexDirection: 'row',
-        padding: theme.spacing(1, dense ? 1 : 3),
-        textDecoration: 'none',
-        transition: theme.transitions.create(
-          ['background-color', 'box-shadow'],
-          {
-            duration: theme.transitions.duration.short,
-          }
-        ),
-
-        '&:hover': {
-          backgroundColor: parsedColor.darken(0.16).string(),
-          boxShadow: theme.shadows[4],
-        },
-      };
-    },
-
-    fullWidth: {
-      width: '100%',
-    },
-  }),
-  {
-    name: 'ColoredButton',
+  if (fullWidth) {
+    result.width = '100%';
   }
+
+  return result;
+});
+
+const ColoredButton = ({ children, className, icon, ...rest }) => (
+  <ColoredButtonBase focusRipple {...rest}>
+    {icon && <div className='ColoredButton-icon'>{icon}</div>}
+    <div className='ColoredButton-label'>{children}</div>
+  </ColoredButtonBase>
 );
-
-const ColoredButton = ({
-  children,
-  className,
-  color,
-  dense,
-  fullWidth,
-  icon,
-  ...rest
-}) => {
-  const classes = useStyles({ color, dense });
-
-  return (
-    <ButtonBase
-      focusRipple
-      className={clsx(className, classes.root, fullWidth && classes.fullWidth)}
-      {...rest}
-    >
-      {icon && <div className={classes.icon}>{icon}</div>}
-      <div className={classes.label}>{children}</div>
-    </ButtonBase>
-  );
-};
 
 ColoredButton.propTypes = {
   children: PropTypes.oneOfType([

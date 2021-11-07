@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-import { Status } from '@skybrush/app-theme-material-ui';
+import { Status } from '@skybrush/app-theme-mui';
 import LabeledStatusLight from '@skybrush/mui-components/src/LabeledStatusLight';
 
 import { getConnectionState } from '~/features/output/selectors';

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form } from 'react-final-form';
 
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 
 import BaudRateSelector from './BaudRateSelector';
 import SerialPortSelector from './SerialPortSelector';

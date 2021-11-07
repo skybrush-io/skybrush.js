@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 
-import Clear from '@material-ui/icons/Clear';
-import Flag from '@material-ui/icons/Flag';
-import FlightLand from '@material-ui/icons/FlightLand';
-import Home from '@material-ui/icons/Home';
-import PlayArrow from '@material-ui/icons/PlayArrow';
+import Clear from '@mui/icons-material/Clear';
+import Flag from '@mui/icons-material/Flag';
+import FlightLand from '@mui/icons-material/FlightLand';
+import Home from '@mui/icons-material/Home';
+import PlayArrow from '@mui/icons-material/PlayArrow';
 
-import { Colors } from '@skybrush/app-theme-material-ui';
+import { Colors } from '@skybrush/app-theme-mui';
 import FormHeader from '@skybrush/mui-components/src/FormHeader';
 
 import { FlightMode } from '~/ardupilot';

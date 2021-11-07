@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 import ThemeSelector from '@skybrush/mui-components/lib/ThemeSelector';
 
 import { getTheme } from '~/features/settings/selectors';
@@ -12,13 +12,11 @@ import UAVIdSpecificationEditor from './UAVIdSpecificationEditor';
 
 const DisplayTab = ({ onFieldChanged, theme }) => (
   <Box>
-    <Box py={2}>
+    <Box pb={2}>
       <ThemeSelector value={theme} onChange={onFieldChanged} />
     </Box>
 
-    <Box pb={2}>
-      <UAVIdSpecificationEditor />
-    </Box>
+    <UAVIdSpecificationEditor />
   </Box>
 );
 

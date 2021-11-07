@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import ServerIcon from '@material-ui/icons/Dns';
+import ServerIcon from '@mui/icons-material/Dns';
 
 import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
 import LazyTooltip from '@skybrush/mui-components/src/LazyTooltip';

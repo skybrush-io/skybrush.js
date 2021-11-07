@@ -4,7 +4,7 @@ import { HotKeys } from 'react-hotkeys';
 import { connect } from 'react-redux';
 import { useMeasure } from 'react-use';
 
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 
 import DroneButton from '~/components/DroneButton';
 import { getVisibleUAVIds } from '~/features/settings/selectors';

@@ -1,4 +1,4 @@
-import { Colors } from '@skybrush/app-theme-material-ui';
+import { Colors } from '@skybrush/app-theme-mui';
 
 const ConnectionState = {
   CONNECTING: 'connecting',

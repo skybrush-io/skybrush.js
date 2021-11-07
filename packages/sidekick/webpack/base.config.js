@@ -37,7 +37,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       ReactDOM: 'react-dom',
       React: 'react',
-      process: 'process/browser',
     }),
 
     // Resolve process.env in the code; ; the object below provides the

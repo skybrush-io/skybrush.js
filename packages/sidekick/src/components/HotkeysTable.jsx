@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import { withStyles } from '@material-ui/core/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import { styled } from '@mui/material/styles';
 
 import { getSelectedUAVId } from '~/features/ui/selectors';
 import { keyMap } from '~/hotkeys';
@@ -48,32 +48,19 @@ const hotkeys = [
   },
 ];
 
-const CompactTableRow = withStyles(
-  (theme) => ({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-      '& td:first-child': {
-        width: 80,
-      },
-    },
-  }),
-  {
-    name: 'CompactTableRow',
-  }
-)(TableRow);
-
-const CompactTableCell = withStyles(
-  {
-    root: {
-      padding: 6,
-    },
+const CompactTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
   },
-  {
-    name: 'CompactTableCell',
-  }
-)(TableCell);
+  '& td:first-of-type': {
+    width: 80,
+  },
+  '&:last-child td': {
+    borderBottom: 'none',
+  },
+}));
+
+const CompactTableCell = styled(TableCell)({ padding: 6 });
 
 const HotkeyRow = ({ isBroadcast, keys, labels }) => (
   <CompactTableRow>

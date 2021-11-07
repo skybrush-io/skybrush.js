@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SettingsIcon from '@material-ui/icons/Settings';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import GenericHeaderButton from '@skybrush/mui-components/src/GenericHeaderButton';
 

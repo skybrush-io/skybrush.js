@@ -4,9 +4,9 @@ import React, { useCallback, useRef } from 'react';
 import { Form } from 'react-final-form';
 import { connect } from 'react-redux';
 
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import ConnectionStatusIndicator from '~/components/ConnectionStatusIndicator';
 import { toggleServerConnection } from '~/features/input/actions';
@@ -79,7 +79,7 @@ const ServerTab = ({
             id='server-connection-form'
             onSubmit={handleSubmit}
           >
-            <Box pt={1} display='flex' flexDirection='row'>
+            <Box display='flex' flexDirection='row'>
               <Box flex={1}>
                 <TextField
                   fullWidth
@@ -110,7 +110,13 @@ const ServerTab = ({
               </Typography>
             </Box>
 
-            <Box display='flex' flexDirection='row' alignItems='center' pt={1}>
+            <Box
+              display='flex'
+              flexDirection='row'
+              alignItems='center'
+              pt={1}
+              mb={-1}
+            >
               <ServerConnectionStatusIndicator />
               <Box flex={1} />
               <Button disabled={invalid} onClick={onConnect}>
