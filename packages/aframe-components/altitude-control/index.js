@@ -2,7 +2,7 @@
  * Helper A-Frame component that allows the user to control the altitude
  * (position on the Y axis) of an object with the + and - keys on the keyboard.
  *
- * Based on the code of the `wads-controls` component.
+ * Based on the code of the `wasd-controls` component.
  */
 
 import isEmpty from 'lodash-es/isEmpty';
