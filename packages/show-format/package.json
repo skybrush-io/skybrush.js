@@ -21,7 +21,7 @@
     "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
-    "test": "nyc ava && xo"
+    "test": "nyc ava"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "9.0.9",
@@ -31,6 +31,7 @@
   "ava": {
     "babel": true
   },
+  "xo": false,
   "devDependencies": {
     "ava": "^3.15.0"
   }

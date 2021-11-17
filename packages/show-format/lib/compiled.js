@@ -2,6 +2,8 @@
  * @file Function for processing a Skybrush compiled show file.
  */
 
+const { Buffer } = require('buffer');
+
 const RefParser = require('@apidevtools/json-schema-ref-parser');
 const JSZip = require('jszip');
 

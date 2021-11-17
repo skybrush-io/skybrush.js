@@ -139,7 +139,109 @@ test('invalid environment type', (t) => {
   );
 });
 
+test('invalid camera array', (t) => {
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: { drones: [] },
+        environment: { type: 'outdoor', cameras: 'foobar' },
+      }),
+    { message: /must contain an array of cameras/ }
+  );
+});
+
+test('invalid camera object', (t) => {
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: { drones: [] },
+        environment: { type: 'outdoor', cameras: [123] },
+      }),
+    { message: /must be an object/ }
+  );
+});
+
+test('invalid camera type', (t) => {
+  t.throws(
+    () =>
+      validate({
+        version: 1,
+        swarm: { drones: [] },
+        environment: { type: 'outdoor', cameras: [{ type: 123 }] },
+      }),
+    { message: /type must be a string/ }
+  );
+});
+
+test('invalid camera position', (t) => {
+  const camSpec = { position: [0, 2, Number.NaN] };
+  const spec = {
+    version: 1,
+    swarm: { drones: [] },
+    environment: {
+      type: 'outdoor',
+      cameras: [camSpec],
+    },
+  };
+
+  t.throws(() => validate(spec), {
+    message: /must be a numeric array of length 3/,
+  });
+
+  camSpec.position = [0, 0];
+  t.throws(() => validate(spec), {
+    message: /must be a numeric array of length 3/,
+  });
+
+  camSpec.position = '123';
+  t.throws(() => validate(spec), {
+    message: /must be a numeric array of length 3/,
+  });
+});
+
+test('invalid camera orientation', (t) => {
+  const camSpec = { orientation: [0, 0, 0, Number.POSITIVE_INFINITY] };
+  const spec = {
+    version: 1,
+    swarm: { drones: [] },
+    environment: {
+      type: 'outdoor',
+      cameras: [camSpec],
+    },
+  };
+  t.throws(() => validate(spec), {
+    message: /must be a numeric array of length 4/,
+  });
+
+  camSpec.orientation = [0, 0, 0];
+  t.throws(() => validate(spec), {
+    message: /must be a numeric array of length 4/,
+  });
+
+  camSpec.orientation = [0, 'foo', 0, 0];
+  t.throws(() => validate(spec), {
+    message: /must be a numeric array of length 4/,
+  });
+
+  camSpec.orientation = null;
+  t.throws(() => validate(spec), {
+    message: /must be a numeric array of length 4/,
+  });
+});
+
+test('camera without properties is still valid', (t) => {
+  validate({
+    version: 1,
+    swarm: { drones: [] },
+    environment: { type: 'outdoor', cameras: [{}] },
+  });
+  t.pass();
+});
+
 test('valid show file', (t) => {
+  // eslint-disable-next-line import/no-unresolved
   const spec = require('./fixtures/test-show');
   validate(spec);
   t.pass();

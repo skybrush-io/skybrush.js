@@ -1,6 +1,7 @@
 const { Asset, loadCompiledShow } = require('..');
 
 const test = require('ava');
+const { Buffer } = require('buffer');
 const fs = require('fs');
 const path = require('path');
 

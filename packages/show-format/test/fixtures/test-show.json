@@ -1,7 +1,20 @@
 {
   "version": 1,
   "swarm": {
-    "drones": [
+    "drones": []
+  },
+  "environment": {
+    "cameras": [
+      {
+        "name": "First camera",
+        "position": [1, 2, 3]
+      },
+      {
+        "name": "Second camera",
+        "position": [10, 7, 4],
+        "orientation": [-0.707, 0, 0.707, 0],
+        "default": true
+      }
     ]
   }
 }
