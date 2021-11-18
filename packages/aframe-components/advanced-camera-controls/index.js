@@ -40,6 +40,38 @@ const KEYS = new Set([
   'ShiftRight',
 ]);
 
+const toVector3 = (x) => {
+  if (!x) {
+    return new THREE.Vector3();
+  }
+
+  if (x.isVector3) {
+    return x;
+  }
+
+  if (Array.isArray(x)) {
+    return new THREE.Vector3(x[0] || 0, x[1] || 0, x[2] || 0);
+  }
+
+  return new THREE.Vector3(x.x || 0, x.y || 0, x.z || 0);
+};
+
+const toQuaternion = (x) => {
+  if (!x) {
+    return new THREE.Quaternion(0, 0, 0, 1);
+  }
+
+  if (Array.isArray(x)) {
+    return new THREE.Quaternion(x[1], x[2], x[3], x[0]);
+  }
+
+  if (x instanceof THREE.Quaternion) {
+    return x;
+  }
+
+  return new THREE.Quaternion(x.x, x.y, x.z, x.w);
+};
+
 AFrame.registerComponent('advanced-camera-controls', {
   dependencies: ['position', 'rotation', 'camera'],
 
@@ -371,7 +403,17 @@ AFrame.registerComponent('advanced-camera-controls', {
   },
 
   _startTransition() {
-    this.startTransitionTo(this.data.targetPosition, this.data.targetLookAt);
+    const target = {
+      position: this.data.targetPosition,
+    };
+
+    if (this.data.targetLookAt) {
+      target.lookAt = this.data.targetLookAt;
+    }
+
+    this.startTransitionTo({
+      lookAt: this.data.targetLookAt,
+    });
   },
 
   startTransitionTo: (function () {
@@ -390,14 +432,21 @@ AFrame.registerComponent('advanced-camera-controls', {
     const easingFunc = (x) => -(Math.cos(Math.PI * x) - 1) / 2;
     const rotationFunc = (t) => q2.copy(q0).slerp(q1, easingFunc(t));
 
-    return function (targetPosition, lookAt) {
+    return function ({ duration, position, quaternion, lookAt }) {
+      position = toVector3(position);
       if (lookAt) {
         // Calculate a rotation matrix that looks from targetPosition to lookAt
         // with the up vector of the camera
-        rotationMatrix.lookAt(targetPosition, lookAt, this.el.object3D.up);
+        rotationMatrix.lookAt(position, toVector3(lookAt), this.el.object3D.up);
+      } else if (quaternion) {
+        rotationMatrix.makeRotationFromQuaternion(toQuaternion(quaternion));
       } else {
         // If no point is specified to look at, keep the current rotation
         rotationMatrix.makeRotationFromQuaternion(this.el.object3D.quaternion);
+      }
+
+      if (duration === undefined || duration === null) {
+        duration = this.data.transitionDuration;
       }
 
       // Create a Bezier curve between the current position and the target
@@ -405,9 +454,9 @@ AFrame.registerComponent('advanced-camera-controls', {
       // final derivative will be zero.
       v0.copy(this.el.object3D.position);
       v1.copy(v0);
-      v1.addScaledVector(this.velocity, this.data.transitionDuration / 3);
-      v2.copy(targetPosition);
-      v3.copy(targetPosition);
+      v1.addScaledVector(this.velocity, duration / 3);
+      v2.copy(position);
+      v3.copy(position);
 
       // Craete a spherical linear interpolation between the current and the
       // target quaternion
@@ -417,7 +466,7 @@ AFrame.registerComponent('advanced-camera-controls', {
       this.transition.active = true;
       this.transition.startedAt = null; // will be filled in tick()
       this.transition.endsAt = null; // will be filled in tick()
-      this.transition.duration = this.data.transitionDuration * 1000;
+      this.transition.duration = duration * 1000;
       this.transition.positionCurve = positionCurve;
       this.transition.rotationFunc = rotationFunc;
     };
