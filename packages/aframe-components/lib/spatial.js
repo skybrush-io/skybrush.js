@@ -59,15 +59,15 @@ export const threeJsToSkybrushQuaternion =
 export const skybrushRotationToQuaternion = (() => {
   const euler = new THREE.Euler();
   const quat = new THREE.Quaternion();
-  const deg2rad = (x) => (x * Math.PI) / 180;
+  const { degToRad } = THREE.Math;
   return (rotation) => {
     // Skybrush rotations are given as extrinsic Tait-Bryan angles in XYZ
     // order. Extrinsic rotations in XYZ order are equivalent to intrinsic
     // rotations in ZYX order. Three.js uses intrinsic rotations.
     euler.set(
-      deg2rad(rotation[0]),
-      deg2rad(rotation[1]),
-      deg2rad(rotation[2]),
+      degToRad(rotation[0]),
+      degToRad(rotation[1]),
+      degToRad(rotation[2]),
       'ZYX'
     );
     quat.setFromEuler(euler);
@@ -82,8 +82,7 @@ export const skybrushRotationToQuaternion = (() => {
 export const skybrushQuaternionToThreeJsRotation = (() => {
   const quat = new THREE.Quaternion();
   const euler = new THREE.Euler();
-
-  const rad2deg = (x) => (x * 180) / Math.PI;
+  const { radToDeg } = THREE.Math;
 
   return (wxyz) => {
     quat.set(wxyz[1], wxyz[2], wxyz[3], wxyz[0]);
@@ -93,7 +92,7 @@ export const skybrushQuaternionToThreeJsRotation = (() => {
     // the conjugate, the yaw angle is incorrect after loading.
     quat.conjugate();
     euler.setFromQuaternion(quat, 'XYZ');
-    return [rad2deg(euler.x), rad2deg(euler.y), rad2deg(euler.z)];
+    return [radToDeg(euler.x), radToDeg(euler.y), radToDeg(euler.z)];
   };
 })();
 
