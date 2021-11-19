@@ -40,6 +40,8 @@ const KEYS = new Set([
   'ShiftRight',
 ]);
 
+const HALF_PI = Math.PI / 2;
+
 const toVector3 = (x) => {
   if (!x) {
     return new THREE.Vector3();
@@ -355,21 +357,23 @@ AFrame.registerComponent('advanced-camera-controls', {
     const rotationEuler = new THREE.Euler(0, 0, 0, 'YXZ');
 
     return function (delta) {
-      const rotation = this.el.getAttribute('rotation');
+      const rotation = this.el.object3D.rotation;
       const velocity = this.velocity;
 
       directionVector.copy(velocity);
       directionVector.multiplyScalar(delta);
 
       if (rotation) {
-        const xRotation = this.data.fly ? rotation.x : 0;
+        // When not flying, snap X rotation angle to 0 or 180 degrees,
+        // whichever is closest
+        const xRotation = this.data.fly
+          ? rotation.x
+          : Math.abs(rotation.x) < HALF_PI
+          ? 0
+          : Math.PI;
 
         // Transform direction relative to heading.
-        rotationEuler.set(
-          THREE.Math.degToRad(xRotation),
-          THREE.Math.degToRad(rotation.y),
-          0
-        );
+        rotationEuler.set(xRotation, rotation.y, rotation.z);
         directionVector.applyEuler(rotationEuler);
       }
 
@@ -384,8 +388,10 @@ AFrame.registerComponent('advanced-camera-controls', {
     const deltaX = x - startedAtX;
     const deltaY = y - startedAtY;
     const direction = ((reversed ? 1 : -1) * this.data.dragSensitivity) / 1000;
+    const xAxisReversal = Math.abs(initialRotation.z) >= HALF_PI ? -1 : 1;
+
     this.el.object3D.rotation.set(
-      initialRotation.x + direction * deltaY,
+      initialRotation.x + direction * xAxisReversal * deltaY,
       initialRotation.y + direction * deltaX,
       initialRotation.z
     );

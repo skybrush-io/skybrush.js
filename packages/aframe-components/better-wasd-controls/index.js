@@ -21,6 +21,8 @@ const KEYS = new Set([
   'ShiftRight',
 ]);
 
+const HALF_PI = Math.PI / 2;
+
 /**
  * WASD component to control entities using WASD keys.
  */
@@ -167,26 +169,26 @@ AFrame.registerComponent('better-wasd-controls', {
     const rotationEuler = new THREE.Euler(0, 0, 0, 'YXZ');
 
     return function (delta) {
-      const rotation = this.el.getAttribute('rotation');
+      const rotation = this.el.object3D.rotation;
       const velocity = this.velocity;
 
       directionVector.copy(velocity);
       directionVector.multiplyScalar(delta);
 
-      // Absolute.
-      if (!rotation) {
-        return directionVector;
+      if (rotation) {
+        // When not flying, snap X rotation angle to 0 or 180 degrees,
+        // whichever is closest
+        const xRotation = this.data.fly
+          ? rotation.x
+          : Math.abs(rotation.x) < HALF_PI
+          ? 0
+          : Math.PI;
+
+        // Transform direction relative to heading.
+        rotationEuler.set(xRotation, rotation.y, rotation.z);
+        directionVector.applyEuler(rotationEuler);
       }
 
-      const xRotation = this.data.fly ? rotation.x : 0;
-
-      // Transform direction relative to heading.
-      rotationEuler.set(
-        THREE.Math.degToRad(xRotation),
-        THREE.Math.degToRad(rotation.y),
-        0
-      );
-      directionVector.applyEuler(rotationEuler);
       return directionVector;
     };
   })(),
