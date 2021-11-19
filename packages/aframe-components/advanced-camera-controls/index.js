@@ -476,9 +476,7 @@ AFrame.registerComponent('advanced-camera-controls', {
       target.lookAt = this.data.targetLookAt;
     }
 
-    this.startTransitionTo({
-      lookAt: this.data.targetLookAt,
-    });
+    this.startTransitionTo(target);
   },
 
   _startZoom() {
@@ -506,7 +504,11 @@ AFrame.registerComponent('advanced-camera-controls', {
     const rotationFunc = (t) => q2.copy(q0).slerp(q1, easingFunc(t));
 
     return function ({ duration, position, quaternion, lookAt }) {
-      position = toVector3(position);
+      if (position) {
+        position = toVector3(position);
+      } else {
+        position = this.el.object3D.position;
+      }
       if (lookAt) {
         // Calculate a rotation matrix that looks from targetPosition to lookAt
         // with the up vector of the camera
