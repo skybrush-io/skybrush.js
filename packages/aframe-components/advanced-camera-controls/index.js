@@ -91,7 +91,12 @@ AFrame.registerComponent('advanced-camera-controls', {
     fly: { default: false },
     maxAltitude: { default: Number.NaN, type: 'number' },
     minAltitude: { default: Number.NaN, type: 'number' },
+    maxZoom: { default: 5 },
+    minZoom: { default: 1 },
     mouseDragEnabled: { default: true },
+    mouseWheelEnabled: { default: true },
+    mouseWheelInverted: { default: false },
+    mouseWheelSensitivity: { default: 1 } /* [zoom unit / 100 pixel] */,
     reverseMouseDrag: { default: true },
     reverseTouchDrag: { default: true },
     wsAxis: { default: 'z', oneOf: ['x', 'y', 'z'] },
@@ -99,8 +104,10 @@ AFrame.registerComponent('advanced-camera-controls', {
     wsInverted: { default: false },
     targetPosition: { type: 'vec3' },
     targetLookAt: { type: 'vec3' },
+    targetZoom: { default: 1 },
     transitionDuration: { default: 1 } /* [s] */,
     touchDragEnabled: { default: true },
+    zoomStep: { default: 1.5 },
   },
 
   // -- Component lifecycle methods start here --
@@ -133,6 +140,16 @@ AFrame.registerComponent('advanced-camera-controls', {
       rotationFunc: null,
     };
 
+    // Current zoom transition
+    this._zoomOperation = {
+      active: false,
+      startedAt: null,
+      endsAt: null,
+      duration: null,
+      curve: null,
+      velocity: 0,
+    };
+
     // Bind methods and add event listeners.
     this._bindMethods();
     this._attachVisibilityEventListeners();
@@ -143,6 +160,10 @@ AFrame.registerComponent('advanced-camera-controls', {
       this._tickTransition(time, delta);
     } else {
       this._tickKeyboardControl(time, delta);
+    }
+
+    if (this._zoomOperation.active) {
+      this._tickZoom(time, delta);
     }
   },
 
@@ -164,9 +185,12 @@ AFrame.registerComponent('advanced-camera-controls', {
   },
 
   update(oldData) {
-    const { targetLookAt: oldTargetLookAt, targetPosition: oldTargetPosition } =
-      oldData;
-    const { targetLookAt, targetPosition } = this.data;
+    const {
+      targetLookAt: oldTargetLookAt,
+      targetPosition: oldTargetPosition,
+      targetZoom: oldTargetZoom,
+    } = oldData;
+    const { targetLookAt, targetPosition, targetZoom } = this.data;
     if (
       oldTargetPosition &&
       oldTargetLookAt &&
@@ -179,6 +203,10 @@ AFrame.registerComponent('advanced-camera-controls', {
       isEmpty(this.keys)
     ) {
       this._startTransition();
+    }
+
+    if (oldTargetZoom && oldTargetZoom !== targetZoom && isEmpty(this.keys)) {
+      this._startZoom();
     }
   },
 
@@ -261,6 +289,37 @@ AFrame.registerComponent('advanced-camera-controls', {
 
       if (time >= this.transition.endsAt) {
         this._finishTransition({ clearVelocity: true });
+      }
+    };
+  })(),
+
+  _tickZoom: (function () {
+    const point = new THREE.Vector2();
+    return function (time, delta) {
+      if (this._zoomOperation.startedAt === null) {
+        this._zoomOperation.startedAt = time - delta;
+        this._zoomOperation.endsAt =
+          this._zoomOperation.startedAt + this._zoomOperation.duration;
+      }
+
+      const ratio = Math.min(
+        1,
+        (time - this._zoomOperation.startedAt) / this._zoomOperation.duration
+      );
+      const curve = this._zoomOperation.curve;
+
+      curve.getPoint(ratio, point);
+
+      const scene = this.el ? this.el.sceneEl : null;
+      const camera = scene ? scene.camera : null;
+      if (camera) {
+        this._zoomOperation.velocity = (point.x - camera.zoom) / delta;
+        camera.zoom = point.x;
+        camera.updateProjectionMatrix();
+      }
+
+      if (!camera || time >= this._zoomOperation.endsAt) {
+        this._finishZoom();
       }
     };
   })(),
@@ -422,6 +481,14 @@ AFrame.registerComponent('advanced-camera-controls', {
     });
   },
 
+  _startZoom() {
+    this.startZoomTo(this.data.targetZoom);
+  },
+
+  resetZoom() {
+    this.startZoomTo(1);
+  },
+
   startTransitionTo: (function () {
     const rotationMatrix = new THREE.Matrix4();
 
@@ -478,6 +545,59 @@ AFrame.registerComponent('advanced-camera-controls', {
     };
   })(),
 
+  startZoomTo: (function () {
+    const v0 = new THREE.Vector2();
+    const v1 = new THREE.Vector2();
+    const v2 = new THREE.Vector2();
+    const v3 = new THREE.Vector2();
+    const zoomVel = new THREE.Vector2();
+    const curve = new THREE.CubicBezierCurve(v0, v1, v2, v3);
+
+    return function (zoom) {
+      if (!this.el || !this.el.sceneEl) {
+        return;
+      }
+
+      const camera = this.el.sceneEl.camera;
+      if (!camera) {
+        return;
+      }
+
+      zoom = Math.max(Math.min(zoom, this.data.maxZoom), this.data.minZoom);
+
+      // Create a Bezier curve between the current zoom and the target zoom
+      // such that its initial derivative equals our current zoom velocity. The
+      // final derivative will be zero.
+      const zoomDuration = 500;
+      v0.set(camera.zoom, 0);
+      v1.copy(v0);
+      zoomVel.set(this._zoomOperation.velocity, 0);
+      v1.addScaledVector(zoomVel, zoomDuration / 3);
+      v2.set(zoom, 0);
+      v3.copy(v2);
+
+      this._zoomOperation.active = true;
+      this._zoomOperation.startedAt = null; // will be filled in tick()
+      this._zoomOperation.endsAt = null; // will be filled in tick()
+      this._zoomOperation.duration = 500;
+      this._zoomOperation.curve = curve;
+    };
+  })(),
+
+  zoomInBy(delta) {
+    const currentZoom = this._getCurrentCameraZoom();
+    if (currentZoom && currentZoom > 0) {
+      this.startZoomTo(currentZoom + delta);
+    }
+  },
+
+  zoomInByMultiplicative(delta) {
+    const currentZoom = this._getCurrentCameraZoom();
+    if (currentZoom && currentZoom > 0) {
+      this.startZoomTo(currentZoom * delta);
+    }
+  },
+
   _finishDragRotation() {
     if (this.mouseDrag.active) {
       this.mouseDrag.active = false;
@@ -499,6 +619,15 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
+  _finishZoom() {
+    this._zoomOperation.active = false;
+    this._zoomOperation.startedAt = null;
+    this._zoomOperation.endsAt = null;
+    this._zoomOperation.duration = null;
+    this._zoomOperation.curve = null;
+    this._zoomOperation.velocity = 0;
+  },
+
   // -- Event listener management --
 
   _attachKeyEventListeners() {
@@ -514,6 +643,8 @@ AFrame.registerComponent('advanced-camera-controls', {
     canvasElement.addEventListener('mousedown', this._onMouseDown, false);
     window.addEventListener('mousemove', this._onMouseMove, false);
     window.addEventListener('mouseup', this._onMouseUp, false);
+
+    canvasElement.addEventListener('wheel', this._onMouseWheel, false);
 
     canvasElement.addEventListener('touchstart', this._onTouchStart, false);
     window.addEventListener('touchmove', this._onTouchMove, false);
@@ -539,6 +670,8 @@ AFrame.registerComponent('advanced-camera-controls', {
     canvasElement.removeEventListener('mousedown', this._onMouseDown);
     window.removeEventListener('mousemove', this._onMouseMove);
     window.removeEventListener('mouseup', this._onMouseUp);
+
+    canvasElement.removeEventListener('wheel', this._onMouseWheel);
 
     canvasElement.removeEventListener('touchstart', this._onTouchStart);
     window.removeEventListener('touchmove', this._onTouchMove);
@@ -570,6 +703,14 @@ AFrame.registerComponent('advanced-camera-controls', {
   _onKeyDown(event) {
     if (!this.data.embedded && !shouldCaptureKeyEvent(event)) {
       return;
+    }
+
+    if (event.key === '+') {
+      // Zoom in
+      this.zoomInByMultiplicative(this.data.zoomStep);
+    } else {
+      // Zoom out
+      this.zoomInByMultiplicative(1 / this.data.zoomStep);
     }
 
     const code = event.code || KEYCODE_TO_CODE[event.keyCode];
@@ -609,6 +750,17 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   _onMouseUp() {
     this._finishDragRotation();
+  },
+
+  _onMouseWheel(event) {
+    if (this.data.enabled && this.data.mouseWheelEnabled) {
+      const multiplier =
+        (event.deltaMode === 0x01 ? 16 : 1) *
+        (this.data.mouseWheelInverted ? -1 : 1);
+      const deltaZoom =
+        ((event.deltaY * multiplier) / 100) * this.data.mouseWheelSensitivity;
+      this.zoomInBy(-deltaZoom);
+    }
   },
 
   _onTouchStart(event) {
@@ -655,10 +807,25 @@ AFrame.registerComponent('advanced-camera-controls', {
     this._onMouseMove = this._onMouseMove.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
 
+    this._onMouseWheel = this._onMouseWheel.bind(this);
+
     this._onTouchStart = this._onTouchStart.bind(this);
     this._onTouchMove = this._onTouchMove.bind(this);
     this._onTouchEnd = this._onTouchEnd.bind(this);
 
     this._onVisibilityChange = this._onVisibilityChange.bind(this);
+  },
+
+  _getCurrentCameraZoom() {
+    // This takes into account the current zoom operation and pretends that the
+    // camera has already reached the target of the operation
+    if (this.el && this.el.sceneEl && this.el.sceneEl.camera) {
+      const camera = this.el.sceneEl.camera;
+      return this._zoomOperation.active
+        ? this._zoomOperation.curve.v3.x
+        : camera.zoom;
+    }
+
+    return null;
   },
 });
