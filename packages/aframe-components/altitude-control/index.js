@@ -7,10 +7,9 @@
 
 import isEmpty from 'lodash-es/isEmpty';
 
-import { shouldCaptureKeyEvent } from 'aframe/src/utils';
-
 import AFrame from '../lib/_aframe';
 import { KEYCODE_TO_CODE } from '../lib/constants';
+import { shouldCaptureKeyEvent } from '../lib/utils';
 
 const CLAMP_VELOCITY = 0.001;
 const MAX_DELTA = 0.2;
@@ -21,6 +20,10 @@ const { THREE } = AFrame;
 AFrame.registerComponent('altitude-control', {
   schema: {
     acceleration: { default: 65 } /* [m/s] */,
+    acceptsKeyboardEvent: {
+      default: 'legacy',
+      oneOf: ['legacy', 'notEditable', 'always'],
+    },
     embedded: { default: false },
     enabled: { default: true },
     max: { default: Number.NaN, type: 'number' },
@@ -171,7 +174,10 @@ AFrame.registerComponent('altitude-control', {
   },
 
   onKeyDown(event) {
-    if (!this.data.embedded && !shouldCaptureKeyEvent(event)) {
+    if (
+      !this.data.embedded &&
+      !shouldCaptureKeyEvent(event, this.data.acceptsKeyboardEvent)
+    ) {
       return;
     }
 

@@ -1,8 +1,8 @@
-import { shouldCaptureKeyEvent } from 'aframe/src/utils';
 import isEmpty from 'lodash-es/isEmpty';
 
 import AFrame from '../lib/_aframe';
 import { KEYCODE_TO_CODE } from '../lib/constants';
+import { shouldCaptureKeyEvent } from '../lib/utils';
 
 const { THREE } = AFrame;
 
@@ -29,6 +29,10 @@ const HALF_PI = Math.PI / 2;
 AFrame.registerComponent('better-wasd-controls', {
   schema: {
     acceleration: { default: 65 },
+    acceptsKeyboardEvent: {
+      default: 'legacy',
+      oneOf: ['legacy', 'notEditable', 'always'],
+    },
     adAxis: { default: 'x', oneOf: ['x', 'y', 'z'] },
     adEnabled: { default: true },
     adInverted: { default: false },
@@ -234,7 +238,10 @@ AFrame.registerComponent('better-wasd-controls', {
   },
 
   onKeyDown(event) {
-    if (!this.data.embedded && !shouldCaptureKeyEvent(event)) {
+    if (
+      !this.data.embedded &&
+      !shouldCaptureKeyEvent(event, this.data.acceptsKeyboardEvent)
+    ) {
       return;
     }
 

@@ -16,10 +16,9 @@
 
 import isEmpty from 'lodash-es/isEmpty';
 
-import { shouldCaptureKeyEvent } from 'aframe/src/utils';
-
 import AFrame from '../lib/_aframe';
 import { KEYCODE_TO_CODE } from '../lib/constants';
+import { shouldCaptureKeyEvent } from '../lib/utils';
 
 const { THREE } = AFrame;
 
@@ -79,6 +78,10 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   schema: {
     acceleration: { default: 65 } /* [m/s/s] */,
+    acceptsKeyboardEvent: {
+      default: 'legacy',
+      oneOf: ['legacy', 'notEditable', 'always'],
+    },
     adAxis: { default: 'x', oneOf: ['x', 'y', 'z'] },
     adEnabled: { default: true },
     adInverted: { default: false },
@@ -504,11 +507,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     const rotationFunc = (t) => q2.copy(q0).slerp(q1, easingFunc(t));
 
     return function ({ duration, position, quaternion, lookAt }) {
-      if (position) {
-        position = toVector3(position);
-      } else {
-        position = this.el.object3D.position;
-      }
+      position = position ? toVector3(position) : this.el.object3D.position;
       if (lookAt) {
         // Calculate a rotation matrix that looks from targetPosition to lookAt
         // with the up vector of the camera
@@ -703,7 +702,10 @@ AFrame.registerComponent('advanced-camera-controls', {
   },
 
   _onKeyDown(event) {
-    if (!this.data.embedded && !shouldCaptureKeyEvent(event)) {
+    if (
+      !this.data.embedded &&
+      !shouldCaptureKeyEvent(event, this.data.acceptsKeyboardEvent)
+    ) {
       return;
     }
 
