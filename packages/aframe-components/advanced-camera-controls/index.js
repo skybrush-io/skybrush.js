@@ -222,7 +222,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     if (
       !velocity[data.adAxis] &&
       !velocity[data.wsAxis] &&
-      !velocity[data.esAxis] &&
+      !velocity[data.ecAxis] &&
       isEmpty(this.keys)
     ) {
       return;
