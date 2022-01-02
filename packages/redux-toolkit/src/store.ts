@@ -142,7 +142,7 @@ export function configureStoreAndPersistence<
             if (key) {
               value[key] = '<<JSON_DATA>>';
             } else {
-              state[String(value)] = '<<JSON_DATA>>';
+              state[value] = '<<JSON_DATA>>';
             }
           }
         }
@@ -181,7 +181,7 @@ export function configureStoreAndPersistence<
           ignoredActions: resolvedIgnoredActions,
           ignoredPaths,
         },
-      }).concat(sagaMiddleware, ...middleware),
+      }).concat(sagaMiddleware, ...(middleware || [])),
     devTools: finalDevToolsOptions,
   }) as PersistableStore<S, A, M>;
 

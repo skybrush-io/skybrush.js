@@ -1,5 +1,4 @@
 import identity from 'lodash-es/identity';
-import produce from 'immer';
 import { Action, ActionCreator } from '@reduxjs/toolkit';
 
 /**
@@ -26,17 +25,22 @@ export function resolveActionTypes<A>(
  */
 export function createActionScrubber<A extends string>(
   actionTypes: A | ActionCreator<A> | Array<A | ActionCreator<A>>
-) {
+): (action: Action<A>) => Action<A> {
   if (!Array.isArray(actionTypes)) {
     actionTypes = [actionTypes];
   }
 
   const resolvedActionTypes = resolveActionTypes(actionTypes);
   return resolvedActionTypes.length > 0
-    ? produce((action: Action<A>) => {
+    ? (action: Action<A>) => {
         if (resolvedActionTypes.includes(action.type) && 'payload' in action) {
-          (action as any).payload = '<<JSON_DATA>>';
+          return {
+            ...action,
+            payload: '<<JSON_DATA>>',
+          };
         }
-      })
+
+        return action;
+      }
     : identity;
 }
