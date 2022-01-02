@@ -1,4 +1,4 @@
-import { isPlain } from '@reduxjs/toolkit';
+import { CaseReducer, Draft, isPlain, PayloadAction } from '@reduxjs/toolkit';
 
 import isPromise from 'is-promise';
 import isError from 'lodash-es/isError';
@@ -14,11 +14,16 @@ import isFunction from 'lodash-es/isFunction';
 export const isAllowedInRedux = (value: any): boolean =>
   isPlain(value) || isFunction(value) || isPromise(value) || isError(value);
 
-export function noPayload<S>(func: (state: S) => void) {
+export function noPayload<S>(
+  func: (state: Draft<S>) => void
+): CaseReducer<S, PayloadAction> {
+  /* we need to lie about the return type here because the type inference does
+   * not work in dependent projects if we return the real return type
+   * (i.e. CaseReducerWithPrepare<S, PayloadAction>) */
   return {
-    prepare: () => ({}),
+    prepare: () => ({ payload: undefined }),
     reducer: func,
-  };
+  } as any as CaseReducer<S, PayloadAction>;
 }
 
 export function stripEvent<F extends (...args: any[]) => any>(
