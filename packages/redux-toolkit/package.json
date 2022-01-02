@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/redux-toolkit",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Redux-related tools for Skybrush apps",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
