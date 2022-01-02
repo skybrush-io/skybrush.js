@@ -5,8 +5,11 @@ export {
   chooseUniqueName,
   chooseUniqueIdFromName,
 } from './naming';
-export { createStorageConfiguration } from './persistence';
-export { configureStoreAndPersistence } from './store';
+export { createStorageConfiguration, StorageConfig } from './persistence';
+export {
+  configureStoreAndPersistence,
+  StoreAndPersistenceConfig,
+} from './store';
 export { isAllowedInRedux, noPayload, stripEvent } from './utils';
 
 export default configureStoreAndPersistence;

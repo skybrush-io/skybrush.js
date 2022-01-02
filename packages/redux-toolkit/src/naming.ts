@@ -30,7 +30,10 @@ import trimEnd from 'lodash-es/trimEnd';
  * @return {string} an ID that is based on the ID proposal and that is
  *         not in the list of existing IDs
  */
-export function chooseUniqueId(idProposal, existingIds) {
+export function chooseUniqueId(
+  idProposal: string,
+  existingIds: string[] | Record<string, any>
+): string {
   const hasIdArray = isArray(existingIds);
 
   if (hasIdArray) {
@@ -42,7 +45,7 @@ export function chooseUniqueId(idProposal, existingIds) {
   }
 
   let index = 0;
-  let candidate;
+  let candidate: string;
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
@@ -58,6 +61,8 @@ export function chooseUniqueId(idProposal, existingIds) {
     }
   }
 }
+
+const NAME_REGEX = /^(.*)\s+(\d+)$/;
 
 /**
  * Given a name proposal and an array of existing names, returns a new
@@ -85,15 +90,18 @@ export function chooseUniqueId(idProposal, existingIds) {
  * @return {string} a name that is based on the name proposal and that is
  *         not in the list of existing names
  */
-export function chooseUniqueName(nameProposal, existingNames) {
+export function chooseUniqueName(
+  nameProposal: string,
+  existingNames: string[]
+): string {
   if (!includes(existingNames, nameProposal)) {
     return nameProposal;
   }
 
-  const match = nameProposal.match(/^(.*)\s+(\d+)$/);
+  const match = NAME_REGEX.exec(nameProposal);
   const nameBase = match ? match[0] : trimEnd(nameProposal);
   let index = match ? Number.parseInt(match[1], 10) : 0;
-  let candidate;
+  let candidate: string;
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
@@ -116,6 +124,9 @@ export function chooseUniqueName(nameProposal, existingNames) {
  *         that should not be returned
  * @return {string} the proposed ID of the object
  */
-export function chooseUniqueIdFromName(name, existingIds) {
+export function chooseUniqueIdFromName(
+  name: string,
+  existingIds: string[] | Record<string, any>
+): string {
   return chooseUniqueId(camelCase(name), existingIds);
 }

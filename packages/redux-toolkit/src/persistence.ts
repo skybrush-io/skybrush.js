@@ -1,6 +1,14 @@
-import localForage from 'localforage';
+import * as localForage from 'localforage';
+import type { PersistConfig } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
+
+export type StorageConfig<S, RS = any, HSS = any, ESS = any> = Omit<
+  PersistConfig<S, RS, HSS, ESS>,
+  'blacklist' | 'storage'
+> & {
+  blacklist?: string | string[];
+};
 
 /**
  * Creates a configuration object that is suitable for `redux-persist` to
@@ -17,13 +25,13 @@ import { createBlacklistFilter } from 'redux-persist-transform-filter';
  * @param {string[]} blacklist  list of state paths (top-level and non-top-level alike)
  *        to remove from the stored state
  */
-export const createStorageConfiguration = ({
+export function createStorageConfiguration<S, RS, HSS, ESS>({
   key,
   version,
   blacklist,
   transforms,
   ...rest
-} = {}) => {
+}: StorageConfig<S, RS, HSS, ESS>) {
   if (!key) {
     throw new Error(
       'You must provide a key for the storage configuration object'
@@ -53,7 +61,7 @@ export const createStorageConfiguration = ({
   const dottedPaths = blacklist.filter((item) => item.includes('.'));
   blacklist = blacklist.filter((item) => !item.includes('.'));
 
-  const dottedPathsByPrefixes = {};
+  const dottedPathsByPrefixes: Record<string, string[]> = {};
   for (const path of dottedPaths) {
     const index = path.indexOf('.');
     const head = path.slice(0, Math.max(0, index));
@@ -75,11 +83,23 @@ export const createStorageConfiguration = ({
     transforms.push(createBlacklistFilter(path, keys));
   }
 
+  const storage: PersistConfig<S, RS, HSS, ESS>['storage'] =
+    'bridge' in window && (window as any)?.bridge
+      ? (
+          (window as any).bridge.createStateStore as () => PersistConfig<
+            S,
+            RS,
+            HSS,
+            ESS
+          >['storage']
+        )()
+      : localForage;
+
   return {
     key,
     version,
 
-    storage: window.bridge ? window.bridge.createStateStore() : localForage,
+    storage,
     stateReconciler: autoMergeLevel2,
 
     // Do not save more frequently than once every second
@@ -90,4 +110,4 @@ export const createStorageConfiguration = ({
 
     ...rest,
   };
-};
+}

@@ -5,13 +5,14 @@
   "author": "CollMot Robotics Ltd",
   "homepage": "",
   "license": "UNLICENSED",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "directories": {
-    "lib": "lib",
+    "src": "src",
     "test": "test"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "publishConfig": {
     "registry": "https://npm.collmot.com"
@@ -21,6 +22,8 @@
     "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
     "test": "nyc ava && xo"
   },
   "ava": {
@@ -42,6 +45,7 @@
     "redux": "^4.0.0"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.5",
     "redux": "^4.0.5"
   }
 }
