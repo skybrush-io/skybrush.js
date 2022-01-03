@@ -1,42 +1,35 @@
-import createColor from 'color';
+/* eslint-disable @typescript-eslint/no-namespace */
+
+import * as createColor from 'color';
 import { lightBlue, grey, green, yellow } from '@mui/material/colors';
 import { Status } from './semantics';
 
 /**
- * Enum containing commonly used semantic color names throughout Skybrush apps.
+ * Namespace containing commonly used semantic color names throughout Skybrush apps.
  */
-export const Colors = {
-  off: grey[700],
-  error: '#f00',
-  info: lightBlue[500],
-  success: green.A700,
-  warning: yellow[700],
-  missing: '#f0f',
-
-  dropTarget: 'rgba(3, 169, 244, 0.5)', // Lightblue.500
-
-  axes: {
+export namespace Colors {
+  export const off = grey[700];
+  export const error = '#f00';
+  export const info = lightBlue[500];
+  export const success = green.A700;
+  export const warning = yellow[700];
+  export const missing = '#f0f';
+  export const axes = {
     x: '#f44',
     y: '#4f4',
     z: '#06f',
-  },
-
-  markers: {
+  };
+  export const markers = {
     landing: '#3c3',
     origin: '#f44',
     takeoff: '#fc0',
-  },
-};
+  };
 
-Colors.seriousWarning = createColor(Colors.warning)
-  .mix(createColor(Colors.error))
-  .string();
-
-// Compatibility aliases -- can be removed in @2.0.0
-Colors.axisColors = Colors.axes;
-Colors.landingMarker = Colors.markers.landing;
-Colors.originMarker = Colors.markers.origin;
-Colors.takeoffMarker = Colors.markers.takeoff;
+  export const dropTarget = createColor(lightBlue[500]).alpha(0.5).string();
+  export const seriousWarning = createColor(warning)
+    .mix(createColor(error))
+    .string();
+}
 
 /**
  * Mapping from semantic status codes to the corresponding colors.
@@ -59,7 +52,7 @@ const statusColorMap = new Map([
 /**
  * Returns an appropriate color for the given semantic status code.
  */
-export const colorForStatus = (status) =>
-  statusColorMap.has(status) ? statusColorMap.get(status) : Colors.missing;
+export const colorForStatus = (status: Status): string =>
+  statusColorMap.get(status) ?? Colors.missing;
 
 export default Colors;

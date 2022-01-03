@@ -1,13 +1,25 @@
+import * as React from 'react';
+
+import { Theme } from '@mui/material/styles';
+
 import { isThemeDark } from './theme';
+
+interface SecondaryAreaStyleOptions {
+  inset?: 'top' | 'bottom' | 'left' | 'right' | 'all' | true;
+}
 
 /**
  * Creates a style for a secondary area with an inset appearance that can be
  * used for charts, sidebars and other display widgets.
  */
-export const createSecondaryAreaStyle = (theme, options) =>
-  secondaryAreaStyle(options)(theme);
+export const createSecondaryAreaStyle = (
+  theme: Theme,
+  options: SecondaryAreaStyleOptions
+) => secondaryAreaStyle(options)(theme);
 
-const createExtraStyleFuncForSecondaryAreaStyle = (inset) => {
+const createExtraStyleFuncForSecondaryAreaStyle = (
+  inset: SecondaryAreaStyleOptions['inset']
+): ((isDark: boolean) => React.CSSProperties) => {
   switch (inset) {
     case 'top':
       return (dark) => ({
@@ -41,6 +53,7 @@ const createExtraStyleFuncForSecondaryAreaStyle = (inset) => {
         boxShadow: '-2px 0 6px -2px inset rgba(0, 0, 0, 0.54)',
       });
 
+    case 'all':
     default:
       return (dark) => ({
         border: `1px solid ${
@@ -55,10 +68,12 @@ const createExtraStyleFuncForSecondaryAreaStyle = (inset) => {
  * Creates a style for a secondary area with an inset appearance that can be
  * used for charts, sidebars and other display widgets.
  */
-export const secondaryAreaStyle = ({ inset } = {}) => {
+export const secondaryAreaStyle = ({
+  inset,
+}: SecondaryAreaStyleOptions = {}) => {
   const extraStyleFunc = createExtraStyleFuncForSecondaryAreaStyle(inset);
 
-  return (theme) => {
+  return (theme: Theme) => {
     const dark = isThemeDark(theme);
 
     return {

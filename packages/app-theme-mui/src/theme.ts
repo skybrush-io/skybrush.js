@@ -2,11 +2,10 @@
  * @file Theme setup for Material-UI.
  */
 
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
 import { blue, grey, lightBlue, orange, blueGrey } from '@mui/material/colors';
-import { ThemeProvider, alpha, createTheme } from '@mui/material/styles';
+import { Theme, ThemeProvider, alpha, createTheme } from '@mui/material/styles';
 
 import { Colors } from './colors';
 import { defaultFont } from './fonts';
@@ -61,17 +60,22 @@ const cssForScrollbars = {
     background-color: rgba(255, 255, 255, 0.54) !important;
   }
   `,
-};
+} as const;
 
 /**
  * Helper function that returns whether the given Material UI theme is a dark theme.
  */
-export const isThemeDark = (theme) => theme.palette.mode === 'dark';
+export const isThemeDark = (theme: Theme) => theme.palette.mode === 'dark';
 
 const themeProviderDefaults = {
-  primaryColor: (isDark) => (isDark ? orange : blue),
-  secondaryColor: (isDark) => (isDark ? lightBlue : blueGrey),
+  primaryColor: (isDark: boolean) => (isDark ? orange : blue),
+  secondaryColor: (isDark: boolean) => (isDark ? lightBlue : blueGrey),
 };
+
+export interface DarkModeAwareThemeProviderProps {
+  type: 'auto' | 'dark' | 'light';
+  children: React.ReactNode;
+}
 
 /**
  * Function that creates a theme provider given the preferred primary and secondary
@@ -88,11 +92,14 @@ export const createThemeProvider = ({
   primaryColor = themeProviderDefaults.primaryColor,
   secondaryColor = themeProviderDefaults.secondaryColor,
 } = {}) => {
-  const DarkModeAwareThemeProvider = ({ children, type }) => {
+  const DarkModeAwareThemeProvider = ({
+    children,
+    type,
+  }: DarkModeAwareThemeProviderProps) => {
     const osHasDarkMode = useDarkMode();
     const isThemeDark = (type === 'auto' && osHasDarkMode) || type === 'dark';
 
-    const muiV4Compat = (props) => props;
+    const muiV4Compat = <T>(props: T): T => props;
 
     // Create the Material-UI theme that we are going to use
     const baseTheme = createTheme({
@@ -121,18 +128,22 @@ export const createThemeProvider = ({
               default: '#fafafa',
             },
 
+        /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
         // Compatibility with Material UI v4
         text: {
           hint: isThemeDark
             ? 'rgba(255, 255, 255, 0.5)'
             : 'rgba(0, 0, 0, 0.38)',
-        },
+        } as any,
 
         // Compatibility with Material UI v4 and to allow <Button color="gray">
         grey: {
           main: grey[300],
           dark: grey[400],
-        },
+        } as any,
+
+        /* eslint-enable @typescript-eslint/no-unsafe-assignment */
       },
 
       typography: {
@@ -296,22 +307,18 @@ export const createThemeProvider = ({
     /* This is needed to make sure that the tab width we prescribed is not
      * overwritten by more specific media queries */
 
-    theme.components.MuiTab.styleOverrides.root[theme.breakpoints.up('xs')] = {
-      minWidth: theme.components.MuiTab.styleOverrides.root.minWidth,
+    (theme.components!.MuiTab!.styleOverrides!.root! as any)[
+      theme.breakpoints.up('xs')
+    ] = {
+      minWidth: (
+        theme.components!.MuiTab!.styleOverrides!.root as { minWidth: number }
+      ).minWidth,
     };
 
     useConditionalCSS(cssForScrollbars.dark, !isMacOs && isThemeDark);
     useConditionalCSS(cssForScrollbars.light, !isMacOs && !isThemeDark);
 
     return React.createElement(ThemeProvider, { theme }, children);
-  };
-
-  DarkModeAwareThemeProvider.propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node,
-    ]),
-    type: PropTypes.oneOf(['auto', 'dark', 'light']),
   };
 
   return DarkModeAwareThemeProvider;

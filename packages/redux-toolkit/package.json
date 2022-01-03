@@ -8,7 +8,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "directories": {
-    "src": "src",
     "test": "test"
   },
   "files": [
@@ -22,12 +21,10 @@
     "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
-    "build": "tsc",
-    "prepack": "npx tsc",
+    "build": "npx tsc",
+    "clean": "rimraf dist/** *.tgz",
+    "prepack": "npm run build",
     "test": "nyc ava && xo"
-  },
-  "ava": {
-    "babel": true
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
