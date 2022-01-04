@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
@@ -80,11 +79,22 @@ const StyledBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+export interface StatusLightProps {
+  inline: boolean;
+  size: 'small' | 'normal' | 'large';
+  status: Status;
+}
+
 /**
  * Small component resembling a multi-color status light that can be used to
  * represent the state of a single step in a multi-step process.
  */
-const StatusLight = ({ inline, size, status, ...rest }) => (
+const StatusLight = ({
+  inline,
+  size = 'normal',
+  status = Status.OFF,
+  ...rest
+}: StatusLightProps) => (
   <StyledBox
     className={clsx(
       inline && 'StatusLight-inline',
@@ -95,16 +105,5 @@ const StatusLight = ({ inline, size, status, ...rest }) => (
     {...rest}
   />
 );
-
-StatusLight.propTypes = {
-  inline: PropTypes.bool,
-  size: PropTypes.oneOf(['small', 'normal', 'large']),
-  status: PropTypes.oneOf(Object.values(Status)),
-};
-
-StatusLight.defaultProps = {
-  status: 'off',
-  size: 'normal',
-};
 
 export default StatusLight;

@@ -1,12 +1,20 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 
-const SmallProgressIndicator = ({ label, visible, ...rest }) => (
+export interface SmallProgressIndicatorProps {
+  label?: string;
+  visible?: boolean;
+}
+
+const SmallProgressIndicator = ({
+  label,
+  visible = true,
+  ...rest
+}: SmallProgressIndicatorProps) => (
   <Fade in={visible}>
     <Box
       alignItems='center'
@@ -26,14 +34,5 @@ const SmallProgressIndicator = ({ label, visible, ...rest }) => (
     </Box>
   </Fade>
 );
-
-SmallProgressIndicator.propTypes = {
-  label: PropTypes.string,
-  visible: PropTypes.bool,
-};
-
-SmallProgressIndicator.defaultProps = {
-  visible: true,
-};
 
 export default SmallProgressIndicator;

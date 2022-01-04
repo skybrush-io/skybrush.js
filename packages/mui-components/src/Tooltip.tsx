@@ -1,16 +1,18 @@
-import React from 'react';
-import Tippy from '@tippyjs/react';
+import * as React from 'react';
+import Tippy, { TippyProps } from '@tippyjs/react';
 
 import { useTheme } from '@mui/material/styles';
 
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light-border.css';
 
+export type TooltipProps = TippyProps;
+
 /**
  * Tooltip component that adapts its appearance to the current Material UI
  * theme, depending on whether the theme is dark or light.
  */
-const Tooltip = (props) => {
+const Tooltip = (props: TooltipProps) => {
   const appTheme = useTheme();
   const tippyTheme =
     appTheme.palette.mode === 'dark' ? 'dark-border' : 'light-border';

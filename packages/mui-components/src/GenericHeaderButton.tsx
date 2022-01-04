@@ -1,13 +1,20 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
 import { styled } from '@mui/material/styles';
 
 import Tooltip from './Tooltip';
 
+export interface GenericHeaderButtonProps {
+  children?: React.ReactNode;
+  disabled?: boolean;
+  label?: React.ReactNode;
+  secondaryLabel?: React.ReactNode;
+  tooltip?: React.ReactNode;
+}
+
 const GenericHeaderButtonBase = styled('div', {
   shouldForwardProp: (prop) => prop !== 'disabled',
-})(({ disabled, theme }) => ({
+})<{ disabled?: boolean }>(({ disabled, theme }) => ({
   color: 'white',
   cursor: 'default',
   minWidth: 48,
@@ -44,7 +51,17 @@ const GenericHeaderButtonBase = styled('div', {
 }));
 
 export const GenericHeaderButton = React.forwardRef(
-  ({ children, disabled, label, secondaryLabel, tooltip, ...rest }, ref) => {
+  (
+    {
+      children,
+      disabled,
+      label,
+      secondaryLabel,
+      tooltip,
+      ...rest
+    }: GenericHeaderButtonProps,
+    ref: React.Ref<HTMLDivElement>
+  ) => {
     const result = (
       <GenericHeaderButtonBase ref={ref} disabled={disabled} {...rest}>
         <span className='GenericHeaderButton-icon'>{children}</span>
@@ -73,13 +90,5 @@ export const GenericHeaderButton = React.forwardRef(
     return result;
   }
 );
-
-GenericHeaderButton.propTypes = {
-  children: PropTypes.node,
-  disabled: PropTypes.bool,
-  label: PropTypes.node,
-  secondaryLabel: PropTypes.node,
-  tooltip: PropTypes.string,
-};
 
 export default GenericHeaderButton;

@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
-
 import { css, styled } from '@mui/material/styles';
+import type { SerializedStyles } from '@mui/styled-engine';
 import { Colors, Status } from '@skybrush/app-theme-mui';
 
 import { dimFlash } from './keyframes';
 
-const cssByColor = Object.fromEntries(
+const cssByColor: Record<string, SerializedStyles> = Object.fromEntries(
   ['info', 'warning', 'success', 'error'].map((color) => [
     color,
-    css({ color: Colors[color] }),
+    css({ color: (Colors as any)[color] as string }),
   ])
 );
 
@@ -18,7 +17,7 @@ const flashCss = css({
   animationDirection: 'alternate',
 });
 
-const styles = {
+const styles: Record<Status, SerializedStyles | null> = {
   info: cssByColor.info,
   waiting: cssByColor.info,
   next: cssByColor.info,
@@ -28,15 +27,12 @@ const styles = {
   rth: css([cssByColor.warning, boldCss, flashCss]),
   error: css([cssByColor.error, boldCss]),
   critical: css([cssByColor.error, boldCss, flashCss]),
+  off: null,
+  missing: null,
 };
 
 const StatusText = styled('span', {
   shouldForwardProp: (name) => name !== 'status',
-})(({ status }) => styles[status]);
-
-StatusText.propTypes = {
-  className: PropTypes.string,
-  status: PropTypes.oneOf(Object.values(Status)),
-};
+})<{ status: Status }>(({ status }) => styles[status]);
 
 export default StatusText;

@@ -1,15 +1,14 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
 import { colorForStatus, Status } from '@skybrush/app-theme-mui';
 
-import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemIcon, { ListItemIconProps } from '@mui/material/ListItemIcon';
 import ActionDone from '@mui/icons-material/Done';
 import ActionSettingsEthernet from '@mui/icons-material/SettingsEthernet';
 import ContentClear from '@mui/icons-material/Clear';
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
-const presets = {
+const presets: Record<string, { color?: string; icon?: React.ReactNode }> = {
   connected: {
     color: colorForStatus(Status.SUCCESS),
     icon: <ActionDone fontSize='small' />,
@@ -43,10 +42,21 @@ const presets = {
   },
 };
 
+export interface MiniListItemIconProps extends ListItemIconProps {
+  color?: string;
+  preset?: keyof typeof presets;
+}
+
 /**
  * Small icon to be used on the left edge of a mini list.
  */
-const MiniListItemIcon = ({ color, children, preset, style, ...rest }) => {
+const MiniListItemIcon = ({
+  color,
+  children,
+  preset,
+  style,
+  ...rest
+}: MiniListItemIconProps) => {
   if (preset) {
     const { icon, color: presetColor } = presets[preset] || {};
 
@@ -73,15 +83,5 @@ const MiniListItemIcon = ({ color, children, preset, style, ...rest }) => {
 };
 
 MiniListItemIcon.presets = presets;
-
-MiniListItemIcon.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]),
-  color: PropTypes.string,
-  preset: PropTypes.oneOf(Object.keys(presets)),
-  style: PropTypes.object,
-};
 
 export default MiniListItemIcon;

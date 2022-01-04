@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
@@ -55,21 +54,20 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   '&.StyledAvatar-missing': createStyleForStatus(Status.MISSING, theme),
 }));
 
+export interface SemanticAvatarProps {
+  status: Status;
+  children: React.ReactNode;
+}
+
 /**
  * Avatar that represents a single drone, docking station or some other object
  * in the system that has an ID.
  */
-const SemanticAvatar = ({ children, status }) => (
+const SemanticAvatar = ({
+  children,
+  status = Status.OFF,
+}: SemanticAvatarProps) => (
   <StyledAvatar className={`StyledAvatar-${status}`}>{children}</StyledAvatar>
 );
-
-SemanticAvatar.propTypes = {
-  children: PropTypes.node,
-  status: PropTypes.oneOf(Object.values(Status)),
-};
-
-SemanticAvatar.defaultProps = {
-  status: Status.OFF,
-};
 
 export default SemanticAvatar;

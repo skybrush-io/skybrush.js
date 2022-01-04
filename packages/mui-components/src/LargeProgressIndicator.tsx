@@ -1,12 +1,22 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 
-const LargeProgressIndicator = ({ fullHeight, label, visible, ...rest }) => (
+export interface LargeProgressIndicatorProps extends BoxProps {
+  fullHeight?: boolean;
+  label?: string;
+  visible?: boolean;
+}
+
+const LargeProgressIndicator = ({
+  fullHeight,
+  label,
+  visible = true,
+  ...rest
+}: LargeProgressIndicatorProps) => (
   <Fade in={visible}>
     <Box
       alignItems='center'
@@ -15,7 +25,7 @@ const LargeProgressIndicator = ({ fullHeight, label, visible, ...rest }) => (
       display='flex'
       flexDirection='column'
       justifyContent='center'
-      height={fullHeight ? '100%' : null}
+      height={fullHeight ? '100%' : undefined}
       {...rest}
     >
       <Box pb={2}>
@@ -29,15 +39,5 @@ const LargeProgressIndicator = ({ fullHeight, label, visible, ...rest }) => (
     </Box>
   </Fade>
 );
-
-LargeProgressIndicator.propTypes = {
-  fullHeight: PropTypes.bool,
-  label: PropTypes.string,
-  visible: PropTypes.bool,
-};
-
-LargeProgressIndicator.defaultProps = {
-  visible: true,
-};
 
 export default LargeProgressIndicator;

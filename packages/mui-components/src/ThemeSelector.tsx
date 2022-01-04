@@ -1,12 +1,18 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
-import FormControl from '@mui/material/FormControl';
+import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import Select, { SelectProps } from '@mui/material/Select';
 
-const ThemeSelector = ({ onChange, value, ...rest }) => (
+import type { ThemeType } from '@skybrush/app-theme-mui';
+
+export interface ThemeSelectorProps extends Omit<FormControlProps, 'onChange'> {
+  onChange: SelectProps['onChange'];
+  value: ThemeType;
+}
+
+const ThemeSelector = ({ onChange, value, ...rest }: ThemeSelectorProps) => (
   <FormControl fullWidth variant='filled' {...rest}>
     <InputLabel id='display-theme-label'>Theme</InputLabel>
     <Select
@@ -23,10 +29,5 @@ const ThemeSelector = ({ onChange, value, ...rest }) => (
     </Select>
   </FormControl>
 );
-
-ThemeSelector.propTypes = {
-  value: PropTypes.oneOf(['auto', 'dark', 'light']),
-  onChange: PropTypes.func,
-};
 
 export default ThemeSelector;

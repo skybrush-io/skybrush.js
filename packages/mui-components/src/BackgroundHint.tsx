@@ -3,10 +3,9 @@
  * application.
  */
 
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 const style = {
@@ -19,7 +18,15 @@ const style = {
   width: '100%',
   height: '100%',
   userSelect: 'none',
-};
+} as const;
+
+export interface BackgroundHintProps extends BoxProps {
+  button: React.ReactNode;
+  header: string;
+  icon: React.ReactElement;
+  iconColor: string;
+  text: string;
+}
 
 /**
  * Component that gives a hint to the user about the usage of the
@@ -30,8 +37,15 @@ const style = {
  *
  * @return {Object} the rendered component
  */
-const BackgroundHint = ({ button, header, icon, iconColor, text, ...rest }) => {
-  const iconStyle = icon
+const BackgroundHint = ({
+  button,
+  header,
+  icon,
+  iconColor,
+  text,
+  ...rest
+}: BackgroundHintProps) => {
+  const iconStyle: React.CSSProperties | undefined = icon
     ? {
         fontSize: 48,
       }
@@ -57,14 +71,6 @@ const BackgroundHint = ({ button, header, icon, iconColor, text, ...rest }) => {
       </div>
     </Box>
   );
-};
-
-BackgroundHint.propTypes = {
-  button: PropTypes.node,
-  header: PropTypes.string,
-  icon: PropTypes.node,
-  iconColor: PropTypes.string,
-  text: PropTypes.string,
 };
 
 export default BackgroundHint;

@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
 import Box from '@mui/material/Box';
 import Portal from '@mui/material/Portal';
+import { Theme } from '@mui/material/styles';
 
 import { isThemeDark } from '@skybrush/app-theme-mui';
 
@@ -19,7 +19,7 @@ const styles = {
 
   inner: {
     backdropFilter: 'blur(16px)',
-    backgroundColor: (theme) =>
+    backgroundColor: (theme: Theme) =>
       isThemeDark(theme) ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
     borderRadius: 4,
     boxShadow: '0 0 32px rgba(0, 0, 0, 0.6)',
@@ -32,9 +32,14 @@ const styles = {
     fontSize: 'h1.fontSize',
     textAlign: 'center',
   },
-};
+} as const;
 
-const QuickSelectionOverlay = ({ text, open }) =>
+export interface QuickSelectionOverlayProps {
+  text: string | number;
+  open: boolean;
+}
+
+const QuickSelectionOverlay = ({ text, open }: QuickSelectionOverlayProps) =>
   open && (
     <Portal>
       <Box sx={styles.root}>
@@ -42,10 +47,5 @@ const QuickSelectionOverlay = ({ text, open }) =>
       </Box>
     </Portal>
   );
-
-QuickSelectionOverlay.propTypes = {
-  open: PropTypes.bool,
-  text: PropTypes.string,
-};
 
 export default QuickSelectionOverlay;

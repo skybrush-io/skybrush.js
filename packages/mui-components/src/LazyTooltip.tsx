@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import Tippy from '@tippyjs/react';
+import * as React from 'react';
+import { useState } from 'react';
+import Tippy, { TippyProps } from '@tippyjs/react';
 
 import { useTheme } from '@mui/material/styles';
 
-const LazyTooltip = (props) => {
+export type LazyTooltipProps = TippyProps;
+
+const LazyTooltip = (props: TippyProps) => {
   const appTheme = useTheme();
   const tippyTheme =
     appTheme.palette.mode === 'dark' ? 'dark-border' : 'light-border';
@@ -11,17 +14,22 @@ const LazyTooltip = (props) => {
 
   const lazyPlugin = {
     fn: () => ({
-      onShow: () => setMounted(true),
-      onHidden: () => setMounted(false),
+      onShow: () => {
+        setMounted(true);
+      },
+      onHidden: () => {
+        setMounted(false);
+      },
     }),
   };
 
+  const { render } = props;
   const computedProps = { ...props, theme: tippyTheme };
 
-  computedProps.plugins = [lazyPlugin, ...(props.plugins || [])];
+  computedProps.plugins = [lazyPlugin, ...(props.plugins ?? [])];
 
-  if (props.render) {
-    computedProps.render = (...args) => (mounted ? props.render(...args) : '');
+  if (render) {
+    computedProps.render = (...args) => (mounted ? render(...args) : '');
   } else {
     computedProps.content = mounted ? props.content : '';
   }

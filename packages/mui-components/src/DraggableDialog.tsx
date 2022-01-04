@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 import Draggable from 'react-draggable';
 
 import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
-import Paper from '@mui/material/Paper';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
+import Paper, { PaperProps } from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -12,7 +11,7 @@ import { createSecondaryAreaStyle } from '@skybrush/app-theme-mui';
 
 import DialogToolbar from './DialogToolbar';
 
-const DraggablePaper = (props) => (
+const DraggablePaper = (props: PaperProps) => (
   <Draggable
     handle='#draggable-dialog-title'
     cancel={'[class*="MuiDialogContent-root"]'}
@@ -26,11 +25,17 @@ const styles = {
     flex: 1,
     cursor: 'move',
   },
-};
+} as const;
 
 const DraggableDialogSidebar = styled('div')(({ theme }) =>
   createSecondaryAreaStyle(theme, { inset: 'right' })
 );
+
+export interface DraggableDialogProps extends DialogProps {
+  sidebarComponents?: React.ReactNode;
+  titleComponents?: React.ReactNode;
+  toolbarComponent?: ((id: string) => React.ReactNode) | React.ReactNode;
+}
 
 const DraggableDialog = ({
   children,
@@ -39,7 +44,7 @@ const DraggableDialog = ({
   titleComponents,
   toolbarComponent,
   ...rest
-}) => {
+}: DraggableDialogProps) => {
   const titleTypography = (
     <Typography noWrap variant='subtitle1'>
       {title}
@@ -85,23 +90,6 @@ const DraggableDialog = ({
       )}
     </Dialog>
   );
-};
-
-DraggableDialog.propTypes = {
-  sidebarComponents: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]),
-  title: PropTypes.string,
-  titleComponents: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]),
-  toolbarComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]),
 };
 
 export default DraggableDialog;

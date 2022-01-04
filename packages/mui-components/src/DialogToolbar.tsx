@@ -1,27 +1,21 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
-import Toolbar from '@mui/material/Toolbar';
+import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
 
 import DialogAppBar from './DialogAppBar';
+
+export type DialogToolbarProps = ToolbarProps;
 
 /**
  * toolbar component styled appropriately to be suitable for presentation in the
  * header of a dialog.
  */
-const DialogToolbar = ({ children, ...rest }) => (
+const DialogToolbar = ({ children, ...rest }: ToolbarProps) => (
   <DialogAppBar>
     <Toolbar variant='dense' {...rest}>
       {children}
     </Toolbar>
   </DialogAppBar>
 );
-
-DialogToolbar.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-};
 
 export default DialogToolbar;

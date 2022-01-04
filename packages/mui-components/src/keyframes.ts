@@ -10,7 +10,7 @@ to {
 }
 `;
 
-const flashWithOpacity = (opacity) => keyframes`
+const flashWithOpacity = (opacity: number) => keyframes`
   from, 49% {
     opacity: ${opacity};
   }

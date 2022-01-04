@@ -13,6 +13,15 @@ import useConditionalCSS from './hooks/useConditionalCSS';
 import useDarkMode from './hooks/useDarkMode';
 
 /**
+ * Types of themes that we support in this framework.
+ */
+export enum ThemeType {
+  AUTO = 'auto',
+  DARK = 'dark',
+  LIGHT = 'light',
+}
+
+/**
  * Constant that decides whether we are on macOS (where we don't need extra
  * scrollbar styling).
  */
@@ -73,7 +82,7 @@ const themeProviderDefaults = {
 };
 
 export interface DarkModeAwareThemeProviderProps {
-  type: 'auto' | 'dark' | 'light';
+  type: ThemeType;
   children: React.ReactNode;
 }
 
@@ -97,7 +106,8 @@ export const createThemeProvider = ({
     type,
   }: DarkModeAwareThemeProviderProps) => {
     const osHasDarkMode = useDarkMode();
-    const isThemeDark = (type === 'auto' && osHasDarkMode) || type === 'dark';
+    const isThemeDark =
+      (type === ThemeType.AUTO && osHasDarkMode) || type === ThemeType.DARK;
 
     const muiV4Compat = <T>(props: T): T => props;
 

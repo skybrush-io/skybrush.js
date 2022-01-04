@@ -1,5 +1,7 @@
-import List from '@mui/material/List';
+import List, { ListProps } from '@mui/material/List';
 import { styled } from '@mui/material/styles';
+
+export type TransparentListProps = ListProps;
 
 /**
  * Styled list component where the background color is set to transparent so

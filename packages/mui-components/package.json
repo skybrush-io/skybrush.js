@@ -6,6 +6,7 @@
   "homepage": "",
   "license": "UNLICENSED",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -21,13 +22,10 @@
     "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
-    "build": "babel --config-file ../../babel.config.json src -d lib",
-    "clean": "rimraf lib/** dist/** *.tgz",
-    "test": "nyc ava && xo",
-    "prepack": "npm run clean && npm run build"
-  },
-  "ava": {
-    "babel": true
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf lib/** *.tgz",
+    "prepack": "npm run build",
+    "test": "nyc ava && xo"
   },
   "peerDependencies": {
     "@mui/icons-material": "^5",
@@ -42,7 +40,7 @@
     "clsx": "^1.1.1",
     "color": "^4.0.1",
     "prop-types": "^15.7.2",
-    "react-badger": "^2.0.8",
+    "react-badger": "^2.0.9",
     "react-draggable": "^4.4.4",
     "tippy.js": "^6.3.5",
     "use-async-effect": "^2.2.3"
