@@ -27,7 +27,7 @@
     "test": "nyc ava && xo"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.6.2",
+    "@reduxjs/toolkit": "^1.7.1",
     "immer": "^9.0.7",
     "is-promise": "^4.0.0",
     "localforage": "^1.10.0",

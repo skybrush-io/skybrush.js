@@ -36,7 +36,7 @@
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
-    "@mui/material": "^5.0.6",
+    "@mui/material": "^5.2.7",
     "@types/color": "^3.0.2",
     "@types/react-transition-group": "^4.4.4",
     "chart.js": "^3.7.0",
