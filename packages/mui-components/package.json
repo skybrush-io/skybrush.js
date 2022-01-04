@@ -38,7 +38,7 @@
     "@skybrush/app-theme-mui": "^1.0.1",
     "@tippyjs/react": "^4.2.6",
     "clsx": "^1.1.1",
-    "color": "^4.0.1",
+    "color": "^4.1.0",
     "prop-types": "^15.7.2",
     "react-badger": "^2.0.9",
     "react-draggable": "^4.4.4",
