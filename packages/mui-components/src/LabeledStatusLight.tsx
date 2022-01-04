@@ -7,7 +7,7 @@ import StatusLight, { StatusLightProps } from './StatusLight';
 
 export interface LabeledStatusLightProps extends StatusLightProps {
   children: React.ReactNode;
-  color: TypographyProps['color'];
+  color?: TypographyProps['color'];
 }
 
 const LabeledStatusLight = ({

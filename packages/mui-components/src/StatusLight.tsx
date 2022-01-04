@@ -80,9 +80,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 export interface StatusLightProps {
-  inline: boolean;
-  size: 'small' | 'normal' | 'large';
-  status: Status;
+  inline?: boolean;
+  size?: 'small' | 'normal' | 'large';
+  status?: Status;
 }
 
 /**

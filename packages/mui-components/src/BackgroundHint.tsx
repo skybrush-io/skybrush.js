@@ -21,11 +21,11 @@ const style = {
 } as const;
 
 export interface BackgroundHintProps extends BoxProps {
-  button: React.ReactNode;
-  header: string;
-  icon: React.ReactElement;
-  iconColor: string;
-  text: string;
+  button?: React.ReactNode;
+  header?: string;
+  icon?: React.ReactElement;
+  iconColor?: string;
+  text?: string;
 }
 
 /**
