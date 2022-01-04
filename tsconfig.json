@@ -5,16 +5,18 @@
     "jsx": "react",
     "target": "es6",
     "module": "commonjs",
-	"forceConsistentCasingInFileNames": true,
-	"experimentalDecorators": true,
-	"allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true
   },
   "exclude": [
     "**/.*/",
+    "**/dist",
     "**/node_modules",
+    "**/test",
     "packages/aframe-components",
-    "packages/app-theme-material-ui"
+    "packages/app-theme-material-ui",
+    "packages/electron-app-framework"
   ]
 }
-
