@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "color": "^4.1.0",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.8.0",
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
