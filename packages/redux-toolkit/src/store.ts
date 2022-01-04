@@ -142,7 +142,10 @@ export function configureStoreAndPersistence<
             if (key) {
               value[key] = '<<JSON_DATA>>';
             } else {
-              state[value] = '<<JSON_DATA>>';
+              // (state as any) cast needed to get rid of a Typescript error;
+              // TS apparently thinks that the state object cannot be indexed
+              // with a string
+              (state as any)[value] = '<<JSON_DATA>>';
             }
           }
         }
@@ -164,7 +167,13 @@ export function configureStoreAndPersistence<
   const sagaMiddleware = createSagaMiddleware(sagaOptions);
 
   if (storage) {
-    reducer = persistReducer(createStorageConfiguration(storage), reducer);
+    // Round-trip casting needed because TypeScript knows that persistReducer()
+    // will extend the state with a hidden branch and we are not interested
+    // in that
+    reducer = persistReducer(
+      createStorageConfiguration(storage),
+      reducer
+    ) as any as Reducer<S, A>;
   }
 
   const store: PersistableStore<S, A, M> = configureReduxStore({
