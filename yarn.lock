@@ -10505,6 +10505,15 @@ prop-types@^15.0.0, prop-types@^15.5.4, prop-types@^15.6.0, prop-types@^15.6.1, 
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+prop-types@^15.8.0:
+  version "15.8.0"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.0.tgz#d237e624c45a9846e469f5f31117f970017ff588"
+  integrity sha512-fDGekdaHh65eI3lMi5OnErU6a8Ighg2KjcjQxO7m8VHyWjcPyj5kiOgV1LQDOOOgVy3+5FgjXvdSSX7B8/5/4g==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
+
 property-expr@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/property-expr/-/property-expr-2.0.4.tgz#37b925478e58965031bb612ec5b3260f8241e910"
@@ -10700,12 +10709,20 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-badger@^2.0.7, react-badger@^2.0.8:
+react-badger@^2.0.7:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/react-badger/-/react-badger-2.0.8.tgz#81ffcdb30554e45df6fe815b0c3aa0a14bda114c"
   integrity sha512-UPtonaeqILBcaVedZ9xmr9oOyK0JgUvGnAadmu4QR59FNubyBrKY8P7NBGpp6oI4P4QLQQrChl/97iH3wZ2JnA==
   dependencies:
     prop-types "^15.7.2"
+    react-transition-group "^4.4.2"
+
+react-badger@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/react-badger/-/react-badger-2.0.9.tgz#cbd5316791e36c98385bc71227df7a21e0cec8eb"
+  integrity sha512-QUaBsZfmSXexh9m3tk4u36Z4KBVpgUn4wyispK6qPuY0OuOs0C5YTtTws2QN6PC7E/gDpUTseSJWTwVWA7vAxQ==
+  dependencies:
+    prop-types "^15.8.0"
     react-transition-group "^4.4.2"
 
 react-beautiful-dnd@^13.1.0:
@@ -10772,7 +10789,7 @@ react-hotkeys@^2.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-is@^16.7.0, react-is@^16.8.1:
+react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
