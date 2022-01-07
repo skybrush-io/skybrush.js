@@ -40,12 +40,12 @@ export interface QuickSelectionOverlayProps {
 }
 
 const QuickSelectionOverlay = ({ text, open }: QuickSelectionOverlayProps) =>
-  open && (
+  open ? (
     <Portal>
       <Box sx={styles.root}>
         <Box sx={styles.inner}>{text}</Box>
       </Box>
     </Portal>
-  );
+  ) : null;
 
 export default QuickSelectionOverlay;
