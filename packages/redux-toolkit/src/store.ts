@@ -190,7 +190,7 @@ export function configureStoreAndPersistence<
           ignoredActions: resolvedIgnoredActions,
           ignoredPaths,
         },
-      }).concat(sagaMiddleware, ...(middleware || [])),
+      }).concat(sagaMiddleware, ...(middleware ?? [])),
     devTools: finalDevToolsOptions,
   }) as PersistableStore<S, A, M>;
 
