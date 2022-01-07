@@ -5,7 +5,13 @@
 import * as React from 'react';
 
 import { blue, grey, lightBlue, orange, blueGrey } from '@mui/material/colors';
-import { Theme, ThemeProvider, alpha, createTheme } from '@mui/material/styles';
+import {
+  PaletteColorOptions,
+  Theme,
+  ThemeProvider,
+  alpha,
+  createTheme,
+} from '@mui/material/styles';
 
 import { Colors } from './colors';
 import { defaultFont } from './fonts';
@@ -76,15 +82,24 @@ const cssForScrollbars = {
  */
 export const isThemeDark = (theme: Theme) => theme.palette.mode === 'dark';
 
-const themeProviderDefaults = {
-  primaryColor: (isDark: boolean) => (isDark ? orange : blue),
-  secondaryColor: (isDark: boolean) => (isDark ? lightBlue : blueGrey),
-};
+export interface DarkModeAwareThemeProviderOptions {
+  primaryColor?:
+    | PaletteColorOptions
+    | ((isDark: boolean) => PaletteColorOptions);
+  secondaryColor?:
+    | PaletteColorOptions
+    | ((isDark: boolean) => PaletteColorOptions);
+}
 
 export interface DarkModeAwareThemeProviderProps {
   type: ThemeType;
   children: React.ReactNode;
 }
+
+const themeProviderDefaults: DarkModeAwareThemeProviderOptions = {
+  primaryColor: (isDark: boolean) => (isDark ? orange : blue),
+  secondaryColor: (isDark: boolean) => (isDark ? lightBlue : blueGrey),
+};
 
 /**
  * Function that creates a theme provider given the preferred primary and secondary
@@ -100,7 +115,7 @@ export interface DarkModeAwareThemeProviderProps {
 export const createThemeProvider = ({
   primaryColor = themeProviderDefaults.primaryColor,
   secondaryColor = themeProviderDefaults.secondaryColor,
-} = {}) => {
+}: DarkModeAwareThemeProviderOptions = {}) => {
   const DarkModeAwareThemeProvider = ({
     children,
     type,
