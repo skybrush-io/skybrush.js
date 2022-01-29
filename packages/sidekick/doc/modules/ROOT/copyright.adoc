@@ -1,5 +1,0 @@
-No part of this publication may be reproduced, transmitted, transcribed, stored
-in a retrieval system, or translated into any language in any form by any means
-without the written permission of CollMot Robotics Ltd.
-
-Copyright (C) 2020- CollMot Robotics Ltd. (R) All Rights Reserved.
