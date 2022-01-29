@@ -31,7 +31,6 @@
   "ava": {
     "babel": true
   },
-  "xo": false,
   "devDependencies": {
     "ava": "^3.15.0"
   }

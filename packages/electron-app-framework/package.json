@@ -21,7 +21,7 @@
     "url": "https://git.collmot.com/collmot/skybrush.js"
   },
   "scripts": {
-    "test": "nyc ava && xo"
+    "test": "nyc ava"
   },
   "ava": {
     "babel": true

@@ -24,7 +24,7 @@
     "build": "npx tsc",
     "clean": "rimraf dist/** *.tgz",
     "prepack": "npm run build",
-    "test": "nyc ava && xo"
+    "test": "nyc ava"
   },
   "peerDependencies": {
     "@mui/material": "^5",
