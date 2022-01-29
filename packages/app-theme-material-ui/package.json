@@ -32,8 +32,8 @@
     "react-dom": "^16.8 || ^17"
   },
   "dependencies": {
-    "color": "^4.1.0",
-    "prop-types": "^15.8.0",
+    "color": "^4.2.0",
+    "prop-types": "^15.8.1",
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {

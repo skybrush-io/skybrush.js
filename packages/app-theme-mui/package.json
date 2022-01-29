@@ -32,11 +32,11 @@
     "react-dom": "^17"
   },
   "dependencies": {
-    "color": "^4.1.0",
+    "color": "^4.2.0",
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
-    "@mui/material": "^5.2.7",
+    "@mui/material": "^5.3.1",
     "@types/color": "^3.0.2",
     "@types/react-transition-group": "^4.4.4",
     "chart.js": "^3.7.0",
