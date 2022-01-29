@@ -110,6 +110,7 @@
       "react/boolean-prop-naming": 0,
       "react/require-default-props": 0,
       "unicorn/numeric-separators-style": 0,
+      "unicorn/prefer-export-from": 0,
       "unicorn/prefer-module": 0,
       "@typescript-eslint/naming-convention": 0
     }

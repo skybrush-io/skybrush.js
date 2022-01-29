@@ -127,7 +127,7 @@ export interface FadeAndSlideProps
   TransitionComponent?: typeof Transition;
 }
 
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const FadeAndSlide = React.forwardRef(
   <T extends HTMLElement | undefined>(
     props: FadeAndSlideProps,
@@ -269,6 +269,6 @@ const FadeAndSlide = React.forwardRef(
     );
   }
 );
-/* eslint-enable */
+/* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
 export default FadeAndSlide;

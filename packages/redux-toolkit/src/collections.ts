@@ -51,15 +51,13 @@ export const NEW_ITEM_ID = '@@newItem';
  * @return {boolean}  whether the item has a real ID
  */
 function hasValidId(item: any): boolean {
-  /* eslint-disable @typescript-eslint/prefer-optional-chain */
   return (
-    item &&
+    Boolean(item) &&
     item.id !== undefined &&
     item.id !== null &&
     item.id !== '' &&
     item.id !== NEW_ITEM_ID
   );
-  /* eslint-enable @typescript-eslint/prefer-optional-chain */
 }
 
 /**

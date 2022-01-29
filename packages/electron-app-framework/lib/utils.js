@@ -1,5 +1,7 @@
 'use strict';
 
+const process = require('process');
+
 // Returns whether we are in production mode
 const isProduction =
   process.env.NODE_ENV === 'production' || process.env.DEPLOYMENT === '1';

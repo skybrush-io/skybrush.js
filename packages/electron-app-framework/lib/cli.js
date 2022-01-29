@@ -2,6 +2,7 @@
 
 const { program } = require('commander');
 const { app } = require('electron');
+const process = require('process');
 
 /**
  * Generic setup function for command line parsers of Electron applications

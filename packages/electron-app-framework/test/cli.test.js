@@ -1,6 +1,7 @@
 'use strict';
 
 const test = require('ava');
+const process = require('process');
 const setupCli = require('../lib/cli');
 
 test('CLI parser ignores -psn_ arguments on macOS', (t) => {
