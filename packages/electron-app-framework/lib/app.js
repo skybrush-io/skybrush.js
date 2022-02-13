@@ -1,6 +1,7 @@
 'use strict';
 
 const { app, Menu, shell } = require('electron');
+const unhandled = require('electron-unhandled');
 const process = require('process');
 
 const createMainWindowFactory = require('./main-window');
@@ -38,11 +39,9 @@ function setupApp({
   unhandledErrorLogger = logErrorToConsole,
 } = {}) {
   // Register unhandled error handler
-  if (unhandledErrorLogger && !app.isPackaged) {
-    console.warn(
-      'Unhandled error logger is temporarily disabled; find a replacement for electron-unhandled'
-    );
-  }
+  unhandled({
+    logger: unhandledErrorLogger,
+  });
 
   // Validate type of mainWindow
   if (typeof mainWindow !== 'function') {
