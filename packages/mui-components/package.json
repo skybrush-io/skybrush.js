@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/mui-components",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Material UI components for Skybrush apps",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
@@ -35,7 +35,7 @@
     "react-dom": "^17"
   },
   "dependencies": {
-    "@skybrush/app-theme-mui": "^2.0.2",
+    "@skybrush/app-theme-mui": "^2.0.3",
     "@tippyjs/react": "^4.2.6",
     "clsx": "^1.1.1",
     "color": "^4.2.0",
