@@ -1,9 +1,3 @@
-# `@skybrush/app-theme-material-ui`
-
-Common theme for Material UI based Skybrush apps.
-
-## License
-
 Copyright 2020-2022 CollMot Robotics Ltd.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of

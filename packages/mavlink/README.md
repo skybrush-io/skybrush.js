@@ -28,18 +28,16 @@ but this requires one to patch the `gen_js.sh` shell script to look for
 
 ## Chnages made to the generated implementations
 
-The generated implementations are not exactly modern idiomatic
-JavaScript (to put it mildly), and they use a patched version of the
-third-party `jspack` and `long` libraries. The patches to `long` are relatively
-benign and they can easily be traced by diffing the source against the original
-(version 4.0.0), but the `jspack` code was also reformatted, which makes it
-extremely hard to figure out where the real changes are. Therefore, I have
-simply vendored `long` and `jspack` in the source tree and modified the
-generated JavaScript implementations of the MAVLink message processors to use
-the vendored variants.
+The generated implementations use a patched version of the third-party `jspack`
+and `long` libraries. The patches to `long` are relatively benign and they can
+easily be traced by diffing the source against the original (version 4.0.0),
+but the `jspack` code was also reformatted, which makes it extremely hard to
+figure out where the real changes are. Therefore, I have simply vendored `long`
+and `jspack` in the source tree and modified the generated JavaScript
+implementations of the MAVLink message processors to use the vendored variants.
 
 * The generated implementations also depend on `underscore`, which is
-  unfortunate because `lodash` would be so much better, but alas.
+  unfortunate because `lodash` is more common nowadays.
 
 * The generated implementations import the `util` module from Node.js, but the
   only function they use from it is `inherits`, which is provided by a separate
@@ -56,4 +54,26 @@ the vendored variants.
 
 When using this module in a browser environment. `crypto` and `stream` have to
 be polyfilled from `crypto-browserify` and `stream-browserify`.
+
+## License
+
+Copyright 2020-2022 CollMot Robotics Ltd.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
