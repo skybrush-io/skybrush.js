@@ -31,6 +31,8 @@ import { isAllowedInRedux } from './utils';
 type Middlewares<S> = ReadonlyArray<Middleware<unknown, S>>;
 
 export interface ExtendedDevToolsOptions extends DevToolsOptions {
+  actionsAllowlist?: string | string[];
+  actionsDenylist?: string | string[];
   scrubbedActions?: Array<string | ActionCreator<string>>;
   scrubbedPaths?: string[];
 }
