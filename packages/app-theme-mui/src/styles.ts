@@ -14,7 +14,7 @@ interface SecondaryAreaStyleOptions {
  */
 export const createSecondaryAreaStyle = (
   theme: Theme,
-  options: SecondaryAreaStyleOptions
+  options?: SecondaryAreaStyleOptions
 ) => secondaryAreaStyle(options)(theme);
 
 const createExtraStyleFuncForSecondaryAreaStyle = (
