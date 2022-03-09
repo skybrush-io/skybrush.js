@@ -32,7 +32,7 @@
     "react-dom": "^16.8 || ^17"
   },
   "dependencies": {
-    "color": "^4.2.0",
+    "color": "^4.2.1",
     "prop-types": "^15.8.1",
     "react-transition-group": "^4.4.2"
   },
