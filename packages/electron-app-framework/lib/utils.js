@@ -1,6 +1,8 @@
-'use strict';
+// Do NOT import the process module; DefinePlugin from Webpack does not
+// replace process.env.NODE_ENV and process.env.DEPLOYMENT during bundling
+// if 'process' is imported; it must be a free global
 
-const process = require('process');
+/* eslint-disable node/prefer-global/process */
 
 // Returns whether we are in production mode
 const isProduction =
@@ -41,3 +43,5 @@ module.exports = {
   logErrorToConsole,
   usingWebpackDevServer,
 };
+
+/* eslint-enable node/prefer-global/process */
