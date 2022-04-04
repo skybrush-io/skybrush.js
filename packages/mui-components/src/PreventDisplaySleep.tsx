@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useAsyncEffect from 'use-async-effect';
+import { useAsyncEffect } from 'use-async-effect';
 
 let warned = false;
 
@@ -11,10 +11,7 @@ interface WindowWithBridge {
 const PreventDisplaySleepHelper = () => {
   useAsyncEffect(
     () => {
-      const bridge = (window as any)?.bridge as
-        | WindowWithBridge
-        | null
-        | undefined;
+      const bridge = (window as any)?.bridge as WindowWithBridge | undefined;
       if (bridge?.preventDisplaySleep) {
         return bridge.preventDisplaySleep();
       }
@@ -28,10 +25,7 @@ const PreventDisplaySleepHelper = () => {
     },
     (token) => {
       if (token !== undefined && token !== null) {
-        const bridge = (window as any)?.bridge as
-          | WindowWithBridge
-          | null
-          | undefined;
+        const bridge = (window as any)?.bridge as WindowWithBridge | undefined;
         bridge!.restoreDisplaySleep(token);
       }
     },
