@@ -28,8 +28,8 @@
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12",
-    "react": "^16.13 || ^17",
-    "react-dom": "^16.8 || ^17"
+    "react": "^16.13 || ^17 || ^18",
+    "react-dom": "^16.8 || ^17 || ^18"
   },
   "dependencies": {
     "color": "^4.2.1",

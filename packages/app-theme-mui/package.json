@@ -28,8 +28,8 @@
   },
   "peerDependencies": {
     "@mui/material": "^5",
-    "react": "^17",
-    "react-dom": "^17"
+    "react": "^17 || ^18",
+    "react-dom": "^17 || ^18"
   },
   "dependencies": {
     "color": "^4.2.1",
