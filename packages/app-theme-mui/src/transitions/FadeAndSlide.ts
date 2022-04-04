@@ -154,6 +154,7 @@ const FadeAndSlide = React.forwardRef(
     const theme = useTheme();
 
     const enableStrictModeCompat = true;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     const nodeRef = React.useRef<HTMLElement | null>(null);
     const foreignRef: React.Ref<HTMLElement> = useForkRef(
       (children as any).ref as React.Ref<T>,

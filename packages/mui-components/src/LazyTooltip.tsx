@@ -14,10 +14,10 @@ const LazyTooltip = (props: TippyProps) => {
 
   const lazyPlugin = {
     fn: () => ({
-      onShow: () => {
+      onShow() {
         setMounted(true);
       },
-      onHidden: () => {
+      onHidden() {
         setMounted(false);
       },
     }),
