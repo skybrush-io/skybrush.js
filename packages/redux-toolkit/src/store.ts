@@ -9,6 +9,7 @@ import {
   Middleware,
   Reducer,
   configureStore as configureReduxStore,
+  MiddlewareArray,
 } from '@reduxjs/toolkit';
 import type { EnhancerOptions as DevToolsOptions } from '@reduxjs/toolkit/dist/devtoolsExtension';
 
@@ -20,9 +21,11 @@ import createDeferred from 'p-defer';
 import { persistStore, persistReducer, Persistor } from 'redux-persist';
 import createSagaMiddleware, {
   Saga,
+  SagaMiddleware,
   SagaMiddlewareOptions,
   Task,
 } from 'redux-saga';
+import { ThunkMiddleware } from 'redux-thunk';
 
 import { createActionScrubber, resolveActionTypes } from './actions';
 import { createStorageConfiguration, StorageConfig } from './persistence';
@@ -40,26 +43,27 @@ export interface ExtendedDevToolsOptions extends DevToolsOptions {
 export interface StoreAndPersistenceConfig<
   S = any,
   A extends Action<string> = Action<string>,
-  M extends Middlewares<S> = Middlewares<S>
+  M extends Middlewares<S> = Middlewares<S>,
+  C extends Record<string, unknown> = Record<string, unknown>
 > {
   devTools?: boolean | ExtendedDevToolsOptions;
   ignoredActions?: Array<string | ActionCreator<string>>;
   ignoredPaths?: string[];
   middleware?: M;
   reducer: Reducer<S, A>;
-  sagaOptions?: SagaMiddlewareOptions;
+  sagaOptions?: SagaMiddlewareOptions<C>;
   storage?: StorageConfig<S>;
 }
 
-export interface PersistableStore<
+export type PersistableStore<
   S = any,
   A extends Action = Action<string>,
   M extends Middlewares<S> = Middlewares<S>
-> extends EnhancedStore<S, A, M> {
+> = EnhancedStore<S, A, M> & {
   clear: () => Promise<void>;
   runSaga: <S extends Saga>(saga: S, ...args: Parameters<S>) => Task;
   waitUntilStateRestored: () => Promise<void>;
-}
+};
 
 type ActionSanitizer = DevToolsOptions['actionSanitizer'];
 type StateSanitizer = DevToolsOptions['stateSanitizer'];
@@ -82,12 +86,13 @@ type StateSanitizer = DevToolsOptions['stateSanitizer'];
  *        replaced with a placeholder in the Redux dev tools
  * @param {string[]} scrubbedPaths list of Redux state paths whose content will be
  *        replaced with a placeholder in the Redux dev tools
- * @return {Object}  an object with two keys: 'store'
+ * @return {Object}  an object with two keys: 'store' and 'persistor'
  */
 export function configureStoreAndPersistence<
   S,
   A extends Action<string>,
-  M extends Middlewares<S>
+  M extends Middlewares<S>,
+  C extends Record<string, unknown> = Record<string, unknown>
 >({
   devTools = {},
   ignoredActions = [],
@@ -96,7 +101,14 @@ export function configureStoreAndPersistence<
   reducer,
   sagaOptions = {},
   storage,
-}: StoreAndPersistenceConfig<S, A, M>) {
+}: StoreAndPersistenceConfig<S, A, M, C>): {
+  store: PersistableStore<
+    S,
+    A,
+    MiddlewareArray<[ThunkMiddleware<S, A>, SagaMiddleware<C>, ...M]>
+  >;
+  persistor: Persistor;
+} {
   let persistor: Persistor;
   let finalDevToolsOptions: boolean | DevToolsOptions;
 
@@ -178,7 +190,7 @@ export function configureStoreAndPersistence<
     ) as any as Reducer<S, A>;
   }
 
-  const store: PersistableStore<S, A, M> = configureReduxStore({
+  const store = configureReduxStore({
     reducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -192,9 +204,11 @@ export function configureStoreAndPersistence<
           ignoredActions: resolvedIgnoredActions,
           ignoredPaths,
         },
-      }).concat(sagaMiddleware, ...(middleware ?? [])),
+      })
+        .concat(sagaMiddleware)
+        .concat(middleware ?? ([] as Middlewares<S>)),
     devTools: finalDevToolsOptions,
-  }) as PersistableStore<S, A, M>;
+  });
 
   const stateLoaded = createDeferred<void>();
 
@@ -213,9 +227,17 @@ export function configureStoreAndPersistence<
     stateLoaded.resolve();
   }
 
-  store.waitUntilStateRestored = async () => stateLoaded.promise;
-  store.clear = persistor.purge;
-  store.runSaga = sagaMiddleware.run;
-
-  return { store, persistor };
+  return {
+    store: {
+      ...store,
+      waitUntilStateRestored: async () => stateLoaded.promise,
+      clear: persistor.purge,
+      runSaga: sagaMiddleware.run,
+    } as any as PersistableStore<
+      S,
+      A,
+      MiddlewareArray<[ThunkMiddleware<S, A>, SagaMiddleware<C>, ...M]>
+    >,
+    persistor,
+  };
 }
