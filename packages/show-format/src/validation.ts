@@ -1,13 +1,22 @@
-const { MAX_DRONE_COUNT } = require('./constants');
-const { isNil } = require('./utils');
+import { MAX_DRONE_COUNT } from './constants';
+import {
+  Camera,
+  EnvironmentType,
+  ENVIRONMENT_TYPES,
+  ShowSpecification,
+  Trajectory,
+} from './types';
+import { isNil, isObject } from './utils';
 
 /**
  * Validates the version number in the given show specification. Raises an
  * error if the version number is not suitable.
  *
- * @param {object} spec  the specification to validate
+ * @param spec  the specification to validate
  */
-function validateVersionInShowSpecification(spec) {
+export function validateVersionInShowSpecification(
+  spec: Record<string, unknown>
+) {
   const { version } = spec;
 
   if (version === undefined) {
@@ -28,7 +37,9 @@ function validateVersionInShowSpecification(spec) {
  *
  * @param {object} spec  the specification to validate
  */
-function validateShowSpecification(spec) {
+export function validateShowSpecification(
+  spec: any
+): asserts spec is ShowSpecification {
   // TODO(ntamas): write a proper JSON-Schema specification for the show files
   // and use that.
   validateVersionInShowSpecification(spec);
@@ -37,7 +48,7 @@ function validateShowSpecification(spec) {
     throw new Error('Show specification contains no drones');
   }
 
-  const { drones } = spec.swarm;
+  const drones: unknown[] = spec.swarm.drones as unknown[];
 
   if (drones.length > MAX_DRONE_COUNT) {
     throw new Error(
@@ -47,8 +58,8 @@ function validateShowSpecification(spec) {
 
   for (const drone of drones) {
     if (
-      !drone.settings ||
-      typeof drone.settings !== 'object' ||
+      !isObject(drone) ||
+      !isObject(drone?.settings) ||
       isNil(drone.settings.trajectory)
     ) {
       throw new Error('Found drone without trajectory in show specification');
@@ -59,17 +70,20 @@ function validateShowSpecification(spec) {
 
   if (spec.environment === undefined) {
     spec.environment = {};
-  } else if (typeof spec.environment !== 'object') {
+  } else if (!isObject(spec.environment)) {
     throw new TypeError('Invalid environment in show specification');
   }
 
-  const { environment } = spec;
+  const environment: Record<string, unknown> = spec.environment as Record<
+    string,
+    unknown
+  >;
 
   if (environment.type === undefined) {
-    environment.type = 'outdoor';
+    environment.type = EnvironmentType.OUTDOOR;
   }
 
-  if (!['outdoor', 'indoor'].includes(environment.type)) {
+  if (!ENVIRONMENT_TYPES.includes(environment.type as any)) {
     throw new Error('Invalid environment type in show specification');
   }
 
@@ -93,10 +107,10 @@ function validateShowSpecification(spec) {
  * Raises appropriate errors if the camera specification does not look like a
  * valid one.
  *
- * @param {object} camera  the specification to validate
+ * @param camera  the specification to validate
  */
-function validateCamera(camera) {
-  if (typeof camera !== 'object') {
+export function validateCamera(camera: any): asserts camera is Camera {
+  if (!isObject(camera)) {
     throw new TypeError('Camera must be an object');
   }
 
@@ -138,10 +152,12 @@ function validateCamera(camera) {
  * Raises appropriate errors if the trajectory specification does not look like a
  * valid one.
  *
- * @param {object} trajectory  the specification to validate
+ * @param trajectory  the specification to validate
  */
-function validateTrajectory(trajectory) {
-  if (typeof trajectory !== 'object') {
+export function validateTrajectory(
+  trajectory: any
+): asserts trajectory is Trajectory {
+  if (!isObject(trajectory)) {
     throw new TypeError('Trajectory must be an object');
   }
 
@@ -169,10 +185,3 @@ function validateTrajectory(trajectory) {
     throw new Error('Trajectory schema mismatch');
   }
 }
-
-module.exports = {
-  validateCamera,
-  validateShowSpecification,
-  validateTrajectory,
-  validateVersionInShowSpecification,
-};

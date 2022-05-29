@@ -1,12 +1,19 @@
-const {
+import test from 'ava';
+
+import {
   getCamerasFromShowSpecification,
   validateShowSpecification,
-} = require('..');
-const test = require('ava');
+} from '../src';
+import { CameraType, ShowSpecification } from '../src/types';
+
+import * as originalSpec from './fixtures/test-show.json';
 
 test('retrieve cameras from show specification', (t) => {
-  // eslint-disable-next-line import/no-unresolved
-  const spec = require('./fixtures/test-show');
+  // make a deep copy of originalSpec because we cannot delete from it
+  const spec: ShowSpecification = JSON.parse(
+    JSON.stringify(originalSpec)
+  ) as ShowSpecification;
+
   validateShowSpecification(spec);
   const cameras = getCamerasFromShowSpecification(spec);
 
@@ -14,13 +21,13 @@ test('retrieve cameras from show specification', (t) => {
   t.assert(cameras.length === 2);
   t.deepEqual(cameras[0], {
     name: 'First camera',
-    type: 'perspective',
+    type: CameraType.PERSPECTIVE,
     position: [1, 2, 3],
     orientation: [1, 0, 0, 0],
   });
   t.deepEqual(cameras[1], {
     name: 'Second camera',
-    type: 'perspective',
+    type: CameraType.PERSPECTIVE,
     position: [10, 7, 4],
     orientation: [-0.707, 0, 0.707, 0],
     default: true,
@@ -31,7 +38,7 @@ test('retrieve cameras from show specification', (t) => {
 
   t.throws(
     () => {
-      spec.environment.cameras = 'foo';
+      (spec.environment as any).cameras = 'foo';
       getCamerasFromShowSpecification(spec);
     },
     {

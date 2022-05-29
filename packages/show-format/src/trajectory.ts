@@ -1,31 +1,61 @@
-const { Bezier } = require('./bezier');
-const { validateTrajectory } = require('./validation');
+import { Bezier } from 'bezier-js';
+
+import { Trajectory, TrajectorySegment, Vector3, Vector3Tuple } from './types';
+import { validateTrajectory } from './validation';
+
+/**
+ * Type specification for a pair of functions that can be used to evaluate the
+ * position and velocity at a given fraction of a trajectory segment.
+ */
+type PosVelEvaluator = [
+  (result: Vector3, ratio: number) => void,
+  (result: Vector3, ratio: number) => void
+];
 
 /**
  * Class that takes a trajectory object as its first argument and that can
- * tell the position of the drone traversing the trajeectoty at any given
- * time instant.
+ * tell the position and velocity of the drone traversing the trajectory at any
+ * given time instant.
  */
-class TrajectoryPlayer {
+class TrajectoryPlayerImpl {
+  private readonly _takeoffTime: number;
+  private readonly _numSegments: number;
+  private readonly _segments: TrajectorySegment[];
+  private readonly _startTimes: number[];
+  private readonly _specialSegmentFuncs: {
+    beforeFirst: PosVelEvaluator;
+    afterLast: PosVelEvaluator;
+  };
+
+  private _segmentFuncs: Array<PosVelEvaluator | undefined>;
+
+  private _currentSegment: TrajectorySegment | undefined;
+  private _currentSegmentFunc: PosVelEvaluator;
+  private _currentSegmentStartTime: number;
+  private _currentSegmentEndTime: number;
+  private _currentSegmentLength: number;
+  private _segmentIndex: number;
+
   /**
    * Constructor.
    *
-   * @param {object} trajectory  the trajectory to evaluate, in Skybrush format
+   * @param trajectory  the trajectory to evaluate
    */
-  constructor(trajectory) {
+  constructor(trajectory: Trajectory) {
     validateTrajectory(trajectory);
 
     const { points } = trajectory;
 
-    this._takeoffTime = trajectory.takeoffTime || 0;
+    this._takeoffTime = trajectory.takeoffTime ?? 0;
     this._numSegments = points.length;
     this._startTimes = points.map((item) => item[0] + this._takeoffTime);
-    this._segments = points.map((item) => item.slice(1));
+    this._segments = [...points];
 
-    const firstPoint = this._numSegments > 0 ? this._segments[0][0] : [0, 0, 0];
-    const lastPoint =
+    const firstPoint: Vector3Tuple =
+      this._numSegments > 0 ? this._segments[0][1] : [0, 0, 0];
+    const lastPoint: Vector3Tuple =
       this._numSegments > 0
-        ? this._segments[this._numSegments - 1][0]
+        ? this._segments[this._numSegments - 1][1]
         : [0, 0, 0];
 
     this._segmentFuncs = [];
@@ -36,17 +66,23 @@ class TrajectoryPlayer {
       afterLast: createConstantSegmentFunctions(lastPoint),
     };
 
+    this._segmentIndex = 0;
+    this._currentSegmentFunc = this._specialSegmentFuncs.beforeFirst;
+    this._currentSegmentStartTime = Number.NEGATIVE_INFINITY;
+    this._currentSegmentEndTime =
+      this._numSegments > 0 ? this._startTimes[0] : Number.POSITIVE_INFINITY;
+    this._currentSegmentLength = 0;
+
     this._reset();
   }
 
   /**
    * Returns the position of the drone at the given time instant.
    *
-   * @param {number}        time    the time instant, measured in seconds
-   * @param {THREE.Vector}  result  the vector that should be updated with the
-   *        position
+   * @param time    the time instant, measured in seconds
+   * @param result  the vector that should be updated with the position
    */
-  getPositionAt(time, result) {
+  getPositionAt(time: number, result: Vector3) {
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[0](result, ratio);
     return result;
@@ -57,11 +93,10 @@ class TrajectoryPlayer {
    * velocity is discontinuous at the time instant, the velocity "from the right"
    * takes precedence.
    *
-   * @param {number}        time    the time instant, measured in seconds
-   * @param {THREE.Vector}  result  the vector that should be updated with the
-   *        velocity
+   * @param time    the time instant, measured in seconds
+   * @param result  the vector that should be updated with the velocity
    */
-  getVelocityFromRightAt(time, result) {
+  getVelocityFromRightAt(time: number, result: Vector3) {
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[1](result, ratio);
     return result;
@@ -75,9 +110,9 @@ class TrajectoryPlayer {
    * Updates the state variables of the current trajectory if needed to
    * ensure that its current segment includes the given time.
    *
-   * @param  {number} time  the timestamp to seek to
+   * @param  time  the timestamp to seek to
    */
-  _seekTo(time) {
+  _seekTo(time: number) {
     let found = false;
 
     if (time >= this._currentSegmentStartTime) {
@@ -123,7 +158,7 @@ class TrajectoryPlayer {
    * that the segment with the given index is the one that is currently
    * selected.
    */
-  _selectSegment(index) {
+  _selectSegment(index: number) {
     this._segmentIndex = index;
 
     if (index < 0) {
@@ -159,19 +194,19 @@ class TrajectoryPlayer {
       if (!this._segmentFuncs[index]) {
         if (index < this._numSegments - 1) {
           this._segmentFuncs[index] = createSegmentFunctions(
-            this._currentSegment[0],
-            this._segments[index + 1][0],
+            this._currentSegment[1],
             this._segments[index + 1][1],
+            this._segments[index + 1][2],
             this._currentSegmentLength
           );
         } else {
           this._segmentFuncs[index] = createConstantSegmentFunctions(
-            this._currentSegment[0]
+            this._currentSegment[1]
           );
         }
       }
 
-      this._currentSegmentFunc = this._segmentFuncs[index];
+      this._currentSegmentFunc = this._segmentFuncs[index]!;
     }
   }
 }
@@ -179,7 +214,7 @@ class TrajectoryPlayer {
 /**
  * Port of Python's `bisect.bisect` into JavaScript.
  */
-function bisect(items, x, lo = 0, hi = items.length) {
+function bisect<T>(items: T[], x: T, lo = 0, hi: number = items.length) {
   /* istanbul ignore if */
   if (lo < 0) {
     throw new Error('lo must be non-negative');
@@ -201,16 +236,16 @@ function bisect(items, x, lo = 0, hi = items.length) {
 /**
  * Creates a position and a velocity function for a constant segment.
  */
-function createConstantSegmentFunctions(point) {
+function createConstantSegmentFunctions(point: Vector3Tuple): PosVelEvaluator {
   const [x, y, z] = point;
 
   return [
-    function (vec) {
+    function (vec: Vector3) {
       vec.x = x;
       vec.y = y;
       vec.z = z;
     },
-    function (vec) {
+    function (vec: Vector3) {
       vec.x = 0;
       vec.y = 0;
       vec.z = 0;
@@ -222,7 +257,11 @@ function createConstantSegmentFunctions(point) {
  * Creates a position and a velocity function for a linear segment between
  * the given start and end points with the given duration.
  */
-function createLinearSegmentFunctions(start, end, dt) {
+function createLinearSegmentFunctions(
+  start: Vector3Tuple,
+  end: Vector3Tuple,
+  dt: number
+): PosVelEvaluator {
   const [x, y, z] = start;
   const dx = end[0] - x;
   const dy = end[1] - y;
@@ -233,12 +272,12 @@ function createLinearSegmentFunctions(start, end, dt) {
   const vz = dt > 0 ? dz / dt : 0;
 
   return [
-    function (vec, ratio) {
+    function (vec: Vector3, ratio: number) {
       vec.x = x + ratio * dx;
       vec.y = y + ratio * dy;
       vec.z = z + ratio * dz;
     },
-    function (vec) {
+    function (vec: Vector3) {
       vec.x = vx;
       vec.y = vy;
       vec.z = vz;
@@ -250,7 +289,10 @@ function createLinearSegmentFunctions(start, end, dt) {
  * Creates a position and a velocity function for a Bézier curve segment with
  * the given duration.
  */
-function createCurvedSegmentFunctions(curve, dt) {
+function createCurvedSegmentFunctions(
+  curve: Bezier,
+  dt: number
+): PosVelEvaluator {
   return [
     function (vec, ratio) {
       // TODO(ntamas): find a way to avoid allocations!
@@ -275,7 +317,12 @@ function createCurvedSegmentFunctions(curve, dt) {
   ];
 }
 
-function createSegmentFunctions(start, end, controlPoints, dt) {
+function createSegmentFunctions(
+  start: Vector3Tuple,
+  end: Vector3Tuple,
+  controlPoints: Vector3Tuple[],
+  dt: number
+): PosVelEvaluator {
   if (Array.isArray(controlPoints) && controlPoints.length > 0) {
     if (controlPoints.length === 2) {
       const via1 = controlPoints[0];
@@ -319,14 +366,20 @@ function createSegmentFunctions(start, end, controlPoints, dt) {
   }
 }
 
+export interface TrajectoryPlayer {
+  getPositionAt: (time: number, result: Vector3) => Vector3;
+  getVelocityAt: (time: number, result: Vector3) => Vector3;
+  getVelocityFromRightAt: (time: number, result: Vector3) => Vector3;
+}
+
 /**
  * Factory function that creates a new trajectory player object with a
  * `getPositionAt()` function that evaluates the trajectory at a given
  * timestamp, and a `getVelocityAt()` function that evaluates the velocity
  * of a drone traversing the trajectory at a given timestamp.
  */
-function createTrajectoryPlayer(trajectory) {
-  const player = new TrajectoryPlayer(trajectory);
+function createTrajectoryPlayer(trajectory: Trajectory): TrajectoryPlayer {
+  const player = new TrajectoryPlayerImpl(trajectory);
 
   const getPositionAt = player.getPositionAt.bind(player);
   const getVelocityFromRightAt = player.getVelocityFromRightAt.bind(player);
@@ -339,4 +392,4 @@ function createTrajectoryPlayer(trajectory) {
   };
 }
 
-module.exports = createTrajectoryPlayer;
+export default createTrajectoryPlayer;

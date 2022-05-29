@@ -1,9 +1,10 @@
-const test = require('ava');
+import test, { ExecutionContext } from 'ava';
 
-const { createTrajectoryPlayer } = require('..');
-const { shuffle } = require('../lib/utils');
+import { createTrajectoryPlayer } from '../src';
+import { Trajectory, Vector3Tuple } from '../src/types';
+import { shuffle } from '../src/utils';
 
-const trajectory = {
+const trajectory: Trajectory = {
   version: 1,
   takeoffTime: 6,
   points: [
@@ -47,9 +48,11 @@ const trajectory = {
 };
 
 const almostEquals =
-  (t) =>
-  (value, expected, eps = 1e-5) => {
-    const message = `Points do not match, expected [${expected}], got [${value}]`;
+  (t: ExecutionContext) =>
+  (value: Vector3Tuple, expected: Vector3Tuple, eps = 1e-5) => {
+    const message = `Points do not match, expected [${String(
+      expected
+    )}], got [${String(value)}]`;
     t.assert(Math.abs(value[0] - expected[0]) < eps, message);
     t.assert(Math.abs(value[1] - expected[1]) < eps, message);
     t.assert(Math.abs(value[2] - expected[2]) < eps, message);
@@ -59,7 +62,7 @@ const almostEquals =
 /* Tests related to evaluating the trajectory at a given point              */
 /* ************************************************************************ */
 
-const expectedPositions = {
+const expectedPositions: Record<number, Vector3Tuple> = {
   [-2]: [0, 0, 0],
   0: [0, 0, 0],
   3: [0, 0, 0],
@@ -97,9 +100,9 @@ const expectedPositions = {
   100: [6, 3, 0],
 };
 
-const createPositionEvaluator = (trajectory) => {
+const createPositionEvaluator = (trajectory: Trajectory) => {
   const { getPositionAt } = createTrajectoryPlayer(trajectory);
-  return (t) => {
+  return (t: number): Vector3Tuple => {
     const vector = { x: 0, y: 0, z: 0 };
     getPositionAt(t, vector);
     return [vector.x, vector.y, vector.z];
@@ -239,7 +242,7 @@ test('trajectory evaluation, shuffled', (t) => {
 /* Tests related to evaluating the velocity at a given point                */
 /* ************************************************************************ */
 
-const expectedVelocities = {
+const expectedVelocities: Record<number, Vector3Tuple> = {
   [-2]: [0, 0, 0],
   0: [0, 0, 0],
   3: [0, 0, 0],
@@ -277,9 +280,9 @@ const expectedVelocities = {
   100: [0, 0, 0],
 };
 
-const createVelocityEvaluator = (trajectory) => {
+const createVelocityEvaluator = (trajectory: Trajectory) => {
   const { getVelocityAt } = createTrajectoryPlayer(trajectory);
-  return (t) => {
+  return (t: number): Vector3Tuple => {
     const vector = { x: 0, y: 0, z: 0 };
     getVelocityAt(t, vector);
     return [vector.x, vector.y, vector.z];

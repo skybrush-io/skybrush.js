@@ -2,20 +2,26 @@
  * @file Function for processing a Skybrush compiled show file.
  */
 
-const { Buffer } = require('buffer');
+// eslint-disable-next-line unicorn/prefer-node-protocol
+import { Buffer } from 'buffer';
 
-const RefParser = require('@apidevtools/json-schema-ref-parser');
-const JSZip = require('jszip');
+import RefParser, {
+  FileInfo,
+  Options,
+  ResolverOptions,
+} from '@apidevtools/json-schema-ref-parser';
+import JSZip, { loadAsync } from 'jszip';
 
-const Asset = require('./asset');
-const { idle } = require('./utils');
-const { validateShowSpecification } = require('./validation');
+import Asset from './asset';
+import { idle } from './utils';
+import { validateShowSpecification } from './validation';
+import { ShowSpecification } from './types';
 
 /**
  * Helper function that returns whether a given file is likely to be data
  * (in JSON or YAML format) or a binary asset.
  */
-const isBinaryAsset = (file) =>
+const isBinaryAsset = (file: FileInfo) =>
   file.extension !== '.json' && file.extension !== '.yaml';
 
 /**
@@ -23,7 +29,7 @@ const isBinaryAsset = (file) =>
  *
  * This must have a lower order number than the "real" resolver.
  */
-const dummyAssetResolver = {
+const dummyAssetResolver: ResolverOptions = {
   order: 1,
   canRead: (file) => file.url.startsWith('zip:') && isBinaryAsset(file),
   read: (file) => new Asset(file.url.slice('zip:'.length)),
@@ -33,10 +39,10 @@ const dummyAssetResolver = {
  * Helper function that creates a JSONRef resolver that resolves references
  * from a given ZIP file.
  *
- * @param {JSZip} zip  the JSZip object representing the ZIP file in which the
+ * @param zip  the JSZip object representing the ZIP file in which the
  *        references are resolved
  */
-function createZIPResolver(zip) {
+function createZIPResolver(zip: JSZip): ResolverOptions {
   return {
     order: 2,
 
@@ -57,7 +63,7 @@ function createZIPResolver(zip) {
       // Use strings only for JSON and YAML files; use uint8 arrays for
       // other embedded assets
       return zip
-        .file(url.pathname)
+        .file(url.pathname)!
         .async(isBinaryAsset(file) ? 'uint8array' : 'string');
     },
   };
@@ -66,15 +72,18 @@ function createZIPResolver(zip) {
 /**
  * Loads a drone show from a file.
  *
- * @param  {object}  file  the file to load; can be an array of bytes, an
- *         ArrayBuffer, an Uint8Array, a Buffer, a Blob or a promise resolving
- *         to these
- * @param  {boolean} assets  whether to load assets from the compiled show file.
+ * @param  file  the file to load; can be an array of bytes, an
+ *         ArrayBuffer, an Uint8Array, a Buffer, a Blob or a Node.js
+ *         readable stream
+ * @param  assets  whether to load assets from the compiled show file.
  *         Defaults to false because it can be time- and memory-consuming.
- * @return {object} the parsed show specification
+ * @return the parsed show specification
  */
-async function loadCompiledShow(file, { assets = false } = {}) {
-  const zip = await JSZip.loadAsync(file);
+async function loadCompiledShow(
+  file: string | number[] | Uint8Array | ArrayBuffer | Blob,
+  { assets = false }: { assets?: boolean } = {}
+): Promise<ShowSpecification> {
+  const zip = await loadAsync(file);
 
   // Create a JSON reference to the main show specification file and then
   // let the JSONRef parser handle the rest
@@ -82,16 +91,17 @@ async function loadCompiledShow(file, { assets = false } = {}) {
 
   // Configure the parsers. This is static; we simply extend the binary
   // parser not to check the extension of the file that we are about to parse.
-  const parsers = {
+  const parsers: Options['parse'] = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     binary: {
-      canParse: (file) => Buffer.isBuffer(file.data),
-    },
+      canParse: (file: FileInfo) => Buffer.isBuffer(file.data),
+    } as any,
   };
 
   // Configure the resolvers. If we want to prevent the loading of the assets,
   // we have to catch them early in the resolving phase so we don't even
   // attempt extracting them from the ZIP.
-  const resolvers = {
+  const resolvers: Options['resolve'] = {
     zip: createZIPResolver(zip),
   };
 
@@ -110,4 +120,4 @@ async function loadCompiledShow(file, { assets = false } = {}) {
   return showSpec;
 }
 
-module.exports = loadCompiledShow;
+export default loadCompiledShow;

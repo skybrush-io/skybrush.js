@@ -5,20 +5,22 @@
     "jsx": "react",
     "target": "es6",
     "module": "commonjs",
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "sourceMap": true
   },
   "exclude": [
     "**/.*/",
     "**/dist",
     "**/node_modules",
-    "**/test",
     "packages/aframe-components",
     "packages/app-theme-material-ui",
     "packages/electron-app-framework",
-    "packages/mavlink"
+    "packages/mavlink",
+    "packages/mui-components/lib"
   ]
 }
