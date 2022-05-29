@@ -23,9 +23,6 @@
   "scripts": {
     "test": "nyc ava"
   },
-  "ava": {
-    "babel": true
-  },
   "peerDependencies": {
     "electron": "^13.0 || ^14.0 || ^15.0 || ^16.0 || ^17.0 || ^18.0"
   },
@@ -35,7 +32,7 @@
     "electron-window-state": "^5.0.3"
   },
   "devDependencies": {
-    "ava": "^3.15.0",
+    "ava": "^4.2.0",
     "electron": "^18.0.1"
   }
 }
