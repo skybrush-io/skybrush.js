@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/app-theme-mui",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Common theme for Material UI based Skybrush apps, for MUI >= 5",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
