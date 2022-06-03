@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import * as createColor from 'color';
+import createColor from 'color';
 import { lightBlue, grey, green, yellow } from '@mui/material/colors';
 import { Status } from './semantics';
 

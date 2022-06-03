@@ -1,4 +1,4 @@
-import * as createColor from 'color';
+import createColor from 'color';
 import type { ChartOptions, ChartType } from 'chart.js';
 import { defaultFont } from './fonts';
 
