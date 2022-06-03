@@ -32,13 +32,13 @@
     "react-dom": "^16.8 || ^17 || ^18"
   },
   "dependencies": {
-    "color": "^4.2.1",
+    "color": "^4.2.3",
     "prop-types": "^15.8.1",
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
     "@material-ui/core": "^4.12.4",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   }
 }
