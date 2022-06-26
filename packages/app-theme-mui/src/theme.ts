@@ -28,6 +28,22 @@ export enum ThemeType {
 }
 
 /**
+ * Converts a string into a ThemeType enum value.
+ */
+export function toThemeType(value: string): ThemeType {
+  switch (value.toLowerCase()) {
+    case 'auto':
+      return ThemeType.AUTO;
+    case 'dark':
+      return ThemeType.DARK;
+    case 'light':
+      return ThemeType.LIGHT;
+    default:
+      return ThemeType.AUTO;
+  }
+}
+
+/**
  * Constant that decides whether we are on macOS (where we don't need extra
  * scrollbar styling).
  */
