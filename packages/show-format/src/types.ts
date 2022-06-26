@@ -257,6 +257,12 @@ export interface ValidationSettings {
   /** The maximum vertical velocity allowed for drones, in meters per second */
   maxVelocityZ?: number;
 
+  /**
+   * The maximum vertical velocity allowed for drones, upwards, in meters per
+   * second. Takes precedence over maxVelocityZ when specified.
+   */
+  maxVelocityZUp?: number;
+
   /** The minimum allowed distance between drones, in meters */
   minDistance?: number;
 }
