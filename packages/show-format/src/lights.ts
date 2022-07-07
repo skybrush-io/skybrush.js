@@ -477,7 +477,7 @@ export default function createLightProgramPlayer(
           .advanceTimeBy(Number.POSITIVE_INFINITY);
         sliceGenerator = null;
       } else {
-        slice = (value as ExecutorState).copy();
+        slice = value.copy();
 
         // Convert durations to seconds as the executor works with milliseconds
         // internally
@@ -535,7 +535,7 @@ export default function createLightProgramPlayer(
     // Optimize for the common case: the timestamp is almost always somewhere
     // in the last slice of event queue, so scan from the back
     index = slices.length - 1;
-    while (index > 0) {
+    while (index >= 0) {
       slice = slices.peekAt(index)!;
       if (slice.containsTime(seconds)) {
         break;
