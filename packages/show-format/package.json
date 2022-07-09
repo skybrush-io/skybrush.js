@@ -41,7 +41,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "9.0.9",
     "bezier-js": "^6.1.0",
-    "core-js": "^3.22.8",
+    "core-js": "^3.23.4",
     "denque": "^2.0.1",
     "js-base64": "^3.7.2",
     "jszip": "^3.10.0"
