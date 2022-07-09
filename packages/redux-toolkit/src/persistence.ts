@@ -1,4 +1,4 @@
-import * as localForage from 'localforage';
+import localForage from 'localforage';
 import type { PersistConfig } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
@@ -93,7 +93,7 @@ export function createStorageConfiguration<S, RS, HSS, ESS>({
             ESS
           >['storage']
         )()
-      : localForage;
+      : localForage.createInstance({ name: key });
 
   return {
     key,
