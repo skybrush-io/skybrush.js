@@ -127,8 +127,8 @@ function setupApp({
     mainWindowCreator();
   });
 
-  // Quit when all windows are closed -- unless we are on a Mac or we explicitly
-  // asked the framework to close the app when the last window closes
+  // Quit when all windows are closed -- unless we are on a Mac and we have not
+  // explicitly asked the framework to close the app when the last window closes
   lastWindowClosesApp = lastWindowClosesApp || process.platform !== 'darwin';
 
   // Close the app when all windows are closed. Note that we need the event
