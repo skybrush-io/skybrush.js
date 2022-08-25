@@ -83,11 +83,15 @@ function setupApp({
   // Prevent the creation of additional windows or web views. Also prevent
   // navigation.
   app.on('web-contents-created', (_event, webContents) => {
+    const allowedPrefixes = [
+      'file://',
+      'http://localhost',
+      'https://localhost',
+      'about:blank',
+    ];
     const isUrlAllowedForNavigation = (url) =>
       typeof url === 'string' &&
-      (url.startsWith('file://') ||
-        url.startsWith('http://localhost') ||
-        url.startsWith('https://localhost'));
+      allowedPrefixes.some((prefix) => url.startsWith(prefix));
 
     webContents.on(
       'will-attach-webview',
