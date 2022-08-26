@@ -36,6 +36,7 @@ function setupApp({
   isUnsafeUrlTrusted = defaultUnsafeUrlHandler,
   lastWindowClosesApp,
   mainWindow,
+  subWindowMenuBar = true,
   unhandledErrorLogger = logErrorToConsole,
 } = {}) {
   // Register unhandled error handler
@@ -126,6 +127,12 @@ function setupApp({
         } else {
           return { action: 'allow' };
         }
+      });
+    }
+
+    if (subWindowMenuBar === false) {
+      webContents.on('did-create-window', (win) => {
+        win.removeMenu();
       });
     }
   });
