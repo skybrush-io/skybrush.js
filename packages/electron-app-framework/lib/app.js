@@ -110,15 +110,23 @@ function setupApp({
     );
 
     if (!enableNavigation) {
-      const openWithShell = async (event, navigationUrl) => {
+      webContents.on('will-navigate', async (event, navigationUrl) => {
         if (!isUrlAllowedForNavigation(navigationUrl)) {
           event.preventDefault();
           await shell.openExternal(navigationUrl);
         }
-      };
+      });
 
-      webContents.on('will-navigate', openWithShell);
-      webContents.on('new-window', openWithShell);
+      webContents.setWindowOpenHandler(({ url }) => {
+        if (!isUrlAllowedForNavigation(url)) {
+          // TODO: This breaks structured concurrency, but setWindowOpenHandler
+          // does not support callbacks that have a promise as return value...
+          shell.openExternal(url);
+          return { action: 'deny' };
+        } else {
+          return { action: 'allow' };
+        }
+      });
     }
   });
 

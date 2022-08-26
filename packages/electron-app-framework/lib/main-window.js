@@ -84,12 +84,8 @@ const createMainWindowFactory = ({
       },
     });
 
-    // We need to hide the menu bar. Apparently, both are needed below; the
-    // first line alone is not enough because the mrnu bar comes back after
-    // putting the app full screen and then coming back
     if (!showMenuBar) {
-      instance.setMenuBarVisibility(false);
-      instance.setMenu(null);
+      instance.removeMenu();
     }
 
     windowState.manage(instance);
