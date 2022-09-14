@@ -34,7 +34,7 @@
   "dependencies": {
     "color": "^4.2.3",
     "prop-types": "^15.8.1",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
     "@material-ui/core": "^4.12.4",

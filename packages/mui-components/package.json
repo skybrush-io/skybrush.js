@@ -35,7 +35,7 @@
     "react-dom": "^17 || ^18"
   },
   "dependencies": {
-    "@react-hookz/web": "^15.0.1",
+    "@react-hookz/web": "^15.1.0",
     "@skybrush/app-theme-mui": "^2.1.1",
     "@tippyjs/react": "^4.2.6",
     "clsx": "^1.2.1",
@@ -44,14 +44,14 @@
     "react-draggable": "^4.4.5",
     "set-harmonic-interval": "^1.0.1",
     "tippy.js": "^6.3.5",
-    "use-async-effect": "^2.2.5"
+    "use-async-effect": "^2.2.7"
   },
   "devDependencies": {
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.8.7",
-    "@mui/styled-engine": "^5.8.7",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.5",
+    "@mui/styled-engine": "^5.10.5",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   }
