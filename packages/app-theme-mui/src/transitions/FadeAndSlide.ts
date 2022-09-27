@@ -7,7 +7,7 @@
 
 import * as React from 'react';
 import { Transition } from 'react-transition-group';
-import {
+import type {
   EndListenerProps,
   EnterHandler,
   ExitHandler,
@@ -254,7 +254,7 @@ const FadeAndSlide = React.forwardRef(
         addEndListener: handleAddEndListener,
         ...other,
       },
-      (state: TransitionStatus, childProps: any) => {
+      ((state: TransitionStatus, childProps: any) => {
         return React.cloneElement(children, {
           style: {
             opacity: 0,
@@ -266,7 +266,7 @@ const FadeAndSlide = React.forwardRef(
           ref: handleRef,
           ...childProps,
         });
-      }
+      }) as any
     );
   }
 );

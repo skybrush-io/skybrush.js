@@ -11,7 +11,7 @@ import {
   configureStore as configureReduxStore,
   MiddlewareArray,
 } from '@reduxjs/toolkit';
-import type { EnhancerOptions as DevToolsOptions } from '@reduxjs/toolkit/dist/devtoolsExtension';
+import type { DevToolsEnhancerOptions } from '@reduxjs/toolkit/dist/devtoolsExtension';
 
 import produce from 'immer';
 import get from 'lodash-es/get';
@@ -33,7 +33,7 @@ import { isAllowedInRedux } from './utils';
 
 type Middlewares<S> = ReadonlyArray<Middleware<unknown, S>>;
 
-export interface ExtendedDevToolsOptions extends DevToolsOptions {
+export interface ExtendedDevToolsOptions extends DevToolsEnhancerOptions {
   actionsAllowlist?: string | string[];
   actionsDenylist?: string | string[];
   scrubbedActions?: Array<string | ActionCreator<string>>;
@@ -65,8 +65,8 @@ export type PersistableStore<
   waitUntilStateRestored: () => Promise<void>;
 };
 
-type ActionSanitizer = DevToolsOptions['actionSanitizer'];
-type StateSanitizer = DevToolsOptions['stateSanitizer'];
+type ActionSanitizer = DevToolsEnhancerOptions['actionSanitizer'];
+type StateSanitizer = DevToolsEnhancerOptions['stateSanitizer'];
 
 /**
  * Configures a Redux store and the corresponding persistor object that takes
@@ -110,7 +110,7 @@ export function configureStoreAndPersistence<
   persistor: Persistor;
 } {
   let persistor: Persistor;
-  let finalDevToolsOptions: boolean | DevToolsOptions;
+  let finalDevToolsOptions: boolean | DevToolsEnhancerOptions;
 
   const resolvedIgnoredActions = resolveActionTypes(ignoredActions);
 
