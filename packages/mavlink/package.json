@@ -27,6 +27,6 @@
     "babel": true
   },
   "dependencies": {
-    "underscore": "^1.13.4"
+    "underscore": "^1.13.6"
   }
 }
