@@ -32,7 +32,7 @@
     "electron-window-state": "^5.0.3"
   },
   "devDependencies": {
-    "ava": "^4",
+    "ava": "^5.1.0",
     "electron": "^22.0.0"
   }
 }

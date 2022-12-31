@@ -24,7 +24,7 @@
     "test": "nyc ava"
   },
   "ava": {
-    "babel": true
+    "require": ["@babel/register"]
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12",

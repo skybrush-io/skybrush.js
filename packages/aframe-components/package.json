@@ -32,7 +32,7 @@
     "aframe": "^1.0.4"
   },
   "ava": {
-    "babel": true
+    "require": ["@babel/register"]
   },
   "dependencies": {
     "lodash-es": "^4.17.21"
