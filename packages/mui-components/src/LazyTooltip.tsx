@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Tippy, { TippyProps } from '@tippyjs/react';
+import Tippy, { type TippyProps } from '@tippyjs/react';
 
 import { useTheme } from '@mui/material/styles';
 

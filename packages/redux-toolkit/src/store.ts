@@ -2,13 +2,13 @@
  * @file The master store for the application state.
  */
 
-import {
+import { configureStore as configureReduxStore } from '@reduxjs/toolkit';
+import type {
   Action,
   ActionCreator,
   EnhancedStore,
   Middleware,
   Reducer,
-  configureStore as configureReduxStore,
   MiddlewareArray,
 } from '@reduxjs/toolkit';
 import type { DevToolsEnhancerOptions } from '@reduxjs/toolkit/dist/devtoolsExtension';
@@ -18,17 +18,19 @@ import get from 'lodash-es/get';
 import identity from 'lodash-es/identity';
 import noop from 'lodash-es/noop';
 import createDeferred from 'p-defer';
-import { persistStore, persistReducer, Persistor } from 'redux-persist';
-import createSagaMiddleware, {
+import { persistStore, persistReducer } from 'redux-persist';
+import type { Persistor } from 'redux-persist';
+import createSagaMiddleware from 'redux-saga';
+import type {
   Saga,
   SagaMiddleware,
   SagaMiddlewareOptions,
   Task,
 } from 'redux-saga';
-import { ThunkMiddleware } from 'redux-thunk';
+import type { ThunkMiddleware } from 'redux-thunk';
 
 import { createActionScrubber, resolveActionTypes } from './actions';
-import { createStorageConfiguration, StorageConfig } from './persistence';
+import { createStorageConfiguration, type StorageConfig } from './persistence';
 import { isAllowedInRedux } from './utils';
 
 type Middlewares<S> = ReadonlyArray<Middleware<unknown, S>>;

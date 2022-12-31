@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import FormControl, { FormControlProps } from '@mui/material/FormControl';
+import FormControl, { type FormControlProps } from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectProps } from '@mui/material/Select';
+import Select, { type SelectProps } from '@mui/material/Select';
 
 import type { ThemeType } from '@skybrush/app-theme-mui';
 

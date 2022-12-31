@@ -1,7 +1,7 @@
 import Denque from 'denque';
 import { atob } from 'js-base64';
 
-import { Color, LightProgram } from './types';
+import type { Color, LightProgram } from './types';
 import { isArrayBuffer, isObject } from './utils';
 
 interface LightProgramExecutor {
@@ -330,18 +330,20 @@ function createLightProgramExecutor(
       duration = 0;
 
       switch (command) {
-        case 1 /* nop */:
+        case 1 /* nop */: {
           break;
+        }
 
-        case 2 /* sleep */:
+        case 2 /* sleep */: {
           duration = parseDuration();
           if (duration > 0) {
             state.advanceTimeBy(duration);
           }
 
           break;
+        }
 
-        case 3 /* wait until */:
+        case 3 /* wait until */: {
           newTimestamp = Math.max(state.endTime, parseTimestamp());
           duration = newTimestamp - state.endTime;
           if (duration > 0) {
@@ -351,60 +353,70 @@ function createLightProgramExecutor(
           }
 
           break;
+        }
 
-        case 4 /* set color */:
+        case 4 /* set color */: {
           parseColorInto(color);
           duration = parseDuration();
           state.setToConstantColor(color, duration);
           break;
+        }
 
-        case 5 /* set gray */:
+        case 5 /* set gray */: {
           grayLevel = getNextByte() || 0;
           duration = parseDuration();
           state.setToConstantGray(grayLevel, duration);
           break;
+        }
 
-        case 6 /* set black */:
+        case 6 /* set black */: {
           duration = parseDuration();
           state.setToConstantGray(0, duration);
           break;
+        }
 
-        case 7 /* set white */:
+        case 7 /* set white */: {
           duration = parseDuration();
           state.setToConstantGray(255, duration);
           break;
+        }
 
-        case 8 /* fade to color */:
+        case 8 /* fade to color */: {
           parseColorInto(color);
           duration = parseDuration();
           state.fadeToColor(color, duration);
           break;
+        }
 
-        case 9 /* fade to gray */:
+        case 9 /* fade to gray */: {
           grayLevel = getNextByte() || 0;
           duration = parseDuration();
           state.fadeToGray(grayLevel, duration);
           break;
+        }
 
-        case 10 /* fade to black */:
+        case 10 /* fade to black */: {
           duration = parseDuration();
           state.fadeToGray(0, duration);
           break;
+        }
 
-        case 11 /* fade to white */:
+        case 11 /* fade to white */: {
           duration = parseDuration();
           state.fadeToGray(255, duration);
           break;
+        }
 
-        case 12 /* loop begin */:
+        case 12 /* loop begin */: {
           iterations = getNextByte();
           loops.push([
             index,
             iterations > 0 ? iterations : Number.POSITIVE_INFINITY,
           ]);
           break;
+        }
 
-        case 13 /* loop end */:
+        case 13 /* loop end */: {
           loopItem = loops[loops.length - 1];
           if (!loopItem) {
             throw new Error('Found end loop command when loop stack is empty');
@@ -418,18 +430,21 @@ function createLightProgramExecutor(
           }
 
           break;
+        }
 
         case 20 /* set pyro */:
-        case 21 /* set pyro all */:
+        case 21 /* set pyro all */: {
           // just reaed the next byte that belongs to the channel, but don't
           // do anything with it
           getNextByte();
           break;
+        }
 
-        default:
+        default: {
           throw new Error(
             'Unknown command in light program: ' + String(command)
           );
+        }
       }
 
       if (duration > 0) {

@@ -2,7 +2,7 @@
 // replace process.env.NODE_ENV and process.env.DEPLOYMENT during bundling
 // if 'process' is imported; it must be a free global
 
-/* eslint-disable node/prefer-global/process */
+/* eslint-disable n/prefer-global/process */
 
 // Returns whether we are in production mode
 const isProduction =
@@ -44,4 +44,4 @@ module.exports = {
   usingWebpackDevServer,
 };
 
-/* eslint-enable node/prefer-global/process */
+/* eslint-enable n/prefer-global/process */

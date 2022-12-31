@@ -5,13 +5,8 @@
 import * as React from 'react';
 
 import { blue, grey, lightBlue, orange, blueGrey } from '@mui/material/colors';
-import {
-  PaletteColorOptions,
-  Theme,
-  ThemeProvider,
-  alpha,
-  createTheme,
-} from '@mui/material/styles';
+import { ThemeProvider, alpha, createTheme } from '@mui/material/styles';
+import type { PaletteColorOptions, Theme } from '@mui/material/styles';
 
 import { Colors } from './colors';
 import { defaultFont } from './fonts';

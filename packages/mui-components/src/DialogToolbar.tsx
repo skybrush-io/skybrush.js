@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
+import Toolbar, { type ToolbarProps } from '@mui/material/Toolbar';
 
 import DialogAppBar from './DialogAppBar';
 

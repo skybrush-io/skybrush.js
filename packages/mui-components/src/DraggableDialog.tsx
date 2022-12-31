@@ -2,8 +2,8 @@ import * as React from 'react';
 import Draggable from 'react-draggable';
 
 import Box from '@mui/material/Box';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
-import Paper, { PaperProps } from '@mui/material/Paper';
+import Dialog, { type DialogProps } from '@mui/material/Dialog';
+import Paper, { type PaperProps } from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 

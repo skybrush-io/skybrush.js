@@ -2,7 +2,9 @@ import * as React from 'react';
 
 import { colorForStatus, Status } from '@skybrush/app-theme-mui';
 
-import ListItemIcon, { ListItemIconProps } from '@mui/material/ListItemIcon';
+import ListItemIcon, {
+  type ListItemIconProps,
+} from '@mui/material/ListItemIcon';
 import ActionDone from '@mui/icons-material/Done';
 import ActionSettingsEthernet from '@mui/icons-material/SettingsEthernet';
 import ContentClear from '@mui/icons-material/Clear';

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Slider, { SliderProps } from '@mui/material/Slider';
+import Slider, { type SliderProps } from '@mui/material/Slider';
 import { orange } from '@mui/material/colors';
-import { styled, Theme } from '@mui/material/styles';
+import { styled, type Theme } from '@mui/material/styles';
 import { useRerender } from '@react-hookz/web';
 
 import useHarmonicIntervalFn from './hooks/useHarmonicIntervalFn';

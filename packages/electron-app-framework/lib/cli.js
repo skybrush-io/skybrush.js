@@ -2,6 +2,8 @@
 
 const { program } = require('commander');
 const { app } = require('electron');
+
+// eslint-disable-next-line unicorn/prefer-node-protocol
 const process = require('process');
 
 /**

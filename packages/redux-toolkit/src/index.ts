@@ -1,8 +1,6 @@
-import { StorageConfig as StorageConfig_ } from './persistence';
-import {
-  configureStoreAndPersistence,
-  StoreAndPersistenceConfig as StoreAndPersistenceConfig_,
-} from './store';
+import type { StorageConfig as StorageConfig_ } from './persistence';
+import { configureStoreAndPersistence } from './store';
+import type { StoreAndPersistenceConfig as StoreAndPersistenceConfig_ } from './store';
 
 export {
   chooseUniqueId,

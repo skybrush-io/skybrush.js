@@ -5,17 +5,19 @@
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import { Buffer } from 'buffer';
 
-import RefParser, {
+import RefParser from '@apidevtools/json-schema-ref-parser';
+import type {
   FileInfo,
   Options,
   ResolverOptions,
 } from '@apidevtools/json-schema-ref-parser';
-import JSZip, { loadAsync } from 'jszip';
+import { loadAsync } from 'jszip';
+import type JSZip from 'jszip';
 
 import Asset from './asset';
 import { idle } from './utils';
 import { validateShowSpecification } from './validation';
-import { ShowSpecification } from './types';
+import type { ShowSpecification } from './types';
 
 /**
  * Helper function that returns whether a given file is likely to be data

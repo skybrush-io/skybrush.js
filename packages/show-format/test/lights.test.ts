@@ -1,10 +1,10 @@
-import test, { ExecutionContext } from 'ava';
+import test, { type ExecutionContext } from 'ava';
 
 import {
   createLightProgramPlayer,
-  LightProgram,
-  LightProgramLike,
-  Color,
+  type LightProgram,
+  type LightProgramLike,
+  type Color,
 } from '../src';
 import { shuffle } from '../src/utils';
 
@@ -23,8 +23,8 @@ const expectedColors: Record<number, Color> = {
   10: [0.2, 0.2, 0.2],
   23.12: [0.2, 0.2, 0.2],
   23.62: [0.1, 0.35, 0.6],
-  24.12: [0, 0.5, 1.0],
-  40: [0, 0.5, 1.0],
+  24.12: [0, 0.5, 1],
+  40: [0, 0.5, 1],
   62.52: [0, 1, 1],
   64.52: [0.5, 0.75, 0.5],
   66.52: [1, 0.5, 0],
@@ -114,7 +114,7 @@ test('light program evaluation', (t) => {
   const ev = createColorEvaluator(lightProgram);
   const eq = almostEquals(t);
 
-  const ts = Object.keys(expectedColors).map((x) => Number(x));
+  const ts = Object.keys(expectedColors).map(Number);
   for (const t of ts) {
     eq(ev(t), expectedColors[t]);
   }
@@ -126,7 +126,7 @@ test('light program evaluation, shuffled', (t) => {
   const ev = createColorEvaluator(lightProgram);
   const eq = almostEquals(t);
 
-  const ts = Object.keys(expectedColors).map((x) => Number(x));
+  const ts = Object.keys(expectedColors).map(Number);
 
   for (let i = 0; i < 5; i++) {
     shuffle(ts);
@@ -223,5 +223,9 @@ test('light program iteration', (t) => {
 });
 
 test('light program evaluation, invalid input type', (t) => {
-  t.throws(() => createColorEvaluator((() => {}) as any));
+  t.throws(() =>
+    createColorEvaluator((() => {
+      /* do nothing */
+    }) as any)
+  );
 });

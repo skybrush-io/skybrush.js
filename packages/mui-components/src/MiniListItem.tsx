@@ -3,7 +3,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 
-import MiniListItemIcon, { MiniListItemIconProps } from './MiniListItemIcon';
+import MiniListItemIcon, {
+  type MiniListItemIconProps,
+} from './MiniListItemIcon';
 
 interface MiniListItemProps {
   icon?: React.ReactNode;

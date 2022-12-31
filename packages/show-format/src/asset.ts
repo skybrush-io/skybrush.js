@@ -3,12 +3,7 @@
  * loaded during the parsing of a show file.
  */
 class Asset {
-  /** Filename of the asset */
-  filename: string;
-
-  constructor(filename: string) {
-    this.filename = filename;
-  }
+  constructor(public filename: string) {}
 }
 
 export default Asset;

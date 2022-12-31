@@ -2,6 +2,8 @@
 
 const { app, Menu, shell } = require('electron');
 const unhandled = require('electron-unhandled');
+
+// eslint-disable-next-line unicorn/prefer-node-protocol
 const process = require('process');
 
 const createMainWindowFactory = require('./main-window');
@@ -124,9 +126,9 @@ function setupApp({
           // does not support callbacks that have a promise as return value...
           shell.openExternal(url);
           return { action: 'deny' };
-        } else {
-          return { action: 'allow' };
         }
+
+        return { action: 'allow' };
       });
     }
 

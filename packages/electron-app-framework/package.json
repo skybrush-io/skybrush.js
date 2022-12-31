@@ -27,11 +27,12 @@
     "electron": "^16.0 || ^17.0 || ^18.0 || ^19.0 || ^20.0 || ^21.0"
   },
   "dependencies": {
-    "commander": "^9.4.0",
+    "commander": "^9.4.1",
     "electron-unhandled": "^4.0.1",
     "electron-window-state": "^5.0.3"
   },
   "devDependencies": {
-    "electron": "^21.0.0"
+    "ava": "^4",
+    "electron": "^22.0.0"
   }
 }

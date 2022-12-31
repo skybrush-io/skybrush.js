@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import AppBar, { AppBarProps } from '@mui/material/AppBar';
-import { Theme } from '@mui/material';
+import AppBar, { type AppBarProps } from '@mui/material/AppBar';
+import type { Theme } from '@mui/material';
 
 import { isThemeDark } from '@skybrush/app-theme-mui';
 

@@ -1,4 +1,5 @@
-import { CaseReducer, Draft, isPlain, PayloadAction } from '@reduxjs/toolkit';
+import { isPlain } from '@reduxjs/toolkit';
+import type { CaseReducer, Draft, PayloadAction } from '@reduxjs/toolkit';
 
 import isPromise from 'is-promise';
 import isError from 'lodash-es/isError';

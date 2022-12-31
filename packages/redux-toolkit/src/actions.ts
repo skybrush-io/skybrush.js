@@ -1,5 +1,5 @@
 import identity from 'lodash-es/identity';
-import { Action, ActionCreator } from '@reduxjs/toolkit';
+import type { Action, ActionCreator } from '@reduxjs/toolkit';
 
 /**
  * Resolves an array containing a mix of action types and action creators to

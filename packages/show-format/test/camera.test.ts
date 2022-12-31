@@ -4,7 +4,7 @@ import {
   getCamerasFromShowSpecification,
   validateShowSpecification,
 } from '../src';
-import { CameraType, ShowSpecification } from '../src/types';
+import { CameraType, type ShowSpecification } from '../src/types';
 
 import * as originalSpec from './fixtures/test-show.json';
 

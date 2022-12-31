@@ -1,4 +1,4 @@
-import Asset from './asset';
+import type Asset from './asset';
 
 /**
  * Enum that specifies whether the show is an outdoor or an indoor show

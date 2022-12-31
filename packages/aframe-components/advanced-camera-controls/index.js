@@ -327,6 +327,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     };
   })(),
 
+  /* eslint-disable complexity */
   _updateVelocity(delta) {
     const { data, keys, velocity } = this;
     const { adAxis, wsAxis, ecAxis } = data;
@@ -413,6 +414,7 @@ AFrame.registerComponent('advanced-camera-controls', {
       }
     }
   },
+  /* eslint-enable complexity */
 
   _getMovementVector: (function () {
     const directionVector = new THREE.Vector3(0, 0, 0);

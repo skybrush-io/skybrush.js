@@ -1,8 +1,10 @@
 'use strict';
 
+/* eslint-disable unicorn/prefer-node-protocol */
 const fs = require('fs');
 const url = require('url');
 const path = require('path');
+/* eslint-enable unicorn/prefer-node-protocol */
 
 const { usingWebpackDevServer } = require('./utils');
 

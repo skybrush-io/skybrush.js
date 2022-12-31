@@ -24,7 +24,7 @@
     "test": "nyc ava"
   },
   "ava": {
-    "babel": true
+    "require": ["@babel/register"]
   },
   "dependencies": {
     "underscore": "^1.13.6"

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import TransparentList, { TransparentListProps } from './TransparentList';
+import TransparentList, { type TransparentListProps } from './TransparentList';
 
 export type MiniListProps = TransparentListProps;
 

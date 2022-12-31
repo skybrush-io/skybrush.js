@@ -1,6 +1,6 @@
-import * as React from 'react';
+import type { CSSProperties } from 'react';
 
-import { Theme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
 
 import { isThemeDark } from './theme';
 
@@ -19,7 +19,7 @@ export const createSecondaryAreaStyle = (
 
 const createExtraStyleFuncForSecondaryAreaStyle = (
   inset: SecondaryAreaStyleOptions['inset']
-): ((isDark: boolean) => React.CSSProperties) => {
+): ((isDark: boolean) => CSSProperties) => {
   switch (inset) {
     case 'top':
       return (dark) => ({
@@ -53,7 +53,6 @@ const createExtraStyleFuncForSecondaryAreaStyle = (
         boxShadow: '-2px 0 6px -2px inset rgba(0, 0, 0, 0.54)',
       });
 
-    case 'all':
     default:
       return (dark) => ({
         border: `1px solid ${

@@ -1,7 +1,7 @@
-import test, { ExecutionContext } from 'ava';
+import test, { type ExecutionContext } from 'ava';
 
 import { createTrajectoryPlayer } from '../src';
-import { Trajectory, Vector3Tuple } from '../src/types';
+import type { Trajectory, Vector3Tuple } from '../src/types';
 import { shuffle } from '../src/utils';
 
 const trajectory: Trajectory = {

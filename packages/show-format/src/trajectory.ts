@@ -1,6 +1,11 @@
 import { Bezier } from 'bezier-js';
 
-import { Trajectory, TrajectorySegment, Vector3, Vector3Tuple } from './types';
+import type {
+  Trajectory,
+  TrajectorySegment,
+  Vector3,
+  Vector3Tuple,
+} from './types';
 import { validateTrajectory } from './validation';
 
 /**

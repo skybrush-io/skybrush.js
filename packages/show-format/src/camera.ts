@@ -1,4 +1,4 @@
-import { Camera, ShowSpecification } from './types';
+import type { Camera, ShowSpecification } from './types';
 
 /**
  * Returns an array containing all the cameras from a show specification.

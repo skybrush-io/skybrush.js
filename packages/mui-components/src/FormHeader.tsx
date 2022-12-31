@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Box, { BoxProps } from '@mui/material/Box';
+import Box, { type BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 export interface FormHeaderProps extends BoxProps {

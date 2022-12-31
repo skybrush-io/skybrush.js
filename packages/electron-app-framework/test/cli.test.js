@@ -1,7 +1,10 @@
 'use strict';
 
 const test = require('ava');
+
+// eslint-disable-next-line unicorn/prefer-node-protocol
 const process = require('process');
+
 const setupCli = require('../lib/cli');
 
 test('CLI parser ignores -psn_ arguments on macOS', (t) => {

@@ -27,16 +27,16 @@
     "test": "nyc ava"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.5",
-    "immer": "^9.0.15",
+    "@reduxjs/toolkit": "^1.9.1",
+    "immer": "^9.0.16",
     "is-promise": "^4.0.0",
     "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
-    "natural-orderby": "^2.0.3",
+    "natural-orderby": "^3.0.1",
     "p-defer": "^4.0.0",
     "redux-persist": "^6.0.0",
-    "redux-persist-transform-filter": "0.0.20",
-    "redux-saga": "^1.2.1"
+    "redux-persist-transform-filter": "0.0.22",
+    "redux-saga": "^1.2.2"
   },
   "peerDependencies": {
     "redux": "^4.0.0",

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Box from '@mui/material/Box';
-import Tabs, { TabsProps } from '@mui/material/Tabs';
+import Tabs, { type TabsProps } from '@mui/material/Tabs';
 
 import DialogAppBar from './DialogAppBar';
 

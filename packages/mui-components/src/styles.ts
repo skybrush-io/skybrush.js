@@ -1,5 +1,5 @@
-import { Theme } from '@mui/material/styles';
-import { colorForStatus, Status } from '@skybrush/app-theme-mui';
+import type { Theme } from '@mui/material/styles';
+import { colorForStatus, type Status } from '@skybrush/app-theme-mui';
 
 export const createStyleForStatus = (
   status: Status,

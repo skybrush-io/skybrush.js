@@ -1,11 +1,6 @@
 import { MAX_DRONE_COUNT } from './constants';
-import {
-  Camera,
-  EnvironmentType,
-  ENVIRONMENT_TYPES,
-  ShowSpecification,
-  Trajectory,
-} from './types';
+import { EnvironmentType, ENVIRONMENT_TYPES } from './types';
+import type { Camera, ShowSpecification, Trajectory } from './types';
 import { isNil, isObject } from './utils';
 
 /**

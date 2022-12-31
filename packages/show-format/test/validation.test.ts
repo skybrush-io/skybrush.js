@@ -1,7 +1,7 @@
 import test from 'ava';
 
 import { validateShowSpecification } from '../src';
-import { ShowSpecification } from '../src/types';
+import type { ShowSpecification } from '../src/types';
 
 import * as spec from './fixtures/test-show.json';
 

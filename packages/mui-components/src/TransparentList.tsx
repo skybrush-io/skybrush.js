@@ -1,4 +1,4 @@
-import List, { ListProps } from '@mui/material/List';
+import List, { type ListProps } from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 
 export type TransparentListProps = ListProps;
