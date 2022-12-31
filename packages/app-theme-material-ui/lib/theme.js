@@ -84,17 +84,21 @@ const themeProviderDefaults = {
  * @param secondaryColor  the secondary color of the app. Can be a Material UI
  *        color or a function that takes a boolean that defines whether the user
  *        prefers dark mode or not, and returns a color.
+ * @param themeOptionsHook  optional function that will be called with the theme
+ *        options before it is passed to `createTheme()`. You can use this hook
+ *        to modify the theme.
  */
 export const createThemeProvider = ({
   primaryColor = themeProviderDefaults.primaryColor,
   secondaryColor = themeProviderDefaults.secondaryColor,
+  themeOptionsHook,
 } = {}) => {
   const DarkModeAwareThemeProvider = ({ children, type }) => {
     const osHasDarkMode = useDarkMode();
     const isThemeDark = (type === 'auto' && osHasDarkMode) || type === 'dark';
 
     // Create the Material-UI theme that we are going to use
-    const theme = createTheme({
+    const themeOptions = {
       palette: {
         type: isThemeDark ? 'dark' : 'light',
         primary:
@@ -141,7 +145,13 @@ export const createThemeProvider = ({
         snackbar: 1000,
         tooltip: 1100,
       },
-    });
+    };
+
+    if (themeOptionsHook && typeof themeOptionsHook === 'function') {
+      themeOptionsHook(themeOptions);
+    }
+
+    const theme = createTheme(themeOptions);
 
     /* Request from Ubi and Soma: selection should have more contrast; 0.08 is
      * the default */
@@ -152,7 +162,6 @@ export const createThemeProvider = ({
 
     /* This is needed to make sure that the tab width we prescribed is not
      * overwritten by more specific media queries */
-
     theme.overrides.MuiTab.root[theme.breakpoints.up('xs')] = {
       minWidth: theme.overrides.MuiTab.root.minWidth,
     };
