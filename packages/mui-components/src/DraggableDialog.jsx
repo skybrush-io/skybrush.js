@@ -12,12 +12,13 @@ import { createSecondaryAreaStyle } from '@skybrush/app-theme-material-ui';
 
 import DialogToolbar from './DialogToolbar';
 
-const PaperComponent = (props) => (
+const PaperComponent = ({ DraggableProps, ...PaperProps }) => (
   <Draggable
     handle='#draggable-dialog-title'
     cancel={'[class*="MuiDialogContent-root"]'}
+    {...DraggableProps}
   >
-    <Paper {...props} />
+    <Paper {...PaperProps} />
   </Draggable>
 );
 
@@ -39,6 +40,8 @@ const useStyles = makeStyles(
 );
 
 const DraggableDialog = ({
+  DraggableProps,
+  PaperProps,
   children,
   sidebarComponents,
   title,
@@ -83,7 +86,11 @@ const DraggableDialog = ({
   );
 
   return (
-    <Dialog PaperComponent={PaperComponent} {...rest}>
+    <Dialog
+      PaperComponent={PaperComponent}
+      PaperProps={{ DraggableProps, ...PaperProps }}
+      {...rest}
+    >
       {sidebarComponents ? (
         <Box display='flex' flexDirection='row' alignItems='stretch'>
           <Box className={classes.sidebar}>{sidebarComponents}</Box>
@@ -99,6 +106,8 @@ const DraggableDialog = ({
 };
 
 DraggableDialog.propTypes = {
+  DraggableProps: PropTypes.object,
+  PaperProps: PropTypes.object,
   sidebarComponents: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
