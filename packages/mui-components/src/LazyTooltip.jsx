@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import Tippy from '@tippyjs/react';
 
 import { useTheme } from '@material-ui/core/styles';
 
+import Tooltip from './Tooltip';
+
+// Adapted from https://gist.github.com/atomiks/520f4b0c7b537202a23a3059d4eec908
 const LazyTooltip = (props) => {
   const appTheme = useTheme();
   const tippyTheme =
@@ -26,9 +28,9 @@ const LazyTooltip = (props) => {
     computedProps.content = mounted ? props.content : '';
   }
 
-  return <Tippy {...computedProps} />;
+  return <Tooltip {...computedProps} />;
 };
 
-LazyTooltip.propTypes = Tippy.propTypes;
+LazyTooltip.propTypes = Tooltip.propTypes;
 
 export default LazyTooltip;
