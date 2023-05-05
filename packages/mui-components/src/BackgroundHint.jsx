@@ -3,6 +3,7 @@
  * application.
  */
 
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -31,7 +32,15 @@ const useStyles = makeStyles({
  *
  * @return {Object} the rendered component
  */
-const BackgroundHint = ({ button, header, icon, iconColor, text, ...rest }) => {
+const BackgroundHint = ({
+  button,
+  className,
+  header,
+  icon,
+  iconColor,
+  text,
+  ...rest
+}) => {
   const classes = useStyles();
 
   const iconStyle = icon
@@ -45,7 +54,11 @@ const BackgroundHint = ({ button, header, icon, iconColor, text, ...rest }) => {
   }
 
   return (
-    <Box color='text.secondary' className={classes.root} {...rest}>
+    <Box
+      color='text.secondary'
+      className={clsx(classes.root, className)}
+      {...rest}
+    >
       <div>
         {icon && (
           <Box pb={2}>{React.cloneElement(icon, { style: iconStyle })}</Box>
@@ -64,6 +77,7 @@ const BackgroundHint = ({ button, header, icon, iconColor, text, ...rest }) => {
 
 BackgroundHint.propTypes = {
   button: PropTypes.node,
+  className: PropTypes.string,
   header: PropTypes.string,
   icon: PropTypes.node,
   iconColor: PropTypes.string,

@@ -54,13 +54,16 @@ const useStyles = makeStyles(
 );
 
 export const GenericHeaderButton = React.forwardRef(
-  ({ children, disabled, label, secondaryLabel, tooltip, ...rest }, ref) => {
+  (
+    { children, className, disabled, label, secondaryLabel, tooltip, ...rest },
+    ref
+  ) => {
     const classes = useStyles();
 
     const result = (
       <div
         ref={ref}
-        className={clsx(classes.root, disabled && classes.disabled)}
+        className={clsx(classes.root, disabled && classes.disabled, className)}
         {...rest}
       >
         <span className={classes.icon}>{children}</span>
@@ -90,6 +93,7 @@ export const GenericHeaderButton = React.forwardRef(
 
 GenericHeaderButton.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
   disabled: PropTypes.bool,
   label: PropTypes.node,
   secondaryLabel: PropTypes.node,

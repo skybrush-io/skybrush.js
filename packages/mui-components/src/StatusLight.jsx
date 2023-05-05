@@ -122,7 +122,7 @@ const useStyles = makeStyles(
  * Small component resembling a multi-color status light that can be used to
  * represent the state of a single step in a multi-step process.
  */
-const StatusLight = ({ inline, size, status, ...rest }) => {
+const StatusLight = ({ className, inline, size, status, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -131,7 +131,8 @@ const StatusLight = ({ inline, size, status, ...rest }) => {
         classes.root,
         inline && classes.inline,
         classes[`size-${size}`],
-        classes[`status-${status}`]
+        classes[`status-${status}`],
+        className
       )}
       component={inline ? 'span' : 'div'}
       {...rest}
@@ -140,6 +141,7 @@ const StatusLight = ({ inline, size, status, ...rest }) => {
 };
 
 StatusLight.propTypes = {
+  className: PropTypes.string,
   inline: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'normal', 'large']),
   status: PropTypes.oneOf(Object.values(Status)),

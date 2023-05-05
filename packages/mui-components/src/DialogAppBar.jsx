@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -22,13 +23,13 @@ const useStyles = makeStyles(
  * App bar styled appropriately to be suitable for presentation in the
  * header of a dialog.
  */
-const DialogAppBar = ({ children, ...rest }) => {
+const DialogAppBar = ({ children, className, ...rest }) => {
   const classes = useStyles();
   return (
     <AppBar
       position='static'
       color='primary'
-      className={classes.root}
+      className={clsx(classes.root, className)}
       {...rest}
     >
       {children}
@@ -41,6 +42,7 @@ DialogAppBar.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  className: PropTypes.string,
 };
 
 export default DialogAppBar;
