@@ -7,6 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ActionDone from '@material-ui/icons/Done';
 import ActionSettingsEthernet from '@material-ui/icons/SettingsEthernet';
 import ContentClear from '@material-ui/icons/Clear';
+import InfoOutlined from '@material-ui/icons/InfoOutlined';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 
 const presets = {
@@ -31,6 +32,11 @@ const presets = {
   },
 
   empty: {},
+
+  info: {
+    color: colorForStatus(Status.INFO),
+    icon: <InfoOutlined fontSize='small' />,
+  },
 
   success: {
     color: colorForStatus(Status.SUCCESS),
