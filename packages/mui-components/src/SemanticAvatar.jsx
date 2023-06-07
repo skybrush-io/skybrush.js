@@ -84,10 +84,13 @@ const useStyles = makeStyles(
  * Avatar that represents a single drone, docking station or some other object
  * in the system that has an ID.
  */
-const SemanticAvatar = ({ children, status }) => {
+const SemanticAvatar = ({ children, status, ...rest }) => {
   const classes = useStyles();
   return (
-    <Avatar className={clsx(classes.avatar, classes[`avatar-${status}`])}>
+    <Avatar
+      className={clsx(classes.avatar, classes[`avatar-${status}`])}
+      {...rest}
+    >
       {children}
     </Avatar>
   );
