@@ -39,7 +39,10 @@ test('no drones', (t) => {
 test('too many drones', (t) => {
   t.throws(
     () => {
-      validate({ version: 1, swarm: { drones: Array.from({ length: 5000 }) } });
+      validate({
+        version: 1,
+        swarm: { drones: Array.from({ length: 10000 }) },
+      });
     },
     {
       message: /too many drones/i,

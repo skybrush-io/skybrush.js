@@ -226,6 +226,6 @@ test('light program evaluation, invalid input type', (t) => {
   t.throws(() =>
     createColorEvaluator((() => {
       /* do nothing */
-    }) as any)
+    }) as any as LightProgramLike)
   );
 });

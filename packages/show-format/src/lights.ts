@@ -47,7 +47,7 @@ function convertLightProgramToUint8Array(input: LightProgramLike): Uint8Array {
     return Uint8Array.from(atob(input), (char) => char.codePointAt(0) ?? 0);
   }
 
-  if (typeof input === 'undefined') {
+  if (input === undefined) {
     // Just use constant white. 7 = SET WHITE, 127 = duration: 127 * 20 msec
     return Uint8Array.from([7, 127]);
   }

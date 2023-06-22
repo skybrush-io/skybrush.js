@@ -40,7 +40,7 @@ const createMainWindowFactory = ({
   let instance;
   let windowState;
 
-  if (typeof rootDir === 'undefined') {
+  if (rootDir === undefined) {
     throw new TypeError('rootDir must be specified');
   }
 
