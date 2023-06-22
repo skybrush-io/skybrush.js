@@ -80,6 +80,7 @@ export function createStorageConfiguration<S, RS, HSS, ESS>({
   }
 
   for (const [path, keys] of Object.entries(dottedPathsByPrefixes)) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     transforms.push(createBlacklistFilter(path, keys));
   }
 

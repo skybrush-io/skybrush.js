@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 /**
  * @file Fade-and-slide transition.
  *

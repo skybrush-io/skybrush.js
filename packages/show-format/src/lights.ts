@@ -40,7 +40,7 @@ function convertLightProgramToUint8Array(input: LightProgramLike): Uint8Array {
       throw new Error('Only version 1 light programs are supported');
     }
 
-    return convertLightProgramToUint8Array(data as any);
+    return convertLightProgramToUint8Array(data as any as LightProgramLike);
   }
 
   if (typeof input === 'string') {

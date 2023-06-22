@@ -37,7 +37,7 @@ export function validateShowSpecification(
 ): asserts spec is ShowSpecification {
   // TODO(ntamas): write a proper JSON-Schema specification for the show files
   // and use that.
-  validateVersionInShowSpecification(spec);
+  validateVersionInShowSpecification(spec as Record<string, unknown>);
 
   if (!spec.swarm || !Array.isArray(spec.swarm.drones)) {
     throw new Error('Show specification contains no drones');
@@ -78,7 +78,7 @@ export function validateShowSpecification(
     environment.type = EnvironmentType.OUTDOOR;
   }
 
-  if (!ENVIRONMENT_TYPES.includes(environment.type as any)) {
+  if (!ENVIRONMENT_TYPES.includes(environment.type as any as EnvironmentType)) {
     throw new Error('Invalid environment type in show specification');
   }
 

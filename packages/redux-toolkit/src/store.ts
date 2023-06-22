@@ -13,7 +13,7 @@ import type {
 } from '@reduxjs/toolkit';
 import type { DevToolsEnhancerOptions } from '@reduxjs/toolkit/dist/devtoolsExtension';
 
-import produce from 'immer';
+import { type Immutable, produce } from 'immer';
 import get from 'lodash-es/get';
 import identity from 'lodash-es/identity';
 import noop from 'lodash-es/noop';
@@ -169,7 +169,7 @@ export function configureStoreAndPersistence<
 
       finalStateSanitizer = (stateSanitizer
         ? (state: S, ...rest: [number]) =>
-            stateSanitizer(stateScrubber(state as any), ...rest)
+            stateSanitizer(stateScrubber(state as any as Immutable<S>), ...rest)
         : stateScrubber) as any as StateSanitizer;
     }
 
@@ -215,6 +215,7 @@ export function configureStoreAndPersistence<
   const stateLoaded = createDeferred<void>();
 
   if (storage) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     persistor = persistStore(store as any, null, stateLoaded.resolve);
   } else {
     persistor = {
