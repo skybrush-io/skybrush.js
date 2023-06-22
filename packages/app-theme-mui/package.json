@@ -38,9 +38,11 @@
   "devDependencies": {
     "@mui/material": "^5.13.5",
     "@types/color": "^3.0.3",
+    "@types/react": "^18.2.13",
     "@types/react-transition-group": "^4.4.6",
     "chart.js": "^3.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  }
+  },
+  "gitHead": "41835dc4e932f4e9ba58494d0850baf714f17edc"
 }
