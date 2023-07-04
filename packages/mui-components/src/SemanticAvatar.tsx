@@ -10,6 +10,11 @@ import { createStyleForStatus } from './styles';
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.3)',
+
+  // Alternatively we could use `variant="rounded"` and
+  // set the amount through `theme.shape.borderRadius`.
+  borderRadius: '25%',
+
   color: 'black',
   margin: '0 auto',
 
