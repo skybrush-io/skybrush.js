@@ -2867,11 +2867,11 @@ __metadata:
   dependencies:
     ava: ^5.3.1
     commander: ^11.0.0
-    electron: ^25.2.0
+    electron: ^26.0.0
     electron-unhandled: ^4.0.1
     electron-window-state: ^5.0.3
   peerDependencies:
-    electron: ^20.0 || ^21.0 || ^22.0 || ^23.0 || ^24.0 || ^25.0
+    electron: ^20.0 || ^21.0 || ^22.0 || ^23.0 || ^24.0 || ^25.0 || ^26.0
   languageName: unknown
   linkType: soft
 
@@ -6073,16 +6073,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^25.2.0":
-  version: 25.2.0
-  resolution: "electron@npm:25.2.0"
+"electron@npm:^26.0.0":
+  version: 26.0.0
+  resolution: "electron@npm:26.0.0"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^18.11.18
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 264b19af3077da70fc137a244cec24a7674b0938695fcbf8b22a48164d43efe58c597e189501ee48d02bb52ff26e6952a8c69e4c50bb42686f117d6e10a33aa4
+  checksum: f44b41c872167c8507c1e217de23d814d64e48bfac5d1445b8978bfd7b54da8a410999ddfecab575efbfa7a1da9d90cf08a6212dda1b5f6e0e386dbd7c557ddb
   languageName: node
   linkType: hard
 

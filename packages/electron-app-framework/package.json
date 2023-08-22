@@ -24,7 +24,7 @@
     "test": "nyc ava"
   },
   "peerDependencies": {
-    "electron": "^20.0 || ^21.0 || ^22.0 || ^23.0 || ^24.0 || ^25.0"
+    "electron": "^20.0 || ^21.0 || ^22.0 || ^23.0 || ^24.0 || ^25.0 || ^26.0"
   },
   "dependencies": {
     "commander": "^11.0.0",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "ava": "^5.3.1",
-    "electron": "^25.2.0"
+    "electron": "^26.0.0"
   },
   "gitHead": "41835dc4e932f4e9ba58494d0850baf714f17edc"
 }
