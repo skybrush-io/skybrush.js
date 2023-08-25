@@ -87,11 +87,7 @@ export const skybrushQuaternionToThreeJsRotation = (() => {
   return (wxyz) => {
     quat.set(wxyz[1], wxyz[2], wxyz[3], wxyz[0]);
     quat.premultiply(SB_TO_THREE_QUAT);
-    // I have no idea why this is needed, but we need it to make things work
-    // correctly; test it with the aug20-2021 crown file for example. Without
-    // the conjugate, the yaw angle is incorrect after loading.
-    quat.conjugate();
-    euler.setFromQuaternion(quat, 'XYZ');
+    euler.setFromQuaternion(quat, 'YZX');
     return [radToDeg(euler.x), radToDeg(euler.y), radToDeg(euler.z)];
   };
 })();
