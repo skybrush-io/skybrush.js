@@ -1,4 +1,4 @@
-import { Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
+import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
 import type { Vector3 as Euler, YawControl } from './types';
 import { validateYawControl } from './validation';
 
@@ -28,20 +28,6 @@ class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
     super(yawControl.setpoints);
   }
 
-  protected override _defaultSetpoint: number = 0;
-
-  protected override _createConstantSegmentFunctions(setpoint: number) {
-    return createConstantSegmentFunctions(setpoint);
-  }
-
-  protected override _createSegmentFunctions(
-    [, start]: Segment<number>,
-    [, end]: Segment<number>,
-    dt: number
-  ) {
-    return createSegmentFunctions(start, end, dt);
-  }
-
   /**
    * Returns the yaw of the drone at the given time instant.
    *
@@ -66,6 +52,22 @@ class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[1](result, ratio);
     return result;
+  }
+
+  protected override _createConstantSegmentFunctions(setpoint: number) {
+    return createConstantSegmentFunctions(setpoint);
+  }
+
+  protected override _createSegmentFunctions(
+    [, start]: Segment<number>,
+    [, end]: Segment<number>,
+    dt: number
+  ) {
+    return createSegmentFunctions(start, end, dt);
+  }
+
+  protected override _getDefaultSetpoint() {
+    return 0;
   }
 }
 
@@ -126,7 +128,7 @@ function createYawControlPlayer(yawControl: YawControl): YawControlPlayer {
   const getAngularVelocityAt = getAngularVelocityFromRightAt;
 
   return {
-    getYawAt: getYawAt,
+    getYawAt,
     getAngularVelocityAt,
     getAngularVelocityFromRightAt,
   };

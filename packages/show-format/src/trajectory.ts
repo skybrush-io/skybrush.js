@@ -1,6 +1,6 @@
 import { Bezier } from 'bezier-js';
 
-import { Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
+import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
 import type { Trajectory, Vector3, Vector3Tuple } from './types';
 import { validateTrajectory } from './validation';
 
@@ -12,6 +12,8 @@ type PosVelEvaluator = [
   (result: Vector3, ratio: number) => void,
   (result: Vector3, ratio: number) => void
 ];
+
+const _DEFAULT_SETPOINT: Vector3Tuple = [0, 0, 0];
 
 /**
  * Class that takes a trajectory object as its first argument and that can
@@ -39,20 +41,6 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
     }
   }
 
-  protected override _defaultSetpoint: Vector3Tuple = [0, 0, 0];
-
-  protected override _createConstantSegmentFunctions(point: Vector3Tuple) {
-    return createConstantSegmentFunctions(point);
-  }
-
-  protected override _createSegmentFunctions(
-    [, start, controlPoints]: Segment<Vector3Tuple, [Vector3Tuple[]]>,
-    [, end]: Segment<Vector3Tuple, [Vector3Tuple[]]>,
-    dt: number
-  ) {
-    return createSegmentFunctions(start, end, controlPoints, dt);
-  }
-
   /**
    * Returns the position of the drone at the given time instant.
    *
@@ -77,6 +65,22 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[1](result, ratio);
     return result;
+  }
+
+  protected override _createConstantSegmentFunctions(point: Vector3Tuple) {
+    return createConstantSegmentFunctions(point);
+  }
+
+  protected override _createSegmentFunctions(
+    [, start]: Segment<Vector3Tuple, [Vector3Tuple[]]>,
+    [, end, controlPoints]: Segment<Vector3Tuple, [Vector3Tuple[]]>,
+    dt: number
+  ) {
+    return createSegmentFunctions(start, end, controlPoints, dt);
+  }
+
+  protected override _getDefaultSetpoint(): Vector3Tuple {
+    return _DEFAULT_SETPOINT;
   }
 }
 

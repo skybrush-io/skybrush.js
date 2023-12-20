@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/member-ordering */
+
 import { bisect } from './utils';
 
-export type Segment<Setpoint, Metadata extends unknown[] = []> = [
+export type Segment<Setpoint, Metadata extends unknown[] = unknown[]> = [
   startTime: number,
   setpoint: Setpoint,
   ...rest: Metadata
@@ -10,10 +12,10 @@ export type Segment<Setpoint, Metadata extends unknown[] = []> = [
  * Class that takes an array of segments and can evaluate the desired state
  * at any time instant by interpolating between the given setpoints.
  */
-export class SegmentedPlayerImpl<
+export abstract class SegmentedPlayerImpl<
   SetpointType,
   EvaluatorType,
-  MetadataType extends unknown[] = []
+  MetadataType extends unknown[] = unknown[]
 > {
   protected readonly _numSegments: number;
   private readonly _segments: Array<Segment<SetpointType, MetadataType>>;
@@ -33,13 +35,15 @@ export class SegmentedPlayerImpl<
   private _segmentIndex: number;
 
   // NOTE: These virtual values / functions NEED to be overridden in subclasses!
-  protected _defaultSetpoint?: SetpointType;
-  protected _createConstantSegmentFunctions?(at: SetpointType): EvaluatorType;
-  protected _createSegmentFunctions?(
+  protected abstract _createConstantSegmentFunctions(
+    at: SetpointType
+  ): EvaluatorType;
+  protected abstract _createSegmentFunctions(
     from: Segment<SetpointType, MetadataType>,
     to: Segment<SetpointType, MetadataType>,
     length: number
   ): EvaluatorType;
+  protected abstract _getDefaultSetpoint(): SetpointType;
 
   /**
    * Constructor.
@@ -52,18 +56,18 @@ export class SegmentedPlayerImpl<
     this._segments = [...segments];
 
     const firstSetpoint: SetpointType =
-      this._numSegments > 0 ? this._segments[0][1] : this._defaultSetpoint!;
+      this._numSegments > 0 ? this._segments[0][1] : this._getDefaultSetpoint();
     const lastSetpoint: SetpointType =
       this._numSegments > 0
         ? this._segments[this._numSegments - 1][1]
-        : this._defaultSetpoint!;
+        : this._getDefaultSetpoint();
 
     this._segmentFuncs = [];
     this._segmentFuncs.length = this._numSegments;
 
     this._specialSegmentFuncs = {
-      beforeFirst: this._createConstantSegmentFunctions!(firstSetpoint),
-      afterLast: this._createConstantSegmentFunctions!(lastSetpoint),
+      beforeFirst: this._createConstantSegmentFunctions(firstSetpoint),
+      afterLast: this._createConstantSegmentFunctions(lastSetpoint),
     };
 
     this._segmentIndex = 0;
@@ -166,13 +170,13 @@ export class SegmentedPlayerImpl<
 
       if (!this._segmentFuncs[index]) {
         if (index < this._numSegments - 1) {
-          this._segmentFuncs[index] = this._createSegmentFunctions!(
+          this._segmentFuncs[index] = this._createSegmentFunctions(
             this._segments[index],
             this._segments[index + 1],
             this._currentSegmentLength
           );
         } else {
-          this._segmentFuncs[index] = this._createConstantSegmentFunctions!(
+          this._segmentFuncs[index] = this._createConstantSegmentFunctions(
             this._currentSegment[1]
           );
         }
