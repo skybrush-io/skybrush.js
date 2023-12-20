@@ -1,11 +1,7 @@
 import { Bezier } from 'bezier-js';
 
-import type {
-  Trajectory,
-  TrajectorySegment,
-  Vector3,
-  Vector3Tuple,
-} from './types';
+import { Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
+import type { Trajectory, Vector3, Vector3Tuple } from './types';
 import { validateTrajectory } from './validation';
 
 /**
@@ -22,25 +18,11 @@ type PosVelEvaluator = [
  * tell the position and velocity of the drone traversing the trajectory at any
  * given time instant.
  */
-class TrajectoryPlayerImpl {
-  private readonly _takeoffTime: number;
-  private readonly _numSegments: number;
-  private readonly _segments: TrajectorySegment[];
-  private readonly _startTimes: number[];
-  private readonly _specialSegmentFuncs: {
-    beforeFirst: PosVelEvaluator;
-    afterLast: PosVelEvaluator;
-  };
-
-  private _segmentFuncs: Array<PosVelEvaluator | undefined>;
-
-  private _currentSegment: TrajectorySegment | undefined;
-  private _currentSegmentFunc: PosVelEvaluator;
-  private _currentSegmentStartTime: number;
-  private _currentSegmentEndTime: number;
-  private _currentSegmentLength: number;
-  private _segmentIndex: number;
-
+class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
+  Vector3Tuple,
+  PosVelEvaluator,
+  [Vector3Tuple[]]
+> {
   /**
    * Constructor.
    *
@@ -49,36 +31,26 @@ class TrajectoryPlayerImpl {
   constructor(trajectory: Trajectory) {
     validateTrajectory(trajectory);
 
-    const { points } = trajectory;
+    super(trajectory.points);
 
-    this._takeoffTime = trajectory.takeoffTime ?? 0;
-    this._numSegments = points.length;
-    this._startTimes = points.map((item) => item[0] + this._takeoffTime);
-    this._segments = [...points];
+    const takeoffTime = trajectory.takeoffTime ?? 0;
+    for (let i = 0; i < this._numSegments; i++) {
+      this._startTimes[i] += takeoffTime;
+    }
+  }
 
-    const firstPoint: Vector3Tuple =
-      this._numSegments > 0 ? this._segments[0][1] : [0, 0, 0];
-    const lastPoint: Vector3Tuple =
-      this._numSegments > 0
-        ? this._segments[this._numSegments - 1][1]
-        : [0, 0, 0];
+  protected override _defaultSetpoint: Vector3Tuple = [0, 0, 0];
 
-    this._segmentFuncs = [];
-    this._segmentFuncs.length = this._numSegments;
+  protected override _createConstantSegmentFunctions(point: Vector3Tuple) {
+    return createConstantSegmentFunctions(point);
+  }
 
-    this._specialSegmentFuncs = {
-      beforeFirst: createConstantSegmentFunctions(firstPoint),
-      afterLast: createConstantSegmentFunctions(lastPoint),
-    };
-
-    this._segmentIndex = 0;
-    this._currentSegmentFunc = this._specialSegmentFuncs.beforeFirst;
-    this._currentSegmentStartTime = Number.NEGATIVE_INFINITY;
-    this._currentSegmentEndTime =
-      this._numSegments > 0 ? this._startTimes[0] : Number.POSITIVE_INFINITY;
-    this._currentSegmentLength = 0;
-
-    this._reset();
+  protected override _createSegmentFunctions(
+    [, start, controlPoints]: Segment<Vector3Tuple, [Vector3Tuple[]]>,
+    [, end]: Segment<Vector3Tuple, [Vector3Tuple[]]>,
+    dt: number
+  ) {
+    return createSegmentFunctions(start, end, controlPoints, dt);
   }
 
   /**
@@ -106,136 +78,6 @@ class TrajectoryPlayerImpl {
     this._currentSegmentFunc[1](result, ratio);
     return result;
   }
-
-  _reset() {
-    this._selectSegment(-1);
-  }
-
-  /**
-   * Updates the state variables of the current trajectory if needed to
-   * ensure that its current segment includes the given time.
-   *
-   * @param  time  the timestamp to seek to
-   */
-  _seekTo(time: number) {
-    let found = false;
-
-    if (time >= this._currentSegmentStartTime) {
-      if (time < this._currentSegmentEndTime) {
-        // We are done. Note the strict comparison; this is to ensure that we
-        // always return the velocity from the right side consistently.
-        found = true;
-      } else if (this._segmentIndex < this._numSegments - 2) {
-        // Maybe we only need to step to the next segment? This is the common
-        // case.
-        const nextEnd = this._startTimes[this._segmentIndex + 2];
-        if (nextEnd > time) {
-          // We are done. Note the strict comparison; this is to ensure that we
-          // always return the velocity from the right side consistently.
-          this._selectSegment(this._segmentIndex + 1);
-          found = true;
-        }
-      } else {
-        // Reached the end of the trajectory
-        this._selectSegment(this._numSegments);
-        found = true;
-      }
-    }
-
-    // Do things the hard way, with binary search
-    if (!found) {
-      const index = bisect(this._startTimes, time);
-      this._selectSegment(index - 1);
-    }
-
-    // Return the relative time into the current segment
-    if (this._currentSegmentLength > 0) {
-      return (
-        (time - this._currentSegmentStartTime) / this._currentSegmentLength
-      );
-    }
-
-    return 0;
-  }
-
-  /**
-   * Updates the state variables of the current trajectory if needed to ensure
-   * that the segment with the given index is the one that is currently
-   * selected.
-   */
-  _selectSegment(index: number) {
-    this._segmentIndex = index;
-
-    if (index < 0) {
-      this._currentSegment = undefined;
-      this._currentSegmentLength = 0;
-      this._currentSegmentStartTime = Number.NEGATIVE_INFINITY;
-      this._currentSegmentEndTime =
-        this._numSegments > 0 ? this._startTimes[0] : Number.POSITIVE_INFINITY;
-      this._currentSegmentFunc = this._specialSegmentFuncs.beforeFirst;
-    } else if (index >= this._numSegments) {
-      this._currentSegment = undefined;
-      this._currentSegmentLength = 0;
-      this._currentSegmentEndTime = Number.POSITIVE_INFINITY;
-      /* istanbul ignore next */
-      this._currentSegmentStartTime =
-        this._numSegments > 0
-          ? this._startTimes[this._numSegments - 1]
-          : Number.NEGATIVE_INFINITY;
-      this._currentSegmentFunc = this._specialSegmentFuncs.afterLast;
-    } else {
-      this._currentSegment = this._segments[index];
-      this._currentSegmentStartTime = this._startTimes[index];
-
-      if (index < this._numSegments - 1) {
-        this._currentSegmentEndTime = this._startTimes[index + 1];
-        this._currentSegmentLength =
-          this._currentSegmentEndTime - this._currentSegmentStartTime;
-      } else {
-        this._currentSegmentEndTime = Number.POSITIVE_INFINITY;
-        this._currentSegmentLength = 0;
-      }
-
-      if (!this._segmentFuncs[index]) {
-        if (index < this._numSegments - 1) {
-          this._segmentFuncs[index] = createSegmentFunctions(
-            this._currentSegment[1],
-            this._segments[index + 1][1],
-            this._segments[index + 1][2],
-            this._currentSegmentLength
-          );
-        } else {
-          this._segmentFuncs[index] = createConstantSegmentFunctions(
-            this._currentSegment[1]
-          );
-        }
-      }
-
-      this._currentSegmentFunc = this._segmentFuncs[index]!;
-    }
-  }
-}
-
-/**
- * Port of Python's `bisect.bisect` into JavaScript.
- */
-function bisect<T>(items: T[], x: T, lo = 0, hi: number = items.length) {
-  /* istanbul ignore if */
-  if (lo < 0) {
-    throw new Error('lo must be non-negative');
-  }
-
-  while (lo < hi) {
-    const mid = Math.trunc((lo + hi) / 2);
-
-    if (x < items[mid]) {
-      hi = mid;
-    } else {
-      lo = mid + 1;
-    }
-  }
-
-  return lo;
 }
 
 /**

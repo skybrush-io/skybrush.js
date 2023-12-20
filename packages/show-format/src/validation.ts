@@ -1,6 +1,11 @@
 import { MAX_DRONE_COUNT } from './constants';
 import { EnvironmentType, ENVIRONMENT_TYPES } from './types';
-import type { Camera, ShowSpecification, Trajectory } from './types';
+import type {
+  Camera,
+  ShowSpecification,
+  Trajectory,
+  YawControl,
+} from './types';
 import { isNil, isObject } from './utils';
 
 /**
@@ -178,5 +183,38 @@ export function validateTrajectory(
     typeof trajectory.landingTime !== 'number'
   ) {
     throw new Error('Trajectory schema mismatch');
+  }
+}
+
+/**
+ * Runs some basic checks on a JSON-based yaw control specification to see
+ * whether it looks like a valid yaw control specification.
+ *
+ * Raises appropriate errors if the yaw control specification does not look like
+ * a valid one.
+ *
+ * @param yawControl  the specification to validate
+ */
+export function validateYawControl(
+  yawControl: unknown
+): asserts yawControl is YawControl {
+  if (!isObject(yawControl)) {
+    throw new TypeError('Yaw control specification must be an object');
+  }
+
+  if (yawControl.version !== 1) {
+    throw new Error('Only version 1 yaw control specifications are supported');
+  }
+
+  if (!Array.isArray(yawControl.setpoints)) {
+    throw new TypeError('Yaw control schema mismatch');
+  }
+
+  if (typeof yawControl.autoYaw !== 'boolean') {
+    throw new TypeError('Yaw control schema mismatch');
+  }
+
+  if (typeof yawControl.autoYawOffset !== 'number') {
+    throw new TypeError('Yaw control schema mismatch');
   }
 }

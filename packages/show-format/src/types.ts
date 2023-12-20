@@ -299,6 +299,9 @@ export interface DroneSpecification {
     /** The light program of the drone during the show */
     lights?: LightProgram;
 
+    /** The yaw control of the drone during the show */
+    yawControl?: YawControl;
+
     /**
      * The home position of the drone. It is inferred from the first point of
      * the trajectory when omitted.
@@ -334,7 +337,8 @@ export interface Trajectory {
    */
   points: TrajectorySegment[];
 
-  /** The takeoff time of the drone in seconds; zero if missing. Timestamps in
+  /**
+   * The takeoff time of the drone in seconds; zero if missing. Timestamps in
    * the trajectory segments are relative to the takeoff time.
    */
   takeoffTime?: number;
@@ -352,4 +356,38 @@ export interface LightProgram {
 
   /** Light program as ledctrl bytecode, encoded as a base64 string */
   data: string;
+}
+
+/**
+ * A single segment in the yaw control definition of a drone.
+ *
+ * The first item of this tuple is the timestamp of the target rotation of the
+ * segment. The second is the yaw value itself. The start point is inferred from
+ * the value of the previous segment in a segment array.
+ */
+export type YawControlSegment = [number, number];
+
+/**
+ * The yaw control definition of a single drone
+ */
+export interface YawControl {
+  /** The version of the yaw control format */
+  version: number;
+
+  /**
+   * The list of segments in the yaw control.
+   * The first item is the starting rotation of the yaw control.
+   */
+  setpoints: YawControlSegment[];
+
+  /**
+   * Whether to change yaw automatically based
+   * on the momentary direction of motion
+   */
+  autoYaw?: boolean;
+
+  /**
+   * The yaw offset to use relative to front when in auto-yaw mode, in degrees
+   */
+  autoYawOffset?: number;
 }
