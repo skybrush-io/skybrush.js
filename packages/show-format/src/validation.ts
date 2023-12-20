@@ -210,11 +210,14 @@ export function validateYawControl(
     throw new TypeError('Yaw control schema mismatch');
   }
 
-  if (typeof yawControl.autoYaw !== 'boolean') {
+  if (!isNil(yawControl.autoYaw) && typeof yawControl.autoYaw !== 'boolean') {
     throw new TypeError('Yaw control schema mismatch');
   }
 
-  if (typeof yawControl.autoYawOffset !== 'number') {
+  if (
+    !isNil(yawControl.autoYawOffset) &&
+    typeof yawControl.autoYawOffset !== 'number'
+  ) {
     throw new TypeError('Yaw control schema mismatch');
   }
 }
