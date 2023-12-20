@@ -185,4 +185,22 @@ export abstract class SegmentedPlayerImpl<
       this._currentSegmentFunc = this._segmentFuncs[index]!;
     }
   }
+
+  /**
+   * Shifts the start time of all segments with the given delta.
+   *
+   * @param delta the value to add to the start time of each segment
+   */
+  _shiftSegments(delta: number): void {
+    if (Number.isNaN(delta) || delta === 0) {
+      return;
+    }
+
+    for (let i = 0; i < this._numSegments; i++) {
+      this._startTimes[i] += delta;
+    }
+
+    this._currentSegmentStartTime += delta;
+    this._currentSegmentEndTime += delta;
+  }
 }

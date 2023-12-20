@@ -34,11 +34,7 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
     validateTrajectory(trajectory);
 
     super(trajectory.points);
-
-    const takeoffTime = trajectory.takeoffTime ?? 0;
-    for (let i = 0; i < this._numSegments; i++) {
-      this._startTimes[i] += takeoffTime;
-    }
+    this._shiftSegments(trajectory.takeoffTime ?? 0);
   }
 
   /**
