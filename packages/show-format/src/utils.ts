@@ -1,4 +1,26 @@
 /**
+ * Port of Python's `bisect.bisect` into JavaScript.
+ */
+export function bisect<T>(items: T[], x: T, lo = 0, hi: number = items.length) {
+  /* istanbul ignore if */
+  if (lo < 0) {
+    throw new Error('lo must be non-negative');
+  }
+
+  while (lo < hi) {
+    const mid = Math.trunc((lo + hi) / 2);
+
+    if (x < items[mid]) {
+      hi = mid;
+    } else {
+      lo = mid + 1;
+    }
+  }
+
+  return lo;
+}
+
+/**
  * Async function that blocks until the next idle cycle of the browser or the
  * Node environment. Used to ensure that the browser UI does not block when
  * resolving references in the show file.
