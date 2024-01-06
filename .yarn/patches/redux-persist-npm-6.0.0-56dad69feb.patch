@@ -1,0 +1,13 @@
+diff --git a/types/persistReducer.d.ts b/types/persistReducer.d.ts
+index 28835246546f37339a81d5be71b33f6290f4638b..d56b212778c447fdbeb2872ad0cadfafc394728a 100644
+--- a/types/persistReducer.d.ts
++++ b/types/persistReducer.d.ts
+@@ -12,7 +12,7 @@ declare module "redux-persist/es/persistReducer" {
+    * @param baseReducer reducer used to persist the state
+    */
+   // tslint:disable-next-line: strict-export-declare-modifiers
+-  export default function persistReducer<S, A extends Action = Action>(config: PersistConfig<S>, baseReducer: Reducer<S, A>): Reducer<S & PersistPartial, A>;
++  export default function persistReducer<S, A extends Action = Action, P = S>(config: PersistConfig<S>, baseReducer: Reducer<S, A, P>): Reducer<S & PersistPartial, A, P & { _persist?: PersistState }>;
+ }
+ 
+ declare module "redux-persist/lib/persistReducer" {

@@ -7,11 +7,16 @@ import type {
   Action,
   ActionCreator,
   EnhancedStore,
-  Middleware,
   Reducer,
-  MiddlewareArray,
+  StoreEnhancer,
+  ThunkMiddleware,
+  Tuple,
+  UnknownAction,
 } from '@reduxjs/toolkit';
+
+import type { Middlewares } from '@reduxjs/toolkit/dist/configureStore';
 import type { DevToolsEnhancerOptions } from '@reduxjs/toolkit/dist/devtoolsExtension';
+import type { ExtractDispatchExtensions } from '@reduxjs/toolkit/dist/tsHelpers';
 
 import { type Immutable, produce } from 'immer';
 import get from 'lodash-es/get';
@@ -27,13 +32,10 @@ import type {
   SagaMiddlewareOptions,
   Task,
 } from 'redux-saga';
-import type { ThunkMiddleware } from 'redux-thunk';
 
 import { createActionScrubber, resolveActionTypes } from './actions';
 import { createStorageConfiguration, type StorageConfig } from './persistence';
 import { isAllowedInRedux } from './utils';
-
-type Middlewares<S> = ReadonlyArray<Middleware<unknown, S>>;
 
 export interface ExtendedDevToolsOptions extends DevToolsEnhancerOptions {
   actionsAllowlist?: string | string[];
@@ -44,24 +46,28 @@ export interface ExtendedDevToolsOptions extends DevToolsEnhancerOptions {
 
 export interface StoreAndPersistenceConfig<
   S = any,
-  A extends Action<string> = Action<string>,
+  A extends Action = UnknownAction,
   M extends Middlewares<S> = Middlewares<S>,
-  C extends Record<string, unknown> = Record<string, unknown>
+  C extends Record<string, unknown> = Record<string, unknown>,
+  P = S
 > {
   devTools?: boolean | ExtendedDevToolsOptions;
   ignoredActions?: Array<string | ActionCreator<string>>;
   ignoredPaths?: string[];
+  // TODO: (Part 1) Make `middleware` a callback, as it is in line with RTK 2.0
+  // https://redux.js.org/usage/migrations/migrating-rtk-2#configurestoremiddleware-must-be-a-callback
+  // middleware?: (getDefaultMiddleware: GetDefaultMiddleware<S>) => M;
   middleware?: M;
-  reducer: Reducer<S, A>;
+  reducer: Reducer<S, A, P>;
   sagaOptions?: SagaMiddlewareOptions<C>;
   storage?: StorageConfig<S>;
 }
 
 export type PersistableStore<
   S = any,
-  A extends Action = Action<string>,
-  M extends Middlewares<S> = Middlewares<S>
-> = EnhancedStore<S, A, M> & {
+  A extends Action = UnknownAction,
+  E extends StoreEnhancer[] = StoreEnhancer[]
+> = EnhancedStore<S, A, E> & {
   clear: () => Promise<void>;
   runSaga: <S extends Saga>(saga: S, ...args: Parameters<S>) => Task;
   waitUntilStateRestored: () => Promise<void>;
@@ -90,11 +96,28 @@ type StateSanitizer = DevToolsEnhancerOptions['stateSanitizer'];
  *        replaced with a placeholder in the Redux dev tools
  * @return {Object}  an object with two keys: 'store' and 'persistor'
  */
+
 export function configureStoreAndPersistence<
-  S,
-  A extends Action<string>,
-  M extends Middlewares<S>,
-  C extends Record<string, unknown> = Record<string, unknown>
+  S = any,
+  A extends Action = UnknownAction,
+  M extends Middlewares<S> = Middlewares<S>,
+  C extends Record<string, unknown> = Record<string, unknown>,
+  E extends Tuple<StoreEnhancer[]> = Tuple<
+    [
+      StoreEnhancer<{
+        dispatch: ExtractDispatchExtensions<
+          Tuple<[ThunkMiddleware<S>, SagaMiddleware<C>, ...M]>
+        >;
+      }>,
+      StoreEnhancer
+    ]
+  >,
+  // TODO: (Part 2) Adjust the types if `middleware` is forced to be a callback
+  // M extends Tuple<Middlewares<S>> = Tuple<[ThunkMiddlewareFor<S>, SagaMiddleware<C>]>,
+  // E extends Tuple<StoreEnhancer[]> = Tuple<
+  //   [StoreEnhancer<{ dispatch: ExtractDispatchExtensions<M> }>, StoreEnhancer]
+  // >,
+  P = S
 >({
   devTools = {},
   ignoredActions = [],
@@ -103,12 +126,8 @@ export function configureStoreAndPersistence<
   reducer,
   sagaOptions = {},
   storage,
-}: StoreAndPersistenceConfig<S, A, M, C>): {
-  store: PersistableStore<
-    S,
-    A,
-    MiddlewareArray<[ThunkMiddleware<S, A>, SagaMiddleware<C>, ...M]>
-  >;
+}: StoreAndPersistenceConfig<S, A, M, C, P>): {
+  store: PersistableStore<S, A, E>;
   persistor: Persistor;
 } {
   let persistor: Persistor;
@@ -189,7 +208,7 @@ export function configureStoreAndPersistence<
     reducer = persistReducer(
       createStorageConfiguration(storage),
       reducer
-    ) as any as Reducer<S, A>;
+    ) as any as Reducer<S, A, P>;
   }
 
   const store = configureReduxStore({
@@ -215,8 +234,7 @@ export function configureStoreAndPersistence<
   const stateLoaded = createDeferred<void>();
 
   if (storage) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    persistor = persistStore(store as any, null, stateLoaded.resolve);
+    persistor = persistStore(store, null, stateLoaded.resolve);
   } else {
     persistor = {
       flush: async () => Promise.all([]),
@@ -236,11 +254,7 @@ export function configureStoreAndPersistence<
       waitUntilStateRestored: async () => stateLoaded.promise,
       clear: persistor.purge,
       runSaga: sagaMiddleware.run,
-    } as any as PersistableStore<
-      S,
-      A,
-      MiddlewareArray<[ThunkMiddleware<S, A>, SagaMiddleware<C>, ...M]>
-    >,
+    } as any as PersistableStore<S, A, E>,
     persistor,
   };
 }
