@@ -50,6 +50,5 @@
     "redux-persist": {
       "redux": "^5.0.0"
     }
-  },
-  "gitHead": "41835dc4e932f4e9ba58494d0850baf714f17edc"
+  }
 }

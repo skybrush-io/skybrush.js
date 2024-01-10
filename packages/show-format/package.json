@@ -48,6 +48,5 @@
   },
   "devDependencies": {
     "ava": "^5.3.1"
-  },
-  "gitHead": "41835dc4e932f4e9ba58494d0850baf714f17edc"
+  }
 }
