@@ -1,6 +1,17 @@
 import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
 import type { Vector3 as Euler, YawControl } from './types';
+import { toRadians } from './utils';
 import { validateYawControl } from './validation';
+
+const degreeSegmentToRadianSegment = ([
+  timestamp,
+  rotationInDegrees,
+  ...rest
+]: Segment<number>): Segment<number> => [
+  timestamp,
+  toRadians(rotationInDegrees),
+  ...rest,
+];
 
 /**
  * Type specification for a pair of functions that can be used to evaluate the
@@ -25,7 +36,7 @@ class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
   constructor(yawControl: YawControl) {
     validateYawControl(yawControl);
 
-    super(yawControl.setpoints);
+    super(yawControl.setpoints.map(degreeSegmentToRadianSegment));
   }
 
   /**

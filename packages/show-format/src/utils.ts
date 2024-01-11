@@ -74,3 +74,13 @@ export function shuffle<T>(array: T[], rng = Math.random): T[] {
 
   return array;
 }
+
+/**
+ * Returns the given number of degrees in radians.
+ *
+ * @param x - The degrees to convert
+ * @returns The converted degrees in radians
+ */
+export function toRadians(x: number): number {
+  return (x * Math.PI) / 180;
+}

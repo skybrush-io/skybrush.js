@@ -362,8 +362,8 @@ export interface LightProgram {
  * A single segment in the yaw control definition of a drone.
  *
  * The first item of this tuple is the timestamp of the target rotation of the
- * segment. The second is the yaw value itself. The start point is inferred from
- * the value of the previous segment in a segment array.
+ * segment. The second is the yaw value itself, in degrees. The start point is
+ * inferred from the value of the previous segment in a segment array.
  */
 export type YawControlSegment = [number, number];
 
