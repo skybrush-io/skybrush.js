@@ -2866,11 +2866,11 @@ __metadata:
   dependencies:
     ava: ^5.3.1
     commander: ^11.0.0
-    electron: ^26.0.0
+    electron: ^29.0.0
     electron-unhandled: ^4.0.1
     electron-window-state: ^5.0.3
   peerDependencies:
-    electron: ^20.0 || ^21.0 || ^22.0 || ^23.0 || ^24.0 || ^25.0 || ^26.0 || ^27.0 || ^28.0
+    electron: ^28.0 || ^29.0
   languageName: unknown
   linkType: soft
 
@@ -3225,10 +3225,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.11.18":
-  version: 18.16.18
-  resolution: "@types/node@npm:18.16.18"
-  checksum: d32d8a0a04cd3f5ecb361bcb42f3a07623881ac90d680e06bf626defb3c663a94860d11690babe607cfe67265eceeb8a59ba5fe40c0e49f5a1b01e0088640469
+"@types/node@npm:^20.9.0":
+  version: 20.11.30
+  resolution: "@types/node@npm:20.11.30"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 7597767aa3e44b0f1bf62efa522dd17741135f283c11de6a20ead8bb7016fb4999cc30adcd8f2bb29ebb216906c92894346ccd187de170927dc1e212d2c07c81
   languageName: node
   linkType: hard
 
@@ -6072,16 +6074,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^26.0.0":
-  version: 26.0.0
-  resolution: "electron@npm:26.0.0"
+"electron@npm:^29.0.0":
+  version: 29.1.5
+  resolution: "electron@npm:29.1.5"
   dependencies:
     "@electron/get": ^2.0.0
-    "@types/node": ^18.11.18
+    "@types/node": ^20.9.0
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: f44b41c872167c8507c1e217de23d814d64e48bfac5d1445b8978bfd7b54da8a410999ddfecab575efbfa7a1da9d90cf08a6212dda1b5f6e0e386dbd7c557ddb
+  checksum: 7a2f6d4d5e428c5a435860cd4aff1f75b1c942fef2b171e64e01dfd887ed555cd8ac5008cee824ab3f60b866258f74ce472f5a2a7838405d5820cb5ffca6cd40
   languageName: node
   linkType: hard
 
@@ -14502,6 +14504,13 @@ __metadata:
   version: 1.13.6
   resolution: "underscore@npm:1.13.6"
   checksum: d5cedd14a9d0d91dd38c1ce6169e4455bb931f0aaf354108e47bd46d3f2da7464d49b2171a5cf786d61963204a42d01ea1332a903b7342ad428deaafaf70ec36
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 
