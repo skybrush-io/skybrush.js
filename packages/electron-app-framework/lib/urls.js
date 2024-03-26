@@ -31,10 +31,18 @@ function getDefaultMainWindowUrlFromRootDir(rootDir, indexPage = 'index.html') {
 }
 
 function getDefaultPreloadUrlFromRootDir(rootDir) {
-  return path.join(
-    rootDir,
-    usingWebpackDevServer ? '../preload/index.js' : 'preload.bundle.js'
-  );
+  const candidates = usingWebpackDevServer
+    ? ['../preload/index.mjs', '../preload/index.js']
+    : ['preload.bundle.js'];
+
+  for (const candidate of candidates) {
+    const fullPath = path.join(rootDir, candidate);
+    if (fs.existsSync(fullPath)) {
+      return fullPath;
+    }
+  }
+
+  return path.join(rootDir, candidates[candidates.length - 1]);
 }
 
 function getUrlsFromRootDir(rootDir) {
