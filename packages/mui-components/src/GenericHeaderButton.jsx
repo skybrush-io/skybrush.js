@@ -40,6 +40,7 @@ const useStyles = makeStyles(
     label: {
       margin: theme.spacing(0, 0.5, 0, 1),
       userSelect: 'none',
+      whiteSpace: 'nowrap',
     },
 
     secondaryLabel: {
