@@ -98,7 +98,7 @@ GenericHeaderButton.propTypes = {
   disabled: PropTypes.bool,
   label: PropTypes.node,
   secondaryLabel: PropTypes.node,
-  tooltip: PropTypes.string,
+  tooltip: PropTypes.node,
 };
 
 export default GenericHeaderButton;
