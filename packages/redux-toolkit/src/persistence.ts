@@ -1,5 +1,5 @@
 import localForage from 'localforage';
-import type { PersistConfig } from 'redux-persist';
+import { createMigrate, type PersistConfig } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
 
@@ -8,6 +8,7 @@ export type StorageConfig<S, RS = any, HSS = any, ESS = any> = Omit<
   'blacklist' | 'storage'
 > & {
   blacklist?: string | string[];
+  migrations?: Record<string | number, (state: any) => any>;
 };
 
 /**
@@ -20,16 +21,21 @@ export type StorageConfig<S, RS = any, HSS = any, ESS = any> = Omit<
  * In the Electron version, we store the state in a separate JSON file using
  * `electron-store`.
  *
- * @param {string}   key        a unique key identifying the Skybrush application
- * @param {number}   version    version number for the state storage schema
- * @param {string[]} blacklist  list of state paths (top-level and non-top-level alike)
+ * @param key        a unique key identifying the Skybrush application
+ * @param version    version number for the state storage schema
+ * @param blacklist  list of state paths (top-level and non-top-level alike)
  *        to remove from the stored state
+ * @param migrations object mapping store version numbers to functions that
+ *        migrate the stored state to that version from the previous one
+ * @param debug      whether to enable additional debugging output
  */
 export function createStorageConfiguration<S, RS, HSS, ESS>({
   key,
   version,
   blacklist,
   transforms,
+  migrations,
+  debug = false,
   ...rest
 }: StorageConfig<S, RS, HSS, ESS>) {
   if (!key) {
@@ -96,7 +102,7 @@ export function createStorageConfiguration<S, RS, HSS, ESS>({
         )()
       : localForage.createInstance({ name: key });
 
-  return {
+  const result = {
     key,
     version,
 
@@ -109,6 +115,14 @@ export function createStorageConfiguration<S, RS, HSS, ESS>({
     blacklist,
     transforms,
 
+    debug,
+
     ...rest,
   };
+
+  if (migrations) {
+    result.migrate = createMigrate(migrations, { debug });
+  }
+
+  return result;
 }
