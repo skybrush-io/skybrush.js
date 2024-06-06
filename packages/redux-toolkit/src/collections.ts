@@ -469,6 +469,30 @@ export function replaceItemOrAddSorted<T extends ItemWithId>(
  * If the incoming object has a valid ID, it is assumed that it is already
  * in the collection, but its representation will be replaced.
  *
+ * If the incoming object has no ID yet, it will be added to the back of
+ * the collection as a new item.
+ *
+ * @param  {Object}  item  the item to replace in the collection
+ * @param  {Object}  collection  the ordered collection to update
+ */
+export function replaceItemOrAddToBack<T extends ItemWithId>(
+  collection: Collection<T>,
+  item: T
+) {
+  if (hasValidId(item) && collection.byId[item.id]) {
+    collection.byId[item.id] = { ...item };
+  } else {
+    addItemToBack(collection, item);
+  }
+}
+
+/**
+ * Helper function that takes a single item and an ordered collection, and
+ * attempts to replace the item in the collection based on its ID.
+ *
+ * If the incoming object has a valid ID, it is assumed that it is already
+ * in the collection, but its representation will be replaced.
+ *
  * If the incoming object has no ID yet, it will be added to the front of
  * the collection as a new item.
  *
