@@ -11,14 +11,18 @@ import { createSecondaryAreaStyle } from '@skybrush/app-theme-mui';
 
 import DialogToolbar from './DialogToolbar';
 
-const DraggablePaper = (props: PaperProps) => (
-  <Draggable
-    handle='#draggable-dialog-title'
-    cancel={'[class*="MuiDialogContent-root"]'}
-  >
-    <Paper {...props} />
-  </Draggable>
-);
+const DraggablePaper = (props: PaperProps) => {
+  const ref = React.useRef(null);
+  return (
+    <Draggable
+      handle='#draggable-dialog-title'
+      cancel={'[class*="MuiDialogContent-root"]'}
+      nodeRef={ref}
+    >
+      <Paper ref={ref} {...props} />
+    </Draggable>
+  );
+};
 
 const styles = {
   draggableTitle: {
