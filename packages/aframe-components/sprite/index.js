@@ -30,6 +30,10 @@ AFrame.registerComponent('sprite', {
       type: 'boolean',
       default: true,
     },
+    visible: {
+      type: 'boolean',
+      default: true,
+    },
   },
 
   init() {
@@ -85,6 +89,10 @@ AFrame.registerComponent('sprite', {
       this.material.needsUpdate = true;
     }
 
+    if (this.data.visible !== oldData.visible) {
+      this.sprite.visible = this.data.visible;
+    }
+
     let mesh = element.getObject3D('mesh');
     if (mesh) {
       mesh.scale.copy(this.data.scale);
@@ -107,5 +115,6 @@ AFrame.registerPrimitive('a-sprite', {
   mappings: {
     src: 'sprite.src',
     resize: 'sprite.scale',
+    visible: 'sprite.visible',
   },
 });
