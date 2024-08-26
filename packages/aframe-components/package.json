@@ -16,6 +16,7 @@
     "better-wasd-controls",
     "factories",
     "lib",
+    "meshline",
     "sprite"
   ],
   "publishConfig": {
@@ -37,7 +38,8 @@
     ]
   },
   "dependencies": {
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "meshline": "3.1.0"
   },
   "devDependencies": {
     "aframe": "^1.2.0"
