@@ -59,7 +59,7 @@ export const threeJsToSkybrushQuaternion =
 export const skybrushRotationToQuaternion = (() => {
   const euler = new THREE.Euler();
   const quat = new THREE.Quaternion();
-  const { degToRad } = THREE.Math;
+  const { degToRad } = THREE.MathUtils;
   return (rotation) => {
     // Skybrush rotations are given as extrinsic Tait-Bryan angles in XYZ
     // order. Extrinsic rotations in XYZ order are equivalent to intrinsic
@@ -82,7 +82,7 @@ export const skybrushRotationToQuaternion = (() => {
 export const skybrushQuaternionToThreeJsRotation = (() => {
   const quat = new THREE.Quaternion();
   const euler = new THREE.Euler();
-  const { radToDeg } = THREE.Math;
+  const { radToDeg } = THREE.MathUtils;
 
   return (wxyz) => {
     quat.set(wxyz[1], wxyz[2], wxyz[3], wxyz[0]);
