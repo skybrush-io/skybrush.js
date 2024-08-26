@@ -2819,7 +2819,7 @@ __metadata:
     aframe: ^1.2.0
     lodash-es: ^4.17.21
   peerDependencies:
-    aframe: ^1.0.4
+    aframe: ^1.2.0
   languageName: unknown
   linkType: soft
 
