@@ -29,6 +29,8 @@ export namespace Colors {
   export const seriousWarning = createColor(warning)
     .mix(createColor(error))
     .string();
+
+  export const positionHold = yellow.A400;
 }
 
 /**

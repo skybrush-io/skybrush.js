@@ -26,6 +26,8 @@ export const Colors = {
     origin: '#f44',
     takeoff: '#fc0',
   },
+
+  positionHold: yellow.A400,
 };
 
 Colors.seriousWarning = createColor(Colors.warning)
