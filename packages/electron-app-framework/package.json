@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/electron-app-framework",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Basic Electron app framework for Skybrush desktop applications",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
