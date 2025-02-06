@@ -24,23 +24,32 @@ type YawEvaluator = [
 
 /**
  * Class that takes a yaw control object as its first argument and that can
- * tell the horizontal alignment of the drone traversing the yaw control at any
+ * tell the horizontal alignment of the drone traversing the segment at any
  * given time instant.
  */
 class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
   /**
    * Constructor.
    *
-   * @param yawControl  the yaw control to evaluate
+   * @param yawControl  the yaw control object to evaluate. It is assumed that
+   *        angles are specified in degrees in the yaw control object (according
+   *        to Skybrush .skyc conventions), but they are converted to radians
+   *        during initialization.
    */
   constructor(yawControl: YawControl) {
     validateYawControl(yawControl);
 
-    super(yawControl.setpoints.map(degreeSegmentToRadianSegment));
+    super(
+      yawControl.setpoints.map((segment) =>
+        degreeSegmentToRadianSegment(segment)
+      )
+    );
   }
 
   /**
-   * Returns the yaw of the drone at the given time instant.
+   * Returns the rotation of the drone at the given time instant.
+   *
+   * Angles are returned in radians.
    *
    * @param time    the time instant, measured in seconds
    * @param result  the vector that should be updated with the rotation
@@ -55,6 +64,8 @@ class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
    * Returns the angular velocity of the drone at the given time instant.
    * If the velocity is discontinuous at the time instant,
    * the velocity "from the right" takes precedence.
+   *
+   * Angular velocities are returned in radians per second.
    *
    * @param time    the time instant, measured in seconds
    * @param result  the vector that should be updated with the angular velocity

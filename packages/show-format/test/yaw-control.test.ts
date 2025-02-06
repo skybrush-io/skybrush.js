@@ -1,7 +1,7 @@
 import test, { type ExecutionContext } from 'ava';
 
 import { type YawControl, createYawControlPlayer } from '../src';
-import type { Vector3 as Euler } from '../src/types';
+import type { Vector3 as EulerAngles } from '../src/types';
 import { shuffle } from '../src/utils';
 
 const yaw: YawControl = {
@@ -18,8 +18,9 @@ const yaw: YawControl = {
 const almostEquals =
   (t: ExecutionContext) =>
   (value: number, expected: number, eps = 1e-5) => {
-    const message = `Yaw angle does not match, expected [${expected}], got [${value}]`;
-    t.assert(Math.abs(value - expected) < eps, message);
+    const valueInDeg = value * (180 / Math.PI);
+    const message = `Value does not match, expected [${expected}], got [${valueInDeg}]`;
+    t.assert(Math.abs(valueInDeg - expected) < eps, message);
   };
 
 /* ************************************************************************ */
@@ -72,7 +73,7 @@ const expectedPositions: Record<number, number> = {
 
 const createYawEvaluator = (yawProgram: YawControl) => {
   const { getYawAt } = createYawControlPlayer(yawProgram);
-  const vec: Euler = { x: 0, y: 0, z: 0 };
+  const vec: EulerAngles = { x: 0, y: 0, z: 0 };
   return (time: number) => {
     getYawAt(time, vec);
     return vec.z;
@@ -181,7 +182,7 @@ const expectedVelocities: Record<number, number> = {
 
 const createVelocityEvaluator = (yawProgram: YawControl) => {
   const { getAngularVelocityAt } = createYawControlPlayer(yawProgram);
-  const vec: Euler = { x: 0, y: 0, z: 0 };
+  const vec: EulerAngles = { x: 0, y: 0, z: 0 };
   return (time: number) => {
     getAngularVelocityAt(time, vec);
     return vec.z;
