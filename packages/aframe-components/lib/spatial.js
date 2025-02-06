@@ -1,4 +1,4 @@
-umport AFrame from './_aframe';
+import AFrame from './_aframe';
 
 const { THREE } = AFrame;
 
