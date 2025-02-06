@@ -19,12 +19,16 @@ present in a folder named `message_definitions` on the same level as
 ```sh
 git clone https://github.com/mavlink/mavlink
 git clone https://github.com/ArduPilot/pymavlink
-cd pymavlink
+cd pymavlink/generator
 ./gen_js.sh
 ```
 
 but this requires one to patch the `gen_js.sh` shell script to look for
 `message_definitions` in the appropriate folder of the `mavlink` repo.
+
+The generated implementations are in `generator/javascript/implementations`; for
+instance, the MAVLink 2.0 ArduPilot dialect is in
+`generator/javascript/implementations/mavlink_ardupilotmega_v2.0`.
 
 ## Chnages made to the generated implementations
 
