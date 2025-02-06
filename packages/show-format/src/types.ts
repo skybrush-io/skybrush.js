@@ -49,6 +49,19 @@ export enum GeofenceAction {
 }
 
 /**
+ * Show segment IDs that are currently recognized by the Skybrush platform.
+ */
+export type ShowSegmentId = 'takeoff' | 'show' | 'landing';
+
+/**
+ * The definition of a show segment.
+ *
+ * The first number in the tuple is the start time of the segment in seconds (inclusive),
+ * the second number is the end time of the segment in seconds (exclusive).
+ */
+export type ShowSegment = [number, number];
+
+/**
  * This schema describes the proper usage of the JSON structure inside the Skybrush compiled show file format (.skyc).
  */
 export interface ShowSpecification {
@@ -170,6 +183,11 @@ export interface ShowMetadata {
    * trajectory.
    */
   timestampOffset?: number;
+
+  /**
+   * Known show segments.
+   */
+  segments?: Record<ShowSegmentId, ShowSegment>;
 }
 
 /**
@@ -323,6 +341,22 @@ export interface DroneSpecification {
  * segment is not a straight line but a Bézier curve.
  */
 export type TrajectorySegment = [number, Vector3Tuple, Vector3Tuple[]];
+
+/**
+ * Helper type that fully represents a trajectory segment, including its start
+ * and end timestamps and points, and any additional intermediate control points.
+ */
+export type FullTrajectorySegment = {
+  startPoint: Vector3Tuple;
+  startTime: number;
+  endPoint: Vector3Tuple;
+  endTime: number;
+  /**
+   * Intermediate control points between the start and end points (may be empty
+   * if the segment is a straight line).
+   */
+  controlPoints: Vector3Tuple[];
+};
 
 /**
  * The trajectory definition of a single drone

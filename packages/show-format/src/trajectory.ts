@@ -1,7 +1,13 @@
 import { Bezier } from 'bezier-js';
 
 import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
-import type { Trajectory, Vector3, Vector3Tuple } from './types';
+import type {
+  FullTrajectorySegment,
+  Trajectory,
+  TrajectorySegment,
+  Vector3,
+  Vector3Tuple,
+} from './types';
 import { validateTrajectory } from './validation';
 
 /**
@@ -211,6 +217,114 @@ function createSegmentFunctions(
   } else {
     return createLinearSegmentFunctions(start, end, dt);
   }
+}
+
+/**
+ * Splits a Bezier curve into two sub-curves at a given fraction using
+ * de Casteljau's algorithm.
+ *
+ * @param points The control points of the Bezier curve.
+ * @param fraction The fraction at which to split the curve.
+ *
+ * @returns The control points of the two sub-curves.
+ */
+export function splitBezierCurve(
+  points: Vector3Tuple[],
+  fraction: number
+): [Vector3Tuple[], Vector3Tuple[]] {
+  const left: Vector3Tuple[] = [];
+  const right: Vector3Tuple[] = [];
+  const [t, oneMinusT] = [fraction, 1 - fraction];
+  // De Casteljau's algorithm for calculating a curve point at a given t
+  // also produces the control points of the two sub-curves that split the
+  // original curve at t.
+  // See: https://pomax.github.io/bezierinfo/#decasteljau and https://pomax.github.io/bezierinfo/#splitting
+  let currentPoints = points;
+  while (true) {
+    const numPoints = currentPoints.length;
+    left.push(currentPoints[0]);
+    right.push(currentPoints[numPoints - 1]);
+    if (numPoints < 2) {
+      // We've reached the splitting point on the curve, so we can stop.
+      break;
+    }
+
+    const newPoints: Vector3Tuple[] = [];
+    for (let i = 0; i < numPoints - 1; i++) {
+      // Calculate the splitting point for the current line.
+      newPoints.push([
+        oneMinusT * currentPoints[i][0] + t * currentPoints[i + 1][0],
+        oneMinusT * currentPoints[i][1] + t * currentPoints[i + 1][1],
+        oneMinusT * currentPoints[i][2] + t * currentPoints[i + 1][2],
+      ]);
+    }
+    currentPoints = newPoints;
+  }
+
+  return [left, right.reverse()];
+}
+
+/**
+ * Splits the given segment at the given fraction (aka t) into two segments
+ * using de Casteljau's algorithm.
+ *
+ * @param segment The segment to split.
+ * @param fraction The fraction at which to split the segment.
+ * @returns The two resulting trajectory segments.
+ */
+export function splitSegment(
+  segment: FullTrajectorySegment,
+  fraction: number
+): [TrajectorySegment, TrajectorySegment] {
+  const { startTime, startPoint, endTime, endPoint, controlPoints } = segment;
+  if (fraction < 0 || fraction > 1) {
+    throw new Error('fraction must be in the [0, 1] interval.');
+  }
+
+  if (fraction === 0) {
+    return [
+      [startTime, startPoint, []],
+      [endTime, endPoint, controlPoints],
+    ];
+  } else if (fraction === 1) {
+    return [
+      [endTime, endPoint, controlPoints],
+      [endTime, endPoint, []],
+    ];
+  }
+
+  const [left, right] = splitBezierCurve(
+    [startPoint, ...controlPoints, endPoint],
+    fraction
+  );
+  const tSplit = startTime + fraction * (endTime - startTime);
+
+  return [
+    // [end time of segment, endpoint of segment, additional control points ]
+    [tSplit, left[left.length - 1], left.slice(0, -1)],
+    [endTime, right[right.length - 1], right.slice(0, -1)],
+  ];
+}
+
+/**
+ * Creates a `FullTrajectorySegment` from the previous and current trajectory segments.
+ *
+ * @param previous The previous segment in the trajectory.
+ * @param current The current segment in the trajectory.
+ *
+ * @returns The full representation of the `current` segment.
+ */
+export function createFullTrajectorySegment(
+  previous: TrajectorySegment,
+  current: TrajectorySegment
+): FullTrajectorySegment {
+  return {
+    startTime: previous[0], // Previous end time.
+    startPoint: previous[1], // Previous end point.
+    endTime: current[0], // Current end time.
+    endPoint: current[1], // Current end point.
+    controlPoints: current[2], // Current control points.
+  };
 }
 
 export interface TrajectoryPlayer {

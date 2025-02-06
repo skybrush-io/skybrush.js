@@ -1,7 +1,11 @@
 import test, { type ExecutionContext } from 'ava';
 
-import { createTrajectoryPlayer } from '../src';
-import type { Trajectory, Vector3Tuple } from '../src/types';
+import {
+  createFullTrajectorySegment,
+  createTrajectoryPlayer,
+  splitSegment,
+} from '../src';
+import type { Trajectory, TrajectorySegment, Vector3Tuple } from '../src/types';
 import { shuffle } from '../src/utils';
 
 const trajectory: Trajectory = {
@@ -47,15 +51,28 @@ const trajectory: Trajectory = {
   ],
 };
 
-const almostEquals =
+const numberEqual =
+  (t: ExecutionContext) => (value: number, expected: number) => {
+    const message = `Numbers do not match, expected ${String(
+      expected
+    )}, got ${String(value)}`;
+    t.assert(value === expected, message);
+  };
+
+const vector3Equals =
   (t: ExecutionContext) =>
-  (value: Vector3Tuple, expected: Vector3Tuple, eps = 1e-5) => {
-    const message = `Points do not match, expected [${String(
+  (
+    value: Vector3Tuple,
+    expected: Vector3Tuple,
+    eps = 1e-5,
+    messagePrefix = ''
+  ) => {
+    const message = `${messagePrefix}Points do not match, expected [${String(
       expected
     )}], got [${String(value)}]`;
-    t.assert(Math.abs(value[0] - expected[0]) < eps, message);
-    t.assert(Math.abs(value[1] - expected[1]) < eps, message);
-    t.assert(Math.abs(value[2] - expected[2]) < eps, message);
+    t.assert(Math.abs(value[0] - expected[0]) <= eps, message);
+    t.assert(Math.abs(value[1] - expected[1]) <= eps, message);
+    t.assert(Math.abs(value[2] - expected[2]) <= eps, message);
   };
 
 /* ************************************************************************ */
@@ -111,7 +128,7 @@ const createPositionEvaluator = (trajectory: Trajectory) => {
 
 test('trajectory evaluation, no segments', (t) => {
   const ev = createPositionEvaluator({ version: 1, points: [] });
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   for (const t of [
     Number.NEGATIVE_INFINITY,
@@ -127,7 +144,7 @@ test('trajectory evaluation, no segments', (t) => {
 
 test('trajectory evaluation, segment before takeoff time', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [-2, 0, 3, 6];
   for (const t of ts) {
@@ -139,7 +156,7 @@ test('trajectory evaluation, segment before takeoff time', (t) => {
 
 test('trajectory evaluation, takeoff segment', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [6, 8, 10, 12];
   for (const t of ts) {
@@ -149,7 +166,7 @@ test('trajectory evaluation, takeoff segment', (t) => {
 
 test('trajectory evaluation, first and second curve', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [
     12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44,
@@ -161,7 +178,7 @@ test('trajectory evaluation, first and second curve', (t) => {
 
 test('trajectory evaluation, linear segment', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [44, 50, 56];
   for (const t of ts) {
@@ -171,7 +188,7 @@ test('trajectory evaluation, linear segment', (t) => {
 
 test('trajectory evaluation, constant segment', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [56, 57, 58, 59, 60];
   for (const t of ts) {
@@ -181,7 +198,7 @@ test('trajectory evaluation, constant segment', (t) => {
 
 test('trajectory evaluation, landing segment', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [60, 62, 64, 66];
   for (const t of ts) {
@@ -191,7 +208,7 @@ test('trajectory evaluation, landing segment', (t) => {
 
 test('trajectory evaluation, segment after landing time', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [66, 68, 75, 100];
   for (const t of ts) {
@@ -226,7 +243,7 @@ test('trajectory evaluation, unsupported segment type', (t) => {
 
 test('trajectory evaluation, shuffled', (t) => {
   const ev = createPositionEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = Object.keys(expectedPositions).map((x) => Number.parseInt(x, 10));
 
@@ -291,7 +308,7 @@ const createVelocityEvaluator = (trajectory: Trajectory) => {
 
 test('velocity evaluation, no segments', (t) => {
   const ev = createVelocityEvaluator({ version: 1, points: [] });
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   for (const t of [
     Number.NEGATIVE_INFINITY,
@@ -307,7 +324,7 @@ test('velocity evaluation, no segments', (t) => {
 
 test('velocity evaluation, segment before takeoff time', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [-2, 0, 3, 6];
   for (const t of ts) {
@@ -319,7 +336,7 @@ test('velocity evaluation, segment before takeoff time', (t) => {
 
 test('velocity evaluation, takeoff segment', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [6, 8, 10, 12];
   for (const t of ts) {
@@ -329,7 +346,7 @@ test('velocity evaluation, takeoff segment', (t) => {
 
 test('velocity evaluation, first and second curve', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [
     12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42,
@@ -342,7 +359,7 @@ test('velocity evaluation, first and second curve', (t) => {
 
 test('velocity evaluation, linear segment', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [44, 50, 56];
   for (const t of ts) {
@@ -352,7 +369,7 @@ test('velocity evaluation, linear segment', (t) => {
 
 test('velocity evaluation, constant segment', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [56, 57, 58, 59, 60];
   for (const t of ts) {
@@ -362,7 +379,7 @@ test('velocity evaluation, constant segment', (t) => {
 
 test('velocity evaluation, landing segment', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [60, 62, 64, 66];
   for (const t of ts) {
@@ -372,7 +389,7 @@ test('velocity evaluation, landing segment', (t) => {
 
 test('velocity evaluation, segment after landing time', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = [66, 68, 75, 100];
   for (const t of ts) {
@@ -407,7 +424,7 @@ test('velocity evaluation, unsupported segment type', (t) => {
 
 test('velocity evaluation, shuffled', (t) => {
   const ev = createVelocityEvaluator(trajectory);
-  const eq = almostEquals(t);
+  const eq = vector3Equals(t);
 
   const ts = Object.keys(expectedVelocities).map((x) => Number.parseInt(x, 10));
 
@@ -415,6 +432,96 @@ test('velocity evaluation, shuffled', (t) => {
     shuffle(ts);
     for (const t of ts) {
       eq(ev(t), expectedVelocities[t]);
+    }
+  }
+});
+
+/* ************************************************************************ */
+/* Tests related to trajectory splitting and tranformation                  */
+/* ************************************************************************ */
+
+test('full trajectory segment creation', (t) => {
+  const points = trajectory.points;
+  const nPoints = points.length;
+
+  const pointEq = vector3Equals(t);
+  const numEq = numberEqual(t);
+
+  for (let i = 1; i < nPoints; i++) {
+    const previous = points[i - 1];
+    const current = points[i];
+    const fullSegment = createFullTrajectorySegment(previous, current);
+    numEq(fullSegment.startTime, previous[0]);
+    numEq(fullSegment.endTime, current[0]);
+    pointEq(fullSegment.startPoint, previous[1]);
+    pointEq(fullSegment.endPoint, current[1]);
+
+    numEq(fullSegment.controlPoints.length, current[2].length);
+    for (const i in fullSegment.controlPoints) {
+      pointEq(fullSegment.controlPoints[i], current[2][i]);
+    }
+  }
+});
+
+test('splitting segment 1 at 0.1', (t) => {
+  const eq = vector3Equals(t);
+  const fraction = 0.1;
+  const trajectoryPoints = trajectory.points;
+  const numPoints = trajectoryPoints.length;
+  // Evaluate at every known point.
+  const ts = Object.keys(expectedPositions)
+    .map((v) => Number.parseInt(v, 10))
+    .filter((key) => key >= 0);
+
+  const splitPoints: TrajectorySegment[] = [trajectoryPoints[0]];
+  // Split the second segment.
+  splitPoints.push(
+    ...splitSegment(
+      createFullTrajectorySegment(trajectoryPoints[0], trajectoryPoints[1]),
+      fraction
+    )
+  );
+  // Add the remaining segments.
+  splitPoints.push(...trajectoryPoints.slice(2));
+
+  const ev = createPositionEvaluator({ ...trajectory, points: splitPoints });
+  for (const t of ts) {
+    eq(ev(t), expectedPositions[t], 1e-5, `(fraction=${fraction}, t=${t}) `);
+  }
+});
+
+test('splitting a trajectory', (t) => {
+  const eq = vector3Equals(t);
+
+  const splitFractions = [0, 0.1, 0.33, 0.5, 0.75, 1];
+  const trajectoryPoints = trajectory.points;
+  const numPoints = trajectoryPoints.length;
+  // Evaluate at every known point.
+  const ts = Object.keys(expectedPositions)
+    .map((v) => Number.parseInt(v, 10))
+    .filter((key) => key >= 0);
+
+  for (const fraction of splitFractions) {
+    const points: TrajectorySegment[] = [trajectoryPoints[0]];
+    for (let iPoint = 1; iPoint < numPoints; iPoint++) {
+      // It's okay to use the original trajectory points, because we're splitting
+      // current, and only use the endpoint and time from the previous segment,
+      // which remains the same.
+      const [previous, current] = [
+        trajectoryPoints[iPoint - 1],
+        trajectoryPoints[iPoint],
+      ];
+      points.push(
+        ...splitSegment(
+          createFullTrajectorySegment(previous, current),
+          fraction
+        )
+      );
+    }
+
+    const ev = createPositionEvaluator({ ...trajectory, points });
+    for (const t of ts) {
+      eq(ev(t), expectedPositions[t], 1e-5, `(fraction=${fraction}, t=${t}) `);
     }
   }
 });
