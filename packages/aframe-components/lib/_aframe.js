@@ -2,6 +2,6 @@
  * Requiring all modules that we need in order to make AFrame work.
  */
 
-const AFrame = require('aframe');
+import AFrame from 'aframe';
 
 export default AFrame;
