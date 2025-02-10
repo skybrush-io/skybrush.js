@@ -2,7 +2,7 @@ import { Bezier } from 'bezier-js';
 
 import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
 import type {
-  FullTrajectorySegment,
+  TimedBezierCurve,
   Trajectory,
   TrajectorySegment,
   Vector3,
@@ -265,66 +265,73 @@ export function splitBezierCurve(
 }
 
 /**
- * Splits the given segment at the given fraction (aka t) into two segments
- * using de Casteljau's algorithm.
- *
- * @param segment The segment to split.
- * @param fraction The fraction at which to split the segment.
- * @returns The two resulting trajectory segments.
- */
-export function splitSegment(
-  segment: FullTrajectorySegment,
-  fraction: number
-): [TrajectorySegment, TrajectorySegment] {
-  const { startTime, startPoint, endTime, endPoint, controlPoints } = segment;
-  if (fraction < 0 || fraction > 1) {
-    throw new Error('fraction must be in the [0, 1] interval.');
-  }
-
-  if (fraction === 0) {
-    return [
-      [startTime, startPoint, []],
-      [endTime, endPoint, controlPoints],
-    ];
-  } else if (fraction === 1) {
-    return [
-      [endTime, endPoint, controlPoints],
-      [endTime, endPoint, []],
-    ];
-  }
-
-  const [left, right] = splitBezierCurve(
-    [startPoint, ...controlPoints, endPoint],
-    fraction
-  );
-  const tSplit = startTime + fraction * (endTime - startTime);
-
-  return [
-    // [end time of segment, endpoint of segment, additional control points ]
-    [tSplit, left[left.length - 1], left.slice(0, -1)],
-    [endTime, right[right.length - 1], right.slice(0, -1)],
-  ];
-}
-
-/**
- * Creates a `FullTrajectorySegment` from the previous and current trajectory segments.
+ * Converts two consecutive `TrajectorySegment`s of a `Trajectory` to a `TimedBezierCurve` object.
  *
  * @param previous The previous segment in the trajectory.
  * @param current The current segment in the trajectory.
  *
- * @returns The full representation of the `current` segment.
+ * @returns The created `TimedBezierCurve`.
  */
-export function createFullTrajectorySegment(
+export function createTimedBezierCurve(
   previous: TrajectorySegment,
   current: TrajectorySegment
-): FullTrajectorySegment {
+): TimedBezierCurve {
+  const duration = current[0] - previous[0];
+  if (duration < 0) {
+    throw new Error('Duration must be not be negative.');
+  }
+
   return {
-    startTime: previous[0], // Previous end time.
-    startPoint: previous[1], // Previous end point.
-    endTime: current[0], // Current end time.
-    endPoint: current[1], // Current end point.
-    controlPoints: current[2], // Current control points.
+    startTime: previous[0],
+    duration: current[0] - previous[0],
+    points: [previous[1], ...current[2], current[1]],
   };
+}
+
+/**
+ * Splits the given curve at the given fraction (aka `t`) into two segments
+ * using de Casteljau's algorithm.
+ *
+ * @param segment The segment to split.
+ * @param fraction The fraction at which to split the segment.
+ *
+ * @returns The two resulting trajectory segments.
+ */
+export function splitTimedBezierCurve(
+  segment: TimedBezierCurve,
+  fraction: number
+): [TrajectorySegment, TrajectorySegment] {
+  if (fraction < 0 || fraction > 1) {
+    throw new Error('fraction must be in the [0, 1] interval.');
+  }
+
+  const { startTime, duration, points } = segment;
+  if (points.length < 2) {
+    throw new Error('The curve must have at least 2 control points.');
+  }
+
+  if (fraction === 0) {
+    return [
+      [startTime, points[0], []],
+      [startTime + duration, points.at(-1)!, points.slice(1, -1)],
+    ];
+  } else if (fraction === 1) {
+    return [
+      [startTime + duration, points.at(-1)!, points.slice(1, -1)],
+      [startTime + duration, points.at(-1)!, []],
+    ];
+  }
+
+  const [left, right] = splitBezierCurve(points, fraction);
+  const tSplit = startTime + fraction * duration;
+
+  return [
+    // [end time of segment, endpoint of segment, additional control points ]
+    // splice() first index is 1, because the first point is defined by the
+    // previous segment (endpoint).
+    [tSplit, left.at(-1)!, left.slice(1, -1)],
+    [startTime + duration, right.at(-1)!, right.slice(1, -1)],
+  ];
 }
 
 export interface TrajectoryPlayer {

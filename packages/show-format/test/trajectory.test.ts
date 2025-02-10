@@ -1,9 +1,9 @@
 import test, { type ExecutionContext } from 'ava';
 
 import {
-  createFullTrajectorySegment,
+  createTimedBezierCurve,
   createTrajectoryPlayer,
-  splitSegment,
+  splitTimedBezierCurve,
 } from '../src';
 import type { Trajectory, TrajectorySegment, Vector3Tuple } from '../src/types';
 import { shuffle } from '../src/utils';
@@ -450,43 +450,17 @@ test('full trajectory segment creation', (t) => {
   for (let i = 1; i < nPoints; i++) {
     const previous = points[i - 1];
     const current = points[i];
-    const fullSegment = createFullTrajectorySegment(previous, current);
-    numEq(fullSegment.startTime, previous[0]);
-    numEq(fullSegment.endTime, current[0]);
-    pointEq(fullSegment.startPoint, previous[1]);
-    pointEq(fullSegment.endPoint, current[1]);
+    const timedSegment = createTimedBezierCurve(previous, current);
+    numEq(timedSegment.startTime, previous[0]);
+    numEq(timedSegment.duration, current[0] - previous[0]);
 
-    numEq(fullSegment.controlPoints.length, current[2].length);
-    for (const i in fullSegment.controlPoints) {
-      pointEq(fullSegment.controlPoints[i], current[2][i]);
+    // Length equals end of prevous + intermediate control points + end of current.
+    numEq(timedSegment.points.length, 1 + current[2].length + 1);
+    pointEq(timedSegment.points[0], previous[1]);
+    pointEq(timedSegment.points.at(-1)!, current[1]);
+    for (let i = 1; i < timedSegment.points.length - 1; i++) {
+      pointEq(timedSegment.points[i], current[2][i - 1]);
     }
-  }
-});
-
-test('splitting segment 1 at 0.1', (t) => {
-  const eq = vector3Equals(t);
-  const fraction = 0.1;
-  const trajectoryPoints = trajectory.points;
-  const numPoints = trajectoryPoints.length;
-  // Evaluate at every known point.
-  const ts = Object.keys(expectedPositions)
-    .map((v) => Number.parseInt(v, 10))
-    .filter((key) => key >= 0);
-
-  const splitPoints: TrajectorySegment[] = [trajectoryPoints[0]];
-  // Split the second segment.
-  splitPoints.push(
-    ...splitSegment(
-      createFullTrajectorySegment(trajectoryPoints[0], trajectoryPoints[1]),
-      fraction
-    )
-  );
-  // Add the remaining segments.
-  splitPoints.push(...trajectoryPoints.slice(2));
-
-  const ev = createPositionEvaluator({ ...trajectory, points: splitPoints });
-  for (const t of ts) {
-    eq(ev(t), expectedPositions[t], 1e-5, `(fraction=${fraction}, t=${t}) `);
   }
 });
 
@@ -497,9 +471,7 @@ test('splitting a trajectory', (t) => {
   const trajectoryPoints = trajectory.points;
   const numPoints = trajectoryPoints.length;
   // Evaluate at every known point.
-  const ts = Object.keys(expectedPositions)
-    .map((v) => Number.parseInt(v, 10))
-    .filter((key) => key >= 0);
+  const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
 
   for (const fraction of splitFractions) {
     const points: TrajectorySegment[] = [trajectoryPoints[0]];
@@ -512,8 +484,8 @@ test('splitting a trajectory', (t) => {
         trajectoryPoints[iPoint],
       ];
       points.push(
-        ...splitSegment(
-          createFullTrajectorySegment(previous, current),
+        ...splitTimedBezierCurve(
+          createTimedBezierCurve(previous, current),
           fraction
         )
       );

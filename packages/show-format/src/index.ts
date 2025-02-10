@@ -3,10 +3,10 @@ export { getCamerasFromShowSpecification } from './camera';
 export { default as loadCompiledShow } from './compiled';
 export { default as createLightProgramPlayer } from './lights';
 export {
-  createFullTrajectorySegment,
+  createTimedBezierCurve,
   default as createTrajectoryPlayer,
   splitBezierCurve,
-  splitSegment,
+  splitTimedBezierCurve,
 } from './trajectory';
 export {
   validateShowSpecification,

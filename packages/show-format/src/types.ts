@@ -343,19 +343,26 @@ export interface DroneSpecification {
 export type TrajectorySegment = [number, Vector3Tuple, Vector3Tuple[]];
 
 /**
+ * Time window.
+ *
+ * `duration` must not be negative. The end time of the time window (`startTime + duration`)
+ * is not part of the time window, so it is closed from the left and open from the right.
+ */
+export type TimeWindow = {
+  startTime: number;
+  duration: number;
+};
+
+/**
  * Helper type that fully represents a trajectory segment, including its start
  * and end timestamps and points, and any additional intermediate control points.
+ *
+ * Bezier curve with time information.
+ *
+ * `points` contains all the control points of the curve, including the start and end points.
  */
-export type FullTrajectorySegment = {
-  startPoint: Vector3Tuple;
-  startTime: number;
-  endPoint: Vector3Tuple;
-  endTime: number;
-  /**
-   * Intermediate control points between the start and end points (may be empty
-   * if the segment is a straight line).
-   */
-  controlPoints: Vector3Tuple[];
+export type TimedBezierCurve = TimeWindow & {
+  points: Vector3Tuple[];
 };
 
 /**
