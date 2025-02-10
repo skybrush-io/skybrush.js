@@ -1,9 +1,12 @@
 import test, { type ExecutionContext } from 'ava';
 
 import {
-  createTimedBezierCurve,
   createTrajectoryPlayer,
   splitTimedBezierCurve,
+  splitTimedBezierCurveAt,
+  timedBezierCurveToTrajectorySegment,
+  trajectorySegmentsInTimeWindow,
+  trajectorySegmentsToTimedBezierCurve,
 } from '../src';
 import type { Trajectory, TrajectorySegment, Vector3Tuple } from '../src/types';
 import { shuffle } from '../src/utils';
@@ -450,7 +453,10 @@ test('full trajectory segment creation', (t) => {
   for (let i = 1; i < nPoints; i++) {
     const previous = points[i - 1];
     const current = points[i];
-    const timedSegment = createTimedBezierCurve(previous, current);
+    const timedSegment = trajectorySegmentsToTimedBezierCurve(
+      previous,
+      current
+    );
     numEq(timedSegment.startTime, previous[0]);
     numEq(timedSegment.duration, current[0] - previous[0]);
 
@@ -483,17 +489,123 @@ test('splitting a trajectory', (t) => {
         trajectoryPoints[iPoint - 1],
         trajectoryPoints[iPoint],
       ];
+      const [left, right] = splitTimedBezierCurve(
+        trajectorySegmentsToTimedBezierCurve(previous, current),
+        fraction
+      );
       points.push(
-        ...splitTimedBezierCurve(
-          createTimedBezierCurve(previous, current),
-          fraction
-        )
+        timedBezierCurveToTrajectorySegment(left),
+        timedBezierCurveToTrajectorySegment(right)
       );
     }
 
     const ev = createPositionEvaluator({ ...trajectory, points });
     for (const t of ts) {
       eq(ev(t), expectedPositions[t], 1e-5, `(fraction=${fraction}, t=${t}) `);
+    }
+  }
+});
+
+test('splitting a trajectory at a given time', (t) => {
+  const eq = vector3Equals(t);
+  const time = 1;
+  const trajectoryPoints = trajectory.points;
+  // Evaluate at every known point.
+  const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
+  const [left, right] = splitTimedBezierCurveAt(
+    trajectorySegmentsToTimedBezierCurve(
+      trajectoryPoints[0],
+      trajectoryPoints[1]
+    ),
+    time
+  );
+  const ev = createPositionEvaluator({
+    ...trajectory,
+    points: [
+      trajectoryPoints[0],
+      timedBezierCurveToTrajectorySegment(left),
+      timedBezierCurveToTrajectorySegment(right),
+      ...trajectoryPoints.slice(2),
+    ],
+  });
+  for (const t of ts) {
+    eq(ev(t), expectedPositions[t], 1e-5, `(time=${time}, t=${t}) `);
+  }
+});
+
+test('subtrajectory in a given time window', (t) => {
+  const eq = vector3Equals(t);
+  const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
+  const [startTime, duration] = [1, 2];
+  const endTime = startTime + duration;
+  // The subtrajectory preceding the time window.
+  const preTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
+    startTime: 0,
+    duration: startTime,
+  });
+  // The subtrajectory in the time window.
+  const subTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
+    startTime,
+    duration,
+  });
+  // The subtrajextory following the time window.
+  const postTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
+    startTime: endTime,
+    duration: 100,
+  });
+  const ev = createPositionEvaluator({
+    ...trajectory,
+    points: [
+      // All 3 subtrajectories are necessary for full comparison with the original trajectory.
+      ...preTrajectory,
+      ...subTrajectory,
+      ...postTrajectory,
+    ],
+  });
+  for (const t of ts.filter((t) => t >= startTime && t <= endTime)) {
+    eq(
+      ev(t),
+      expectedPositions[t],
+      1e-5,
+      `(startTime=${startTime}, endTime=${endTime}, t=${t}) `
+    );
+  }
+});
+
+test('sub-trajectory in time window calculation', (t) => {
+  const eq = vector3Equals(t);
+  const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
+
+  for (let startTime = 0; startTime < 60; startTime += 1) {
+    for (let endTime = startTime + 1; endTime <= 60; endTime += 1) {
+      const duration = endTime - startTime;
+      const preTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
+        startTime: 0,
+        duration: startTime,
+      });
+      // The subtrajectory in the time window.
+      const subTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
+        startTime,
+        duration,
+      });
+      // The subtrajextory following the time window.
+      const postTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
+        startTime: endTime,
+        duration: 100,
+      });
+      // Create evaluator for the sub-trajectory.
+      const ev = createPositionEvaluator({
+        ...trajectory,
+        points: [...preTrajectory, ...subTrajectory, ...postTrajectory],
+      });
+      for (const t of ts.filter((t) => t >= startTime && t <= endTime)) {
+        eq(
+          ev(t),
+          expectedPositions[t],
+          1e-5,
+          `(startTime=${startTime}, endTime=${endTime}, t=${t}) `
+        );
+      }
     }
   }
 });
