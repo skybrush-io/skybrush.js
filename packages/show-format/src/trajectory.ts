@@ -350,7 +350,7 @@ export function splitTimedBezierCurve(
       {
         startTime: startTime + duration,
         duration: 0,
-        points: [points[0], points.at(-1)!],
+        points: [points.at(-1)!, points.at(-1)!],
       },
     ];
   }
