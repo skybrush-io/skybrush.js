@@ -1,7 +1,15 @@
 import { Bezier } from 'bezier-js';
 
+import { iterPairs, slice } from './generators';
 import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
-import type { Trajectory, Vector3, Vector3Tuple } from './types';
+import type {
+  TimedBezierCurve,
+  TimeWindow,
+  Trajectory,
+  TrajectorySegment,
+  Vector3,
+  Vector3Tuple,
+} from './types';
 import { validateTrajectory } from './validation';
 
 /**
@@ -211,6 +219,225 @@ function createSegmentFunctions(
   } else {
     return createLinearSegmentFunctions(start, end, dt);
   }
+}
+
+/**
+ * Splits a Bezier curve into two sub-curves at a given fraction using
+ * de Casteljau's algorithm.
+ *
+ * @param points The control points of the Bezier curve.
+ * @param fraction The fraction at which to split the curve.
+ *
+ * @returns The control points of the two sub-curves.
+ */
+export function splitBezierCurve(
+  points: Vector3Tuple[],
+  fraction: number
+): [Vector3Tuple[], Vector3Tuple[]] {
+  const left: Vector3Tuple[] = [];
+  const right: Vector3Tuple[] = [];
+  const [t, oneMinusT] = [fraction, 1 - fraction];
+  // De Casteljau's algorithm for calculating a curve point at a given t
+  // also produces the control points of the two sub-curves that split the
+  // original curve at t.
+  // See: https://pomax.github.io/bezierinfo/#decasteljau and https://pomax.github.io/bezierinfo/#splitting
+  let currentPoints = points;
+  while (true) {
+    const numPoints = currentPoints.length;
+    left.push(currentPoints[0]);
+    right.push(currentPoints[numPoints - 1]);
+    if (numPoints < 2) {
+      // We've reached the splitting point on the curve, so we can stop.
+      break;
+    }
+
+    const newPoints: Vector3Tuple[] = [];
+    for (let i = 0; i < numPoints - 1; i++) {
+      // Calculate the splitting point for the current line.
+      newPoints.push([
+        oneMinusT * currentPoints[i][0] + t * currentPoints[i + 1][0],
+        oneMinusT * currentPoints[i][1] + t * currentPoints[i + 1][1],
+        oneMinusT * currentPoints[i][2] + t * currentPoints[i + 1][2],
+      ]);
+    }
+    currentPoints = newPoints;
+  }
+
+  return [left, right.reverse()];
+}
+
+/**
+ * Converts two consecutive `TrajectorySegment`s of a `Trajectory` to a `TimedBezierCurve` object.
+ *
+ * @param previous The previous segment in the trajectory.
+ * @param current The current segment in the trajectory.
+ *
+ * @returns The created `TimedBezierCurve`.
+ */
+export function trajectorySegmentsToTimedBezierCurve(
+  previous: TrajectorySegment,
+  current: TrajectorySegment
+): TimedBezierCurve {
+  const duration = current[0] - previous[0];
+  if (duration < 0) {
+    throw new Error('Duration must be not be negative.');
+  }
+
+  return {
+    startTime: previous[0],
+    duration: current[0] - previous[0],
+    points: [previous[1], ...current[2], current[1]],
+  };
+}
+
+/**
+ * Converts a `TimedBezierCurve` object to a `TrajectorySegment` object.
+ *
+ * Note: the first control point of the curve is lost during the transition, because
+ * in the `TrajectorySegment` representation it is defined by the preceding segment.
+ *
+ * @param curve The curve to convert.
+ *
+ * @returns The trajectory segment corresponding to the curve.
+ *
+ * @throws `Error` if the curve has less than 2 control points.
+ */
+export function timedBezierCurveToTrajectorySegment(
+  curve: TimedBezierCurve
+): TrajectorySegment {
+  const { duration, startTime, points } = curve;
+  if (points.length < 2) {
+    throw new Error('The curve must have at least 2 control points.');
+  }
+
+  // [end time of segment, endpoint of segment, additional control points ]
+  // splice() first index is 1, because the first point is defined by the
+  // previous segment (endpoint).
+  return [startTime + duration, points.at(-1)!, points.slice(1, -1)];
+}
+
+/**
+ * Splits the given curve at the given fraction (aka `t`) into two segments.
+ *
+ * @param curve The curve to split.
+ * @param fraction The fraction at which to split the segment.
+ *
+ * @returns The two resulting curves.
+ *
+ * @throws `Error` if the fraction is not in the [0, 1] interval.
+ */
+export function splitTimedBezierCurve(
+  curve: TimedBezierCurve,
+  fraction: number
+): [TimedBezierCurve, TimedBezierCurve] {
+  if (fraction < 0 || fraction > 1) {
+    throw new Error('fraction must be in the [0, 1] interval.');
+  }
+
+  const { startTime, duration, points } = curve;
+  if (points.length < 2) {
+    throw new Error('The curve must have at least 2 control points.');
+  }
+
+  if (fraction === 0) {
+    return [
+      { startTime, duration: 0, points: [points[0], points[0]] },
+      { startTime, duration, points },
+    ];
+  } else if (fraction === 1) {
+    return [
+      { startTime, duration, points },
+      {
+        startTime: startTime + duration,
+        duration: 0,
+        points: [points.at(-1)!, points.at(-1)!],
+      },
+    ];
+  }
+
+  const [left, right] = splitBezierCurve(points, fraction);
+  const splitDuration = fraction * duration;
+
+  return [
+    { startTime, duration: splitDuration, points: left },
+    {
+      startTime: startTime + splitDuration,
+      duration: duration - splitDuration,
+      points: right,
+    },
+  ];
+}
+
+/**
+ * Splits the given curve at a given time.
+ *
+ * This is just a wrapper around `splitTimedBezierCurve()` that takes a timestamp
+ * instead of a fraction.
+ *
+ * @param curve The curve to split.
+ * @param time The timestamp where the curve should be split.
+ *
+ * @returns The two resulting curves.
+ *
+ * @throws `Error` if the timestamp is outside the curve's time window.
+ */
+export function splitTimedBezierCurveAt(
+  curve: TimedBezierCurve,
+  time: number
+): [TimedBezierCurve, TimedBezierCurve] {
+  const fraction = (time - curve.startTime) / curve.duration;
+  return splitTimedBezierCurve(curve, fraction);
+}
+
+/**
+ * Calculates the trajectory segments for the part of the trajectory (given as an array of
+ * `TrajectorySegment`s) that is within the given time window.
+ *
+ * @param segments The segments that define a valid trajectory.
+ * @param timeWindow The time window the subtrajectory should be calculated for.
+ *
+ * @returns The trajectory segments for the subtrajectory.
+ */
+export function trajectorySegmentsInTimeWindow(
+  segments: TrajectorySegment[],
+  timeWindow: TimeWindow
+): TrajectorySegment[] {
+  const startTime = timeWindow.startTime;
+  const endTime = timeWindow.startTime + timeWindow.duration;
+  const result: TrajectorySegment[] = [];
+
+  for (const [previous, current] of slice(
+    iterPairs(segments),
+    // Iterate only segments that overlap with the time window.
+    ([, curr]) => curr[0] > startTime,
+    ([prev]) => prev[0] > endTime
+  )) {
+    // Convert to a data representation that's easier to work with.
+    let curve = trajectorySegmentsToTimedBezierCurve(previous, current);
+
+    // Split at start time if needed.
+    if (curve.startTime < startTime) {
+      [, curve] = splitTimedBezierCurveAt(curve, startTime);
+    }
+
+    // Split at end time if needed.
+    const curveEndTime = curve.startTime + curve.duration;
+    if (curveEndTime > endTime) {
+      [curve] = splitTimedBezierCurveAt(curve, endTime);
+    }
+
+    if (result.length === 0) {
+      // Add the start point (necessary for the TrajectorySegment representation).
+      result.push([startTime, curve.points[0], []]);
+    }
+
+    result.push(
+      // Convert back to the original data representation.
+      timedBezierCurveToTrajectorySegment(curve)
+    );
+  }
+
+  return result;
 }
 
 export interface TrajectoryPlayer {
