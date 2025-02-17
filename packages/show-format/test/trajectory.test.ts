@@ -538,11 +538,7 @@ test('subtrajectory in a given time window', (t) => {
   const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
   const [startTime, duration] = [1, 2];
   const endTime = startTime + duration;
-  // The subtrajectory preceding the time window.
-  const preTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
-    startTime: 0,
-    duration: startTime,
-  });
+  const { takeoffTime = 0 } = trajectory;
   // The subtrajectory in the time window.
   const subTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
     startTime,
@@ -550,18 +546,18 @@ test('subtrajectory in a given time window', (t) => {
   });
   const ev = createPositionEvaluator({
     ...trajectory,
-    points: [
-      // All 3 subtrajectories are necessary for full comparison with the original trajectory.
-      ...preTrajectory,
-      ...subTrajectory,
-    ],
+    points: subTrajectory,
   });
-  for (const t of ts.filter((t) => t >= startTime && t <= endTime)) {
+  for (const t of ts.filter(
+    (t) => t >= startTime + takeoffTime && t <= endTime + takeoffTime
+  )) {
     eq(
       ev(t),
       expectedPositions[t],
       1e-5,
-      `(startTime=${startTime}, endTime=${endTime}, t=${t}) `
+      `(startTime=${startTime + takeoffTime}, endTime=${
+        endTime + takeoffTime
+      }, t=${t}) `
     );
   }
 });
@@ -569,14 +565,11 @@ test('subtrajectory in a given time window', (t) => {
 test('sub-trajectory in time window calculation', (t) => {
   const eq = vector3Equals(t);
   const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
+  const { takeoffTime = 0 } = trajectory;
 
   for (let startTime = 0; startTime < 60; startTime += 1) {
     for (let endTime = startTime + 1; endTime <= 60; endTime += 1) {
       const duration = endTime - startTime;
-      const preTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
-        startTime: 0,
-        duration: startTime,
-      });
       // The subtrajectory in the time window.
       const subTrajectory = trajectorySegmentsInTimeWindow(trajectory.points, {
         startTime,
@@ -585,14 +578,18 @@ test('sub-trajectory in time window calculation', (t) => {
       // Create evaluator for the sub-trajectory.
       const ev = createPositionEvaluator({
         ...trajectory,
-        points: [...preTrajectory, ...subTrajectory],
+        points: subTrajectory,
       });
-      for (const t of ts.filter((t) => t >= startTime && t <= endTime)) {
+      for (const t of ts.filter(
+        (t) => t >= startTime + takeoffTime && t <= endTime + takeoffTime
+      )) {
         eq(
           ev(t),
           expectedPositions[t],
           1e-5,
-          `(startTime=${startTime}, endTime=${endTime}, t=${t}) `
+          `(startTime=${startTime + takeoffTime}, endTime=${
+            endTime + takeoffTime
+          }, t=${t}) `
         );
       }
     }
