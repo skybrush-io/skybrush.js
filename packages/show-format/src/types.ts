@@ -187,7 +187,7 @@ export interface ShowMetadata {
   /**
    * Known show segments.
    */
-  segments?: Record<ShowSegmentId, ShowSegment>;
+  segments?: Partial<Record<ShowSegmentId, ShowSegment>>;
 }
 
 /**
