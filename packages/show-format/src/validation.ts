@@ -44,7 +44,7 @@ export function validateShowSpecification(
   // and use that.
   validateVersionInShowSpecification(spec as Record<string, unknown>);
 
-  if (!spec.swarm || !Array.isArray(spec.swarm.drones)) {
+  if (!Array.isArray(spec.swarm?.drones) || spec.swarm.drones.length === 0) {
     throw new Error('Show specification contains no drones');
   }
 
@@ -167,7 +167,7 @@ export function validateTrajectory(
 
   const items = trajectory.points;
 
-  if (!Array.isArray(items)) {
+  if (!Array.isArray(items) || items.length === 0) {
     throw new TypeError('Trajectory schema mismatch');
   }
 

@@ -1,7 +1,25 @@
 {
   "version": 1,
   "swarm": {
-    "drones": []
+    "drones": [
+      {
+        "type": "generic",
+        "settings": {
+          "trajectory": {
+            "version": 1,
+            "points": [[10, [1, 2, 3]]]
+          },
+          "lights": {
+            "version": 1,
+            "data": "B6MQAA=="
+          },
+          "yawControl": {
+            "version": 1,
+            "setpoints": [[10, 42]]
+          }
+        }
+      }
+    ]
   },
   "environment": {
     "cameras": [

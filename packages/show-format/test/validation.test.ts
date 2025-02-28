@@ -3,7 +3,7 @@ import test from 'ava';
 import { validateShowSpecification } from '../src';
 import type { ShowSpecification } from '../src/types';
 
-import * as spec from './fixtures/test-show.json';
+import * as example from './fixtures/test-show.json';
 
 function validate(object: any): asserts object is ShowSpecification {
   validateShowSpecification(object);
@@ -31,6 +31,15 @@ test('no drones', (t) => {
   t.throws(
     () => {
       validate({ version: 1 });
+    },
+    { message: /no drones/ }
+  );
+});
+
+test('zero drones', (t) => {
+  t.throws(
+    () => {
+      validate({ version: 1, swarm: { drones: [] } });
     },
     { message: /no drones/ }
   );
@@ -111,6 +120,28 @@ test('trajectory with invalid items', (t) => {
   );
 });
 
+test('trajectory with zero segments', (t) => {
+  t.throws(
+    () => {
+      validate({
+        version: 1,
+        swarm: {
+          drones: [
+            {
+              settings: {
+                trajectory: { version: 1, points: [] },
+              },
+            },
+          ],
+        },
+      });
+    },
+    {
+      message: /schema/i,
+    }
+  );
+});
+
 test('trajectory with invalid takeoff time', (t) => {
   t.throws(
     () => {
@@ -158,7 +189,7 @@ test('trajectory with invalid landing time', (t) => {
 test('invalid environment', (t) => {
   t.throws(
     () => {
-      validate({ version: 1, swarm: { drones: [] }, environment: 'hell' });
+      validate({ version: 1, swarm: example.swarm, environment: 'hell' });
     },
     { message: /environment/ }
   );
@@ -169,7 +200,7 @@ test('invalid environment type', (t) => {
     () => {
       validate({
         version: 1,
-        swarm: { drones: [] },
+        swarm: example.swarm,
         environment: { type: 'hell' },
       });
     },
@@ -182,7 +213,7 @@ test('invalid camera array', (t) => {
     () => {
       validate({
         version: 1,
-        swarm: { drones: [] },
+        swarm: example.swarm,
         environment: { type: 'outdoor', cameras: 'foobar' },
       });
     },
@@ -195,7 +226,7 @@ test('invalid camera object', (t) => {
     () => {
       validate({
         version: 1,
-        swarm: { drones: [] },
+        swarm: example.swarm,
         environment: { type: 'outdoor', cameras: [123] },
       });
     },
@@ -208,7 +239,7 @@ test('invalid camera type', (t) => {
     () => {
       validate({
         version: 1,
-        swarm: { drones: [] },
+        swarm: example.swarm,
         environment: { type: 'outdoor', cameras: [{ type: 123 }] },
       });
     },
@@ -220,7 +251,7 @@ test('invalid camera position', (t) => {
   const camSpec = { position: [0, 2, Number.NaN] };
   const spec = {
     version: 1,
-    swarm: { drones: [] },
+    swarm: example.swarm,
     environment: {
       type: 'outdoor',
       cameras: [camSpec],
@@ -261,7 +292,7 @@ test('invalid camera orientation', (t) => {
   const camSpec = { orientation: [0, 0, 0, Number.POSITIVE_INFINITY] };
   const spec = {
     version: 1,
-    swarm: { drones: [] },
+    swarm: example.swarm,
     environment: {
       type: 'outdoor',
       cameras: [camSpec],
@@ -310,13 +341,13 @@ test('invalid camera orientation', (t) => {
 test('camera without properties is still valid', (t) => {
   validate({
     version: 1,
-    swarm: { drones: [] },
+    swarm: example.swarm,
     environment: { type: 'outdoor', cameras: [{}] },
   });
   t.pass();
 });
 
 test('valid show file', (t) => {
-  validate(spec);
+  validate(example);
   t.pass();
 });
