@@ -27,10 +27,19 @@ test('invalid version number', (t) => {
   );
 });
 
-test('no drones', (t) => {
+test('no swarm', (t) => {
   t.throws(
     () => {
       validate({ version: 1 });
+    },
+    { message: /schema/ }
+  );
+});
+
+test('no drones', (t) => {
+  t.throws(
+    () => {
+      validate({ version: 1, swarm: {} });
     },
     { message: /no drones/ }
   );

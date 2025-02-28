@@ -1,10 +1,11 @@
 import { MAX_DRONE_COUNT } from './constants';
-import { EnvironmentType, ENVIRONMENT_TYPES } from './types';
-import type {
-  Camera,
-  ShowSpecification,
-  Trajectory,
-  YawControl,
+import {
+  ENVIRONMENT_TYPES,
+  EnvironmentType,
+  type Camera,
+  type ShowSpecification,
+  type Trajectory,
+  type YawControl,
 } from './types';
 import { isNil, isObject } from './utils';
 
@@ -38,17 +39,25 @@ export function validateVersionInShowSpecification(
  * @param {object} spec  the specification to validate
  */
 export function validateShowSpecification(
-  spec: any
+  spec: unknown
 ): asserts spec is ShowSpecification {
+  if (!isObject(spec)) {
+    throw new TypeError('Show specification must be an object');
+  }
+
   // TODO(ntamas): write a proper JSON-Schema specification for the show files
   // and use that.
-  validateVersionInShowSpecification(spec as Record<string, unknown>);
+  validateVersionInShowSpecification(spec);
 
-  if (!Array.isArray(spec.swarm?.drones) || spec.swarm.drones.length === 0) {
+  if (!isObject(spec.swarm)) {
+    throw new TypeError('Show schema mismatch');
+  }
+
+  if (!Array.isArray(spec.swarm.drones) || spec.swarm.drones.length === 0) {
     throw new Error('Show specification contains no drones');
   }
 
-  const drones: unknown[] = spec.swarm.drones as unknown[];
+  const drones: unknown[] = spec.swarm.drones;
 
   if (drones.length > MAX_DRONE_COUNT) {
     throw new Error(
@@ -69,25 +78,27 @@ export function validateShowSpecification(
   }
 
   if (spec.environment === undefined) {
+    // TODO: A validation function shouldn't mutate input data...
     spec.environment = {};
-  } else if (!isObject(spec.environment)) {
+  }
+
+  const environment = spec.environment;
+
+  if (!isObject(environment)) {
     throw new TypeError('Invalid environment in show specification');
   }
 
-  const environment: Record<string, unknown> = spec.environment as Record<
-    string,
-    unknown
-  >;
-
   if (environment.type === undefined) {
+    // TODO: A validation function shouldn't mutate input data...
     environment.type = EnvironmentType.OUTDOOR;
   }
 
-  if (!ENVIRONMENT_TYPES.includes(environment.type as any as EnvironmentType)) {
+  if (!ENVIRONMENT_TYPES.includes(environment.type as EnvironmentType)) {
     throw new Error('Invalid environment type in show specification');
   }
 
   if (environment.cameras === undefined) {
+    // TODO: A validation function shouldn't mutate input data...
     environment.cameras = [];
   }
 
@@ -109,7 +120,7 @@ export function validateShowSpecification(
  *
  * @param camera  the specification to validate
  */
-export function validateCamera(camera: any): asserts camera is Camera {
+export function validateCamera(camera: unknown): asserts camera is Camera {
   if (!isObject(camera)) {
     throw new TypeError('Camera must be an object');
   }
@@ -117,12 +128,14 @@ export function validateCamera(camera: any): asserts camera is Camera {
   const { type, position, orientation } = camera;
 
   if (type === undefined) {
+    // TODO: A validation function shouldn't mutate input data...
     camera.type = 'perspective';
   } else if (typeof type !== 'string') {
     throw new TypeError('Camera type must be a string');
   }
 
   if (position === undefined) {
+    // TODO: A validation function shouldn't mutate input data...
     camera.position = [0, 0, 0];
   } else if (
     !Array.isArray(position) ||
@@ -133,6 +146,7 @@ export function validateCamera(camera: any): asserts camera is Camera {
   }
 
   if (orientation === undefined) {
+    // TODO: A validation function shouldn't mutate input data...
     camera.orientation = [1, 0, 0, 0];
   } else if (
     !Array.isArray(orientation) ||
@@ -149,13 +163,13 @@ export function validateCamera(camera: any): asserts camera is Camera {
  * Runs some basic checks on a JSON-based trajectory specification to see
  * whether it looks like a valid trajectory specification.
  *
- * Raises appropriate errors if the trajectory specification does not look like a
- * valid one.
+ * Raises appropriate errors if the trajectory specification
+ * does not look like a valid one.
  *
  * @param trajectory  the specification to validate
  */
 export function validateTrajectory(
-  trajectory: any
+  trajectory: unknown
 ): asserts trajectory is Trajectory {
   if (!isObject(trajectory)) {
     throw new TypeError('Trajectory must be an object');
