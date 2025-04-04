@@ -79,10 +79,10 @@ function createZIPResolver(zip: JSZip): ResolverOptions {
  *         readable stream.
  * @param  options.assets  Whether to load assets from the compiled show file.
  *         Defaults to `false` because it can be time- and memory-consuming.
- * @return Object containing the parsed show specification and the raw
- *         `zip` content.
+ * @return Object containing the parsed show specification and the loaded
+ *         `JSZip` content.
  */
-export async function loadCompiledShow(
+export async function loadShowSpecificationAndZip(
   file: string | number[] | Uint8Array | ArrayBuffer | Blob,
   options: { assets?: boolean } = {}
 ): Promise<{ showSpec: ShowSpecification; zip: JSZip }> {
@@ -134,12 +134,12 @@ export async function loadCompiledShow(
  *         Defaults to false because it can be time- and memory-consuming.
  * @return The parsed show specification.
  */
-async function loadShowSpecFromCompiledShow(
+async function loadCompiledShow(
   file: string | number[] | Uint8Array | ArrayBuffer | Blob,
   options: { assets?: boolean } = {}
 ): Promise<ShowSpecification> {
-  const { showSpec } = await loadCompiledShow(file, options);
+  const { showSpec } = await loadShowSpecificationAndZip(file, options);
   return showSpec;
 }
 
-export default loadShowSpecFromCompiledShow;
+export default loadCompiledShow;
