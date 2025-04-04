@@ -5,19 +5,19 @@
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import { Buffer } from 'buffer';
 
-import RefParser from '@apidevtools/json-schema-ref-parser';
 import type {
   FileInfo,
   Options,
   ResolverOptions,
 } from '@apidevtools/json-schema-ref-parser';
-import { loadAsync } from 'jszip';
+import RefParser from '@apidevtools/json-schema-ref-parser';
 import type JSZip from 'jszip';
+import { loadAsync } from 'jszip';
 
 import Asset from './asset';
+import type { ShowSpecification } from './types';
 import { idle } from './utils';
 import { validateShowSpecification } from './validation';
-import type { ShowSpecification } from './types';
 
 /**
  * Helper function that returns whether a given file is likely to be data
@@ -74,17 +74,19 @@ function createZIPResolver(zip: JSZip): ResolverOptions {
 /**
  * Loads a drone show from a file.
  *
- * @param  file  the file to load; can be an array of bytes, an
+ * @param  file  The file to load; can be an array of bytes, an
  *         ArrayBuffer, an Uint8Array, a Buffer, a Blob or a Node.js
- *         readable stream
- * @param  assets  whether to load assets from the compiled show file.
- *         Defaults to false because it can be time- and memory-consuming.
- * @return the parsed show specification
+ *         readable stream.
+ * @param  options.assets  Whether to load assets from the compiled show file.
+ *         Defaults to `false` because it can be time- and memory-consuming.
+ * @return Object containing the parsed show specification and the loaded
+ *         `JSZip` content.
  */
-async function loadCompiledShow(
+export async function loadShowSpecificationAndZip(
   file: string | number[] | Uint8Array | ArrayBuffer | Blob,
-  { assets = false }: { assets?: boolean } = {}
-): Promise<ShowSpecification> {
+  options: { assets?: boolean } = {}
+): Promise<{ showSpec: ShowSpecification; zip: JSZip }> {
+  const { assets = false } = options;
   const zip = await loadAsync(file);
 
   // Create a JSON reference to the main show specification file and then
@@ -119,6 +121,24 @@ async function loadCompiledShow(
 
   validateShowSpecification(showSpec);
 
+  return { showSpec, zip };
+}
+
+/**
+ * Loads a drone show specification from a file.
+ *
+ * @param  file  The file to load; can be an array of bytes, an
+ *         ArrayBuffer, an Uint8Array, a Buffer, a Blob or a Node.js
+ *         readable stream
+ * @param  options.assets  Whether to load assets from the compiled show file.
+ *         Defaults to false because it can be time- and memory-consuming.
+ * @return The parsed show specification.
+ */
+async function loadCompiledShow(
+  file: string | number[] | Uint8Array | ArrayBuffer | Blob,
+  options: { assets?: boolean } = {}
+): Promise<ShowSpecification> {
+  const { showSpec } = await loadShowSpecificationAndZip(file, options);
   return showSpec;
 }
 

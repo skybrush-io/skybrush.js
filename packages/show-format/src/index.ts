@@ -1,6 +1,9 @@
 export { default as Asset } from './asset';
 export { getCamerasFromShowSpecification } from './camera';
-export { default as loadCompiledShow } from './compiled';
+export {
+  default as loadCompiledShow,
+  loadShowSpecificationAndZip,
+} from './compiled';
 export { default as createLightProgramPlayer } from './lights';
 export {
   default as createTrajectoryPlayer,
