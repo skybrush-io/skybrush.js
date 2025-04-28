@@ -93,6 +93,9 @@ export interface Environment {
 
   /** List of cameras associated to the show */
   cameras?: Camera[];
+
+  /** The proposed show origin and orientation that locate the show in the real world */
+  location?: Location;
 }
 
 /**
@@ -139,6 +142,21 @@ export interface Camera {
    * Whether this camera is the default, preferred camera of the show.
    */
   default?: boolean;
+}
+
+/**
+ * The proposed show origin and orientation that locate the show in the real world
+ */
+export interface Location {
+  /**
+   * Geodetic location of the show coordinate system
+   */
+  origin?: [number, number, number?];
+
+  /**
+   * Angle of the X+ axis of the show coordinate system in degrees relative to North
+   */
+  orientation?: number;
 }
 
 /**
