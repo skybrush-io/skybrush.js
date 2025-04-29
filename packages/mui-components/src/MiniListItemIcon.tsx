@@ -33,6 +33,11 @@ const presets: Record<string, { color?: string; icon?: React.ReactNode }> = {
 
   empty: {},
 
+  error: {
+    color: colorForStatus(Status.ERROR),
+    icon: <ContentClear fontSize='small' />,
+  },
+
   success: {
     color: colorForStatus(Status.SUCCESS),
     icon: <ActionDone fontSize='small' />,
