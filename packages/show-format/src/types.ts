@@ -151,12 +151,12 @@ export interface Location {
   /**
    * Geodetic location of the show coordinate system
    */
-  origin?: [number, number, number?];
+  origin: [number, number, number?];
 
   /**
    * Angle of the X+ axis of the show coordinate system in degrees relative to North
    */
-  orientation?: number;
+  orientation: number;
 }
 
 /**
