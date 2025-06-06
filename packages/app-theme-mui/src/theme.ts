@@ -4,9 +4,9 @@
 
 import * as React from 'react';
 
-import { blue, grey, lightBlue, orange, blueGrey } from '@mui/material/colors';
-import { ThemeProvider, alpha, createTheme } from '@mui/material/styles';
+import { blue, blueGrey, grey, lightBlue, orange } from '@mui/material/colors';
 import type { PaletteColorOptions, Theme } from '@mui/material/styles';
+import { ThemeProvider, alpha, createTheme } from '@mui/material/styles';
 
 import { Colors } from './colors';
 import { defaultFont } from './fonts';
@@ -203,6 +203,16 @@ export const createThemeProvider = ({
 
     const theme = createTheme(baseTheme, {
       components: {
+        MuiCssBaseline: {
+          // See https://mui.com/material-ui/migration/v5-component-changes/#update-body-font-size
+          styleOverrides: {
+            body: {
+              fontSize: '0.875rem',
+              lineHeight: 1.43,
+              letterSpacing: '0.01071em',
+            },
+          },
+        },
         // Support for "grey" color of buttons for compatibility with Material UI v4
         MuiButton: {
           variants: [
