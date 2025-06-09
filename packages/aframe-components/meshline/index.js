@@ -19,9 +19,13 @@ AFrame.registerComponent('meshline', {
       ],
       // Deserialize path in the form of comma-separated vec3s: `0 0 0, 1 1 1, 2 0 3`.
       parse(value) {
-        return value
-          .split(',')
-          .map((value) => AFrame.utils.coordinates.parse(value));
+        // From AFrame 1.7.0 it looks like we can sometimes receive an already
+        // parsed value here so we protect against that.
+        return Array.isArray(value)
+          ? value
+          : value
+              .split(',')
+              .map((value) => AFrame.utils.coordinates.parse(value));
       },
       // Serialize array of vec3s in case someone does setAttribute('line', 'path', [...]).
       stringify(data) {
