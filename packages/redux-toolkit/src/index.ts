@@ -2,6 +2,7 @@ import type { StorageConfig as StorageConfig_ } from './persistence';
 import { configureStoreAndPersistence } from './store';
 import type { StoreAndPersistenceConfig as StoreAndPersistenceConfig_ } from './store';
 
+export { createSelectionHandlerThunk } from './actions';
 export {
   chooseUniqueId,
   chooseUniqueName,
