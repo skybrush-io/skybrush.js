@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Avatar from '@mui/material/Avatar';
+import Avatar, { type AvatarProps } from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
 
 import { colorForStatus, Status } from '@skybrush/app-theme-mui';
@@ -59,7 +59,7 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   '&.StyledAvatar-missing': createStyleForStatus(Status.MISSING, theme),
 }));
 
-export interface SemanticAvatarProps {
+export interface SemanticAvatarProps extends AvatarProps {
   status: Status;
   children: React.ReactNode;
 }
@@ -71,8 +71,11 @@ export interface SemanticAvatarProps {
 const SemanticAvatar = ({
   children,
   status = Status.OFF,
+  ...rest
 }: SemanticAvatarProps) => (
-  <StyledAvatar className={`StyledAvatar-${status}`}>{children}</StyledAvatar>
+  <StyledAvatar className={`StyledAvatar-${status}`} {...rest}>
+    {children}
+  </StyledAvatar>
 );
 
 export default SemanticAvatar;
