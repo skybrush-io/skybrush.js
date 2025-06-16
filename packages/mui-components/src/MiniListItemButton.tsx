@@ -1,30 +1,27 @@
 import * as React from 'react';
 
 import Box from '@mui/material/Box';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 
-import MiniListItemIcon, {
-  type MiniListItemIconProps,
-} from './MiniListItemIcon';
+import type { MiniListItemProps } from './MiniListItem';
+import MiniListItemIcon from './MiniListItemIcon';
 
-export interface MiniListItemProps {
-  icon?: React.ReactNode;
-  iconPreset?: MiniListItemIconProps['preset'];
-  primaryText?: React.ReactNode;
-  secondaryText?: React.ReactNode;
-}
+export type MiniListItemButtonProps = MiniListItemProps & {
+  onClick?: () => void;
+};
 
 /**
  * Generic list item to be used in the "mini-lists" that appear in popup
  * tooltips, typically in the app header.
  */
-const MiniListItem = ({
+const MiniListItemButton = ({
   icon,
   iconPreset,
   primaryText,
   secondaryText,
-}: MiniListItemProps) => (
-  <ListItem disableGutters>
+  onClick,
+}: MiniListItemButtonProps) => (
+  <ListItemButton disableGutters onClick={onClick}>
     {iconPreset ? <MiniListItemIcon preset={iconPreset} /> : icon}
     {secondaryText ? (
       <Box display='flex' flexDirection='row' flexGrow={1}>
@@ -36,7 +33,7 @@ const MiniListItem = ({
     ) : (
       primaryText
     )}
-  </ListItem>
+  </ListItemButton>
 );
 
-export default MiniListItem;
+export default MiniListItemButton;
