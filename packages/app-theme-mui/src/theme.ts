@@ -274,6 +274,16 @@ export const createThemeProvider = ({
           },
         }),
 
+        // DialogContent should have a smaller vertical padding
+        MuiDialogContent: {
+          styleOverrides: {
+            root: {
+              paddingTop: baseTheme.spacing(1),
+              paddingBottom: baseTheme.spacing(1),
+            },
+          },
+        },
+
         // Override list background
         MuiList: {
           styleOverrides: {
