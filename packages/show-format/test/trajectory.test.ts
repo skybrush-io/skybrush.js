@@ -129,21 +129,22 @@ const createPositionEvaluator = (trajectory: Trajectory) => {
   };
 };
 
-test.failing('trajectory evaluation, no segments', (t) => {
-  const ev = createPositionEvaluator({ version: 1, points: [] });
-  const eq = vector3Equals(t);
-
-  for (const t of [
-    Number.NEGATIVE_INFINITY,
-    -2,
-    0,
-    3,
-    6,
-    Number.POSITIVE_INFINITY,
-  ]) {
-    eq(ev(t), [0, 0, 0]);
-  }
-});
+// TODO: No segments is no longer valid according to the schema
+// test.failing('trajectory evaluation, no segments', (t) => {
+//   const ev = createPositionEvaluator({ version: 1, points: [] });
+//   const eq = vector3Equals(t);
+//
+//   for (const t of [
+//     Number.NEGATIVE_INFINITY,
+//     -2,
+//     0,
+//     3,
+//     6,
+//     Number.POSITIVE_INFINITY,
+//   ]) {
+//     eq(ev(t), [0, 0, 0]);
+//   }
+// });
 
 test('trajectory evaluation, segment before takeoff time', (t) => {
   const ev = createPositionEvaluator(trajectory);
@@ -309,21 +310,22 @@ const createVelocityEvaluator = (trajectory: Trajectory) => {
   };
 };
 
-test.failing('velocity evaluation, no segments', (t) => {
-  const ev = createVelocityEvaluator({ version: 1, points: [] });
-  const eq = vector3Equals(t);
-
-  for (const t of [
-    Number.NEGATIVE_INFINITY,
-    -2,
-    0,
-    3,
-    6,
-    Number.POSITIVE_INFINITY,
-  ]) {
-    eq(ev(t), [0, 0, 0]);
-  }
-});
+// TODO: No segments is no longer valid according to the schema
+// test.failing('velocity evaluation, no segments', (t) => {
+//   const ev = createVelocityEvaluator({ version: 1, points: [] });
+//   const eq = vector3Equals(t);
+//
+//   for (const t of [
+//     Number.NEGATIVE_INFINITY,
+//     -2,
+//     0,
+//     3,
+//     6,
+//     Number.POSITIVE_INFINITY,
+//   ]) {
+//     eq(ev(t), [0, 0, 0]);
+//   }
+// });
 
 test('velocity evaluation, segment before takeoff time', (t) => {
   const ev = createVelocityEvaluator(trajectory);
@@ -480,7 +482,7 @@ test('splitting a trajectory', (t) => {
   const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
 
   for (const fraction of splitFractions) {
-    const points: TrajectorySegment[] = [trajectoryPoints[0]];
+    const points: Trajectory['points'] = [trajectoryPoints[0]];
     for (let iPoint = 1; iPoint < numPoints; iPoint++) {
       // It's okay to use the original trajectory points, because we're splitting
       // current, and only use the endpoint and time from the previous segment,
@@ -546,7 +548,8 @@ test('subtrajectory in a given time window', (t) => {
   });
   const ev = createPositionEvaluator({
     ...trajectory,
-    points: subTrajectory,
+    // TODO: Eliminate or justify the following type assertion!
+    points: subTrajectory as Trajectory['points'],
   });
   for (const t of ts.filter(
     (t) => t >= startTime + takeoffTime && t <= endTime + takeoffTime
@@ -578,7 +581,8 @@ test('sub-trajectory in time window calculation', (t) => {
       // Create evaluator for the sub-trajectory.
       const ev = createPositionEvaluator({
         ...trajectory,
-        points: subTrajectory,
+        // TODO: Eliminate or justify the following type assertion!
+        points: subTrajectory as Trajectory['points'],
       });
       for (const t of ts.filter(
         (t) => t >= startTime + takeoffTime && t <= endTime + takeoffTime

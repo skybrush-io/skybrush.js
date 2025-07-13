@@ -1,3 +1,16 @@
+import type { SwarmSpecification } from '@skybrush/file-formats-doc/skyc';
+
+export type {
+  DroneSpecification,
+  DroneType,
+  LightProgram,
+  SwarmSpecification,
+  Trajectory,
+  TrajectoryKeypoint as TrajectorySegment,
+  YawControl,
+  YawControlSetpoint as YawControlSegment,
+} from '@skybrush/file-formats-doc/skyc';
+
 import type Asset from './asset';
 
 /**
@@ -304,63 +317,6 @@ export interface ValidationSettings {
 }
 
 /**
- * Interface specification of the drone swarm that participates in the show.
- */
-export interface SwarmSpecification {
-  /** The array of drones that constitute the swarm */
-  drones: DroneSpecification[];
-}
-
-export enum DroneType {
-  GENERIC = 'generic',
-}
-
-/**
- * Data that belongs to a single drone
- */
-export interface DroneSpecification {
-  /**
-   * The type of the drone as an optional parameter. Use DroneType.GENERIC
-   * as the default.
-   */
-  type?: DroneType;
-
-  settings?: {
-    /** An optional, unique, human-readable identifier of the drone. */
-    name?: string;
-
-    /** The trajectory of the drone during the show */
-    trajectory: Trajectory;
-
-    /** The light program of the drone during the show */
-    lights?: LightProgram;
-
-    /** The yaw control of the drone during the show */
-    yawControl?: YawControl;
-
-    /**
-     * The home position of the drone. It is inferred from the first point of
-     * the trajectory when omitted.
-     */
-    home?: Vector3Tuple;
-
-    /** The landing position of the drone. */
-    landAt?: Vector3Tuple;
-  };
-}
-
-/**
- * A single segment in the trajectory definition of a drone.
- *
- * The first item of this triplet is the timestamp of the _endpoint_ of the
- * segment, relative to the takeoff time. The second is the _endpoint_ itself.
- * The start point is inferred from the endpoint of the previous segment in a
- * segment array. The third member is a list of additional control points if the
- * segment is not a straight line but a Bézier curve.
- */
-export type TrajectorySegment = [number, Vector3Tuple, Vector3Tuple[]];
-
-/**
  * Time window.
  *
  * `duration` must not be negative. The end time of the time window (`startTime + duration`)
@@ -382,71 +338,3 @@ export type TimeWindow = {
 export type TimedBezierCurve = TimeWindow & {
   points: Vector3Tuple[];
 };
-
-/**
- * The trajectory definition of a single drone
- */
-export interface Trajectory {
-  /** The version of the trajectory format */
-  version: number;
-
-  /**
-   * The list of segments in the trajectory. The first item is the start point
-   * of the trajectory and it must have no additional control points.
-   */
-  points: TrajectorySegment[];
-
-  /**
-   * The takeoff time of the drone in seconds; zero if missing. Timestamps in
-   * the trajectory segments are relative to the takeoff time.
-   */
-  takeoffTime?: number;
-
-  /** The landing time of the drone in seconds */
-  landingTime?: number;
-}
-
-/**
- * The light program of a single drone
- */
-export interface LightProgram {
-  /** The version of the light program format */
-  version: number;
-
-  /** Light program as ledctrl bytecode, encoded as a base64 string */
-  data: string;
-}
-
-/**
- * A single segment in the yaw control definition of a drone.
- *
- * The first item of this tuple is the timestamp of the target rotation of the
- * segment. The second is the yaw value itself, in degrees. The start point is
- * inferred from the value of the previous segment in a segment array.
- */
-export type YawControlSegment = [number, number];
-
-/**
- * The yaw control definition of a single drone
- */
-export interface YawControl {
-  /** The version of the yaw control format */
-  version: number;
-
-  /**
-   * The list of segments in the yaw control.
-   * The first item is the starting rotation of the yaw control.
-   */
-  setpoints: YawControlSegment[];
-
-  /**
-   * Whether to change yaw automatically based
-   * on the momentary direction of motion
-   */
-  autoYaw?: boolean;
-
-  /**
-   * The yaw offset to use relative to front when in auto-yaw mode, in degrees
-   */
-  autoYawOffset?: number;
-}
