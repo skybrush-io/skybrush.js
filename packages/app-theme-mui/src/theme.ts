@@ -319,6 +319,16 @@ export const createThemeProvider = ({
           },
         }),
 
+        MuiToggleButton: {
+          styleOverrides: {
+            root: {
+              '&.Mui-selected:disabled': {
+                color: baseTheme.palette.action.disabled,
+              },
+            },
+          },
+        },
+
         // Captions should be mapped to a <div> tag, not to a <span>
         // (Material UI v4 compatibility)
         MuiTypography: muiV4Compat({
