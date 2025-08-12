@@ -67,35 +67,53 @@ const StyledDiv = styled('div')(({ theme }) => ({
     bold: true,
   }),
 
-  '&.StatusPill-status-hollow-off': createStyleForHollowStatus(Status.OFF),
-  '&.StatusPill-status-hollow-info': createStyleForHollowStatus(Status.INFO),
-  '&.StatusPill-status-hollow-waiting': createStyleForHollowStatus(
-    Status.WAITING
+  '&.StatusPill-status-hollow-off': createStyleForHollowStatus(
+    Status.OFF,
+    theme
   ),
-  '&.StatusPill-status-hollow-next': createStyleForHollowStatus(Status.NEXT),
+  '&.StatusPill-status-hollow-info': createStyleForHollowStatus(
+    Status.INFO,
+    theme
+  ),
+  '&.StatusPill-status-hollow-waiting': createStyleForHollowStatus(
+    Status.WAITING,
+    theme
+  ),
+  '&.StatusPill-status-hollow-next': createStyleForHollowStatus(
+    Status.NEXT,
+    theme
+  ),
   '&.StatusPill-status-hollow-success': createStyleForHollowStatus(
-    Status.SUCCESS
+    Status.SUCCESS,
+    theme
   ),
   '&.StatusPill-status-hollow-skipped': createStyleForHollowStatus(
-    Status.SKIPPED
+    Status.SKIPPED,
+    theme
   ),
   '&.StatusPill-status-hollow-warning': createStyleForHollowStatus(
     Status.WARNING,
+    theme,
     { bold: true }
   ),
   '&.StatusPill-status-hollow-rth': {
-    ...createStyleForHollowStatus(Status.RTH, { bold: true }),
+    ...createStyleForHollowStatus(Status.RTH, theme, { bold: true }),
     ...FLASH_STYLE,
   },
-  '&.StatusPill-status-hollow-error': createStyleForHollowStatus(Status.ERROR, {
-    bold: true,
-  }),
+  '&.StatusPill-status-hollow-error': createStyleForHollowStatus(
+    Status.ERROR,
+    theme,
+    {
+      bold: true,
+    }
+  ),
   '&.StatusPill-status-hollow-critical': {
-    ...createStyleForHollowStatus(Status.CRITICAL, { bold: true }),
+    ...createStyleForHollowStatus(Status.CRITICAL, theme, { bold: true }),
     ...FLASH_STYLE,
   },
   '&.StatusPill-status-hollow-missing': createStyleForHollowStatus(
     Status.MISSING,
+    theme,
     { bold: true }
   ),
 
