@@ -22,6 +22,7 @@ import SemanticAvatar from './SemanticAvatar';
 import SidebarBadge from './SidebarBadge';
 import SmallProgressIndicator from './SmallProgressIndicator';
 import StatusLight from './StatusLight';
+import StatusPill from './StatusPill';
 import StatusText from './StatusText';
 import ThemeSelector from './ThemeSelector';
 import Tooltip from './Tooltip';
@@ -52,6 +53,7 @@ export {
   SidebarBadge,
   SmallProgressIndicator,
   StatusLight,
+  StatusPill,
   StatusText,
   ThemeSelector,
   Tooltip,
