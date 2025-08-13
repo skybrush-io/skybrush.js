@@ -43,6 +43,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
     glow: true,
   }),
   '&.StatusLight-status-info': createStyleForStatus(Status.INFO, theme),
+  '&.StatusLight-status-missing': createStyleForStatus(Status.MISSING, theme, {
+    glow: true,
+  }),
   '&.StatusLight-status-next': {
     ...createStyleForStatus(Status.NEXT, theme),
     '&::after': {
