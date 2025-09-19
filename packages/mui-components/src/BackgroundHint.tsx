@@ -62,7 +62,7 @@ const BackgroundHint = ({
           <Box pb={2}>{React.cloneElement(icon, { style: iconStyle })}</Box>
         )}
         {header && (
-          <Typography paragraph variant='h6'>
+          <Typography variant='h6' sx={{ marginBottom: '16px' }}>
             {header}
           </Typography>
         )}

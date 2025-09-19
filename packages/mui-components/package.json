@@ -28,9 +28,9 @@
     "test": "nyc ava"
   },
   "peerDependencies": {
-    "@mui/icons-material": "^5",
-    "@mui/material": "^5",
-    "@mui/styled-engine": "^5",
+    "@mui/icons-material": "^5 || ^6",
+    "@mui/material": "^5 || ^6",
+    "@mui/styled-engine": "^5 || ^6",
     "react": "^17 || ^18",
     "react-dom": "^17 || ^18"
   },
@@ -49,9 +49,9 @@
   "devDependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.5",
-    "@mui/styled-engine": "^5.13.2",
+    "@mui/icons-material": "^6.5.0",
+    "@mui/material": "^6.5.0",
+    "@mui/styled-engine": "^6.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
