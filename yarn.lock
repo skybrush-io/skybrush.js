@@ -2903,7 +2903,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skybrush/app-theme-mui@^2.3.5, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
+"@skybrush/app-theme-mui@^2.4.1, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
   version: 0.0.0-use.local
   resolution: "@skybrush/app-theme-mui@workspace:packages/app-theme-mui"
   dependencies:
@@ -2933,7 +2933,7 @@ __metadata:
     electron-unhandled: ^4.0.1
     electron-window-state: ^5.0.3
   peerDependencies:
-    electron: ^28.0 || ^29.0 || ^30.0 || ^31.0 || ^32.0 || ^33.0
+    electron: ^28.0 || ^29.0 || ^30.0 || ^31.0 || ^32.0 || ^33.0 || ^34.0 || ^35.0 || ^36.0 || ^37.0 || ^38.0 || ^39.0
   languageName: unknown
   linkType: soft
 
@@ -2962,7 +2962,7 @@ __metadata:
     "@mui/material": ^6.5.0
     "@mui/styled-engine": ^6.5.0
     "@react-hookz/web": ^23.0.1
-    "@skybrush/app-theme-mui": ^2.3.5
+    "@skybrush/app-theme-mui": ^2.4.1
     "@tippyjs/react": ^4.2.6
     clsx: ^1.2.1
     color: ^4.2.3
