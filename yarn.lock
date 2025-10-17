@@ -3558,7 +3558,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skybrush/app-theme-mui@^3.0.0, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
+"@skybrush/app-theme-mui@^3.0.1, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
   version: 0.0.0-use.local
   resolution: "@skybrush/app-theme-mui@workspace:packages/app-theme-mui"
   dependencies:
@@ -3617,7 +3617,7 @@ __metadata:
     "@mui/icons-material": ^7.3.3
     "@mui/material": ^7.3.3
     "@react-hookz/web": ^23.0.1
-    "@skybrush/app-theme-mui": ^3.0.0
+    "@skybrush/app-theme-mui": ^3.0.1
     "@tippyjs/react": ^4.2.6
     clsx: ^2.1.1
     color: ^5.0.2
