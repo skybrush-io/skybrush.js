@@ -14,7 +14,12 @@ export interface LightProgramPlayer {
   iterate: (fps?: number) => Generator<[number, Color], void, void>;
 }
 
-export type LightProgramLike = string | LightProgram | ArrayBuffer | undefined;
+export type LightProgramLike =
+  | string
+  | LightProgram
+  | ArrayBuffer
+  | Uint8Array<ArrayBuffer>
+  | undefined;
 type LoopItem = [number, number];
 
 /**
