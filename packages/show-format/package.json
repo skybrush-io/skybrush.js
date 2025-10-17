@@ -48,6 +48,6 @@
     "jszip": "^3.10.1"
   },
   "devDependencies": {
-    "ava": "^5.3.1"
+    "ava": "^6.4.1"
   }
 }

@@ -43,7 +43,7 @@
     "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.7",
+    "@types/lodash-es": "^4.17.12",
     "redux": "^5.0.0"
   },
   "overrides": {
