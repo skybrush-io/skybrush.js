@@ -1,7 +1,7 @@
 {
   "name": "@skybrush/mui-components",
-  "version": "3.8.1",
-  "description": "Material UI components for Skybrush apps",
+  "version": "4.0.0",
+  "description": "MUI v7+ components for Skybrush apps",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
   "license": "MIT",
@@ -28,30 +28,30 @@
     "test": "nyc ava"
   },
   "peerDependencies": {
-    "@mui/icons-material": "^5 || ^6",
-    "@mui/material": "^5 || ^6",
-    "@mui/styled-engine": "^5 || ^6",
-    "react": "^17 || ^18",
-    "react-dom": "^17 || ^18"
+    "@mui/icons-material": "^7",
+    "@mui/material": "^7",
+    "@mui/styled-engine": "^7",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "dependencies": {
     "@react-hookz/web": "^23.0.1",
-    "@skybrush/app-theme-mui": "^2.4.1",
+    "@skybrush/app-theme-mui": "^3.0.0",
     "@tippyjs/react": "^4.2.6",
-    "clsx": "^1.2.1",
-    "color": "^4.2.3",
-    "react-badger": "^2.0.18",
-    "react-draggable": "^4.4.5",
+    "clsx": "^2.1.1",
+    "color": "^5.0.2",
+    "react-badger": "^2.0.27",
+    "react-draggable": "^4.5.0",
     "set-harmonic-interval": "^1.0.1",
     "tippy.js": "^6.3.7",
     "use-async-effect": "^2.2.7"
   },
   "devDependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^6.5.0",
-    "@mui/material": "^6.5.0",
-    "@mui/styled-engine": "^6.5.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.3",
+    "@mui/material": "^7.3.3",
+    "@mui/styled-engine": "^7.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

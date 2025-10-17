@@ -17,10 +17,11 @@ import type {
   TransitionStatus,
 } from 'react-transition-group/Transition';
 
-import { duration } from '@mui/material/styles/createTransitions';
-import useTheme from '@mui/material/styles/useTheme';
-import { reflow, getTransitionProps } from '@mui/material/transitions/utils';
-import useForkRef from '@mui/material/utils/useForkRef';
+import { duration } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
+import { useForkRef } from '@mui/material/utils';
+
+import { reflow, getTransitionProps } from './utils';
 
 type Direction = 'up' | 'down' | 'left' | 'right';
 
