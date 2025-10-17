@@ -133,7 +133,7 @@ export interface FadeAndSlideProps
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const FadeAndSlide = React.forwardRef(
   <T extends HTMLElement | undefined>(
-    props: FadeAndSlideProps,
+    props: Omit<FadeAndSlideProps, 'ref'>,
     ref: React.Ref<T>
   ) => {
     const {
@@ -164,7 +164,7 @@ const FadeAndSlide = React.forwardRef(
       ref
     ) as any;
     const handleRef = useForkRef(nodeRef, foreignRef);
-    const transitionStyle = transitionStyles[direction];
+    const transitionStyle = transitionStyles[direction as Direction];
 
     const normalizedTransitionCallback =
       (callback?: (...args: any[]) => any) => (maybeIsAppearing?: boolean) => {
