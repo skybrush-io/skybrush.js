@@ -14,9 +14,11 @@ import type {
   UnknownAction,
 } from '@reduxjs/toolkit';
 
-import type { Middlewares } from '@reduxjs/toolkit/dist/configureStore';
-import type { DevToolsEnhancerOptions } from '@reduxjs/toolkit/dist/devtoolsExtension';
-import type { ExtractDispatchExtensions } from '@reduxjs/toolkit/dist/tsHelpers';
+import type {
+  DevToolsEnhancerOptions,
+  Middleware,
+  TSHelpersExtractDispatchExtensions,
+} from '@reduxjs/toolkit';
 
 import { type Immutable, produce } from 'immer';
 import get from 'lodash-es/get';
@@ -44,12 +46,15 @@ export interface ExtendedDevToolsOptions extends DevToolsEnhancerOptions {
   scrubbedPaths?: string[];
 }
 
+// Next line copied from @reduxjs/toolkit/dist/index.d.ts
+type Middlewares<S> = ReadonlyArray<Middleware<{}, S>>;
+
 export interface StoreAndPersistenceConfig<
   S = any,
   A extends Action = UnknownAction,
   M extends Middlewares<S> = Middlewares<S>,
   C extends Record<string, unknown> = Record<string, unknown>,
-  P = S
+  P = S,
 > {
   devTools?: boolean | ExtendedDevToolsOptions;
   ignoredActions?: Array<string | ActionCreator<string>>;
@@ -66,7 +71,7 @@ export interface StoreAndPersistenceConfig<
 export type PersistableStore<
   S = any,
   A extends Action = UnknownAction,
-  E extends StoreEnhancer[] = StoreEnhancer[]
+  E extends StoreEnhancer[] = StoreEnhancer[],
 > = EnhancedStore<S, A, E> & {
   clear: () => Promise<void>;
   runSaga: <S extends Saga>(saga: S, ...args: Parameters<S>) => Task;
@@ -105,11 +110,11 @@ export function configureStoreAndPersistence<
   E extends Tuple<StoreEnhancer[]> = Tuple<
     [
       StoreEnhancer<{
-        dispatch: ExtractDispatchExtensions<
+        dispatch: TSHelpersExtractDispatchExtensions<
           Tuple<[ThunkMiddleware<S>, SagaMiddleware<C>, ...M]>
         >;
       }>,
-      StoreEnhancer
+      StoreEnhancer,
     ]
   >,
   // TODO: (Part 2) Adjust the types if `middleware` is forced to be a callback
@@ -117,7 +122,7 @@ export function configureStoreAndPersistence<
   // E extends Tuple<StoreEnhancer[]> = Tuple<
   //   [StoreEnhancer<{ dispatch: ExtractDispatchExtensions<M> }>, StoreEnhancer]
   // >,
-  P = S
+  P = S,
 >({
   devTools = {},
   ignoredActions = [],
