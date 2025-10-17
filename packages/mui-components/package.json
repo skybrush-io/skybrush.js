@@ -25,7 +25,7 @@
     "build": "tsc -p tsconfig.json",
     "clean": "rimraf lib/** *.tgz",
     "prepack": "npm run build",
-    "test": "nyc ava"
+    "test": "npx nyc ava"
   },
   "peerDependencies": {
     "@mui/icons-material": "^7",

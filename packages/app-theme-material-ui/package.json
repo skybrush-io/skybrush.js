@@ -21,7 +21,7 @@
     "url": "https://github.com/skybrush-io/skybrush.js"
   },
   "scripts": {
-    "test": "nyc ava"
+    "test": "npx nyc ava"
   },
   "ava": {
     "require": [

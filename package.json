@@ -54,7 +54,7 @@
   },
   "scripts": {
     "lint": "xo",
-    "test": "nyc ava && xo",
+    "test": "npx nyc ava && xo",
     "symlink-bins": "lerna exec \"rm -rf node_modules/.bin ; mkdir -p node_modules ; ln -s ../../../node_modules/.bin node_modules/.bin\""
   },
   "ava": {
