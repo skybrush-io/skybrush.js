@@ -2,7 +2,7 @@
 // that was removed in MUI v7.
 
 import { css } from '@emotion/css';
-import { type CSSObject } from '@emotion/css/dist/declarations/src/create-instance';
+import { type CSSObject } from '@emotion/css/create-instance';
 import { type Theme, useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 

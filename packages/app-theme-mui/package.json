@@ -6,6 +6,7 @@
   "homepage": "",
   "license": "MIT",
   "main": "dist/index.js",
+  "type": "module",
   "types": "dist/index.d.ts",
   "directories": {
     "test": "test"
@@ -24,7 +25,7 @@
     "build": "npx tsc",
     "clean": "rimraf dist/** *.tgz",
     "prepack": "npm run build",
-    "test": "npx nyc ava"
+    "test": "npx jest"
   },
   "peerDependencies": {
     "@mui/material": "^7",

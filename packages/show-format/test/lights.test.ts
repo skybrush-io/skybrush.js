@@ -1,5 +1,3 @@
-import test, { type ExecutionContext } from 'ava';
-
 import {
   createLightProgramPlayer,
   type LightProgram,
@@ -53,20 +51,15 @@ const createColorEvaluator = (program: LightProgramLike) => {
   };
 };
 
-const almostEquals =
-  (t: ExecutionContext) =>
-  (value: Color, expected: Color, eps = 1e-2) => {
-    const message = `Colors do not match, expected [${String(
-      expected
-    )}], got [${String(value)}]`;
-    t.assert(Math.abs(value[0] - expected[0]) < eps, message);
-    t.assert(Math.abs(value[1] - expected[1]) < eps, message);
-    t.assert(Math.abs(value[2] - expected[2]) < eps, message);
-  };
+const almostEquals = (value: Color, expected: Color, eps = 1e-2) => {
+  expect(Math.abs(value[0] - expected[0])).toBeLessThan(eps);
+  expect(Math.abs(value[1] - expected[1])).toBeLessThan(eps);
+  expect(Math.abs(value[2] - expected[2])).toBeLessThan(eps);
+};
 
-test('empty light program evaluation', (t) => {
+test('empty light program evaluation', () => {
   const ev = createColorEvaluator(new Uint8Array());
-  const eq = almostEquals(t);
+  const eq = almostEquals;
   const BLACK: Color = [0, 0, 0];
 
   eq(ev(0), BLACK);
@@ -76,9 +69,9 @@ test('empty light program evaluation', (t) => {
   eq(ev(Number.NEGATIVE_INFINITY), BLACK);
 });
 
-test('NOP-only light program evaluation', (t) => {
+test('NOP-only light program evaluation', () => {
   const ev = createColorEvaluator(Uint8Array.from([1, 1, 1, 1, 1, 1, 1, 1]));
-  const eq = almostEquals(t);
+  const eq = almostEquals;
   const BLACK: Color = [0, 0, 0];
 
   eq(ev(0), BLACK);
@@ -88,9 +81,9 @@ test('NOP-only light program evaluation', (t) => {
   eq(ev(Number.NEGATIVE_INFINITY), BLACK);
 });
 
-test('undefined light program evaluation', (t) => {
+test('undefined light program evaluation', () => {
   const ev = createColorEvaluator(undefined);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
   const WHITE: Color = [1, 1, 1];
 
   eq(ev(0), WHITE);
@@ -100,9 +93,9 @@ test('undefined light program evaluation', (t) => {
   eq(ev(Number.NEGATIVE_INFINITY), WHITE);
 });
 
-test('light program evaluator creation from string', (t) => {
+test('light program evaluator creation from string', () => {
   const ev = createColorEvaluator(lightProgram.data);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = [10, 40, 70.52];
   for (const t of ts) {
@@ -110,9 +103,9 @@ test('light program evaluator creation from string', (t) => {
   }
 });
 
-test('light program evaluation', (t) => {
+test('light program evaluation', () => {
   const ev = createColorEvaluator(lightProgram);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = Object.keys(expectedColors).map(Number);
   for (const t of ts) {
@@ -122,9 +115,9 @@ test('light program evaluation', (t) => {
   eq(ev(Number.NEGATIVE_INFINITY), expectedColors[ts[0]]);
 });
 
-test('light program evaluation, shuffled', (t) => {
+test('light program evaluation, shuffled', () => {
   const ev = createColorEvaluator(lightProgram);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = Object.keys(expectedColors).map(Number);
 
@@ -136,7 +129,7 @@ test('light program evaluation, shuffled', (t) => {
   }
 });
 
-test('light program with WAIT_UNTIL opcode', (t) => {
+test('light program with WAIT_UNTIL opcode', () => {
   /* light program: 
   
   wait until T=4
@@ -155,7 +148,7 @@ test('light program with WAIT_UNTIL opcode', (t) => {
       0x64, 0,
     ])
   );
-  const eq = almostEquals(t);
+  const eq = almostEquals;
   const BLACK: Color = [0, 0, 0];
   const GRAY: Color = [0.5, 0.5, 0.5];
   const WHITE: Color = [1, 1, 1];
@@ -175,57 +168,41 @@ test('light program with WAIT_UNTIL opcode', (t) => {
   eq(ev(12), WHITE);
 });
 
-test('light program with invalid command sequences', (t) => {
-  t.throws(
-    () => {
-      const ev = createColorEvaluator(Uint8Array.from([191]));
-      ev(2);
-    },
-    {
-      message: /Unknown command/,
-    }
-  );
-  t.throws(
-    () => {
-      const ev = createColorEvaluator(Uint8Array.from([13]));
-      ev(2);
-    },
-    {
-      message: /Found end loop command/,
-    }
-  );
-  t.throws(
-    () => createColorEvaluator({ version: 66, data: '' } as LightProgram),
-    { message: /version/ }
-  );
-  t.throws(
-    () => {
-      const ev = createColorEvaluator(Uint8Array.from([3, 0xff, 0xff, 0xff]));
-      ev(2);
-    },
-    {
-      message: /Bytecode ended/,
-    }
-  );
+test('light program with invalid command sequences', () => {
+  expect(() => {
+    const ev = createColorEvaluator(Uint8Array.from([191]));
+    ev(2);
+  }).toThrow(/Unknown command/);
+  expect(() => {
+    const ev = createColorEvaluator(Uint8Array.from([13]));
+    ev(2);
+  }).toThrow(/Found end loop command/);
+  expect(() =>
+    createColorEvaluator({ version: 66, data: '' } as LightProgram)
+  ).toThrow(/version/);
+  expect(() => {
+    const ev = createColorEvaluator(Uint8Array.from([3, 0xff, 0xff, 0xff]));
+    ev(2);
+  }).toThrow(/Bytecode ended/);
 });
 
-test('light program iteration', (t) => {
+test('light program iteration', () => {
   const ev = createColorEvaluator(lightProgram);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
   const player = createLightProgramPlayer(lightProgram);
   let nextTimestamp = 0;
 
   for (const [timestamp, color] of player.iterate(4)) {
-    t.assert(nextTimestamp === timestamp);
+    expect(nextTimestamp).toBe(timestamp);
     eq(color, ev(timestamp));
     nextTimestamp += 0.25;
   }
 });
 
-test('light program evaluation, invalid input type', (t) => {
-  t.throws(() =>
+test('light program evaluation, invalid input type', () => {
+  expect(() =>
     createColorEvaluator((() => {
       /* do nothing */
     }) as any as LightProgramLike)
-  );
+  ).toThrow();
 });

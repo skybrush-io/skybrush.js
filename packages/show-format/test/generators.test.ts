@@ -1,11 +1,9 @@
-import test from 'ava';
-
 import { iterPairs, slice } from '../src/generators';
 
-test('test iterPairs', (t) => {
+test('test iterPairs', () => {
   const items = [11, 22, 33, 44, 55, 66, 77, 88, 99];
   const pairs = Array.from(iterPairs(items));
-  t.deepEqual(pairs, [
+  expect(pairs).toEqual([
     [11, 22],
     [22, 33],
     [33, 44],
@@ -17,7 +15,7 @@ test('test iterPairs', (t) => {
   ]);
 });
 
-test('test slice', (t) => {
+test('test slice', () => {
   const items = [11, 22, 33, 44, 55, 66, 77, 88, 99];
   const startEvaluated: number[] = [];
   const start = (v: number) => {
@@ -31,12 +29,12 @@ test('test slice', (t) => {
   };
 
   const result = Array.from(slice(items, start, stop));
-  t.deepEqual(result, [33, 44, 55, 66]);
-  t.deepEqual(startEvaluated, [11, 22, 33]);
-  t.deepEqual(stopEvaluated, [33, 44, 55, 66, 77]);
+  expect(result).toEqual([33, 44, 55, 66]);
+  expect(startEvaluated).toEqual([11, 22, 33]);
+  expect(stopEvaluated).toEqual([33, 44, 55, 66, 77]);
 });
 
-test('test slice empty', (t) => {
+test('test slice empty', () => {
   const items = [11, 22, 33, 44, 55, 66, 77, 88, 99];
   const startEvaluated: number[] = [];
   const start = (v: number) => {
@@ -50,7 +48,7 @@ test('test slice empty', (t) => {
   };
 
   const result = Array.from(slice(items, start, stop));
-  t.deepEqual(result, []);
-  t.deepEqual(startEvaluated, [11, 22, 33]);
-  t.deepEqual(stopEvaluated, [33]);
+  expect(result).toEqual([]);
+  expect(startEvaluated).toEqual([11, 22, 33]);
+  expect(stopEvaluated).toEqual([33]);
 });

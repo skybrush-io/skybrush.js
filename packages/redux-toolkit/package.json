@@ -24,7 +24,7 @@
     "build": "npx tsc",
     "clean": "rimraf dist/** *.tgz",
     "prepack": "npm run build",
-    "test": "npx nyc ava"
+    "test": "npx jest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",

@@ -24,19 +24,7 @@
     "build": "npx tsc",
     "clean": "rimraf dist/** *.tgz",
     "prepack": "npm run build",
-    "test": "npx nyc ava"
-  },
-  "ava": {
-    "files": [
-      "test/*"
-    ],
-    "typescript": {
-      "rewritePaths": {
-        "src/": "dist/src/",
-        "test/": "dist/test/"
-      },
-      "compile": "tsc"
-    }
+    "test": "npx jest"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.1.2",
@@ -46,8 +34,5 @@
     "denque": "^2.1.0",
     "js-base64": "^3.7.5",
     "jszip": "^3.10.1"
-  },
-  "devDependencies": {
-    "ava": "^6.4.1"
   }
 }

@@ -21,12 +21,7 @@
     "url": "https://github.com/skybrush-io/skybrush.js"
   },
   "scripts": {
-    "test": "npx nyc ava"
-  },
-  "ava": {
-    "require": [
-      "@babel/register"
-    ]
+    "test": "npx jest"
   },
   "dependencies": {
     "underscore": "^1.13.6"

@@ -21,7 +21,7 @@
     "url": "https://github.com/skybrush-io/skybrush.js"
   },
   "scripts": {
-    "test": "npx nyc ava"
+    "test": "npx jest"
   },
   "peerDependencies": {
     "electron": "^28.0 || ^29.0 || ^30.0 || ^31.0 || ^32.0 || ^33.0 || ^34.0 || ^35.0 || ^36.0 || ^37.0 || ^38.0 || ^39.0"
@@ -32,7 +32,6 @@
     "electron-window-state": "^5.0.3"
   },
   "devDependencies": {
-    "ava": "^6.4.1",
     "electron": "^38.3.0"
   }
 }

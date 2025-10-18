@@ -28,15 +28,10 @@
     "url": "https://github.com/skybrush-io/skybrush.js"
   },
   "scripts": {
-    "test": "npx nyc ava"
+    "test": "npx jest"
   },
   "peerDependencies": {
     "aframe": "^1.2.0"
-  },
-  "ava": {
-    "require": [
-      "@babel/register"
-    ]
   },
   "dependencies": {
     "lodash-es": "^4.17.21",

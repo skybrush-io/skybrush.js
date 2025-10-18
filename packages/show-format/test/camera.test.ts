@@ -1,5 +1,3 @@
-import test from 'ava';
-
 import {
   getCamerasFromShowSpecification,
   validateShowSpecification,
@@ -8,7 +6,7 @@ import { CameraType, type ShowSpecification } from '../src/types';
 
 import * as originalSpec from './fixtures/test-show.json';
 
-test('retrieve cameras from show specification', (t) => {
+test('retrieve cameras from show specification', () => {
   // make a deep copy of originalSpec because we cannot delete from it
   const spec: ShowSpecification = JSON.parse(
     JSON.stringify(originalSpec)
@@ -17,15 +15,15 @@ test('retrieve cameras from show specification', (t) => {
   validateShowSpecification(spec);
   const cameras = getCamerasFromShowSpecification(spec);
 
-  t.assert(Array.isArray(cameras));
-  t.assert(cameras.length === 2);
-  t.deepEqual(cameras[0], {
+  expect(Array.isArray(cameras)).toBe(true);
+  expect(cameras.length).toBe(2);
+  expect(cameras[0]).toEqual({
     name: 'First camera',
     type: CameraType.PERSPECTIVE,
     position: [1, 2, 3],
     orientation: [1, 0, 0, 0],
   });
-  t.deepEqual(cameras[1], {
+  expect(cameras[1]).toEqual({
     name: 'Second camera',
     type: CameraType.PERSPECTIVE,
     position: [10, 7, 4],
@@ -34,15 +32,10 @@ test('retrieve cameras from show specification', (t) => {
   });
 
   delete spec.environment.cameras;
-  t.assert(getCamerasFromShowSpecification(spec).length === 0);
+  expect(getCamerasFromShowSpecification(spec).length).toBe(0);
 
-  t.throws(
-    () => {
-      (spec.environment as any).cameras = 'foo';
-      getCamerasFromShowSpecification(spec);
-    },
-    {
-      message: /must be an array/,
-    }
-  );
+  expect(() => {
+    (spec.environment as any).cameras = 'foo';
+    getCamerasFromShowSpecification(spec);
+  }).toThrow(/must be an array/);
 });

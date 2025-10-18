@@ -1,7 +1,5 @@
-import test, { type ExecutionContext } from 'ava';
-
-import { type YawControl, createYawControlPlayer } from '../src';
-import type { Vector3 as EulerAngles } from '../src/types';
+import { YawControl, createYawControlPlayer } from '../src';
+import { Vector3 as EulerAngles } from '../src/types';
 import { shuffle } from '../src/utils';
 
 const yaw: YawControl = {
@@ -15,13 +13,10 @@ const yaw: YawControl = {
   ],
 };
 
-const almostEquals =
-  (t: ExecutionContext) =>
-  (value: number, expected: number, eps = 1e-5) => {
-    const valueInDeg = value * (180 / Math.PI);
-    const message = `Value does not match, expected [${expected}], got [${valueInDeg}]`;
-    t.assert(Math.abs(valueInDeg - expected) < eps, message);
-  };
+const almostEquals = (value: number, expected: number, eps = 1e-5) => {
+  const valueInDeg = value * (180 / Math.PI);
+  expect(Math.abs(valueInDeg - expected)).toBeLessThan(eps);
+};
 
 /* ************************************************************************ */
 /* Tests related to evaluating the desired yaw at a given point             */
@@ -80,9 +75,9 @@ const createYawEvaluator = (yawProgram: YawControl) => {
   };
 };
 
-test('yaw evaluation, no segments', (t) => {
+test('yaw evaluation, no segments', () => {
   const ev = createYawEvaluator({ version: 1, setpoints: [] });
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   for (const t of [
     Number.NEGATIVE_INFINITY,
@@ -96,9 +91,9 @@ test('yaw evaluation, no segments', (t) => {
   }
 });
 
-test('yaw evaluation, constant segment', (t) => {
+test('yaw evaluation, constant segment', () => {
   const ev = createYawEvaluator(yaw);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = [-2, 0, 3, 6, 10];
   for (const t of ts) {
@@ -106,9 +101,9 @@ test('yaw evaluation, constant segment', (t) => {
   }
 });
 
-test('yaw evaluation, linear segment', (t) => {
+test('yaw evaluation, linear segment', () => {
   const ev = createYawEvaluator(yaw);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = [10, 12, 14, 15, 16, 18, 20, 30, 40, 50, 60, 70];
   for (const t of ts) {
@@ -118,9 +113,9 @@ test('yaw evaluation, linear segment', (t) => {
   eq(ev(Number.NEGATIVE_INFINITY), expectedPositions[ts[0]]);
 });
 
-test('yaw evaluation, shuffled', (t) => {
+test('yaw evaluation, shuffled', () => {
   const ev = createYawEvaluator(yaw);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = Object.keys(expectedPositions).map((x) => Number.parseInt(x, 10));
 
@@ -189,9 +184,9 @@ const createVelocityEvaluator = (yawProgram: YawControl) => {
   };
 };
 
-test('yaw angular velocity evaluation, no segments', (t) => {
+test('yaw angular velocity evaluation, no segments', () => {
   const ev = createVelocityEvaluator({ version: 1, setpoints: [] });
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   for (const t of [
     Number.NEGATIVE_INFINITY,
@@ -205,9 +200,9 @@ test('yaw angular velocity evaluation, no segments', (t) => {
   }
 });
 
-test('yaw angular velocity evaluation, constant segment', (t) => {
+test('yaw angular velocity evaluation, constant segment', () => {
   const ev = createVelocityEvaluator(yaw);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = [-2, 0, 3, 6, 10];
   for (const t of ts) {
@@ -217,9 +212,9 @@ test('yaw angular velocity evaluation, constant segment', (t) => {
   eq(ev(Number.NEGATIVE_INFINITY), expectedVelocities[ts[0]]);
 });
 
-test('yaw angular velocity evaluation, linear segment', (t) => {
+test('yaw angular velocity evaluation, linear segment', () => {
   const ev = createVelocityEvaluator(yaw);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = [10, 12, 14, 15, 16, 18, 20, 30, 40, 50, 60, 70];
   for (const t of ts) {
@@ -227,9 +222,9 @@ test('yaw angular velocity evaluation, linear segment', (t) => {
   }
 });
 
-test('yaw angular velocity evaluation, shuffled', (t) => {
+test('yaw angular velocity evaluation, shuffled', () => {
   const ev = createVelocityEvaluator(yaw);
-  const eq = almostEquals(t);
+  const eq = almostEquals;
 
   const ts = Object.keys(expectedVelocities).map((x) => Number.parseInt(x, 10));
 
