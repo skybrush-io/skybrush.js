@@ -317,6 +317,13 @@ export const createThemeProvider = ({
         },
       },
 
+      // Switches should use secondary color by default
+      MuiSwitch: {
+        defaultProps: {
+          color: 'secondary',
+        },
+      },
+
       // Decrease tab width
       MuiTab: {
         styleOverrides: {
