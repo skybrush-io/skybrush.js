@@ -4,23 +4,39 @@ import DialogTabs, { type DialogTabsProps } from './DialogTabs';
 import DialogToolbar, { type DialogToolbarProps } from './DialogToolbar';
 import DraggableDialog, { type DraggableDialogProps } from './DraggableDialog';
 import FormHeader, { type FormHeaderProps } from './FormHeader';
-import GenericHeaderButton, { type GenericHeaderButtonProps } from './GenericHeaderButton';
-import LabeledStatusLight, { type LabeledStatusLightProps } from './LabeledStatusLight';
-import LargeProgressIndicator, { type LargeProgressIndicatorProps } from './LargeProgressIndicator';
+import GenericHeaderButton, {
+  type GenericHeaderButtonProps,
+} from './GenericHeaderButton';
+import LabeledStatusLight, {
+  type LabeledStatusLightProps,
+} from './LabeledStatusLight';
+import LargeProgressIndicator, {
+  type LargeProgressIndicatorProps,
+} from './LargeProgressIndicator';
 import LazyTooltip, { type LazyTooltipProps } from './LazyTooltip';
 import MiniList, { type MiniListProps } from './MiniList';
 import MiniListDivider from './MiniListDivider';
 import MiniListItem, { type MiniListItemProps } from './MiniListItem';
-import MiniListItemButton, { type MiniListItemButtonProps } from './MiniListItemButton';
-import MiniListItemIcon, { type MiniListItemIconProps } from './MiniListItemIcon';
+import MiniListItemButton, {
+  type MiniListItemButtonProps,
+} from './MiniListItemButton';
+import MiniListItemIcon, {
+  type MiniListItemIconProps,
+} from './MiniListItemIcon';
 import MuteButton, { type MuteButtonProps } from './MuteButton';
 import PlaybackSlider, { type PlaybackSliderProps } from './PlaybackSlider';
 import PlayStopButton, { type PlayStopButtonProps } from './PlayStopButton';
-import PreventDisplaySleep, { type PreventDisplaySleepProps } from './PreventDisplaySleep';
-import QuickSelectionOverlay, { type QuickSelectionOverlayProps } from './QuickSelectionOverlay';
+import PreventDisplaySleep, {
+  type PreventDisplaySleepProps,
+} from './PreventDisplaySleep';
+import QuickSelectionOverlay, {
+  type QuickSelectionOverlayProps,
+} from './QuickSelectionOverlay';
 import SemanticAvatar, { type SemanticAvatarProps } from './SemanticAvatar';
 import SidebarBadge, { type SidebarBadgeProps } from './SidebarBadge';
-import SmallProgressIndicator, { type SmallProgressIndicatorProps } from './SmallProgressIndicator';
+import SmallProgressIndicator, {
+  type SmallProgressIndicatorProps,
+} from './SmallProgressIndicator';
 import StatusLight, { type StatusLightProps } from './StatusLight';
 import StatusPill, { type StatusPillProps } from './StatusPill';
 import StatusText from './StatusText';
