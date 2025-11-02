@@ -128,7 +128,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
 }));
 /* eslint-enable @typescript-eslint/naming-convention */
 
-type StatusPillProps = Readonly<{
+export type StatusPillProps = Readonly<{
   children?: React.ReactNode;
   className?: string;
   inline?: boolean;

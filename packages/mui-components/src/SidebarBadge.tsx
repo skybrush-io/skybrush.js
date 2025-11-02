@@ -5,6 +5,8 @@ const badgeProps: BadgeProps = {
   offset: [8, 8],
 };
 
+export type SidebarBadgeProps = BadgeProps;
+
 /**
  * Special variant of badges shown on the sidebar.
  */

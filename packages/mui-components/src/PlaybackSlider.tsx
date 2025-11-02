@@ -39,7 +39,7 @@ const styles = ({ theme }: { theme: Theme }) => ({
   },
 });
 
-interface PlaybackSliderProps {
+export type PlaybackSliderProps = SliderProps & {
   dragging: boolean;
   duration: number;
   formatPlaybackTimestamp: (timestamp: number) => string;
