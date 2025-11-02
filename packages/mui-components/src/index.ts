@@ -76,6 +76,8 @@ export {
   TransparentList,
 };
 
+export * as keyframes from './keyframes';
+
 export type {
   TooltipProps,
   BackgroundHintProps,
