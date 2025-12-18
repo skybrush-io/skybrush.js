@@ -22,7 +22,7 @@
     "url": "git+https://github.com/skybrush-io/skybrush.js.git"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "npx tsc",
     "clean": "rimraf lib/** *.tgz",
     "prepack": "npm run build",
     "test": "npx jest"
@@ -35,7 +35,7 @@
     "react-dom": "^18"
   },
   "dependencies": {
-    "@react-hookz/web": "^23.1.0",
+    "@react-hookz/web": "^25.2.0",
     "@skybrush/app-theme-mui": "^4.0.3",
     "@tippyjs/react": "^4.2.6",
     "clsx": "^2.1.1",

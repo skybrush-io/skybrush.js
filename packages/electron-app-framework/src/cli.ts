@@ -1,6 +1,6 @@
 import { type Command, program } from 'commander';
 import { app } from 'electron';
-import process from 'node:process';
+import process from 'process';
 
 /**
  * Generic setup function for command line parsers of Electron applications

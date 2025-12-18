@@ -1,6 +1,6 @@
 import { app, Menu, shell } from 'electron';
 import unhandled from 'electron-unhandled';
-import process from 'node:process';
+import process from 'process';
 
 import createMainWindowFactory from './main-window';
 import { defaultUnsafeUrlHandler, logErrorToConsole } from './utils';

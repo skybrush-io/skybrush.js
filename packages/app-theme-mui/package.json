@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@emotion/css": "^11.13.5",
-    "color": "^4.2.3",
+    "color": "^5.0.3",
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
