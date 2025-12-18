@@ -69,7 +69,7 @@ const createExtraStyleFuncForSecondaryAreaStyle = (
  */
 export const secondaryAreaStyle = ({
   inset,
-}: SecondaryAreaStyleOptions = {}) => {
+}: SecondaryAreaStyleOptions = {}): ((theme: Theme) => CSSProperties) => {
   const extraStyleFunc = createExtraStyleFuncForSecondaryAreaStyle(inset);
 
   return (theme: Theme) => {
