@@ -17,7 +17,7 @@
     "@babel/preset-typescript": "^7.28.5",
     "@babel/register": "^7.28.3",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.4",
+    "@types/node": "24.8.1",
     "commander": "^11.1.0",
     "core-js": "^3.47.0",
     "eslint": "^9.39.2",
