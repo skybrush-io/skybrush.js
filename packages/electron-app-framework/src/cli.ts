@@ -1,17 +1,13 @@
-'use strict';
-
-const { program } = require('commander');
-const { app } = require('electron');
-
-// eslint-disable-next-line unicorn/prefer-node-protocol
-const process = require('process');
+import { type Command, program } from 'commander';
+import { app } from 'electron';
+import process from 'node:process';
 
 /**
  * Generic setup function for command line parsers of Electron applications
  * that sets up some common command line options that we use across the
  * Skybrush suite.
  */
-function setupCli(parser = program) {
+export function setupCli(parser: Command = program): Command {
   parser.storeOptionsAsProperties(false);
 
   if (app) {
@@ -28,7 +24,7 @@ function setupCli(parser = program) {
   if (process.platform === 'darwin') {
     // Override .parse() method to strip macOS -psn_ arguments from argv
     const { parse } = parser;
-    parser.parse = (argv, parseOptions = {}, ...rest) => {
+    parser.parse = (argv, parseOptions = { from: 'node' }, ...rest) => {
       if (argv === undefined) {
         argv = process.argv;
         if (process.versions && process.versions.electron) {
@@ -46,4 +42,4 @@ function setupCli(parser = program) {
   return parser;
 }
 
-module.exports = setupCli;
+export default setupCli;

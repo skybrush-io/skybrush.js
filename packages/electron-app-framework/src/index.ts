@@ -1,16 +1,14 @@
-'use strict';
-
-const setupApp = require('./app');
-const setupCli = require('./cli');
-const createMainWindowFactory = require('./main-window');
-const {
+import setupApp from './app';
+import setupCli from './cli';
+import createMainWindowFactory from './main-window';
+import {
   defaultUnsafeUrlHandler,
   isProduction,
   isRunningOnMac,
   usingWebpackDevServer,
-} = require('./utils');
+} from './utils';
 
-module.exports = {
+export {
   createMainWindowFactory,
   defaultUnsafeUrlHandler,
   isProduction,

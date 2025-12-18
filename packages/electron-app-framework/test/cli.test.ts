@@ -1,9 +1,6 @@
-'use strict';
+import process from 'node:process';
 
-// eslint-disable-next-line unicorn/prefer-node-protocol
-const process = require('process');
-
-const setupCli = require('../lib/cli');
+import setupCli from '../src/cli';
 
 test('CLI parser ignores -psn_ arguments on macOS', () => {
   const parser = setupCli();

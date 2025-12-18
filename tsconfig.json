@@ -11,7 +11,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "sourceMap": true
+    "sourceMap": true,
   },
   "exclude": [
     "**/.*/",
@@ -19,8 +19,7 @@
     "**/node_modules",
     "packages/aframe-components",
     "packages/app-theme-material-ui",
-    "packages/electron-app-framework",
     "packages/mavlink",
-    "packages/mui-components/lib"
-  ]
+    "packages/mui-components/lib",
+  ],
 }

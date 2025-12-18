@@ -1,14 +1,13 @@
-'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import url from 'node:url';
 
-/* eslint-disable unicorn/prefer-node-protocol */
-const fs = require('fs');
-const url = require('url');
-const path = require('path');
-/* eslint-enable unicorn/prefer-node-protocol */
+import { usingWebpackDevServer } from './utils';
 
-const { usingWebpackDevServer } = require('./utils');
-
-function getDefaultMainWindowUrlFromRootDir(rootDir, indexPage = 'index.html') {
+export function getDefaultMainWindowUrlFromRootDir(
+  rootDir: string,
+  indexPage = 'index.html'
+): string {
   if (usingWebpackDevServer) {
     /* Load from webpack-dev-server */
     return `https://localhost:8080/${indexPage}`;
@@ -30,7 +29,7 @@ function getDefaultMainWindowUrlFromRootDir(rootDir, indexPage = 'index.html') {
   });
 }
 
-function getDefaultPreloadUrlFromRootDir(rootDir) {
+export function getDefaultPreloadUrlFromRootDir(rootDir: string): string {
   const candidates = usingWebpackDevServer
     ? ['../preload/index.mjs', '../preload/index.js']
     : ['preload.bundle.js'];
@@ -45,15 +44,12 @@ function getDefaultPreloadUrlFromRootDir(rootDir) {
   return path.join(rootDir, candidates[candidates.length - 1]);
 }
 
-function getUrlsFromRootDir(rootDir) {
+export function getUrlsFromRootDir(rootDir: string): {
+  url: string;
+  preload: string;
+} {
   return {
     url: getDefaultMainWindowUrlFromRootDir(rootDir),
     preload: getDefaultPreloadUrlFromRootDir(rootDir),
   };
 }
-
-module.exports = {
-  getDefaultMainWindowUrlFromRootDir,
-  getDefaultPreloadUrlFromRootDir,
-  getUrlsFromRootDir,
-};

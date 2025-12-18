@@ -1,13 +1,21 @@
-'use strict';
+import { app, Menu, shell } from 'electron';
+import unhandled from 'electron-unhandled';
+import process from 'node:process';
 
-const { app, Menu, shell } = require('electron');
-const unhandled = require('electron-unhandled');
+import createMainWindowFactory from './main-window';
+import { defaultUnsafeUrlHandler, logErrorToConsole } from './utils';
 
-// eslint-disable-next-line unicorn/prefer-node-protocol
-const process = require('process');
-
-const createMainWindowFactory = require('./main-window');
-const { defaultUnsafeUrlHandler, logErrorToConsole } = require('./utils');
+type SetupAppOptions = {
+  appMenu?: Electron.Menu | (() => Electron.Menu);
+  enableNavigation?: boolean;
+  isUnsafeUrlTrusted?: (url: string) => boolean;
+  lastWindowClosesApp?: boolean;
+  mainWindow?:
+    | ((app: Electron.App) => Electron.BrowserWindow)
+    | Parameters<typeof createMainWindowFactory>[0];
+  subWindowMenuBar?: boolean;
+  unhandledErrorLogger?: (error: Error) => void;
+};
 
 /**
  * Generic setup function for Electron applications that sets up sane defaults
@@ -32,7 +40,7 @@ const { defaultUnsafeUrlHandler, logErrorToConsole } = require('./utils');
  *         errors that are caught by the Electron framework. The default
  *         implementation logs the exception on the console.
  */
-function setupApp({
+export function setupApp({
   appMenu,
   enableNavigation = false,
   isUnsafeUrlTrusted = defaultUnsafeUrlHandler,
@@ -40,7 +48,7 @@ function setupApp({
   mainWindow,
   subWindowMenuBar = true,
   unhandledErrorLogger = logErrorToConsole,
-} = {}) {
+}: SetupAppOptions = {}) {
   // Register unhandled error handler
   unhandled({
     logger: unhandledErrorLogger,
@@ -61,7 +69,7 @@ function setupApp({
         appMenu = appMenu();
       }
 
-      Menu.setApplicationMenu(appMenu);
+      Menu.setApplicationMenu(appMenu ?? null);
     });
   }
 
@@ -92,18 +100,15 @@ function setupApp({
       'https://localhost',
       'about:blank',
     ];
-    const isUrlAllowedForNavigation = (url) =>
+    const isUrlAllowedForNavigation = (url: string) =>
       typeof url === 'string' &&
       allowedPrefixes.some((prefix) => url.startsWith(prefix));
 
     webContents.on(
       'will-attach-webview',
       (event, webPreferences, parameters) => {
-        // Disable Node.js integration
         webPreferences.nodeIntegration = false;
-
         webPreferences.spellcheck = false;
-        webPreferences.worldSafeExecuteJavaScript = true;
 
         if (!enableNavigation && !isUrlAllowedForNavigation(parameters.src)) {
           // Prevent creating web views that point outside
@@ -165,4 +170,4 @@ function setupApp({
   }
 }
 
-module.exports = setupApp;
+export default setupApp;

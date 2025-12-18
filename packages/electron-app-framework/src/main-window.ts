@@ -1,9 +1,19 @@
-'use strict';
+import {
+  BrowserWindow,
+  type App,
+  type BrowserWindowConstructorOptions,
+} from 'electron';
+import windowStateKeeper from 'electron-window-state';
 
-const { BrowserWindow } = require('electron');
-const windowStateKeeper = require('electron-window-state');
+import { getUrlsFromRootDir } from './urls';
 
-const { getUrlsFromRootDir } = require('./urls');
+type MainWindowOptions = {
+  backgroundColor?: string;
+  debug?: boolean;
+  rootDir?: string | (() => { url: string; preload: string });
+  showMenuBar?: boolean;
+  size?: [number, number];
+} & BrowserWindowConstructorOptions;
 
 /**
  * Creates a factory function that creates the main window of the application
@@ -15,20 +25,20 @@ const { getUrlsFromRootDir } = require('./urls');
  * Any options argument not explicitly mentioned here are forwarded to the
  * BrowserWindow constructor.
  *
- * @param  {Object}   app  the main Electron application object
- * @param  {string}   backgroundColor  background color of the main window.
+ * @param  app  the main Electron application object
+ * @param  backgroundColor  background color of the main window.
  *         This needs to be set for nicer font antialiasing; the default is white.
- * @param  {boolean}  debug          whether to start with the developer tools open
- * @param  {boolean}  showMenuBar    whether the application will have a menu bar
- * @param  {string|function}  rootDir  the directory containing index.html
+ * @param  debug  whether to start with the developer tools open
+ * @param  showMenuBar    whether the application will have a menu bar
+ * @param  rootDir  the directory containing index.html
  *         and preload.bundle.js (typically derived from __dirname), or a
  *         function that can be called with no arguments and that returns the
  *         full path to index.html and to the preloader, as an object with two
  *         keys: 'url' and 'preload'
- * @param  {[number, number]}  size  default size of the main window
- * @return {Object} the main window of the application that was created
+ * @param  size  default size of the main window
+ * @return the main window of the application that was created
  */
-const createMainWindowFactory = ({
+export const createMainWindowFactory = ({
   backgroundColor = '#ffffff',
   debug,
   rootDir,
@@ -36,9 +46,9 @@ const createMainWindowFactory = ({
   size = [1024, 768],
   webPreferences,
   ...rest
-} = {}) => {
-  let instance;
-  let windowState;
+}: MainWindowOptions = {}): ((app: App) => BrowserWindow) => {
+  let instance: BrowserWindow | undefined;
+  let windowState: windowStateKeeper.State;
 
   if (rootDir === undefined) {
     throw new TypeError('rootDir must be specified');
@@ -54,7 +64,7 @@ const createMainWindowFactory = ({
     };
   }
 
-  return (app) => {
+  return (app: App) => {
     if (instance !== undefined) {
       return instance;
     }
@@ -79,7 +89,6 @@ const createMainWindowFactory = ({
       ...rest,
       webPreferences: {
         contextIsolation: true,
-        nativeWindowOpen: true,
         ...webPreferences,
       },
     });
@@ -91,11 +100,15 @@ const createMainWindowFactory = ({
     windowState.manage(instance);
 
     instance.on('closed', () => {
-      windowState.unmanage(instance);
+      windowState.unmanage();
       instance = undefined;
     });
 
     instance.on('ready-to-show', () => {
+      if (!instance) {
+        return;
+      }
+
       instance.show();
       instance.focus();
 
@@ -114,4 +127,4 @@ const createMainWindowFactory = ({
   };
 };
 
-module.exports = createMainWindowFactory;
+export default createMainWindowFactory;
