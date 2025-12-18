@@ -27,16 +27,16 @@
     "test": "npx jest"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.0.1",
-    "immer": "^10.0.2",
+    "@reduxjs/toolkit": "^2.11.2",
+    "immer": "^10.2.0",
     "is-promise": "^4.0.0",
     "localforage": "^1.10.0",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.22",
     "natural-orderby": "^3.0.2",
-    "p-defer": "^4.0.0",
+    "p-defer": "^4.0.1",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-filter": "0.0.22",
-    "redux-saga": "^1.3.0"
+    "redux-saga": "^1.4.2"
   },
   "peerDependencies": {
     "redux": "^5.0.0",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
-    "redux": "^5.0.0"
+    "redux": "^5.0.1"
   },
   "overrides": {
     "redux-persist": {

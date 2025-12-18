@@ -27,11 +27,11 @@
     "electron": ">=39.0"
   },
   "dependencies": {
-    "commander": "^11.0.0",
+    "commander": "^11.1.0",
     "electron-unhandled": "^4.0.1",
     "electron-window-state": "^5.0.3"
   },
   "devDependencies": {
-    "electron": "^39"
+    "electron": "^39.2.7"
   }
 }

@@ -37,12 +37,12 @@
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
-    "@mui/material": "^7.3.3",
+    "@mui/material": "^7.3.6",
     "@types/color": "^4.2.0",
-    "@types/react": "^18.3.26",
+    "@types/react": "^18.3.27",
     "@types/react-transition-group": "^4.4.12",
-    "chart.js": "^3.8.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "chart.js": "^3.9.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }

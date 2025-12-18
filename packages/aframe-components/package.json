@@ -34,10 +34,10 @@
     "aframe": "^1.2.0"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.22",
     "meshline": "3.1.0"
   },
   "devDependencies": {
-    "aframe": "^1.2.0"
+    "aframe": "^1.7.1"
   }
 }
