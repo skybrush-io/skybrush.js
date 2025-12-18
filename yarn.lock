@@ -3898,11 +3898,11 @@ __metadata:
   resolution: "@skybrush/electron-app-framework@workspace:packages/electron-app-framework"
   dependencies:
     commander: ^11.0.0
-    electron: ^38.3.0
+    electron: ^39
     electron-unhandled: ^4.0.1
     electron-window-state: ^5.0.3
   peerDependencies:
-    electron: ^28.0 || ^29.0 || ^30.0 || ^31.0 || ^32.0 || ^33.0 || ^34.0 || ^35.0 || ^36.0 || ^37.0 || ^38.0 || ^39.0
+    electron: ">=39.0"
   languageName: unknown
   linkType: soft
 
@@ -7605,16 +7605,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^38.3.0":
-  version: 38.3.0
-  resolution: "electron@npm:38.3.0"
+"electron@npm:^39":
+  version: 39.2.7
+  resolution: "electron@npm:39.2.7"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^22.7.7
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: e36f70e44e4f5d3fe2be67765bbc70cf74bf85e8e40cfb7cad7d430425d5766816e30548ac12883c7b8f6864bb9307d1b062f8961d76d2bdfde345a60ae241ee
+  checksum: efbefdfd0aad8c147168667a92190c6bb9eafdbd076ad851c123ac6257871fa0522c5fad1536f82536beacf1fb65e81c8e8c8cf35a988343c3bd32ae088c9dd8
   languageName: node
   linkType: hard
 
