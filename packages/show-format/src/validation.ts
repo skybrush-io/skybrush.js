@@ -4,6 +4,7 @@ import {
   EnvironmentType,
   type Camera,
   type ShowSpecification,
+  type PyroProgram,
   type Trajectory,
   type YawControl,
 } from './types.js';
@@ -72,6 +73,10 @@ export function validateShowSpecification(
       isNil(drone.settings.trajectory)
     ) {
       throw new Error('Found drone without trajectory in show specification');
+    }
+
+    if (!isNil(drone.settings.pyro)) {
+      validatePyroProgram(drone.settings.pyro);
     }
 
     validateTrajectory(drone.settings.trajectory);
@@ -156,6 +161,65 @@ export function validateCamera(camera: unknown): asserts camera is Camera {
     throw new TypeError(
       'Camera orientation must be a numeric array of length 4'
     );
+  }
+}
+
+/**
+ * Runs checks on an unknown input to see whether it looks like a valid pyro
+ * program specification.
+ *
+ * Raises appropriate errors if the validation fails.
+ *
+ * @param pyroProgram  the specification to validate
+ *
+ * TODO: Writing these validator functions manually is way too tedious...
+ *       Also, many of them are only partial and error-prone.
+ *       Let's switch to a proper validation library, like `zod`!
+ */
+export function validatePyroProgram(
+  pyroProgram: unknown
+): asserts pyroProgram is PyroProgram {
+  if (!isObject(pyroProgram)) {
+    throw new TypeError('Pyro program must be an object');
+  }
+
+  if (pyroProgram.version !== 1) {
+    throw new Error('Only version 1 pyro programs are supported');
+  }
+
+  if (!Array.isArray(pyroProgram.events)) {
+    throw new TypeError('Pyro program schema mismatch');
+  }
+
+  if (
+    pyroProgram.events.some(
+      (event) =>
+        !Array.isArray(event) ||
+        typeof event[0] !== 'number' ||
+        typeof event[1] !== 'number' ||
+        typeof event[2] !== 'string'
+    )
+  ) {
+    throw new TypeError('Pyro event schema mismatch');
+  }
+
+  if (!isObject(pyroProgram.payloads)) {
+    throw new Error('Pyro program schema mismatch');
+  }
+
+  if (
+    Object.values(pyroProgram.payloads).some(
+      (payload) =>
+        !isObject(payload) ||
+        typeof payload.name !== 'string' ||
+        (!isNil(payload.prefireTime) &&
+          typeof payload.prefireTime !== 'number') ||
+        (!isNil(payload.duration) && typeof payload.duration !== 'number') ||
+        (!isNil(payload.yaw) && typeof payload.yaw !== 'number') ||
+        (!isNil(payload.pitch) && typeof payload.pitch !== 'number')
+    )
+  ) {
+    throw new TypeError('Pyro payload schema mismatch');
   }
 }
 

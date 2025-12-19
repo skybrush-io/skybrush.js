@@ -5,6 +5,7 @@ export type {
   DroneType,
   LightProgram,
   SwarmSpecification,
+  PyroProgram,
   Trajectory,
   TrajectoryKeypoint as TrajectorySegment,
   YawControl,

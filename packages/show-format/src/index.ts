@@ -16,6 +16,7 @@ export {
 } from './trajectory.js';
 export {
   validateShowSpecification,
+  validatePyroProgram,
   validateTrajectory,
   validateYawControl,
 } from './validation.js';
