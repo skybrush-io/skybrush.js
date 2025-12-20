@@ -1,10 +1,10 @@
 import process from 'node:process';
 
-import setupCli from '../src/cli';
+import setupCli from '../dist/cli.js';
 
 test('CLI parser ignores -psn_ arguments on macOS', () => {
   let parsed;
-  let parsedArgs = [];
+  let parsedArgs: string[] = [];
   const parser = setupCli();
 
   // Do not exit when a parsing error occurs
@@ -17,7 +17,7 @@ test('CLI parser ignores -psn_ arguments on macOS', () => {
     parsedArgs.splice(0, 0, ...rest);
   });
 
-  const parse = (args) => parser.parse(args, { from: 'user' });
+  const parse = (args: string[]) => parser.parse(args, { from: 'user' });
 
   const psnArg = process.platform === 'darwin' ? '-psn_34_567829' : '-d';
 

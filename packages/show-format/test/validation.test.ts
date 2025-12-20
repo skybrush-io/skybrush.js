@@ -1,5 +1,5 @@
-import { validateShowSpecification } from '../src';
-import type { ShowSpecification } from '../src/types';
+import { validateShowSpecification } from '../dist/index.js';
+import type { ShowSpecification } from '../dist/types.js';
 
 import * as example from './fixtures/test-show.json';
 

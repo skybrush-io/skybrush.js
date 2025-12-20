@@ -1,12 +1,12 @@
-import setupApp from './app';
-import setupCli from './cli';
-import createMainWindowFactory from './main-window';
+import setupApp from './app.js';
+import setupCli from './cli.js';
+import createMainWindowFactory from './main-window.js';
 import {
   defaultUnsafeUrlHandler,
   isProduction,
   isRunningOnMac,
   usingWebpackDevServer,
-} from './utils';
+} from './utils.js';
 
 export {
   createMainWindowFactory,

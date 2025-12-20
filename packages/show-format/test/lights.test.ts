@@ -1,10 +1,10 @@
 import {
   createLightProgramPlayer,
+  type Color,
   type LightProgram,
   type LightProgramLike,
-  type Color,
-} from '../src';
-import { shuffle } from '../src/utils';
+} from '../dist/index.js';
+import { shuffle } from '../dist/utils.js';
 
 const lightProgram: LightProgram = {
   version: 1,
@@ -130,8 +130,8 @@ test('light program evaluation, shuffled', () => {
 });
 
 test('light program with WAIT_UNTIL opcode', () => {
-  /* light program: 
-  
+  /* light program:
+
   wait until T=4
   set gray 50%
   wait 4 seconds

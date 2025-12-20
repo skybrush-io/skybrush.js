@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 
-import { bisect } from './utils';
+import { bisect } from './utils.js';
 
 export type Segment<Setpoint, Metadata extends unknown[] = unknown[]> = [
   startTime: number,
   setpoint: Setpoint,
-  ...rest: Metadata
+  ...rest: Metadata,
 ];
 
 /**
@@ -15,7 +15,7 @@ export type Segment<Setpoint, Metadata extends unknown[] = unknown[]> = [
 export abstract class SegmentedPlayerImpl<
   SetpointType,
   EvaluatorType,
-  MetadataType extends unknown[] = unknown[]
+  MetadataType extends unknown[] = unknown[],
 > {
   protected readonly _numSegments: number;
   private readonly _segments: Array<Segment<SetpointType, MetadataType>>;

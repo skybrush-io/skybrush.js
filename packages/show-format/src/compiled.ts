@@ -11,13 +11,12 @@ import type {
   ResolverOptions,
 } from '@apidevtools/json-schema-ref-parser';
 import RefParser from '@apidevtools/json-schema-ref-parser';
-import type JSZip from 'jszip';
-import { loadAsync } from 'jszip';
+import JSZip from 'jszip';
 
-import Asset from './asset';
-import type { ShowSpecification } from './types';
-import { idle } from './utils';
-import { validateShowSpecification } from './validation';
+import Asset from './asset.js';
+import type { ShowSpecification } from './types.js';
+import { idle } from './utils.js';
+import { validateShowSpecification } from './validation.js';
 
 /**
  * Helper function that returns whether a given file is likely to be data
@@ -87,7 +86,7 @@ export async function loadShowSpecificationAndZip(
   options: { assets?: boolean } = {}
 ): Promise<{ showSpec: ShowSpecification; zip: JSZip }> {
   const { assets = false } = options;
-  const zip = await loadAsync(file);
+  const zip = await JSZip.loadAsync(file);
 
   // Create a JSON reference to the main show specification file and then
   // let the JSONRef parser handle the rest

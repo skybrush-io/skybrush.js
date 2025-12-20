@@ -5,7 +5,7 @@ import {
 } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 
-import { getUrlsFromRootDir } from './urls';
+import { getUrlsFromRootDir } from './urls.js';
 
 type MainWindowOptions = {
   backgroundColor?: string;

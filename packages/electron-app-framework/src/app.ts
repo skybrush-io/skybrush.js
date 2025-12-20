@@ -2,8 +2,8 @@ import { app, Menu, shell } from 'electron';
 import unhandled from 'electron-unhandled';
 import process from 'process';
 
-import createMainWindowFactory from './main-window';
-import { defaultUnsafeUrlHandler, logErrorToConsole } from './utils';
+import createMainWindowFactory from './main-window.js';
+import { defaultUnsafeUrlHandler, logErrorToConsole } from './utils.js';
 
 type SetupAppOptions = {
   appMenu?: Electron.Menu | (() => Electron.Menu);

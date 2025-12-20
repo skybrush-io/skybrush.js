@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
+    // the settings here are derived from the recommendations here:
+    // https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html#im-writing-a-library
+    //
+    // Modifications:
+    // - target is set to es2022 because we want to use Array.at()
     "allowJs": true,
     "declaration": true,
-    "jsx": "react",
-    "target": "es2022",
-    "module": "es2015",
-    "moduleResolution": "bundler",
-    "esModuleInterop": true,
+    "declarationMap": true,
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "target": "es2022", // set to the *lowest* target to support
+    "module": "node18",
     "strict": true,
     "sourceMap": true,
+    "verbatimModuleSyntax": true
   },
   "exclude": [
     "**/.*/",
@@ -20,6 +23,6 @@
     "packages/aframe-components",
     "packages/app-theme-material-ui",
     "packages/mavlink",
-    "packages/mui-components/lib",
-  ],
+    "packages/mui-components/lib"
+  ]
 }

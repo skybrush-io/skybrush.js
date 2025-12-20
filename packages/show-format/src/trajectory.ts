@@ -1,7 +1,7 @@
 import { Bezier } from 'bezier-js';
 
-import { iterPairs, slice } from './generators';
-import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
+import { iterPairs, slice } from './generators.js';
+import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer.js';
 import type {
   TimedBezierCurve,
   TimeWindow,
@@ -9,8 +9,8 @@ import type {
   TrajectorySegment,
   Vector3,
   Vector3Tuple,
-} from './types';
-import { validateTrajectory } from './validation';
+} from './types.js';
+import { validateTrajectory } from './validation.js';
 
 /**
  * Type specification for a pair of functions that can be used to evaluate the
@@ -18,7 +18,7 @@ import { validateTrajectory } from './validation';
  */
 type PosVelEvaluator = [
   (result: Vector3, ratio: number) => void,
-  (result: Vector3, ratio: number) => void
+  (result: Vector3, ratio: number) => void,
 ];
 
 const _DEFAULT_SETPOINT: Vector3Tuple = [0, 0, 0];

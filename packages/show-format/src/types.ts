@@ -11,7 +11,7 @@ export type {
   YawControlSetpoint as YawControlSegment,
 } from '@skybrush/file-formats-doc/skyc';
 
-import type Asset from './asset';
+import type Asset from './asset.js';
 
 /**
  * Enum that specifies whether the show is an outdoor or an indoor show

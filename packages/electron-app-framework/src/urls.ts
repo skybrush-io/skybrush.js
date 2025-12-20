@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import url from 'url';
 
-import { usingWebpackDevServer } from './utils';
+import { usingWebpackDevServer } from './utils.js';
 
 export function getDefaultMainWindowUrlFromRootDir(
   rootDir: string,

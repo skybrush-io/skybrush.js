@@ -1,8 +1,8 @@
 import Denque from 'denque';
 import { atob } from 'js-base64';
 
-import type { Color, LightProgram } from './types';
-import { isArrayBuffer, isObject } from './utils';
+import type { Color, LightProgram } from './types.js';
+import { isArrayBuffer, isObject } from './utils.js';
 
 interface LightProgramExecutor {
   execute: () => Generator<ExecutorState, void, void>;

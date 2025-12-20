@@ -5,9 +5,9 @@ import {
   timedBezierCurveToTrajectorySegment,
   trajectorySegmentsInTimeWindow,
   trajectorySegmentsToTimedBezierCurve,
-} from '../src';
-import type { Trajectory, Vector3Tuple } from '../src/types';
-import { shuffle } from '../src/utils';
+} from '../dist/index.js';
+import type { Trajectory, Vector3Tuple } from '../dist/types.js';
+import { shuffle } from '../dist/utils.js';
 
 const trajectory: Trajectory = {
   version: 1,

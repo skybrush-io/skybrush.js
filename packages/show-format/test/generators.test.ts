@@ -1,4 +1,4 @@
-import { iterPairs, slice } from '../src/generators';
+import { iterPairs, slice } from '../dist/generators.js';
 
 test('test iterPairs', () => {
   const items = [11, 22, 33, 44, 55, 66, 77, 88, 99];

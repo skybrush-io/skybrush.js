@@ -1,4 +1,4 @@
-import { MAX_DRONE_COUNT } from './constants';
+import { MAX_DRONE_COUNT } from './constants.js';
 import {
   ENVIRONMENT_TYPES,
   EnvironmentType,
@@ -6,8 +6,8 @@ import {
   type ShowSpecification,
   type Trajectory,
   type YawControl,
-} from './types';
-import { isNil, isObject } from './utils';
+} from './types.js';
+import { isNil, isObject } from './utils.js';
 
 /**
  * Validates the version number in the given show specification. Raises an

@@ -2,7 +2,7 @@ import { Buffer } from 'node:buffer';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-import { Asset, loadCompiledShow } from '../src';
+import { Asset, loadCompiledShow } from '../dist/index.js';
 
 const load = async (fixture: string, options?: { assets: boolean }) => {
   const data = await fs.promises.readFile(

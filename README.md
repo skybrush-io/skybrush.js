@@ -10,3 +10,13 @@ understand the licensing of an individual library.
 
 Join our [Discord server](https://skybrush.io/r/discord) for announcements and
 community support.
+
+## Running unit tests
+
+We use `jest` for unit tests. `jest` can be executed from the _root_ of the
+monorepo to test all projects, or from an individual package to run the
+unit test of that package only.
+
+Packages need to be _built_ (with `npm build` on a per-package basis, or
+`lerna build` for all packages) before the tests can be run. This is because
+the tests run against the transpiled code, not the source code.

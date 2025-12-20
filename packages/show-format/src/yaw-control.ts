@@ -1,7 +1,7 @@
-import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer';
-import type { Vector3 as Euler, YawControl } from './types';
-import { toRadians } from './utils';
-import { validateYawControl } from './validation';
+import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer.js';
+import type { Vector3 as Euler, YawControl } from './types.js';
+import { toRadians } from './utils.js';
+import { validateYawControl } from './validation.js';
 
 const degreeSegmentToRadianSegment = ([
   timestamp,
@@ -19,7 +19,7 @@ const degreeSegmentToRadianSegment = ([
  */
 type YawEvaluator = [
   (result: Euler, ratio: number) => void,
-  (result: Euler, ratio: number) => void
+  (result: Euler, ratio: number) => void,
 ];
 
 /**
