@@ -14,11 +14,20 @@
  * be done at some point in the future.
  */
 
-import isEmpty from 'lodash-es/isEmpty';
+import { isEmpty } from 'lodash-es';
 
-import AFrame from '../lib/_aframe';
-import { KEYCODE_TO_CODE } from '../lib/constants';
-import { shouldCaptureKeyEvent } from '../lib/utils';
+import AFrame from '../_aframe.js';
+import { KEYCODE_TO_CODE } from '../constants.js';
+import type {
+  Position,
+  PositionObject,
+  Quaternion,
+  QuaternionObject,
+} from '../spatial.js';
+import {
+  shouldCaptureKeyEvent,
+  type KeyboardEventAcceptanceCondition,
+} from '../utils.js';
 
 const { THREE } = AFrame;
 
@@ -41,12 +50,19 @@ const KEYS = new Set([
 
 const HALF_PI = Math.PI / 2;
 
-const toVector3 = (x) => {
+const isPerspectiveCamera = (x: any): x is AFrame.THREE.PerspectiveCamera =>
+  x && x.isPerspectiveCamera;
+const isVector3 = (x: any): x is AFrame.THREE.Vector3 => x && x.isVector3;
+
+const toVector3 = (
+  x: Position | PositionObject | AFrame.THREE.Vector3 | null | undefined
+): AFrame.THREE.Vector3 => {
   if (!x) {
     return new THREE.Vector3();
   }
 
-  if (x.isVector3) {
+  // @ts-ignore
+  if (isVector3(x)) {
     return x;
   }
 
@@ -57,7 +73,9 @@ const toVector3 = (x) => {
   return new THREE.Vector3(x.x || 0, x.y || 0, x.z || 0);
 };
 
-const toQuaternion = (x) => {
+const toQuaternion = (
+  x: Quaternion | QuaternionObject | AFrame.THREE.Quaternion | null | undefined
+): AFrame.THREE.Quaternion => {
   if (!x) {
     return new THREE.Quaternion(0, 0, 0, 1);
   }
@@ -72,6 +90,114 @@ const toQuaternion = (x) => {
 
   return new THREE.Quaternion(x.x, x.y, x.z, x.w);
 };
+
+export type AdvancedCameraControlsProps = {
+  acceleration: number; /* [m/s] */
+  acceptsKeyboardEvent: KeyboardEventAcceptanceCondition;
+  adAxis: 'x' | 'y' | 'z';
+  adEnabled: boolean;
+  adInverted: boolean;
+  dragSensitivity: number; /* [1e-3 rad/pixel] */
+  ecAxis: 'x' | 'y' | 'z';
+  ecEnabled: boolean;
+  ecInverted: boolean;
+  embedded: boolean;
+  enabled: boolean;
+  fly: boolean;
+  maxAltitude: number;
+  minAltitude: number;
+  maxZoom: number;
+  minZoom: number;
+  mouseDragEnabled: boolean;
+  mouseWheelEnabled: boolean;
+  mouseWheelInverted: boolean;
+  mouseWheelSensitivity: number; /* [zoom unit / 100 pixel] */
+  reverseMouseDrag: boolean;
+  reverseTouchDrag: boolean;
+  wsAxis: 'x' | 'y' | 'z';
+  wsEnabled: boolean;
+  wsInverted: boolean;
+  targetPosition: AFrame.THREE.Vector3;
+  targetLookAt: AFrame.THREE.Vector3;
+  targetZoom: number;
+  transitionDuration: number; /* [s] */
+  touchDragEnabled: boolean;
+  zoomStep: number;
+};
+
+export type TransitionTarget = {
+  duration?: number | null | undefined;
+  position: AFrame.THREE.Vector3;
+  lookAt?: AFrame.THREE.Vector3;
+  quaternion?: Parameters<typeof toQuaternion>[0];
+};
+
+type AdvancedCameraControlsComponent =
+  AFrame.Component<AdvancedCameraControlsProps> & {
+    keys: Record<string, boolean>;
+    velocity: AFrame.THREE.Vector3;
+    easing: number;
+    mouseDrag: {
+      active: boolean;
+      initialRotation: AFrame.THREE.Euler;
+      startedAtX: number | null;
+      startedAtY: number | null;
+    };
+    transition: {
+      active: boolean;
+      startedAt: number | null;
+      endsAt: number | null;
+      duration: number | null;
+      positionCurve: AFrame.THREE.CubicBezierCurve3 | null;
+      rotationFunc: ((t: number) => AFrame.THREE.Quaternion) | null;
+    };
+    _zoomOperation: {
+      active: boolean;
+      startedAt: number | null;
+      endsAt: number | null;
+      duration: number | null;
+      curve: AFrame.THREE.CubicBezierCurve | null;
+      velocity: number;
+    };
+
+    startTransitionTo: (target: TransitionTarget) => void;
+    startZoomTo: (zoom: number) => void;
+    zoomInBy: (delta: number) => void;
+    zoomInByMultiplicative: (factor: number) => void;
+
+    _bindMethods: () => void;
+    _tickKeyboardControl: (time: number, delta: number) => void;
+    _tickTransition: (time: number, delta: number) => void;
+    _tickZoom: (time: number, delta: number) => void;
+    _updateVelocity: (delta: number) => void;
+    _getMovementVector: (delta: number) => AFrame.THREE.Vector3;
+    _handleDragRotation: (x: number, y: number, reversed: boolean) => void;
+    _startDragRotationAt: (x: number, y: number) => void;
+    _startTransition: () => void;
+    _startZoom: () => void;
+    _finishDragRotation: () => void;
+    _finishTransition: (options?: { clearVelocity: boolean }) => void;
+    _finishZoom: () => void;
+    _getCurrentCameraZoom: () => number | null;
+    _onBlur: () => void;
+    _onFocus: () => void;
+    _onKeyDown: (event: KeyboardEvent) => void;
+    _onKeyUp: (event: KeyboardEvent) => void;
+    _onMouseDown: (event: MouseEvent) => void;
+    _onMouseMove: (event: MouseEvent) => void;
+    _onMouseUp: (event: MouseEvent) => void;
+    _onMouseWheel: (event: WheelEvent) => void;
+    _onTouchStart: (event: TouchEvent) => void;
+    _onTouchMove: (event: TouchEvent) => void;
+    _onTouchEnd: (event: TouchEvent) => void;
+    _onVisibilityChange: () => void;
+    _attachKeyEventListeners: () => void;
+    _removeKeyEventListeners: () => void;
+    _attachMouseEventListeners: () => void;
+    _removeMouseEventListeners: () => void;
+    _attachVisibilityEventListeners: () => void;
+    _removeVisibilityEventListeners: () => void;
+  };
 
 AFrame.registerComponent('advanced-camera-controls', {
   dependencies: ['position', 'rotation', 'camera'],
@@ -115,7 +241,7 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   // -- Component lifecycle methods start here --
 
-  init() {
+  init(this: AdvancedCameraControlsComponent) {
     // To keep track of the pressed keys.
     this.keys = {};
 
@@ -158,7 +284,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     this._attachVisibilityEventListeners();
   },
 
-  tick(time, delta) {
+  tick(this: AdvancedCameraControlsComponent, time: number, delta: number) {
     if (this.transition.active) {
       this._tickTransition(time, delta);
     } else {
@@ -170,24 +296,27 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  remove() {
+  remove(this: AdvancedCameraControlsComponent) {
     this._removeKeyEventListeners();
     this._removeMouseEventListeners();
     this._removeVisibilityEventListeners();
   },
 
-  play() {
+  play(this: AdvancedCameraControlsComponent) {
     this._attachKeyEventListeners();
     this._attachMouseEventListeners();
   },
 
-  pause() {
+  pause(this: AdvancedCameraControlsComponent) {
     this.keys = {};
     this._removeKeyEventListeners();
     this._removeMouseEventListeners();
   },
 
-  update(oldData) {
+  update(
+    this: AdvancedCameraControlsComponent,
+    oldData: AdvancedCameraControlsProps
+  ) {
     const {
       targetLookAt: oldTargetLookAt,
       targetPosition: oldTargetPosition,
@@ -215,7 +344,11 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   // -- Component lifecycle methods end here --
 
-  _tickKeyboardControl(time, delta) {
+  _tickKeyboardControl(
+    this: AdvancedCameraControlsComponent,
+    time: number,
+    delta: number
+  ) {
     const data = this.data;
     const velocity = this.velocity;
 
@@ -263,18 +396,22 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   _tickTransition: (function () {
     const point = new THREE.Vector3();
-    return function (time, delta) {
+    return function (
+      this: AdvancedCameraControlsComponent,
+      time: number,
+      delta: number
+    ) {
       if (this.transition.startedAt === null) {
         this.transition.startedAt = time - delta;
         this.transition.endsAt =
-          this.transition.startedAt + this.transition.duration;
+          this.transition.startedAt + (this.transition.duration ?? 0);
       }
 
       const ratio = Math.min(
         1,
-        (time - this.transition.startedAt) / this.transition.duration
+        (time - this.transition.startedAt) / (this.transition.duration ?? 1)
       );
-      const curve = this.transition.positionCurve;
+      const curve = this.transition.positionCurve!;
       const rotation = this.transition.rotationFunc;
 
       // Get the new position
@@ -288,9 +425,9 @@ AFrame.registerComponent('advanced-camera-controls', {
 
       // Commit the new position and rotation
       this.el.object3D.position.copy(point);
-      this.el.object3D.quaternion.copy(rotation(ratio));
+      this.el.object3D.quaternion.copy(rotation!(ratio));
 
-      if (time >= this.transition.endsAt) {
+      if (time >= (this.transition.endsAt ?? 0)) {
         this._finishTransition({ clearVelocity: true });
       }
     };
@@ -298,37 +435,42 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   _tickZoom: (function () {
     const point = new THREE.Vector2();
-    return function (time, delta) {
+    return function (
+      this: AdvancedCameraControlsComponent,
+      time: number,
+      delta: number
+    ) {
       if (this._zoomOperation.startedAt === null) {
         this._zoomOperation.startedAt = time - delta;
         this._zoomOperation.endsAt =
-          this._zoomOperation.startedAt + this._zoomOperation.duration;
+          this._zoomOperation.startedAt + (this._zoomOperation.duration ?? 0);
       }
 
       const ratio = Math.min(
         1,
-        (time - this._zoomOperation.startedAt) / this._zoomOperation.duration
+        (time - this._zoomOperation.startedAt) /
+          (this._zoomOperation.duration ?? 1)
       );
-      const curve = this._zoomOperation.curve;
+      const curve = this._zoomOperation.curve!;
 
       curve.getPoint(ratio, point);
 
       const scene = this.el ? this.el.sceneEl : null;
       const camera = scene ? scene.camera : null;
-      if (camera) {
+      if (isPerspectiveCamera(camera)) {
         this._zoomOperation.velocity = (point.x - camera.zoom) / delta;
         camera.zoom = point.x;
         camera.updateProjectionMatrix();
       }
 
-      if (!camera || time >= this._zoomOperation.endsAt) {
+      if (!camera || time >= this._zoomOperation.endsAt!) {
         this._finishZoom();
       }
     };
   })(),
 
   /* eslint-disable complexity */
-  _updateVelocity(delta) {
+  _updateVelocity(this: AdvancedCameraControlsComponent, delta: number) {
     const { data, keys, velocity } = this;
     const { adAxis, wsAxis, ecAxis } = data;
 
@@ -420,7 +562,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     const directionVector = new THREE.Vector3(0, 0, 0);
     const rotationEuler = new THREE.Euler(0, 0, 0, 'YXZ');
 
-    return function (delta) {
+    return function (this: AdvancedCameraControlsComponent, delta: number) {
       const rotation = this.el.object3D.rotation;
       const velocity = this.velocity;
 
@@ -433,8 +575,8 @@ AFrame.registerComponent('advanced-camera-controls', {
         const xRotation = this.data.fly
           ? rotation.x
           : Math.abs(rotation.x) < HALF_PI
-          ? 0
-          : Math.PI;
+            ? 0
+            : Math.PI;
 
         // Transform direction relative to heading.
         rotationEuler.set(xRotation, rotation.y, rotation.z);
@@ -447,10 +589,15 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   // -- Transition and drag rotation management --
 
-  _handleDragRotation(x, y, reversed) {
+  _handleDragRotation(
+    this: AdvancedCameraControlsComponent,
+    x: number,
+    y: number,
+    reversed: boolean
+  ) {
     const { initialRotation, startedAtX, startedAtY } = this.mouseDrag;
-    const deltaX = x - startedAtX;
-    const deltaY = y - startedAtY;
+    const deltaX = x - startedAtX!;
+    const deltaY = y - startedAtY!;
     const direction = ((reversed ? 1 : -1) * this.data.dragSensitivity) / 1000;
     const xAxisReversal = Math.abs(initialRotation.z) >= HALF_PI ? -1 : 1;
 
@@ -461,7 +608,11 @@ AFrame.registerComponent('advanced-camera-controls', {
     );
   },
 
-  _startDragRotationAt(x, y) {
+  _startDragRotationAt(
+    this: AdvancedCameraControlsComponent,
+    x: number,
+    y: number
+  ) {
     if (this.transition.active) {
       this._finishTransition({ clearVelocity: true });
     }
@@ -472,8 +623,8 @@ AFrame.registerComponent('advanced-camera-controls', {
     this.mouseDrag.startedAtY = y;
   },
 
-  _startTransition() {
-    const target = {
+  _startTransition(this: AdvancedCameraControlsComponent) {
+    const target: TransitionTarget = {
       position: this.data.targetPosition,
     };
 
@@ -484,11 +635,11 @@ AFrame.registerComponent('advanced-camera-controls', {
     this.startTransitionTo(target);
   },
 
-  _startZoom() {
+  _startZoom(this: AdvancedCameraControlsComponent) {
     this.startZoomTo(this.data.targetZoom);
   },
 
-  resetZoom() {
+  resetZoom(this: AdvancedCameraControlsComponent) {
     this.startZoomTo(1);
   },
 
@@ -505,10 +656,13 @@ AFrame.registerComponent('advanced-camera-controls', {
     const q1 = new THREE.Quaternion();
     const q2 = new THREE.Quaternion();
 
-    const easingFunc = (x) => -(Math.cos(Math.PI * x) - 1) / 2;
-    const rotationFunc = (t) => q2.copy(q0).slerp(q1, easingFunc(t));
+    const easingFunc = (x: number) => -(Math.cos(Math.PI * x) - 1) / 2;
+    const rotationFunc = (t: number) => q2.copy(q0).slerp(q1, easingFunc(t));
 
-    return function ({ duration, position, quaternion, lookAt }) {
+    return function (
+      this: AdvancedCameraControlsComponent,
+      { duration, position, quaternion, lookAt }: TransitionTarget
+    ) {
       position = position ? toVector3(position) : this.el.object3D.position;
       if (lookAt) {
         // Calculate a rotation matrix that looks from targetPosition to lookAt
@@ -556,13 +710,13 @@ AFrame.registerComponent('advanced-camera-controls', {
     const zoomVel = new THREE.Vector2();
     const curve = new THREE.CubicBezierCurve(v0, v1, v2, v3);
 
-    return function (zoom) {
+    return function (this: AdvancedCameraControlsComponent, zoom: number) {
       if (!this.el || !this.el.sceneEl) {
         return;
       }
 
       const camera = this.el.sceneEl.camera;
-      if (!camera) {
+      if (!isPerspectiveCamera(camera)) {
         return;
       }
 
@@ -587,21 +741,24 @@ AFrame.registerComponent('advanced-camera-controls', {
     };
   })(),
 
-  zoomInBy(delta) {
+  zoomInBy(this: AdvancedCameraControlsComponent, delta: number) {
     const currentZoom = this._getCurrentCameraZoom();
     if (currentZoom && currentZoom > 0) {
       this.startZoomTo(currentZoom + delta);
     }
   },
 
-  zoomInByMultiplicative(delta) {
+  zoomInByMultiplicative(
+    this: AdvancedCameraControlsComponent,
+    factor: number
+  ) {
     const currentZoom = this._getCurrentCameraZoom();
     if (currentZoom && currentZoom > 0) {
-      this.startZoomTo(currentZoom * delta);
+      this.startZoomTo(currentZoom * factor);
     }
   },
 
-  _finishDragRotation() {
+  _finishDragRotation(this: AdvancedCameraControlsComponent) {
     if (this.mouseDrag.active) {
       this.mouseDrag.active = false;
       this.mouseDrag.startedAtX = null;
@@ -609,7 +766,10 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _finishTransition(options) {
+  _finishTransition(
+    this: AdvancedCameraControlsComponent,
+    options: { clearVelocity?: boolean } = {}
+  ) {
     this.transition.active = false;
     this.transition.startedAt = null;
     this.transition.endsAt = null;
@@ -622,7 +782,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _finishZoom() {
+  _finishZoom(this: AdvancedCameraControlsComponent) {
     this._zoomOperation.active = false;
     this._zoomOperation.startedAt = null;
     this._zoomOperation.endsAt = null;
@@ -633,15 +793,17 @@ AFrame.registerComponent('advanced-camera-controls', {
 
   // -- Event listener management --
 
-  _attachKeyEventListeners() {
+  _attachKeyEventListeners(this: AdvancedCameraControlsComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
-    target.addEventListener('keydown', this._onKeyDown);
-    target.addEventListener('keyup', this._onKeyUp);
+    if (target) {
+      target.addEventListener('keydown', this._onKeyDown as any);
+      target.addEventListener('keyup', this._onKeyUp as any);
+    }
   },
 
-  _attachMouseEventListeners() {
+  _attachMouseEventListeners(this: AdvancedCameraControlsComponent) {
     const { sceneEl } = this.el;
-    const canvasElement = sceneEl.canvas;
+    const canvasElement = sceneEl!.canvas;
 
     canvasElement.addEventListener('mousedown', this._onMouseDown, false);
     window.addEventListener('mousemove', this._onMouseMove, false);
@@ -654,21 +816,23 @@ AFrame.registerComponent('advanced-camera-controls', {
     window.addEventListener('touchend', this._onTouchEnd, false);
   },
 
-  _attachVisibilityEventListeners() {
+  _attachVisibilityEventListeners(this: AdvancedCameraControlsComponent) {
     window.addEventListener('blur', this._onBlur);
     window.addEventListener('focus', this._onFocus);
     document.addEventListener('visibilitychange', this._onVisibilityChange);
   },
 
-  _removeKeyEventListeners() {
+  _removeKeyEventListeners(this: AdvancedCameraControlsComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
-    target.removeEventListener('keydown', this._onKeyDown);
-    target.removeEventListener('keyup', this._onKeyUp);
+    if (target) {
+      target.removeEventListener('keydown', this._onKeyDown as any);
+      target.removeEventListener('keyup', this._onKeyUp as any);
+    }
   },
 
-  _removeMouseEventListeners() {
+  _removeMouseEventListeners(this: AdvancedCameraControlsComponent) {
     const { sceneEl } = this.el;
-    const canvasElement = sceneEl.canvas;
+    const canvasElement = sceneEl!.canvas;
 
     canvasElement.removeEventListener('mousedown', this._onMouseDown);
     window.removeEventListener('mousemove', this._onMouseMove);
@@ -684,18 +848,18 @@ AFrame.registerComponent('advanced-camera-controls', {
   _removeVisibilityEventListeners() {
     window.removeEventListener('blur', this._onBlur);
     window.removeEventListener('focus', this._onFocus);
-    document.removeEventListener('visibilitychange', this.onVisibilityChange);
+    document.removeEventListener('visibilitychange', this._onVisibilityChange);
   },
 
-  _onBlur() {
+  _onBlur(this: AdvancedCameraControlsComponent) {
     this.pause();
   },
 
-  _onFocus() {
+  _onFocus(this: AdvancedCameraControlsComponent) {
     this.play();
   },
 
-  _onVisibilityChange() {
+  _onVisibilityChange(this: AdvancedCameraControlsComponent) {
     if (document.hidden) {
       this._onBlur();
     } else {
@@ -703,7 +867,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _onKeyDown(event) {
+  _onKeyDown(this: AdvancedCameraControlsComponent, event: KeyboardEvent) {
     if (
       !this.data.embedded &&
       !shouldCaptureKeyEvent(event, this.data.acceptsKeyboardEvent)
@@ -729,18 +893,18 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _onKeyUp(event) {
+  _onKeyUp(this: AdvancedCameraControlsComponent, event: KeyboardEvent) {
     const code = event.code || KEYCODE_TO_CODE[event.keyCode];
     delete this.keys[code];
   },
 
-  _onMouseDown(event) {
+  _onMouseDown(this: AdvancedCameraControlsComponent, event: MouseEvent) {
     if (this.data.enabled && this.data.mouseDragEnabled && event.button === 0) {
       this._startDragRotationAt(event.screenX, event.screenY);
     }
   },
 
-  _onMouseMove(event) {
+  _onMouseMove(this: AdvancedCameraControlsComponent, event: MouseEvent) {
     if (
       this.mouseDrag.active &&
       this.data.enabled &&
@@ -754,11 +918,11 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _onMouseUp() {
+  _onMouseUp(this: AdvancedCameraControlsComponent) {
     this._finishDragRotation();
   },
 
-  _onMouseWheel(event) {
+  _onMouseWheel(this: AdvancedCameraControlsComponent, event: WheelEvent) {
     if (this.data.enabled && this.data.mouseWheelEnabled) {
       const multiplier =
         (event.deltaMode === 0x01 ? 16 : 1) *
@@ -769,7 +933,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _onTouchStart(event) {
+  _onTouchStart(this: AdvancedCameraControlsComponent, event: TouchEvent) {
     if (
       this.data.enabled &&
       this.data.touchDragEnabled &&
@@ -782,7 +946,7 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _onTouchMove(event) {
+  _onTouchMove(this: AdvancedCameraControlsComponent, event: TouchEvent) {
     if (
       this.mouseDrag.active &&
       this.data.enabled &&
@@ -796,13 +960,13 @@ AFrame.registerComponent('advanced-camera-controls', {
     }
   },
 
-  _onTouchEnd() {
+  _onTouchEnd(this: AdvancedCameraControlsComponent) {
     this._finishDragRotation();
   },
 
   // -- Miscellaneous --
 
-  _bindMethods() {
+  _bindMethods(this: AdvancedCameraControlsComponent) {
     this._onBlur = this._onBlur.bind(this);
     this._onFocus = this._onFocus.bind(this);
 
@@ -822,16 +986,17 @@ AFrame.registerComponent('advanced-camera-controls', {
     this._onVisibilityChange = this._onVisibilityChange.bind(this);
   },
 
-  _getCurrentCameraZoom() {
+  _getCurrentCameraZoom(this: AdvancedCameraControlsComponent) {
     // This takes into account the current zoom operation and pretends that the
     // camera has already reached the target of the operation
-    if (this.el && this.el.sceneEl && this.el.sceneEl.camera) {
-      const camera = this.el.sceneEl.camera;
-      return this._zoomOperation.active
-        ? this._zoomOperation.curve.v3.x
-        : camera.zoom;
+    const camera = this.el?.sceneEl?.camera;
+    if (isPerspectiveCamera(camera)) {
+      return (
+        (this._zoomOperation.active ? this._zoomOperation.curve?.v3.x : null) ??
+        camera.zoom
+      );
+    } else {
+      return null;
     }
-
-    return null;
   },
 });

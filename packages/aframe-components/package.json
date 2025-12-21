@@ -2,23 +2,22 @@
   "name": "@skybrush/aframe-components",
   "version": "2.0.2",
   "description": "AFrame components commonly used in all Skybrush apps",
+  "type": "module",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
   "license": "MIT",
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*/index.d.ts",
+      "default": "./dist/*/index.js"
+    }
   },
   "files": [
-    "advanced-camera-controls",
-    "altitude-control",
-    "better-wasd-controls",
-    "deallocate",
-    "factories",
-    "lib",
-    "meshline",
-    "sprite"
+    "dist"
   ],
   "publishConfig": {
     "registry": "https://npm.collmot.com"
@@ -28,6 +27,9 @@
     "url": "git+https://github.com/skybrush-io/skybrush.js.git"
   },
   "scripts": {
+    "build": "npx tsc",
+    "clean": "rimraf dist/** *.tgz",
+    "prepack": "npm run build",
     "test": "npx jest"
   },
   "peerDependencies": {
@@ -38,6 +40,7 @@
     "meshline": "3.1.0"
   },
   "devDependencies": {
+    "@types/aframe": "^1.2.9",
     "aframe": "^1.7.1"
   }
 }

@@ -1,6 +1,25 @@
-import AFrame from './_aframe';
+import AFrame from './_aframe.js';
 
 const { THREE } = AFrame;
+
+export type EulerRotation = [number, number, number];
+export type Position = [number, number, number];
+export type Quaternion = [number, number, number, number];
+export type Pose = {
+  position: Position;
+  orientation: Quaternion;
+};
+
+export type PositionObject = { x: number; y: number; z: number };
+export type QuaternionObject = { w: number; x: number; y: number; z: number };
+
+export type ThreeJsPositionTuple = [number, number, number];
+export type ThreeJsQuaternionTuple = [number, number, number, number];
+export type ThreeJsRotationTuple = [number, number, number];
+export type ThreeJsPose = {
+  position: ThreeJsPositionTuple;
+  rotation: ThreeJsRotationTuple;
+};
 
 /*
  * In Skybrush conventions, a camera that is rotated by [0, 0, 0, 1] (i.e.
@@ -11,7 +30,7 @@ const { THREE } = AFrame;
  * In Three.js, the Y axis points upwards, the X axis points right and the Z
  * axis points backward so we need to rotate Skybrush quaternions to Three.js
  * quaternions and vice versa.
- * 
+ *
  * Skybrush represents quaternions as arrays in [w, x, y, z] order, while
  * Three.js represents them in [x, y, z, w] order. Functions in this module
  * also account for the differences in axis ordering.
@@ -31,12 +50,17 @@ const SB_TO_THREE_QUAT = new THREE.Quaternion();
 SB_TO_THREE_QUAT.copy(THREE_TO_SB_QUAT);
 SB_TO_THREE_QUAT.invert();
 
-const createRotationFuncFromQuaternion = (rotation) => {
+const createRotationFuncFromQuaternion = <
+  S extends number[],
+  T extends number[],
+>(
+  rotation: AFrame.THREE.Quaternion
+) => {
   const quat = new THREE.Quaternion();
-  return (wxyz) => {
+  return (wxyz: S): T => {
     quat.set(wxyz[1], wxyz[2], wxyz[3], wxyz[0]);
     quat.premultiply(rotation);
-    return [quat.w, quat.x, quat.y, quat.z];
+    return [quat.w, quat.x, quat.y, quat.z] as T;
   };
 };
 
@@ -46,15 +70,19 @@ const createRotationFuncFromQuaternion = (rotation) => {
  * Function that takes a Skybrush rotation quaternion and transforms it into an
  * equivalent Three.js rotation quaternion.
  */
-export const skybrushToThreeJsQuaternion =
-  createRotationFuncFromQuaternion(SB_TO_THREE_QUAT);
+export const skybrushToThreeJsQuaternion = createRotationFuncFromQuaternion<
+  Quaternion,
+  ThreeJsQuaternionTuple
+>(SB_TO_THREE_QUAT);
 
 /**
  * Function that takes a Three.js rotation quaternion and transforms it into an
  * equivalent Skybrush rotation quaternion.
  */
-export const threeJsToSkybrushQuaternion =
-  createRotationFuncFromQuaternion(THREE_TO_SB_QUAT);
+export const threeJsToSkybrushQuaternion = createRotationFuncFromQuaternion<
+  ThreeJsQuaternionTuple,
+  Quaternion
+>(THREE_TO_SB_QUAT);
 
 /**
  * Converts a Skybrush rotation given as extrinsic Tait-Bryan angles in XYZ
@@ -64,7 +92,7 @@ export const skybrushRotationToQuaternion = (() => {
   const euler = new THREE.Euler();
   const quat = new THREE.Quaternion();
   const { degToRad } = THREE.MathUtils;
-  return (rotation) => {
+  return (rotation: EulerRotation): Quaternion => {
     // Skybrush rotations are given as extrinsic Tait-Bryan angles in XYZ
     // order. Extrinsic rotations in XYZ order are equivalent to intrinsic
     // rotations in ZYX order. Three.js uses intrinsic rotations.
@@ -88,7 +116,7 @@ export const skybrushQuaternionToThreeJsRotation = (() => {
   const euler = new THREE.Euler();
   const { radToDeg } = THREE.MathUtils;
 
-  return (wxyz) => {
+  return (wxyz: Quaternion): ThreeJsRotationTuple => {
     quat.set(wxyz[1], wxyz[2], wxyz[3], wxyz[0]);
     quat.premultiply(SB_TO_THREE_QUAT);
     euler.setFromQuaternion(quat, 'YZX');
@@ -104,7 +132,7 @@ export const threeJsRotationToSkybrushQuaternion = (() => {
   const euler = new THREE.Euler();
   const { degToRad } = THREE.MathUtils;
 
-  return (xyz) => {
+  return (xyz: ThreeJsRotationTuple): Quaternion => {
     euler.set(degToRad(xyz[0]), degToRad(xyz[1]), degToRad(xyz[2]), 'YZX');
     quat.setFromEuler(euler);
     quat.premultiply(THREE_TO_SB_QUAT);
@@ -116,7 +144,9 @@ export const threeJsRotationToSkybrushQuaternion = (() => {
  * Converts a position vector in Skybrush axis conventions to Three.js axis
  * conventions.
  */
-export const skybrushToThreeJsPosition = (pos) => {
+export const skybrushToThreeJsPosition = (
+  pos: Position
+): ThreeJsPositionTuple => {
   return [-pos[1], pos[2], -pos[0]];
 };
 
@@ -124,7 +154,9 @@ export const skybrushToThreeJsPosition = (pos) => {
  * Converts a position vector in Three.js axis conventions to Skybrush axis
  * conventions.
  */
-export const threeJsToSkybrushPosition = (pos) => {
+export const threeJsToSkybrushPosition = (
+  pos: ThreeJsPositionTuple
+): Position => {
   return [-pos[2], -pos[0], pos[1]];
 };
 
@@ -137,7 +169,7 @@ export const threeJsToSkybrushPosition = (pos) => {
  * Three.js pose objects contain a Three.js position and a Three.js rotation,
  * in keys named `position` and `rotation`.
  */
-export function skybrushToThreeJsPose(pose) {
+export function skybrushToThreeJsPose(pose: Pose): ThreeJsPose {
   return {
     position: skybrushToThreeJsPosition(pose.position),
     rotation: skybrushQuaternionToThreeJsRotation(pose.orientation),
@@ -153,7 +185,7 @@ export function skybrushToThreeJsPose(pose) {
  * Three.js pose objects contain a Three.js position and a Three.js rotation,
  * in keys named `position` and `rotation`.
  */
-export function threeJsToSkybrushPose(pose) {
+export function threeJsToSkybrushPose(pose: ThreeJsPose): Pose {
   return {
     position: threeJsToSkybrushPosition(pose.position),
     orientation: threeJsRotationToSkybrushQuaternion(pose.rotation),

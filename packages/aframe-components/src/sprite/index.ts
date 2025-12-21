@@ -4,10 +4,34 @@
  * Used to implement a simple glow effect on spheres.
  */
 
-import AFrame from '../lib/_aframe';
+import type { Component } from 'aframe';
+import AFrame from '../_aframe.js';
 
 const { AdditiveBlending, NormalBlending, Sprite, SpriteMaterial } =
   AFrame.THREE;
+
+export type SpriteProps = {
+  blending: string;
+  color: string;
+  scale: AFrame.THREE.Vector3;
+  src: any;
+  transparent: boolean;
+  visible: boolean;
+};
+
+type SpriteComponent = Component<SpriteProps> & {
+  map: AFrame.THREE.Texture | null;
+  material: AFrame.THREE.SpriteMaterial;
+  sprite: AFrame.THREE.Sprite;
+};
+
+type MaterialSystem = {
+  loadTexture: (
+    src: Element | string,
+    data: unknown,
+    cb: (texture: AFrame.THREE.Texture) => void
+  ) => void;
+};
 
 AFrame.registerComponent('sprite', {
   schema: {
@@ -36,18 +60,18 @@ AFrame.registerComponent('sprite', {
     },
   },
 
-  init() {
+  init(this: SpriteComponent) {
     this.map = null;
     this.material = new SpriteMaterial({});
     this.sprite = new Sprite(this.material);
   },
 
-  update(oldData) {
+  update(this: SpriteComponent, oldData: SpriteProps) {
     const element = this.el;
 
     if (this.data.src !== oldData.src) {
       const savedSrc = this.data.src;
-      element.sceneEl.systems.material.loadTexture(
+      (element.sceneEl!.systems.material as any as MaterialSystem).loadTexture(
         savedSrc,
         { src: savedSrc },
         (texture) => {
@@ -103,7 +127,7 @@ AFrame.registerComponent('sprite', {
     }
   },
 
-  remove() {
+  remove(this: SpriteComponent) {
     this.el.removeObject3D('mesh');
   },
 });

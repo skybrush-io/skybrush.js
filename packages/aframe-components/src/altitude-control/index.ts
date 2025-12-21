@@ -5,17 +5,46 @@
  * Based on the code of the `wasd-controls` component.
  */
 
-import isEmpty from 'lodash-es/isEmpty';
+import { isEmpty } from 'lodash-es';
 
-import AFrame from '../lib/_aframe';
-import { KEYCODE_TO_CODE } from '../lib/constants';
-import { shouldCaptureKeyEvent } from '../lib/utils';
+import AFrame from '../_aframe.js';
+import { KEYCODE_TO_CODE } from '../constants.js';
+import {
+  shouldCaptureKeyEvent,
+  type KeyboardEventAcceptanceCondition,
+} from '../utils.js';
 
 const CLAMP_VELOCITY = 0.001;
 const MAX_DELTA = 0.2;
 const KEYS = new Set(['KeyE', 'KeyC', 'ShiftLeft', 'ShiftRight']);
 
 const { THREE } = AFrame;
+
+export type AltitudeControlProps = {
+  acceleration: number; /* [m/s] */
+  acceptsKeyboardEvent: KeyboardEventAcceptanceCondition;
+  embedded: boolean;
+  enabled: boolean;
+  max: number;
+  min: number;
+};
+
+type AltitudeControlComponent = AFrame.Component<AltitudeControlProps> & {
+  keys: Record<string, boolean>;
+  velocity: number;
+  easing: number;
+  onBlur: () => void;
+  onFocus: () => void;
+  onKeyDown: (event: KeyboardEvent) => void;
+  onKeyUp: (event: KeyboardEvent) => void;
+  onVisibilityChange: () => void;
+  updateVelocity: (delta: number) => void;
+  getMovementVector: (delta: number) => AFrame.THREE.Vector3;
+  attachVisibilityEventListeners: () => void;
+  removeVisibilityEventListeners: () => void;
+  attachKeyEventListeners: () => void;
+  removeKeyEventListeners: () => void;
+};
 
 AFrame.registerComponent('altitude-control', {
   schema: {
@@ -30,7 +59,7 @@ AFrame.registerComponent('altitude-control', {
     min: { default: Number.NaN, type: 'number' },
   },
 
-  init() {
+  init(this: AltitudeControlComponent) {
     // To keep track of the pressed keys.
     this.keys = {};
     this.easing = 1.1;
@@ -46,7 +75,7 @@ AFrame.registerComponent('altitude-control', {
     this.attachVisibilityEventListeners();
   },
 
-  tick(time, delta) {
+  tick(this: AltitudeControlComponent, time: number, delta: number) {
     if (!this.velocity && isEmpty(this.keys)) {
       return;
     }
@@ -73,21 +102,21 @@ AFrame.registerComponent('altitude-control', {
     }
   },
 
-  remove() {
+  remove(this: AltitudeControlComponent) {
     this.removeKeyEventListeners();
     this.removeVisibilityEventListeners();
   },
 
-  play() {
+  play(this: AltitudeControlComponent) {
     this.attachKeyEventListeners();
   },
 
-  pause() {
+  pause(this: AltitudeControlComponent) {
     this.keys = {};
     this.removeKeyEventListeners();
   },
 
-  updateVelocity(delta) {
+  updateVelocity(this: AltitudeControlComponent, delta: number) {
     const { data, keys } = this;
 
     // If FPS too low, reset velocity.
@@ -127,45 +156,49 @@ AFrame.registerComponent('altitude-control', {
 
   getMovementVector: (function () {
     const directionVector = new THREE.Vector3(0, 0, 0);
-    return function (delta) {
+    return function (this: AltitudeControlComponent, delta: number) {
       directionVector.y = this.velocity * delta;
       return directionVector;
     };
   })(),
 
-  attachVisibilityEventListeners() {
+  attachVisibilityEventListeners(this: AltitudeControlComponent) {
     window.addEventListener('blur', this.onBlur);
     window.addEventListener('focus', this.onFocus);
     document.addEventListener('visibilitychange', this.onVisibilityChange);
   },
 
-  removeVisibilityEventListeners() {
+  removeVisibilityEventListeners(this: AltitudeControlComponent) {
     window.removeEventListener('blur', this.onBlur);
     window.removeEventListener('focus', this.onFocus);
     document.removeEventListener('visibilitychange', this.onVisibilityChange);
   },
 
-  attachKeyEventListeners() {
+  attachKeyEventListeners(this: AltitudeControlComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
-    target.addEventListener('keydown', this.onKeyDown);
-    target.addEventListener('keyup', this.onKeyUp);
+    if (target) {
+      target.addEventListener('keydown', this.onKeyDown as any);
+      target.addEventListener('keyup', this.onKeyUp as any);
+    }
   },
 
-  removeKeyEventListeners() {
+  removeKeyEventListeners(this: AltitudeControlComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
-    target.removeEventListener('keydown', this.onKeyDown);
-    target.removeEventListener('keyup', this.onKeyUp);
+    if (target) {
+      target.removeEventListener('keydown', this.onKeyDown as any);
+      target.removeEventListener('keyup', this.onKeyUp as any);
+    }
   },
 
-  onBlur() {
+  onBlur(this: AltitudeControlComponent) {
     this.pause();
   },
 
-  onFocus() {
+  onFocus(this: AltitudeControlComponent) {
     this.play();
   },
 
-  onVisibilityChange() {
+  onVisibilityChange(this: AltitudeControlComponent) {
     if (document.hidden) {
       this.onBlur();
     } else {
@@ -173,7 +206,7 @@ AFrame.registerComponent('altitude-control', {
     }
   },
 
-  onKeyDown(event) {
+  onKeyDown(this: AltitudeControlComponent, event: KeyboardEvent) {
     if (
       !this.data.embedded &&
       !shouldCaptureKeyEvent(event, this.data.acceptsKeyboardEvent)
@@ -187,7 +220,7 @@ AFrame.registerComponent('altitude-control', {
     }
   },
 
-  onKeyUp(event) {
+  onKeyUp(this: AltitudeControlComponent, event: KeyboardEvent) {
     const code = event.code || KEYCODE_TO_CODE[event.keyCode];
     delete this.keys[code];
   },

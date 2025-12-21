@@ -5,16 +5,21 @@
  * Source: https://github.com/ngokevin/aframe-react/issues/110
  */
 
-import AFrame from '../lib/_aframe';
+import type { Scene } from 'aframe';
+import AFrame from '../_aframe.js';
 
 const { Cache } = AFrame.THREE;
 
+export type DeallocateProps = {};
+
 AFrame.registerComponent('deallocate', {
   schema: { default: true },
+
+  // @ts-ignore
   sceneOnly: true,
 
   remove() {
     Cache.clear();
-    this.el.renderer.forceContextLoss();
+    (this.el as Scene).renderer.forceContextLoss();
   },
 });

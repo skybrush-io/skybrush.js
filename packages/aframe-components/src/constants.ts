@@ -1,4 +1,4 @@
-export const KEYCODE_TO_CODE = {
+export const KEYCODE_TO_CODE: Record<number, string> = {
   38: 'ArrowUp',
   37: 'ArrowLeft',
   40: 'ArrowDown',

@@ -1,23 +1,48 @@
+import type { Component, ComponentDefinition } from 'aframe';
+import type AFrame from '../_aframe.js';
+
+type Pose = {
+  position: AFrame.THREE.Vector3;
+  rotation: AFrame.THREE.Euler;
+};
+
+type CameraPoseOptions = {
+  getCameraPose: () => Pose;
+  setCameraPose: (pose: Pose) => void;
+};
+
+export type SyncPoseWithStoreProps = {
+  interval: number;
+};
+
+type SyncPoseWithStoreComponent = Component<SyncPoseWithStoreProps> & {
+  _intervalHandle: ReturnType<typeof setInterval> | undefined;
+  _lastPosition: AFrame.THREE.Vector3;
+  _lastRotation: AFrame.THREE.Euler;
+  _setupIntervalCallback: () => void;
+  _synchronize: () => void;
+};
+
 /**
  * Creates an A-Frame component that synchronizes the pose of an A-Frame
  * camera that the component is attached to with an external state store.
  *
- * @param  {function} getCameraPose  function that can be called with no
+ * @param  options.getCameraPose  function that can be called with no
  *         arguments to retrieve the current pose of the camera from the
  *         state store
- * @param  {function} setCameraPose  function that can be called with no
+ * @param  options.setCameraPose  function that can be called with no
  *         arguments to store the current pose of the camera in the
  *         state store
  */
-const createSyncPoseWithStoreComponent = ({
+const createSyncPoseWithStoreComponent = <T>({
   getCameraPose,
   setCameraPose,
-}) => ({
+}: CameraPoseOptions): ComponentDefinition => ({
   schema: {
     interval: { type: 'number', default: 1000 },
   },
 
-  init() {
+  init(this: SyncPoseWithStoreComponent) {
     this._intervalHandle = undefined;
     this._synchronize = this._synchronize.bind(this);
 
@@ -29,7 +54,9 @@ const createSyncPoseWithStoreComponent = ({
     }
 
     if (rotation && Array.isArray(rotation)) {
-      this.el.object3D.rotation.fromArray(rotation);
+      this.el.object3D.rotation.fromArray(
+        rotation as any as AFrame.THREE.EulerTuple
+      );
 
       // Make sure that we play along nicely with look-controls
       if (this.el.components['look-controls']) {
@@ -44,7 +71,7 @@ const createSyncPoseWithStoreComponent = ({
     this._lastRotation = this.el.object3D.rotation.clone();
   },
 
-  update(oldData) {
+  update(this: SyncPoseWithStoreComponent, oldData: SyncPoseWithStoreProps) {
     if (
       this._intervalHandle === undefined ||
       oldData.interval !== this.data.interval
@@ -53,14 +80,15 @@ const createSyncPoseWithStoreComponent = ({
     }
   },
 
-  remove() {
+  remove(this: SyncPoseWithStoreComponent) {
     if (this._intervalHandle) {
       clearInterval(this._intervalHandle);
       this._intervalHandle = undefined;
     }
   },
 
-  _synchronize() {
+  // @ts-ignore
+  _synchronize(this: SyncPoseWithStoreComponent) {
     const { position, rotation } = this.el.object3D;
 
     if (
@@ -79,7 +107,7 @@ const createSyncPoseWithStoreComponent = ({
    * Schedules a call to `_synchronize()` at regular intervals, depending on the
    * current value of `this.data.interval`.
    */
-  _setupIntervalCallback() {
+  _setupIntervalCallback(this: SyncPoseWithStoreComponent) {
     if (this._intervalHandle) {
       clearInterval(this._intervalHandle);
       this._intervalHandle = undefined;

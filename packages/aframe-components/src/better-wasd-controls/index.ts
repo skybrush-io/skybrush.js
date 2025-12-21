@@ -1,8 +1,11 @@
-import isEmpty from 'lodash-es/isEmpty';
+import { isEmpty } from 'lodash-es';
 
-import AFrame from '../lib/_aframe';
-import { KEYCODE_TO_CODE } from '../lib/constants';
-import { shouldCaptureKeyEvent } from '../lib/utils';
+import AFrame from '../_aframe.js';
+import { KEYCODE_TO_CODE } from '../constants.js';
+import {
+  shouldCaptureKeyEvent,
+  type KeyboardEventAcceptanceCondition,
+} from '../utils.js';
 
 const { THREE } = AFrame;
 
@@ -22,6 +25,37 @@ const KEYS = new Set([
 ]);
 
 const HALF_PI = Math.PI / 2;
+
+export type BetterWASDControlsProps = {
+  acceleration: number;
+  acceptsKeyboardEvent: KeyboardEventAcceptanceCondition;
+  adAxis: 'x' | 'y' | 'z';
+  adEnabled: boolean;
+  adInverted: boolean;
+  embedded: boolean;
+  enabled: boolean;
+  fly: boolean;
+  wsAxis: 'x' | 'y' | 'z';
+  wsEnabled: boolean;
+  wsInverted: boolean;
+};
+
+type BetterWASDControlsComponent = AFrame.Component<BetterWASDControlsProps> & {
+  keys: Record<string, boolean>;
+  velocity: AFrame.THREE.Vector3;
+  easing: number;
+  onBlur: () => void;
+  onFocus: () => void;
+  onKeyDown: (event: KeyboardEvent) => void;
+  onKeyUp: (event: KeyboardEvent) => void;
+  onVisibilityChange: () => void;
+  updateVelocity: (delta: number) => void;
+  getMovementVector: (delta: number) => AFrame.THREE.Vector3;
+  attachVisibilityEventListeners: () => void;
+  removeVisibilityEventListeners: () => void;
+  attachKeyEventListeners: () => void;
+  removeKeyEventListeners: () => void;
+};
 
 /**
  * WASD component to control entities using WASD keys.
@@ -44,7 +78,7 @@ AFrame.registerComponent('better-wasd-controls', {
     wsInverted: { default: false },
   },
 
-  init() {
+  init(this: BetterWASDControlsComponent) {
     // To keep track of the pressed keys.
     this.keys = {};
     this.easing = 1.1;
@@ -60,7 +94,7 @@ AFrame.registerComponent('better-wasd-controls', {
     this.attachVisibilityEventListeners();
   },
 
-  tick(time, delta) {
+  tick(this: BetterWASDControlsComponent, time: number, delta: number) {
     const data = this.data;
     const element = this.el;
     const velocity = this.velocity;
@@ -85,22 +119,22 @@ AFrame.registerComponent('better-wasd-controls', {
     element.object3D.position.add(this.getMovementVector(delta));
   },
 
-  remove() {
+  remove(this: BetterWASDControlsComponent) {
     this.removeKeyEventListeners();
     this.removeVisibilityEventListeners();
   },
 
-  play() {
+  play(this: BetterWASDControlsComponent) {
     this.attachKeyEventListeners();
   },
 
-  pause() {
+  pause(this: BetterWASDControlsComponent) {
     this.keys = {};
     this.removeKeyEventListeners();
   },
 
   /* eslint-disable complexity */
-  updateVelocity(delta) {
+  updateVelocity(this: BetterWASDControlsComponent, delta: number) {
     const data = this.data;
     const keys = this.keys;
     const velocity = this.velocity;
@@ -174,7 +208,7 @@ AFrame.registerComponent('better-wasd-controls', {
     const directionVector = new THREE.Vector3(0, 0, 0);
     const rotationEuler = new THREE.Euler(0, 0, 0, 'YXZ');
 
-    return function (delta) {
+    return function (this: BetterWASDControlsComponent, delta: number) {
       const rotation = this.el.object3D.rotation;
       const velocity = this.velocity;
 
@@ -187,8 +221,8 @@ AFrame.registerComponent('better-wasd-controls', {
         const xRotation = this.data.fly
           ? rotation.x
           : Math.abs(rotation.x) < HALF_PI
-          ? 0
-          : Math.PI;
+            ? 0
+            : Math.PI;
 
         // Transform direction relative to heading.
         rotationEuler.set(xRotation, rotation.y, rotation.z);
@@ -199,39 +233,45 @@ AFrame.registerComponent('better-wasd-controls', {
     };
   })(),
 
-  attachVisibilityEventListeners() {
+  attachVisibilityEventListeners(this: BetterWASDControlsComponent) {
     window.addEventListener('blur', this.onBlur);
     window.addEventListener('focus', this.onFocus);
     document.addEventListener('visibilitychange', this.onVisibilityChange);
   },
 
-  removeVisibilityEventListeners() {
+  removeVisibilityEventListeners(this: BetterWASDControlsComponent) {
     window.removeEventListener('blur', this.onBlur);
     window.removeEventListener('focus', this.onFocus);
     document.removeEventListener('visibilitychange', this.onVisibilityChange);
   },
 
-  attachKeyEventListeners() {
+  attachKeyEventListeners(this: BetterWASDControlsComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
-    target.addEventListener('keydown', this.onKeyDown);
-    target.addEventListener('keyup', this.onKeyUp);
+
+    if (target) {
+      target.addEventListener('keydown', this.onKeyDown as any);
+      target.addEventListener('keyup', this.onKeyUp as any);
+    }
   },
 
-  removeKeyEventListeners() {
+  removeKeyEventListeners(this: BetterWASDControlsComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
-    target.removeEventListener('keydown', this.onKeyDown);
-    target.removeEventListener('keyup', this.onKeyUp);
+
+    if (target) {
+      target.removeEventListener('keydown', this.onKeyDown as any);
+      target.removeEventListener('keyup', this.onKeyUp as any);
+    }
   },
 
-  onBlur() {
+  onBlur(this: BetterWASDControlsComponent) {
     this.pause();
   },
 
-  onFocus() {
+  onFocus(this: BetterWASDControlsComponent) {
     this.play();
   },
 
-  onVisibilityChange() {
+  onVisibilityChange(this: BetterWASDControlsComponent) {
     if (document.hidden) {
       this.onBlur();
     } else {
@@ -239,7 +279,7 @@ AFrame.registerComponent('better-wasd-controls', {
     }
   },
 
-  onKeyDown(event) {
+  onKeyDown(this: BetterWASDControlsComponent, event: KeyboardEvent) {
     if (
       !this.data.embedded &&
       !shouldCaptureKeyEvent(event, this.data.acceptsKeyboardEvent)
@@ -247,14 +287,14 @@ AFrame.registerComponent('better-wasd-controls', {
       return;
     }
 
-    const code = event.code || KEYCODE_TO_CODE[event.keyCode];
+    const code = event.code ?? KEYCODE_TO_CODE[event.keyCode];
     if (KEYS.has(code)) {
       this.keys[code] = true;
     }
   },
 
-  onKeyUp(event) {
-    const code = event.code || KEYCODE_TO_CODE[event.keyCode];
+  onKeyUp(this: BetterWASDControlsComponent, event: KeyboardEvent) {
+    const code = event.code ?? KEYCODE_TO_CODE[event.keyCode];
     delete this.keys[code];
   },
 });

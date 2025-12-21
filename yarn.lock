@@ -1465,6 +1465,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dimforge/rapier3d-compat@npm:~0.12.0":
+  version: 0.12.0
+  resolution: "@dimforge/rapier3d-compat@npm:0.12.0"
+  checksum: 86cb3b39925673761aa5dca5429ca44e0c7ac8072472cca925e2ca732be695292e318501a2ab39110be1549d4f143a0af0620246657f76570c8cdd1b0b3df36c
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:^0.6.1":
   version: 0.6.3
   resolution: "@discoveryjs/json-ext@npm:0.6.3"
@@ -3824,6 +3831,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skybrush/aframe-components@workspace:packages/aframe-components"
   dependencies:
+    "@types/aframe": ^1.2.9
     aframe: ^1.7.1
     lodash-es: ^4.17.22
     meshline: 3.1.0
@@ -4078,6 +4086,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tweenjs/tween.js@npm:~23.1.3":
+  version: 23.1.3
+  resolution: "@tweenjs/tween.js@npm:23.1.3"
+  checksum: 2f8a908b275bb6729bde4b863c277bf7411d2e0302ceb0455369479077b89eaf8380cd9206b91ff574416418a95c6f06db4e1ddea732a286d0db0ba8e7c093d3
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.10.0":
   version: 0.10.1
   resolution: "@tybys/wasm-util@npm:0.10.1"
@@ -4093,6 +4108,23 @@ __metadata:
   dependencies:
     tslib: ^2.4.0
   checksum: 8d44c64e64e39c746e45b5dff7b534716f20e1f6e8fc206f8e4c8ac454ec0eb35b65646e446dd80745bc898db37a4eca549a936766d447c2158c9c43d44e7708
+  languageName: node
+  linkType: hard
+
+"@types/aframe@npm:^1.2.9":
+  version: 1.2.9
+  resolution: "@types/aframe@npm:1.2.9"
+  dependencies:
+    "@types/animejs": "*"
+    "@types/three": "*"
+  checksum: 52d40f1cd5c3014035352ca7b8b22fc971f337f4f967dd7ebe963558295b2dc218deab603f40c9bf5d5c32c378d3d57d937fe0ec3cd89ec4b9f10ac942900ba5
+  languageName: node
+  linkType: hard
+
+"@types/animejs@npm:*":
+  version: 3.1.13
+  resolution: "@types/animejs@npm:3.1.13"
+  checksum: adf7aa4fb9b59fee4adf044fc827129c69bef7a882ff5234c1b0c9609382a376cbe96873f44b90987ed8994083ae229420a6a3fa1f2917eaa7a94bf762c4de41
   languageName: node
   linkType: hard
 
@@ -4602,6 +4634,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/stats.js@npm:*":
+  version: 0.17.4
+  resolution: "@types/stats.js@npm:0.17.4"
+  checksum: 6f1a20e09da0c0b371b3c095b2787a91a9397944679aa506a0886160faf0ad185b911a34b4ec325f146810c5be969f085e81264e2dbe39fd57eb8ff98347b5f4
+  languageName: node
+  linkType: hard
+
+"@types/three@npm:*":
+  version: 0.182.0
+  resolution: "@types/three@npm:0.182.0"
+  dependencies:
+    "@dimforge/rapier3d-compat": ~0.12.0
+    "@tweenjs/tween.js": ~23.1.3
+    "@types/stats.js": "*"
+    "@types/webxr": ">=0.5.17"
+    "@webgpu/types": "*"
+    fflate: ~0.8.2
+    meshoptimizer: ~0.22.0
+  checksum: 0a5d6bcf25a9492506aa8a0ed7d880fe032017712af45455fa3ea29137a9bfeaec475558209e6a57894b39d5cd37caabefac36ec909a40b7750fa45b87b109c2
+  languageName: node
+  linkType: hard
+
+"@types/webxr@npm:>=0.5.17":
+  version: 0.5.24
+  resolution: "@types/webxr@npm:0.5.24"
+  checksum: 3c87ea6a06cabb3023dc353363733763237c9d8f45d0402b07074823575805830133c0de00d34b4f73e9a6ba9a2ed2de204f62b33f6d820e14970a61a3333c36
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.5.10":
   version: 8.18.1
   resolution: "@types/ws@npm:8.18.1"
@@ -5068,6 +5129,13 @@ __metadata:
     "@webassemblyjs/ast": 1.14.1
     "@xtuc/long": 4.2.2
   checksum: 517881a0554debe6945de719d100b2d8883a2d24ddf47552cdeda866341e2bb153cd824a864bc7e2a61190a4b66b18f9899907e0074e9e820d2912ac0789ea60
+  languageName: node
+  linkType: hard
+
+"@webgpu/types@npm:*":
+  version: 0.1.68
+  resolution: "@webgpu/types@npm:0.1.68"
+  checksum: 8d9a70eed269db83805b9ea8d922db0c0735502c1b67f2b12d30912b6e9de5f4a004b8afa68f15573b4c1624735a8ecc7d78c25488f1cb4a256b85997832c4e2
   languageName: node
   linkType: hard
 
@@ -8896,6 +8964,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fflate@npm:~0.8.2":
+  version: 0.8.2
+  resolution: "fflate@npm:0.8.2"
+  checksum: 29470337b85d3831826758e78f370e15cda3169c5cd4477c9b5eea2402261a74b2975bae816afabe1c15d21d98591e0d30a574f7103aa117bff60756fa3035d4
+  languageName: node
+  linkType: hard
+
 "figures@npm:3.2.0":
   version: 3.2.0
   resolution: "figures@npm:3.2.0"
@@ -12697,6 +12772,13 @@ __metadata:
   peerDependencies:
     three: ">=0.137"
   checksum: 6380c9f691bbba2a6686f9ebc630fd5f27ec5c9adf769116bca0b8aaca6da2585a5192c2f14beb5ce7250fd3a69d1d59be02ab760bf49ffb95aa676f19954c18
+  languageName: node
+  linkType: hard
+
+"meshoptimizer@npm:~0.22.0":
+  version: 0.22.0
+  resolution: "meshoptimizer@npm:0.22.0"
+  checksum: ee5cab07941f9866fca394ac7507f936542c2073c702293e588f4480d0bbcc85750be85f780da3127532bc00b40a07b7e06df31e6c519ad752e63f099935104d
   languageName: node
   linkType: hard
 
