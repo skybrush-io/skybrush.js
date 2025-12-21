@@ -10,6 +10,7 @@ export {
 } from './naming.js';
 export { createStorageConfiguration } from './persistence.js';
 export { configureStoreAndPersistence } from './store.js';
+export type { SelectionHandlerReduxFunctions } from './types.js';
 export { isAllowedInRedux, noPayload, stripEvent } from './utils.js';
 
 export type StorageConfig<S, RS = any, HSS = any, ESS = any> = StorageConfig_<
