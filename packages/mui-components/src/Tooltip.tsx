@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Tippy, { type TippyProps } from '@tippyjs/react';
 
 import { useTheme } from '@mui/material/styles';
@@ -16,6 +15,8 @@ const Tooltip = (props: TooltipProps) => {
   const appTheme = useTheme();
   const tippyTheme =
     appTheme.palette.mode === 'dark' ? 'dark-border' : 'light-border';
+
+  // @ts-ignore
   return <Tippy theme={tippyTheme} {...props} />;
 };
 

@@ -3,7 +3,7 @@
  * application.
  */
 
-import * as React from 'react';
+import React from 'react';
 
 import Box, { type BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';

@@ -2,7 +2,6 @@
  * @file The master store for the application state.
  */
 
-import { configureStore as configureReduxStore } from '@reduxjs/toolkit';
 import type {
   Action,
   ActionCreator,
@@ -13,6 +12,7 @@ import type {
   Tuple,
   UnknownAction,
 } from '@reduxjs/toolkit';
+import { configureStore as configureReduxStore } from '@reduxjs/toolkit';
 
 import type {
   DevToolsEnhancerOptions,
@@ -21,23 +21,24 @@ import type {
 } from '@reduxjs/toolkit';
 
 import { type Immutable, produce } from 'immer';
-import get from 'lodash-es/get';
-import identity from 'lodash-es/identity';
-import noop from 'lodash-es/noop';
+import { get, identity, noop } from 'lodash-es';
 import createDeferred from 'p-defer';
-import { persistStore, persistReducer } from 'redux-persist';
 import type { Persistor } from 'redux-persist';
-import createSagaMiddleware from 'redux-saga';
+import { persistReducer, persistStore } from 'redux-persist';
 import type {
   Saga,
   SagaMiddleware,
   SagaMiddlewareOptions,
   Task,
 } from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 
-import { createActionScrubber, resolveActionTypes } from './actions';
-import { createStorageConfiguration, type StorageConfig } from './persistence';
-import { isAllowedInRedux } from './utils';
+import { createActionScrubber, resolveActionTypes } from './actions.js';
+import {
+  createStorageConfiguration,
+  type StorageConfig,
+} from './persistence.js';
+import { isAllowedInRedux } from './utils.js';
 
 export interface ExtendedDevToolsOptions extends DevToolsEnhancerOptions {
   actionsAllowlist?: string | string[];

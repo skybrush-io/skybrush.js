@@ -2,7 +2,7 @@ import { css, styled } from '@mui/material/styles';
 import type { SerializedStyles } from '@mui/styled-engine';
 import { Colors, type Status } from '@skybrush/app-theme-mui';
 
-import { dimFlash } from './keyframes';
+import { dimFlash } from './keyframes.js';
 
 const cssByColor: Record<string, SerializedStyles> = Object.fromEntries(
   ['info', 'warning', 'success', 'error'].map((color) => [

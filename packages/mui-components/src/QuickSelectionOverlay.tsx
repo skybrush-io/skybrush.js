@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import Box from '@mui/material/Box';
 import Portal from '@mui/material/Portal';
 import type { Theme } from '@mui/material/styles';

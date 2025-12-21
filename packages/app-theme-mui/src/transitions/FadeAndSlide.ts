@@ -7,7 +7,7 @@
  * style tweaks.
  */
 
-import * as React from 'react';
+import React from 'react';
 import { Transition } from 'react-transition-group';
 import type {
   EndListenerProps,
@@ -15,13 +15,12 @@ import type {
   ExitHandler,
   TransitionActions,
   TransitionStatus,
-} from 'react-transition-group/Transition';
+} from 'react-transition-group/Transition.js';
 
-import { duration } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
+import { duration, useTheme } from '@mui/material/styles';
 import { useForkRef } from '@mui/material/utils';
 
-import { reflow, getTransitionProps } from './utils';
+import { getTransitionProps, reflow } from './utils.js';
 
 type Direction = 'up' | 'down' | 'left' | 'right';
 
@@ -112,8 +111,7 @@ const defaultTimeout = {
 };
 
 export interface FadeAndSlideProps
-  extends EndListenerProps<undefined>,
-    TransitionActions {
+  extends EndListenerProps<undefined>, TransitionActions {
   children: React.ReactElement;
   direction?: Direction;
   easing?: string | { enter: string; exit: string };

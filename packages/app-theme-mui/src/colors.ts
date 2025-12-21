@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
+import { green, grey, lightBlue, yellow } from '@mui/material/colors';
 import createColor from 'color';
-import { lightBlue, grey, green, yellow } from '@mui/material/colors';
-import { Status } from './semantics';
+import { Status } from './semantics.js';
 
 /**
  * Namespace containing commonly used semantic color names throughout Skybrush apps.

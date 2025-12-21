@@ -1,8 +1,6 @@
-import React from 'react';
-
-import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import Pause from '@mui/icons-material/Pause';
 import Play from '@mui/icons-material/PlayArrow';
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 
 export type PlayStopButtonProps = IconButtonProps & {
   /**

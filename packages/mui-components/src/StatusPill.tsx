@@ -3,7 +3,7 @@ import { Status } from '@skybrush/app-theme-mui';
 import clsx from 'clsx';
 import React from 'react';
 
-import { createStyleForStatus, createStyleForHollowStatus } from './styles';
+import { createStyleForHollowStatus, createStyleForStatus } from './styles.js';
 
 const FLASH_STYLE = {
   animation: '$flash 0.5s infinite',

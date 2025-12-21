@@ -1,16 +1,16 @@
-import type { StorageConfig as StorageConfig_ } from './persistence';
-import { configureStoreAndPersistence } from './store';
-import type { StoreAndPersistenceConfig as StoreAndPersistenceConfig_ } from './store';
+import type { StorageConfig as StorageConfig_ } from './persistence.js';
+import type { StoreAndPersistenceConfig as StoreAndPersistenceConfig_ } from './store.js';
+import { configureStoreAndPersistence } from './store.js';
 
-export { createSelectionHandlerThunk } from './actions';
+export { createSelectionHandlerThunk } from './actions.js';
 export {
   chooseUniqueId,
-  chooseUniqueName,
   chooseUniqueIdFromName,
-} from './naming';
-export { createStorageConfiguration } from './persistence';
-export { configureStoreAndPersistence } from './store';
-export { isAllowedInRedux, noPayload, stripEvent } from './utils';
+  chooseUniqueName,
+} from './naming.js';
+export { createStorageConfiguration } from './persistence.js';
+export { configureStoreAndPersistence } from './store.js';
+export { isAllowedInRedux, noPayload, stripEvent } from './utils.js';
 
 export type StorageConfig<S, RS = any, HSS = any, ESS = any> = StorageConfig_<
   S,

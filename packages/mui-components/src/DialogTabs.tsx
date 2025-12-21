@@ -1,9 +1,7 @@
-import * as React from 'react';
-
 import Box from '@mui/material/Box';
 import Tabs, { type TabsProps } from '@mui/material/Tabs';
 
-import DialogAppBar from './DialogAppBar';
+import DialogAppBar from './DialogAppBar.js';
 
 const alignmentProps: Record<string, TabsProps> = {
   left: {},

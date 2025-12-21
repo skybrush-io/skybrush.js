@@ -1,14 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 
 import { colorForStatus, Status } from '@skybrush/app-theme-mui';
 
+import ContentClear from '@mui/icons-material/Clear';
+import ActionDone from '@mui/icons-material/Done';
+import PriorityHigh from '@mui/icons-material/PriorityHigh';
+import ActionSettingsEthernet from '@mui/icons-material/SettingsEthernet';
 import ListItemIcon, {
   type ListItemIconProps,
 } from '@mui/material/ListItemIcon';
-import ActionDone from '@mui/icons-material/Done';
-import ActionSettingsEthernet from '@mui/icons-material/SettingsEthernet';
-import ContentClear from '@mui/icons-material/Clear';
-import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
 const presets: Record<string, { color?: string; icon?: React.ReactNode }> = {
   connected: {

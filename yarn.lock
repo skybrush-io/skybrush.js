@@ -3328,8 +3328,8 @@ __metadata:
   linkType: hard
 
 "@nx/devkit@npm:>=21.5.2 < 23.0.0":
-  version: 22.3.1
-  resolution: "@nx/devkit@npm:22.3.1"
+  version: 22.3.3
+  resolution: "@nx/devkit@npm:22.3.3"
   dependencies:
     "@zkochan/js-yaml": 0.0.7
     ejs: ^3.1.7
@@ -3340,76 +3340,76 @@ __metadata:
     yargs-parser: 21.1.1
   peerDependencies:
     nx: ">= 21 <= 23 || ^22.0.0-0"
-  checksum: 37c4d405d9c610d54b9d96c8eb3517cdea32c04a81dbdec69fe46019a0000218bdb481aa82fed8f05f0c4f040665b0d56b842af54c33e80c010ff7809cb84828
+  checksum: a099f043d4b0b6b6c7bf3445637572eeb7fc4d28686f5581e11f05c808cf0abb06df4b6e63ba5b015caad0d1e854c1c7211d3bf7dc709ab4ac72a3629dde0aaa
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-darwin-arm64@npm:22.3.1"
+"@nx/nx-darwin-arm64@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-darwin-arm64@npm:22.3.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-x64@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-darwin-x64@npm:22.3.1"
+"@nx/nx-darwin-x64@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-darwin-x64@npm:22.3.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-freebsd-x64@npm:22.3.1"
+"@nx/nx-freebsd-x64@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-freebsd-x64@npm:22.3.3"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm-gnueabihf@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:22.3.1"
+"@nx/nx-linux-arm-gnueabihf@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:22.3.3"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-linux-arm64-gnu@npm:22.3.1"
+"@nx/nx-linux-arm64-gnu@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-linux-arm64-gnu@npm:22.3.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-musl@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-linux-arm64-musl@npm:22.3.1"
+"@nx/nx-linux-arm64-musl@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-linux-arm64-musl@npm:22.3.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-linux-x64-gnu@npm:22.3.1"
+"@nx/nx-linux-x64-gnu@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-linux-x64-gnu@npm:22.3.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-musl@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-linux-x64-musl@npm:22.3.1"
+"@nx/nx-linux-x64-musl@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-linux-x64-musl@npm:22.3.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-win32-arm64-msvc@npm:22.3.1"
+"@nx/nx-win32-arm64-msvc@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-win32-arm64-msvc@npm:22.3.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-x64-msvc@npm:22.3.1":
-  version: 22.3.1
-  resolution: "@nx/nx-win32-x64-msvc@npm:22.3.1"
+"@nx/nx-win32-x64-msvc@npm:22.3.3":
+  version: 22.3.3
+  resolution: "@nx/nx-win32-x64-msvc@npm:22.3.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3697,10 +3697,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sigstore/core@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@sigstore/core@npm:3.0.0"
-  checksum: d3650b6089b0d1411677fc8ddb32c2e494a288968efd99c9c6b18d4447df1265f6c3b6585e1c88997f863015b03bc83b92e63d83d7625280b0f64e18ad74c20c
+"@sigstore/core@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@sigstore/core@npm:3.1.0"
+  checksum: 09e5d9c800821a10a8b0deeadb05376a536b1a0134044d823f5a7184f487c1a2874a6764d7f2e71108cfb2376faa7beb9cb9ba857daf27dc677455302b2738c0
   languageName: node
   linkType: hard
 
@@ -3711,38 +3711,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sigstore/sign@npm:^4.0.0":
-  version: 4.0.1
-  resolution: "@sigstore/sign@npm:4.0.1"
+"@sigstore/sign@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@sigstore/sign@npm:4.1.0"
   dependencies:
     "@sigstore/bundle": ^4.0.0
-    "@sigstore/core": ^3.0.0
+    "@sigstore/core": ^3.1.0
     "@sigstore/protobuf-specs": ^0.5.0
-    make-fetch-happen: ^15.0.2
-    proc-log: ^5.0.0
+    make-fetch-happen: ^15.0.3
+    proc-log: ^6.1.0
     promise-retry: ^2.0.1
-  checksum: 40c7183b779ac27f3c7a032ae648e29a067826f19129719b817c3d3ebf08090bef6562278a46db2ac9701f94bfe24ea088868372cb23875b8a2e96fcabefd27b
+  checksum: 24c3b66a391142ffb65dc5b632c588455b1b9bafb4204cad2bd1e87985a712a5b11115cca6bf5d7de26a55488a8caf97575f9fd33babdb6d470009a0767a9461
   languageName: node
   linkType: hard
 
-"@sigstore/tuf@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@sigstore/tuf@npm:4.0.0"
+"@sigstore/tuf@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@sigstore/tuf@npm:4.0.1"
   dependencies:
     "@sigstore/protobuf-specs": ^0.5.0
-    tuf-js: ^4.0.0
-  checksum: e5766239120c16cab983354d147bdea52ee9eefc5f7cddbf9b30bf56fb9f101e20b2c0fd223a1a669f2c1ef51ad8d9bad8c686f7be89abc6cfbdc9d8a11d730a
+    tuf-js: ^4.1.0
+  checksum: 380604538bfdbcfd14ec2495e0c065c93ffa1d5e52d0a314bf2f89d8e5a999f22ce74425acde8195808126c29880a6fcd88837aa5ec485ebfb347dbb5a9d0634
   languageName: node
   linkType: hard
 
-"@sigstore/verify@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@sigstore/verify@npm:3.0.0"
+"@sigstore/verify@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@sigstore/verify@npm:3.1.0"
   dependencies:
     "@sigstore/bundle": ^4.0.0
-    "@sigstore/core": ^3.0.0
+    "@sigstore/core": ^3.1.0
     "@sigstore/protobuf-specs": ^0.5.0
-  checksum: 336d8af044691e7d342fedfd7748c9815974bfac72924bdc541889d6b5a3e844c568f8c8c7c3e3d0594e7e405610d33a11199d6dbbe9370005bd83f7a0df3500
+  checksum: fdb1e008fe346eeaf31ee58bfb5b7e1db1b292fe14f3eaf001e2d67eb3aa3af1637c2e17d87ceaf62d5fcee599a0ec30198480c91559b694bfe963e81d09879e
   languageName: node
   linkType: hard
 
@@ -3771,6 +3771,13 @@ __metadata:
   version: 4.6.0
   resolution: "@sindresorhus/is@npm:4.6.0"
   checksum: 83839f13da2c29d55c97abc3bc2c55b250d33a0447554997a85c539e058e57b8da092da396e252b11ec24a0279a0bed1f537fa26302209327060643e327f81d2
+  languageName: node
+  linkType: hard
+
+"@sindresorhus/is@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "@sindresorhus/is@npm:7.1.1"
+  checksum: 9e17b304db5f959b5269b6556a4b65d0a7ac8e632da794adfce4be618bc7dfc224777cb52c4dcc1acb166d32594504f3bf3adc40367ef41d34e0d7011f6d8376
   languageName: node
   linkType: hard
 
@@ -3877,9 +3884,9 @@ __metadata:
   linkType: soft
 
 "@skybrush/file-formats-doc@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@skybrush/file-formats-doc@npm:1.1.1"
-  checksum: 76b16e7d6db9ccf4db353eb62faf3a52b69db4d4e9fff351fc1f62ca68eb8f1abf394d40ee463f08a7401692ccdbd76acc1db8cba4a67afa6586f7b2b927b524
+  version: 1.2.0
+  resolution: "@skybrush/file-formats-doc@npm:1.2.0"
+  checksum: a4b456efc93937a8359938eecf35f14d6d17b01f7c4eb4d00114224a3fb8dea3471bd12c6f4c433fdb10e1b657400d33ef25979178411ad35aed49847f4f007d
   languageName: node
   linkType: hard
 
@@ -3925,6 +3932,7 @@ __metadata:
   resolution: "@skybrush/redux-toolkit@workspace:packages/redux-toolkit"
   dependencies:
     "@reduxjs/toolkit": ^2.11.2
+    "@sindresorhus/is": ^7.1.1
     "@types/lodash-es": ^4.17.12
     immer: ^11.0.1
     is-promise: ^4.0.0
@@ -4060,13 +4068,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tufjs/models@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@tufjs/models@npm:4.0.0"
+"@tufjs/models@npm:4.1.0":
+  version: 4.1.0
+  resolution: "@tufjs/models@npm:4.1.0"
   dependencies:
     "@tufjs/canonical-json": 2.0.0
-    minimatch: ^9.0.5
-  checksum: 46327be1524628b7b6bc2756a8153c04c9de996335d9babf3706a22f743db3584e26887d76a6ccd68d098b5ec79cf2c4a6615deb19318b5cc20f5804aa13afa9
+    minimatch: ^10.1.1
+  checksum: 7707ffd1a51e0f9c9d67dcda3f74e23bcbe46edcb22a95983f8fccd59385d8115b0c375280521c05dff633a1e9bfac2d425a2a582a5d2c1b0c91f2a03aa7798d
   languageName: node
   linkType: hard
 
@@ -5814,11 +5822,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.9.0":
-  version: 2.9.10
-  resolution: "baseline-browser-mapping@npm:2.9.10"
+  version: 2.9.11
+  resolution: "baseline-browser-mapping@npm:2.9.11"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: 1f3f1857b9f603949b921a874e084d99e17b9574132ceab9ef435ef53f0757b3c60ed1e6bb6923c0d14acd3bd39bac5e963e99fab89b487a152775453b9c679d
+  checksum: 2c4687cdcb9f74cdc9f584248fda4e3435ec31de192316dfd75ce4cae70cc64e5cc763b8e632ee6a452aa71bd1b9519e478bc190653fd0c30482ab24e49f4eea
   languageName: node
   linkType: hard
 
@@ -6211,9 +6219,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001759":
-  version: 1.0.30001760
-  resolution: "caniuse-lite@npm:1.0.30001760"
-  checksum: 67f04822ab411541f04bcb81257c17b29414c6ba0755f3d4f74f54a79a1aaca844c2bac42b5b863855df8e1df73c5ac8fb133553a951863127a73d40727f7ae4
+  version: 1.0.30001761
+  resolution: "caniuse-lite@npm:1.0.30001761"
+  checksum: e1b6ed282fef24cbfccb944a4f1154804148ba59aa83bae2b5b652f375f4c6205579fadf530a23e93c2c901a736bbff6d8eebeabdf14c09c28125cda31d9a548
   languageName: node
   linkType: hard
 
@@ -7107,7 +7115,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:^4.4.1":
+"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:^4.4.1, debug@npm:^4.4.3":
   version: 4.4.3
   resolution: "debug@npm:4.4.3"
   dependencies:
@@ -9167,13 +9175,13 @@ __metadata:
   linkType: hard
 
 "fs-extra@npm:^11.2.0":
-  version: 11.3.2
-  resolution: "fs-extra@npm:11.3.2"
+  version: 11.3.3
+  resolution: "fs-extra@npm:11.3.3"
   dependencies:
     graceful-fs: ^4.2.0
     jsonfile: ^6.0.1
     universalify: ^2.0.0
-  checksum: 24a7a6e09668add7f74bf6884086b860ce39c7883d94f564623d4ca5c904ff9e5e33fa6333bd3efbf3528333cdedf974e49fa0723e9debf952f0882e6553d81e
+  checksum: fb2acabbd1e04bcaca90eadfe98e6ffba1523b8009afbb9f4c0aae5efbca0bd0bf6c9a6831df5af5aaacb98d3e499898be848fb0c03d31ae7b9d1b053e81c151
   languageName: node
   linkType: hard
 
@@ -12521,7 +12529,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-fetch-happen@npm:^15.0.0, make-fetch-happen@npm:^15.0.2":
+"make-fetch-happen@npm:^15.0.0, make-fetch-happen@npm:^15.0.1, make-fetch-happen@npm:^15.0.3":
   version: 15.0.3
   resolution: "make-fetch-happen@npm:15.0.3"
   dependencies:
@@ -12862,7 +12870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.4, minimatch@npm:^9.0.5":
+"minimatch@npm:^9.0.4":
   version: 9.0.5
   resolution: "minimatch@npm:9.0.5"
   dependencies:
@@ -13491,20 +13499,20 @@ __metadata:
   linkType: hard
 
 "nx@npm:>=21.5.3 < 23.0.0":
-  version: 22.3.1
-  resolution: "nx@npm:22.3.1"
+  version: 22.3.3
+  resolution: "nx@npm:22.3.3"
   dependencies:
     "@napi-rs/wasm-runtime": 0.2.4
-    "@nx/nx-darwin-arm64": 22.3.1
-    "@nx/nx-darwin-x64": 22.3.1
-    "@nx/nx-freebsd-x64": 22.3.1
-    "@nx/nx-linux-arm-gnueabihf": 22.3.1
-    "@nx/nx-linux-arm64-gnu": 22.3.1
-    "@nx/nx-linux-arm64-musl": 22.3.1
-    "@nx/nx-linux-x64-gnu": 22.3.1
-    "@nx/nx-linux-x64-musl": 22.3.1
-    "@nx/nx-win32-arm64-msvc": 22.3.1
-    "@nx/nx-win32-x64-msvc": 22.3.1
+    "@nx/nx-darwin-arm64": 22.3.3
+    "@nx/nx-darwin-x64": 22.3.3
+    "@nx/nx-freebsd-x64": 22.3.3
+    "@nx/nx-linux-arm-gnueabihf": 22.3.3
+    "@nx/nx-linux-arm64-gnu": 22.3.3
+    "@nx/nx-linux-arm64-musl": 22.3.3
+    "@nx/nx-linux-x64-gnu": 22.3.3
+    "@nx/nx-linux-x64-musl": 22.3.3
+    "@nx/nx-win32-arm64-msvc": 22.3.3
+    "@nx/nx-win32-x64-msvc": 22.3.3
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.2
     "@zkochan/js-yaml": 0.0.7
@@ -13571,7 +13579,7 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: 177c01167998fb28cfbec3fa73d34e810161e1742d49bb6d89638f977538ea53d52ee1929f6a50f7fe6200c38029123a0920b15a3a6803d30aab96925448dd2d
+  checksum: 25f8dc6a619cf13ac1011288c2338fa97e8740626ecfdac759bc2c53dbdb481e0112a49672ef47e84eb3eeb824ff3e5afbe3cd79abe83942e0dc8330e0727d47
   languageName: node
   linkType: hard
 
@@ -14574,7 +14582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proc-log@npm:^6.0.0":
+"proc-log@npm:^6.0.0, proc-log@npm:^6.1.0":
   version: 6.1.0
   resolution: "proc-log@npm:6.1.0"
   checksum: ac450ff8244e95b0c9935b52d629fef92ae69b7e39aea19972a8234259614d644402dd62ce9cb094f4a637d8a4514cba90c1456ad785a40ad5b64d502875a817
@@ -15837,16 +15845,16 @@ __metadata:
   linkType: hard
 
 "sigstore@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "sigstore@npm:4.0.0"
+  version: 4.1.0
+  resolution: "sigstore@npm:4.1.0"
   dependencies:
     "@sigstore/bundle": ^4.0.0
-    "@sigstore/core": ^3.0.0
+    "@sigstore/core": ^3.1.0
     "@sigstore/protobuf-specs": ^0.5.0
-    "@sigstore/sign": ^4.0.0
-    "@sigstore/tuf": ^4.0.0
-    "@sigstore/verify": ^3.0.0
-  checksum: a8179dade1e86aee2a235b47813063c063d5356df8fc95cd3731774a8a3f12e9321c48a1dedd8ff67c0ca6c3db365b5cd1f26607b847a4382c9bffd745230c2b
+    "@sigstore/sign": ^4.1.0
+    "@sigstore/tuf": ^4.0.1
+    "@sigstore/verify": ^3.1.0
+  checksum: 3a74c1efe18eaa73161c1be216fb55b54a5cd95af5604c29df1922144bcee1e7e5ddd4f2652510397ff4166bc8941c19d715dcfc2ce262ee861e3798e84a8859
   languageName: node
   linkType: hard
 
@@ -16851,14 +16859,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tuf-js@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "tuf-js@npm:4.0.0"
+"tuf-js@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "tuf-js@npm:4.1.0"
   dependencies:
-    "@tufjs/models": 4.0.0
-    debug: ^4.4.1
-    make-fetch-happen: ^15.0.0
-  checksum: c4a92ec90f5efa74111fef7d6511e5f42c00a1e8b425d7bf4620aa7b318b46d3eabbcc1f73f434d4c5a7e0b021b848595cd0f43f66285d1a3d024fbd10bfcb22
+    "@tufjs/models": 4.1.0
+    debug: ^4.4.3
+    make-fetch-happen: ^15.0.1
+  checksum: 51fec075a1e3007803010fb01b3fa4057a353af37cbcf8deec947bf289f17b36bcc34c8bd80e478693999a956bf345a60d0675103c83fd54ef69d7ffb1ab1338
   languageName: node
   linkType: hard
 
@@ -17407,9 +17415,9 @@ __metadata:
   linkType: hard
 
 "validate-npm-package-name@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "validate-npm-package-name@npm:7.0.0"
-  checksum: e0c686bb57cd574928d696d6b784cff51999bf3a0db194658616e3e7dc4d0a2ad2c89a13f74b715322b6355dafd68453e6ac6ad0d64a5fb26fbfb9e1ca607fc5
+  version: 7.0.1
+  resolution: "validate-npm-package-name@npm:7.0.1"
+  checksum: 861128b132b465fadc71eca71535822676f58ae921da42b459bc5193f11d8ad4f46509bce9a5c0ccf86f0b727364be352d7fee1de025c6d9de120a2b1c6901d9
   languageName: node
   linkType: hard
 

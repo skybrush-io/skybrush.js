@@ -2,17 +2,17 @@ export {
   createBarChartDataSeriesStyle,
   createChartStyle,
   createGradientBackground,
-} from './charts';
-export { Colors, colorForStatus } from './colors';
-export { defaultFont, monospacedFont, systemFont } from './fonts';
-export { useConditionalCSS, useDarkMode } from './hooks';
-export { default as makeStyles } from './makeStyles';
-export { Status } from './semantics';
-export { createSecondaryAreaStyle, secondaryAreaStyle } from './styles';
+} from './charts.js';
+export { colorForStatus, Colors } from './colors.js';
+export { defaultFont, monospacedFont, systemFont } from './fonts.js';
+export { useConditionalCSS, useDarkMode } from './hooks/index.js';
+export { default as makeStyles } from './makeStyles.js';
+export { Status } from './semantics.js';
+export { createSecondaryAreaStyle, secondaryAreaStyle } from './styles.js';
 export {
   createThemeProvider,
   isThemeDark,
-  toThemeType,
   ThemeType,
-} from './theme';
-export { FadeAndSlide } from './transitions';
+  toThemeType,
+} from './theme.js';
+export { FadeAndSlide } from './transitions/index.js';

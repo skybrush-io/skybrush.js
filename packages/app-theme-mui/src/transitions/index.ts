@@ -1,4 +1,4 @@
-import FadeAndSlide from './FadeAndSlide';
+import FadeAndSlide from './FadeAndSlide.js';
 
 const transitions: {
   FadeAndSlide: typeof FadeAndSlide;

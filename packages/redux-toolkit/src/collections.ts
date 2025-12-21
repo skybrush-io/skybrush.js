@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-dynamic-delete */
 
-import has from 'lodash-es/has';
-import isNil from 'lodash-es/isNil';
-import property from 'lodash-es/property';
-import pull from 'lodash-es/pull';
-import sortedIndex from 'lodash-es/sortedIndex';
-import sortedIndexBy from 'lodash-es/sortedIndexBy';
-import reject from 'lodash-es/reject';
+import {
+  has,
+  isNil,
+  property,
+  pull,
+  reject,
+  sortedIndex,
+  sortedIndexBy,
+} from 'lodash-es';
 import { orderBy } from 'natural-orderby';
 
-import { chooseUniqueIdFromName } from './naming';
+import { chooseUniqueIdFromName } from './naming.js';
 
 interface ItemWithId {
   id: string;

@@ -1,11 +1,9 @@
-import React from 'react';
-
 import Slider, { type SliderProps } from '@mui/material/Slider';
 import { orange } from '@mui/material/colors';
 import { styled, type Theme } from '@mui/material/styles';
 import { useRerender } from '@react-hookz/web';
 
-import useHarmonicIntervalFn from './hooks/useHarmonicIntervalFn';
+import useHarmonicIntervalFn from './hooks/useHarmonicIntervalFn.js';
 
 const styles = ({ theme }: { theme: Theme }) => ({
   '& .MuiSlider-valueLabel': {
@@ -48,7 +46,7 @@ export type PlaybackSliderProps = SliderProps & {
   onDragging: SliderProps['onChange'];
   playing: boolean;
   updateInterval?: number;
-}
+};
 
 const PlaybackSlider = ({
   dragging,

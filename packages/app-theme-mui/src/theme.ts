@@ -2,7 +2,7 @@
  * @file Theme setup for Material-UI.
  */
 
-import * as React from 'react';
+import React from 'react';
 
 import { blue, blueGrey, grey, lightBlue, orange } from '@mui/material/colors';
 import type {
@@ -12,10 +12,10 @@ import type {
 } from '@mui/material/styles';
 import { ThemeProvider, alpha, createTheme } from '@mui/material/styles';
 
-import { Colors } from './colors';
-import { defaultFont } from './fonts';
-import useConditionalCSS from './hooks/useConditionalCSS';
-import useDarkMode from './hooks/useDarkMode';
+import { Colors } from './colors.js';
+import { defaultFont } from './fonts.js';
+import useConditionalCSS from './hooks/useConditionalCSS.js';
+import useDarkMode from './hooks/useDarkMode.js';
 
 /**
  * Types of themes that we support in this framework.

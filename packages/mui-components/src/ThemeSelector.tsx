@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import FormControl, { type FormControlProps } from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';

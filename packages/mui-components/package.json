@@ -2,17 +2,14 @@
   "name": "@skybrush/mui-components",
   "version": "5.0.5",
   "description": "MUI v7+ components for Skybrush apps",
+  "type": "module",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
   "license": "MIT",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "publishConfig": {
     "registry": "https://npm.collmot.com"

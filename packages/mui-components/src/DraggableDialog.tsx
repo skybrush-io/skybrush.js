@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Draggable from 'react-draggable';
 
 import Box from '@mui/material/Box';
@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 
 import { createSecondaryAreaStyle } from '@skybrush/app-theme-mui';
 
-import DialogToolbar from './DialogToolbar';
+import DialogToolbar from './DialogToolbar.js';
 
 const DraggablePaper = (props: PaperProps) => {
   const ref = React.useRef(null);

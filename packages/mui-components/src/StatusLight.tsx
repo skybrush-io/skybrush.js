@@ -1,10 +1,9 @@
 import clsx from 'clsx';
-import * as React from 'react';
 
 import { Colors, makeStyles, Status } from '@skybrush/app-theme-mui';
 
-import { flash, ripple } from './keyframes';
-import { createStyleForStatus } from './styles';
+import { flash, ripple } from './keyframes.js';
+import { createStyleForStatus } from './styles.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {

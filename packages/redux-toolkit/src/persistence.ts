@@ -1,7 +1,9 @@
 import localForage from 'localforage';
 import { createMigrate, type PersistConfig } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
+
+// @ts-ignore
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2.js';
 
 export type StorageConfig<S, RS = any, HSS = any, ESS = any> = Omit<
   PersistConfig<S, RS, HSS, ESS>,

@@ -1,9 +1,6 @@
-import { isPlain } from '@reduxjs/toolkit';
 import type { CaseReducer, Draft, PayloadAction } from '@reduxjs/toolkit';
-
-import isPromise from 'is-promise';
-import isError from 'lodash-es/isError';
-import isFunction from 'lodash-es/isFunction';
+import { isPlain } from '@reduxjs/toolkit';
+import { isError, isFunction, isPromise } from '@sindresorhus/is';
 
 /**
  * Function that specifies the types of values we are willing to allow in Redux

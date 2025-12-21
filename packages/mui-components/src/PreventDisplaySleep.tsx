@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useAsyncEffect } from 'use-async-effect';
 
 let warned = false;

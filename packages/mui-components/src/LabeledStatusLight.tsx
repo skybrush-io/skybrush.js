@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 
 import Box from '@mui/material/Box';
 import Typography, { type TypographyProps } from '@mui/material/Typography';
 
-import StatusLight, { type StatusLightProps } from './StatusLight';
+import StatusLight, { type StatusLightProps } from './StatusLight.js';
 
 export interface LabeledStatusLightProps extends StatusLightProps {
   children: React.ReactNode;

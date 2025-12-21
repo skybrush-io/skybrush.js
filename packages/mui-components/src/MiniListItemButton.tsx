@@ -1,10 +1,8 @@
-import * as React from 'react';
-
 import Box from '@mui/material/Box';
 import ListItemButton from '@mui/material/ListItemButton';
 
-import type { MiniListItemProps } from './MiniListItem';
-import MiniListItemIcon from './MiniListItemIcon';
+import type { MiniListItemProps } from './MiniListItem.js';
+import MiniListItemIcon from './MiniListItemIcon.js';
 
 export type MiniListItemButtonProps = MiniListItemProps & {
   onClick?: () => void;

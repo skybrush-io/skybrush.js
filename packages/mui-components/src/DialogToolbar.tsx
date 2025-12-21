@@ -1,8 +1,6 @@
-import * as React from 'react';
-
 import Toolbar, { type ToolbarProps } from '@mui/material/Toolbar';
 
-import DialogAppBar from './DialogAppBar';
+import DialogAppBar from './DialogAppBar.js';
 
 export type DialogToolbarProps = ToolbarProps;
 

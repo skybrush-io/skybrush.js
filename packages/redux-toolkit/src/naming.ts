@@ -2,10 +2,7 @@
  * @file Naming things is hard. These functions may help.
  */
 
-import camelCase from 'lodash-es/camelCase';
-import includes from 'lodash-es/includes';
-import isArray from 'lodash-es/isArray';
-import trimEnd from 'lodash-es/trimEnd';
+import { camelCase, includes, isArray, trimEnd } from 'lodash-es';
 
 /**
  * Given an ID proposal and an array of existing IDs, returns a new

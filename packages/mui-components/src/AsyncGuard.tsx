@@ -1,11 +1,11 @@
 import Error from '@mui/icons-material/Error';
 import Button from '@mui/material/Button';
 
-import React from 'react';
 import { useAsync } from '@react-hookz/web';
+import React from 'react';
 
-import BackgroundHint from './BackgroundHint';
-import LargeProgressIndicator from './LargeProgressIndicator';
+import BackgroundHint from './BackgroundHint.js';
+import LargeProgressIndicator from './LargeProgressIndicator.js';
 
 export interface AsyncGuardProps<T> {
   children: (value: T) => React.ReactNode;

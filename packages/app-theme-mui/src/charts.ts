@@ -1,6 +1,6 @@
-import createColor from 'color';
 import type { ChartOptions, ChartType } from 'chart.js';
-import { defaultFont } from './fonts';
+import createColor from 'color';
+import { defaultFont } from './fonts.js';
 
 /**
  * Creates a standard style for a single bar chart data series in a Chart.js

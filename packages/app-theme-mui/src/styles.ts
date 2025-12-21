@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 
 import type { Theme } from '@mui/material/styles';
 
-import { isThemeDark } from './theme';
+import { isThemeDark } from './theme.js';
 
 interface SecondaryAreaStyleOptions {
   inset?: 'top' | 'bottom' | 'left' | 'right' | 'all' | true;

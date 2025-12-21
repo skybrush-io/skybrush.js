@@ -1,55 +1,59 @@
-import BackgroundHint, { type BackgroundHintProps } from './BackgroundHint';
-import DialogAppBar, { type DialogAppBarProps } from './DialogAppBar';
-import DialogTabs, { type DialogTabsProps } from './DialogTabs';
-import DialogToolbar, { type DialogToolbarProps } from './DialogToolbar';
-import DraggableDialog, { type DraggableDialogProps } from './DraggableDialog';
-import FormHeader, { type FormHeaderProps } from './FormHeader';
+import BackgroundHint, { type BackgroundHintProps } from './BackgroundHint.js';
+import DialogAppBar, { type DialogAppBarProps } from './DialogAppBar.js';
+import DialogTabs, { type DialogTabsProps } from './DialogTabs.js';
+import DialogToolbar, { type DialogToolbarProps } from './DialogToolbar.js';
+import DraggableDialog, {
+  type DraggableDialogProps,
+} from './DraggableDialog.js';
+import FormHeader, { type FormHeaderProps } from './FormHeader.js';
 import GenericHeaderButton, {
   type GenericHeaderButtonProps,
-} from './GenericHeaderButton';
+} from './GenericHeaderButton.js';
 import LabeledStatusLight, {
   type LabeledStatusLightProps,
-} from './LabeledStatusLight';
+} from './LabeledStatusLight.js';
 import LargeProgressIndicator, {
   type LargeProgressIndicatorProps,
-} from './LargeProgressIndicator';
-import LazyTooltip, { type LazyTooltipProps } from './LazyTooltip';
-import MiniList, { type MiniListProps } from './MiniList';
-import MiniListDivider from './MiniListDivider';
-import MiniListItem, { type MiniListItemProps } from './MiniListItem';
+} from './LargeProgressIndicator.js';
+import LazyTooltip, { type LazyTooltipProps } from './LazyTooltip.js';
+import MiniList, { type MiniListProps } from './MiniList.js';
+import MiniListDivider from './MiniListDivider.js';
+import MiniListItem, { type MiniListItemProps } from './MiniListItem.js';
 import MiniListItemButton, {
   type MiniListItemButtonProps,
-} from './MiniListItemButton';
+} from './MiniListItemButton.js';
 import MiniListItemIcon, {
   type MiniListItemIconProps,
-} from './MiniListItemIcon';
-import MuteButton, { type MuteButtonProps } from './MuteButton';
-import PlaybackSlider, { type PlaybackSliderProps } from './PlaybackSlider';
-import PlayStopButton, { type PlayStopButtonProps } from './PlayStopButton';
+} from './MiniListItemIcon.js';
+import MuteButton, { type MuteButtonProps } from './MuteButton.js';
+import PlaybackSlider, { type PlaybackSliderProps } from './PlaybackSlider.js';
+import PlayStopButton, { type PlayStopButtonProps } from './PlayStopButton.js';
 import PreventDisplaySleep, {
   type PreventDisplaySleepProps,
-} from './PreventDisplaySleep';
+} from './PreventDisplaySleep.js';
 import QuickSelectionOverlay, {
   type QuickSelectionOverlayProps,
-} from './QuickSelectionOverlay';
-import SemanticAvatar, { type SemanticAvatarProps } from './SemanticAvatar';
-import SidebarBadge, { type SidebarBadgeProps } from './SidebarBadge';
+} from './QuickSelectionOverlay.js';
+import SemanticAvatar, { type SemanticAvatarProps } from './SemanticAvatar.js';
+import SidebarBadge, { type SidebarBadgeProps } from './SidebarBadge.js';
 import SmallProgressIndicator, {
   type SmallProgressIndicatorProps,
-} from './SmallProgressIndicator';
-import StatusLight, { type StatusLightProps } from './StatusLight';
-import StatusPill, { type StatusPillProps } from './StatusPill';
-import StatusText from './StatusText';
-import ThemeSelector, { type ThemeSelectorProps } from './ThemeSelector';
-import Tooltip, { type TooltipProps } from './Tooltip';
-import TransparentList, { type TransparentListProps } from './TransparentList';
+} from './SmallProgressIndicator.js';
+import StatusLight, { type StatusLightProps } from './StatusLight.js';
+import StatusPill, { type StatusPillProps } from './StatusPill.js';
+import StatusText from './StatusText.js';
+import ThemeSelector, { type ThemeSelectorProps } from './ThemeSelector.js';
+import Tooltip, { type TooltipProps } from './Tooltip.js';
+import TransparentList, {
+  type TransparentListProps,
+} from './TransparentList.js';
 
 export {
   BackgroundHint,
-  DraggableDialog,
   DialogAppBar,
   DialogTabs,
   DialogToolbar,
+  DraggableDialog,
   FormHeader,
   GenericHeaderButton,
   LabeledStatusLight,
@@ -76,10 +80,9 @@ export {
   TransparentList,
 };
 
-export * as keyframes from './keyframes';
+export * as keyframes from './keyframes.js';
 
 export type {
-  TooltipProps,
   BackgroundHintProps,
   DialogAppBarProps,
   DialogTabsProps,
@@ -90,10 +93,10 @@ export type {
   LabeledStatusLightProps,
   LargeProgressIndicatorProps,
   LazyTooltipProps,
-  MiniListProps,
-  MiniListItemProps,
   MiniListItemButtonProps,
   MiniListItemIconProps,
+  MiniListItemProps,
+  MiniListProps,
   MuteButtonProps,
   PlaybackSliderProps,
   PlayStopButtonProps,
@@ -105,5 +108,6 @@ export type {
   StatusLightProps,
   StatusPillProps,
   ThemeSelectorProps,
+  TooltipProps,
   TransparentListProps,
 };

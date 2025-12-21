@@ -1,3 +1,3 @@
-import useHarmonicIntervalFn from './useHarmonicIntervalFn';
+import useHarmonicIntervalFn from './useHarmonicIntervalFn.js';
 
 export { useHarmonicIntervalFn };

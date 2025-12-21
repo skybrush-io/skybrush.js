@@ -2,14 +2,12 @@
   "name": "@skybrush/redux-toolkit",
   "version": "4.0.2",
   "description": "Redux-related tools for Skybrush apps",
+  "type": "module",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "directories": {
-    "test": "test"
-  },
   "files": [
     "dist"
   ],
@@ -28,6 +26,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
+    "@sindresorhus/is": "^7.1.1",
     "immer": "^11.0.1",
     "is-promise": "^4.0.0",
     "localforage": "^1.10.0",

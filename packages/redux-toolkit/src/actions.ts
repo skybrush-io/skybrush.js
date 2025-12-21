@@ -1,13 +1,12 @@
-import identity from 'lodash-es/identity';
 import type {
   Action,
   ActionCreator,
   Dispatch,
   UnknownAction,
 } from '@reduxjs/toolkit';
-import type { SelectionHandlerReduxFunctions } from './types';
-import xor from 'lodash-es/xor';
-import { eventHasPlatformModifierKey, eventHasShiftKey } from './events';
+import { identity, xor } from 'lodash-es';
+import { eventHasPlatformModifierKey, eventHasShiftKey } from './events.js';
+import type { SelectionHandlerReduxFunctions } from './types.js';
 
 /**
  * Resolves an array containing a mix of action types and action creators to
@@ -67,7 +66,7 @@ export function createActionScrubber<A extends string>(
 export function createSelectionHandlerThunk<
   T = string,
   S = unknown,
-  A = UnknownAction
+  A = UnknownAction,
 >({
   activateItem,
   getSelection,

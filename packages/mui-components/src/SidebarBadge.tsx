@@ -1,5 +1,4 @@
-import * as React from 'react';
-import Badge, { type BadgeProps } from 'react-badger';
+import { Badge, type BadgeProps } from 'react-badger';
 
 const badgeProps: BadgeProps = {
   offset: [8, 8],

@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 
 import Avatar, { type AvatarProps } from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
 
 import { colorForStatus, Status } from '@skybrush/app-theme-mui';
 
-import { fade, flash } from './keyframes';
-import { createStyleForStatus } from './styles';
+import { fade, flash } from './keyframes.js';
+import { createStyleForStatus } from './styles.js';
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.3)',
