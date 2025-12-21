@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/show-format",
-  "version": "4.0.3",
+  "version": "5.0.0",
   "description": "Skybrush show format loader",
   "type": "module",
   "author": "CollMot Robotics Ltd",
