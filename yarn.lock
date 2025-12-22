@@ -3891,7 +3891,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skybrush/file-formats-doc@npm:^1.1.1":
+"@skybrush/file-formats-doc@npm:^1.2.0":
   version: 1.2.0
   resolution: "@skybrush/file-formats-doc@npm:1.2.0"
   checksum: a4b456efc93937a8359938eecf35f14d6d17b01f7c4eb4d00114224a3fb8dea3471bd12c6f4c433fdb10e1b657400d33ef25979178411ad35aed49847f4f007d
@@ -3963,7 +3963,7 @@ __metadata:
   resolution: "@skybrush/show-format@workspace:packages/show-format"
   dependencies:
     "@apidevtools/json-schema-ref-parser": 9.1.2
-    "@skybrush/file-formats-doc": ^1.1.1
+    "@skybrush/file-formats-doc": ^1.2.0
     bezier-js: ^6.1.4
     core-js: ^3.47.0
     denque: ^2.1.0
