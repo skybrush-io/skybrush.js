@@ -13,18 +13,24 @@ export type MiniListItemButtonProps = MiniListItemProps & {
  * tooltips, typically in the app header.
  */
 const MiniListItemButton = ({
+  gap = 1,
   icon,
   iconPreset,
+  inset,
   primaryText,
   secondaryText,
   onClick,
 }: MiniListItemButtonProps) => (
-  <ListItemButton disableGutters onClick={onClick}>
+  <ListItemButton
+    disableGutters
+    sx={inset ? { px: inset } : undefined}
+    onClick={onClick}
+  >
     {iconPreset ? <MiniListItemIcon preset={iconPreset} /> : icon}
     {secondaryText ? (
       <Box display='flex' flexDirection='row' flexGrow={1}>
         <Box flexGrow={1}>{primaryText}</Box>
-        <Box color='text.secondary' ml={1}>
+        <Box color='text.secondary' ml={gap}>
           {secondaryText}
         </Box>
       </Box>
