@@ -6,7 +6,10 @@ import type {
 } from '@reduxjs/toolkit';
 import { identity, xor } from 'lodash-es';
 import { eventHasPlatformModifierKey, eventHasShiftKey } from './events.js';
-import type { SelectionHandlerReduxFunctions } from './types.js';
+import type {
+  SelectionHandlerReduxFunctions,
+  SelectionHandlerThunk,
+} from './types.js';
 
 /**
  * Resolves an array containing a mix of action types and action creators to
@@ -62,36 +65,44 @@ export function createActionScrubber<A extends string>(
  * the selection accordingly when the items are clicked, or toggling the
  * selection when the items are clicked with the Ctrl (Cmd) key being pressed.
  * It also handles optional item activation with double-clicks.
+ *
+ * @returns  A Redux thunk action for selection handling, or `null` if neither
+ *           `setSelection` nor `activateItem` functions are provided.
  */
 export function createSelectionHandlerThunk<
   T = string,
   S = unknown,
-  A = UnknownAction,
+  A extends Action = UnknownAction,
+  D extends Dispatch<UnknownAction> = Dispatch<A>,
 >({
   activateItem,
   getSelection,
   setSelection,
   getListItems,
-}: SelectionHandlerReduxFunctions<T, S, A>) {
+}: SelectionHandlerReduxFunctions<T, S, A>): SelectionHandlerThunk<
+  T,
+  S,
+  A,
+  D
+> | null {
   if (!setSelection && !activateItem) {
     return null;
   }
 
-  return (id: T, event: React.UIEvent) =>
+  return (id: T, event: Event | React.SyntheticEvent) =>
     // eslint-disable-next-line complexity
-    (dispatch: Dispatch, getState: () => S) => {
+    (dispatch: D, getState: () => S) => {
       const state = getState();
       const selection = getSelection ? getSelection(state) : [];
+      const effectiveEvent: Event =
+        'nativeEvent' in event ? (event.nativeEvent ?? event) : event;
       let action: A | undefined | void = undefined;
 
-      if (
-        eventHasPlatformModifierKey(event.nativeEvent || event) &&
-        setSelection
-      ) {
+      if (eventHasPlatformModifierKey(effectiveEvent) && setSelection) {
         // Toggling the item
         action = setSelection(xor(selection, [id]));
       } else if (
-        eventHasShiftKey(event.nativeEvent || event) &&
+        eventHasShiftKey(effectiveEvent) &&
         getListItems &&
         setSelection
       ) {
@@ -125,8 +136,13 @@ export function createSelectionHandlerThunk<
           // Item was already selected, let's activate it if it is a double-click,
           // otherwise do nothing. We use the "detail" property of the
           // event to decide; this works if we are attached to the onClick handler.
-          action = event.detail > 1 ? activateItem(id) : undefined;
-          if (event.detail > 1) {
+          const isDoubleClick =
+            'detail' in effectiveEvent &&
+            typeof effectiveEvent.detail === 'number'
+              ? effectiveEvent.detail > 1
+              : false;
+          action = isDoubleClick ? activateItem(id) : undefined;
+          if (isDoubleClick) {
             // Double-clicking may have triggered a text selection on the UI. We
             // are too late to prevent it because it happens on mouseDown, so let's
             // just clear it.
