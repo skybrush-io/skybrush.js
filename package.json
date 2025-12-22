@@ -132,6 +132,7 @@
   },
   "packageManager": "yarn@3.6.0",
   "resolutions": {
-    "redux-persist@^6.0.0": "patch:redux-persist@npm%3A6.0.0#./.yarn/patches/redux-persist-npm-6.0.0-56dad69feb.patch"
+    "redux-persist@^6.0.0": "patch:redux-persist@npm%3A6.0.0#./.yarn/patches/redux-persist-npm-6.0.0-56dad69feb.patch",
+    "@types/aframe@^1.2.9": "patch:@types/aframe@npm%3A1.2.9#./.yarn/patches/@types-aframe-npm-1.2.9-e253ec67c0.patch"
   }
 }

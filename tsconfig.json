@@ -5,16 +5,20 @@
     //
     // Modifications:
     // - target is set to es2022 because we want to use Array.at()
+    // - module and moduleResolution are set to nodenext -- otherwise @types/three would
+    //   try to import @types/three/build/three.d.cts, which contains an import statement
+    //   instead of a require(), and this yields an error in TypeScript
     "allowJs": true,
     "declaration": true,
     "declarationMap": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "target": "es2022", // set to the *lowest* target to support
-    "module": "node18",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "strict": true,
     "sourceMap": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
   },
   "exclude": [
     "**/.*/",
@@ -22,6 +26,6 @@
     "**/node_modules",
     "packages/app-theme-material-ui",
     "packages/mavlink",
-    "packages/mui-components/lib"
-  ]
+    "packages/mui-components/lib",
+  ],
 }

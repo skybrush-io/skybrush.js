@@ -3836,7 +3836,7 @@ __metadata:
     lodash-es: ^4.17.22
     meshline: 3.1.0
   peerDependencies:
-    aframe: ^1.2.0
+    aframe: ^1.7.0
   languageName: unknown
   linkType: soft
 
@@ -4111,13 +4111,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/aframe@npm:^1.2.9":
+"@types/aframe@npm:1.2.9":
   version: 1.2.9
   resolution: "@types/aframe@npm:1.2.9"
   dependencies:
     "@types/animejs": "*"
     "@types/three": "*"
   checksum: 52d40f1cd5c3014035352ca7b8b22fc971f337f4f967dd7ebe963558295b2dc218deab603f40c9bf5d5c32c378d3d57d937fe0ec3cd89ec4b9f10ac942900ba5
+  languageName: node
+  linkType: hard
+
+"@types/aframe@patch:@types/aframe@npm%3A1.2.9#./.yarn/patches/@types-aframe-npm-1.2.9-e253ec67c0.patch::locator=skybrush%40workspace%3A.":
+  version: 1.2.9
+  resolution: "@types/aframe@patch:@types/aframe@npm%3A1.2.9#./.yarn/patches/@types-aframe-npm-1.2.9-e253ec67c0.patch::version=1.2.9&hash=aa4260&locator=skybrush%40workspace%3A."
+  dependencies:
+    "@types/animejs": "*"
+    "@types/three": "*"
+  checksum: 5c9d04dfeed1f3c348d1ff9d223b54e68115e37984da6264b700482d179efc76b7c42188e2d4d6f9d0da2c2b64d39500b75f9afc37d0eff35e24d172f91bd424
   languageName: node
   linkType: hard
 
