@@ -11,6 +11,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./spatial": {
+      "types": "./dist/spatial.d.ts",
+      "default": "./dist/spatial.js"
+    },
     "./*": {
       "types": "./dist/*/index.d.ts",
       "default": "./dist/*/index.js"
