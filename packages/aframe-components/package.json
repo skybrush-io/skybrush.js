@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/aframe-components",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "AFrame components commonly used in all Skybrush apps",
   "type": "module",
   "author": "CollMot Robotics Ltd",
