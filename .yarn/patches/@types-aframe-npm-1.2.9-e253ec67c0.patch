@@ -1,0 +1,15 @@
+diff --git a/index.d.ts b/index.d.ts
+index 77ec2e57b70adeb9b1c11df22326ffb55267fb41..a4ac0be79f4239a70f8cb20f9adecc486cbafb04 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -444,6 +444,10 @@ export const registerPrimitive: AFrame["registerPrimitive"];
+ export const registerShader: AFrame["registerShader"];
+ export const registerSystem: AFrame["registerSystem"];
+ 
++// default export
++declare const exportedAFrame: AFrame;
++export default exportedAFrame;
++
+ // global exports
+ declare global {
+     var hasNativeWebVRImplementation: boolean;
