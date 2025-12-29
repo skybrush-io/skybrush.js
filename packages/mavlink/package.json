@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/mavlink",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "MAVLink message handling in Skybrush applications",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
