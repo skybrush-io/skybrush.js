@@ -110,8 +110,7 @@ const defaultTimeout = {
   exit: duration.leavingScreen,
 };
 
-export interface FadeAndSlideProps
-  extends EndListenerProps<undefined>, TransitionActions {
+export type FadeAndSlideProps = {
   children: React.ReactElement;
   direction?: Direction;
   easing?: string | { enter: string; exit: string };
@@ -126,9 +125,9 @@ export interface FadeAndSlideProps
   onExited?: ExitHandler<undefined> | undefined;
   style?: React.CSSProperties;
   TransitionComponent?: typeof Transition;
-}
+} & EndListenerProps<undefined> &
+  TransitionActions;
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const FadeAndSlide = React.forwardRef(
   <T extends HTMLElement | undefined>(
     props: Omit<FadeAndSlideProps, 'ref'>,
@@ -158,7 +157,7 @@ const FadeAndSlide = React.forwardRef(
     // eslint-disable-next-line @typescript-eslint/ban-types
     const nodeRef = React.useRef<HTMLElement | null>(null);
     const foreignRef: React.Ref<HTMLElement> = useForkRef(
-      (children as any).ref as React.Ref<T>,
+      children.ref as React.Ref<T>,
       ref
     ) as any;
     const handleRef = useForkRef(nodeRef, foreignRef);
@@ -240,7 +239,7 @@ const FadeAndSlide = React.forwardRef(
     };
 
     return React.createElement(
-      TransitionComponent as any,
+      TransitionComponent,
       {
         in: inProp,
         appear,
@@ -271,6 +270,5 @@ const FadeAndSlide = React.forwardRef(
     );
   }
 );
-/* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
 export default FadeAndSlide;

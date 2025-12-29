@@ -4,9 +4,9 @@ import type { Theme } from '@mui/material/styles';
 
 import { isThemeDark } from './theme.js';
 
-interface SecondaryAreaStyleOptions {
+type SecondaryAreaStyleOptions = {
   inset?: 'top' | 'bottom' | 'left' | 'right' | 'all' | true;
-}
+};
 
 /**
  * Creates a style for a secondary area with an inset appearance that can be

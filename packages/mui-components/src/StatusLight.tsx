@@ -92,11 +92,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface StatusLightProps {
+export type StatusLightProps = {
   inline?: boolean;
   size?: 'small' | 'normal' | 'large';
   status?: Status;
-}
+};
 
 /**
  * Small component resembling a multi-color status light that can be used to

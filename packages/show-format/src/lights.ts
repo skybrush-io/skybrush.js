@@ -4,15 +4,15 @@ import { atob } from 'js-base64';
 import type { Color, LightProgram } from './types.js';
 import { isArrayBuffer, isObject } from './utils.js';
 
-interface LightProgramExecutor {
+type LightProgramExecutor = {
   execute: () => Generator<ExecutorState, void, void>;
   reset: () => void;
-}
+};
 
-export interface LightProgramPlayer {
+export type LightProgramPlayer = {
   evaluateColorAt: (seconds: number, color: Color) => void;
   iterate: (fps?: number) => Generator<[number, Color], void, void>;
-}
+};
 
 export type LightProgramLike =
   | string
@@ -287,7 +287,6 @@ function createLightProgramExecutor(
         throw new Error('Bytecode ended while reading varuint');
       }
 
-      // eslint-disable-next-line no-bitwise
       value |= (byte & 0x7f) << shift;
       shift += 7;
     }
@@ -312,7 +311,6 @@ function createLightProgramExecutor(
 
   const parseTimestamp = parseDuration;
 
-  // eslint-disable-next-line complexity
   function* execute() {
     const color: Color = [0, 0, 0];
     let duration: number;
@@ -578,7 +576,6 @@ export default function createLightProgramPlayer(
     const color: Color = [0, 0, 0];
     let [seconds, frames, t] = [0, 0, 0];
 
-    // eslint-disable-next-line no-unmodified-loop-condition
     while (sliceGenerator) {
       evaluateColorAt(t, color);
       yield [t, color];

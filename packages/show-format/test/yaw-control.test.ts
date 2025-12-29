@@ -1,5 +1,6 @@
-import { YawControl, createYawControlPlayer } from '../dist/index.js';
-import { Vector3 as EulerAngles } from '../dist/types.js';
+import type { YawControl} from '../dist/index.js';
+import { createYawControlPlayer } from '../dist/index.js';
+import type { Vector3 as EulerAngles } from '../dist/types.js';
 import { shuffle } from '../dist/utils.js';
 
 const yaw: YawControl = {

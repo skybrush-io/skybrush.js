@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-dynamic-delete */
-
 import {
   has,
   isNil,
@@ -13,14 +11,14 @@ import { orderBy } from 'natural-orderby';
 
 import { chooseUniqueIdFromName } from './naming.js';
 
-interface ItemWithId {
+type ItemWithId = {
   id: string;
-}
+};
 
-export interface Collection<T> {
+export type Collection<T> = {
   byId: Record<string, T>;
   order: string[];
-}
+};
 
 /**
  * Helper functions to deal with ordered collections.

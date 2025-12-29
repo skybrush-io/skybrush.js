@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Status } from '@skybrush/app-theme-mui';
 import clsx from 'clsx';
-import React from 'react';
+import type React from 'react';
 
 import { createStyleForHollowStatus, createStyleForStatus } from './styles.js';
 
@@ -10,7 +10,6 @@ const FLASH_STYLE = {
   animationDirection: 'alternate',
 };
 
-/* eslint-disable @typescript-eslint/naming-convention */
 const StyledDiv = styled('div')(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   fontSize: 'small',
@@ -126,7 +125,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
     },
   },
 }));
-/* eslint-enable @typescript-eslint/naming-convention */
 
 export type StatusPillProps = Readonly<{
   children?: React.ReactNode;

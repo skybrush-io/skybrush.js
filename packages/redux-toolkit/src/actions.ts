@@ -90,7 +90,6 @@ export function createSelectionHandlerThunk<
   }
 
   return (id: T, event: Event | React.SyntheticEvent) =>
-    // eslint-disable-next-line complexity
     (dispatch: D, getState: () => S) => {
       const state = getState();
       const selection = getSelection ? getSelection(state) : [];

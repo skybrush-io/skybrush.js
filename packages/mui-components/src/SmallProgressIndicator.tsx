@@ -3,10 +3,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 
-export interface SmallProgressIndicatorProps {
+export type SmallProgressIndicatorProps = {
   label?: string;
   visible?: boolean;
-}
+};
 
 const SmallProgressIndicator = ({
   label,

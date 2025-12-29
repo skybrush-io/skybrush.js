@@ -1,9 +1,9 @@
 import Box, { type BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export interface FormHeaderProps extends BoxProps {
+export type FormHeaderProps = {
   disablePadding?: boolean;
-}
+} & BoxProps;
 
 const FormHeader = ({ children, disablePadding, ...rest }: FormHeaderProps) => (
   <Box color='text.secondary' mt={disablePadding ? 0 : 2} mb={0.5} {...rest}>

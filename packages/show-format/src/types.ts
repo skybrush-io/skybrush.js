@@ -35,11 +35,11 @@ export type Vector3Tuple = [number, number, number];
 /**
  * A single 3D coordinate in .skyc files, in object notation.
  */
-export interface Vector3 {
+export type Vector3 = {
   x: number;
   y: number;
   z: number;
-}
+};
 
 /** A single RGB color used by the light program player */
 export type Color = [number, number, number];
@@ -78,7 +78,7 @@ export type ShowSegment = [number, number];
 /**
  * This schema describes the proper usage of the JSON structure inside the Skybrush compiled show file format (.skyc).
  */
-export interface ShowSpecification {
+export type ShowSpecification = {
   /** Version number of the show specification format */
   version: number;
 
@@ -96,12 +96,12 @@ export interface ShowSpecification {
 
   /** Specification of the drone swarm that participates in the show */
   swarm: SwarmSpecification;
-}
+};
 
 /**
  * The environment of the show, including important areas, objects, buildings, camera positions etc
  */
-export interface Environment {
+export type Environment = {
   /** Type of the environment (indoor or outdoor). */
   type: EnvironmentType;
 
@@ -110,7 +110,7 @@ export interface Environment {
 
   /** The proposed show origin and orientation that locate the show in the real world */
   location?: Location;
-}
+};
 
 /**
  * Enum speceifying the supported camera types.
@@ -122,7 +122,7 @@ export enum CameraType {
 /**
  * Defines the name, position and orientation of a pre-defined camera
  */
-export interface Camera {
+export type Camera = {
   /**
    * The type of the camera. The default is CameraType.PERSPECTIVE.
    */
@@ -156,12 +156,12 @@ export interface Camera {
    * Whether this camera is the default, preferred camera of the show.
    */
   default?: boolean;
-}
+};
 
 /**
  * The proposed show origin and orientation that locate the show in the real world
  */
-export interface Location {
+export type Location = {
   /**
    * Geodetic location of the show coordinate system
    */
@@ -171,12 +171,12 @@ export interface Location {
    * Angle of the X+ axis of the show coordinate system in degrees relative to North
    */
   orientation: number;
-}
+};
 
 /**
  * Media settings associated with the show
  */
-export interface MediaSettings {
+export type MediaSettings = {
   /**
    * Audio data (i.e. background music) associated with the show. May be embedded
    * in base64 format or may be an external reference to a binary file.
@@ -191,12 +191,12 @@ export interface MediaSettings {
     /** MIME media type of the audio data */
     mediaType: 'audio/mpeg';
   };
-}
+};
 
 /**
  * Metadata of the show, such as a unique ID or title.
  */
-export interface ShowMetadata {
+export type ShowMetadata = {
   /** The title of the show */
   title?: string;
 
@@ -220,12 +220,12 @@ export interface ShowMetadata {
    * Known show segments.
    */
   segments?: Partial<Record<ShowSegmentId, ShowSegment>>;
-}
+};
 
 /**
  * General settings associated with a drone show
  */
-export interface ShowSettings {
+export type ShowSettings = {
   /** List of cues associated to the show */
   cues?: CueSheet;
 
@@ -234,12 +234,12 @@ export interface ShowSettings {
 
   /** Safety validation settings of the show */
   validation?: ValidationSettings;
-}
+};
 
 /**
  * Interface specification of a cue sheet for the show.
  */
-export interface CueSheet {
+export type CueSheet = {
   /**
    * The version of the cue sheet format. This definition is for version 1.
    */
@@ -249,12 +249,12 @@ export interface CueSheet {
    * The list of cues in the show.
    */
   items: Cue[];
-}
+};
 
 /**
  * Interface specification of a single cue in the show.
  */
-export interface Cue {
+export type Cue = {
   /**
    * A human-readable name of the cue, used in plots and 3D animation software
    */
@@ -264,12 +264,12 @@ export interface Cue {
    * The time corresponding to the cue, in seconds
    */
   time: number;
-}
+};
 
 /**
  * Specification of a proposed geofence for the show
  */
-export interface Geofence {
+export type Geofence = {
   /**
    * The version of the geofence format. This definition is for version 1.
    */
@@ -280,24 +280,24 @@ export interface Geofence {
 
   /** Action to perform when the geofence is breached */
   action?: GeofenceAction;
-}
+};
 
 /**
  * Interface specification of a single inclusion or exclusion polygon in the
  * geofence.
  */
-export interface GeofencePolygon {
+export type GeofencePolygon = {
   /** Specifies whether the polygon is an inclusion or an exclusion polygon */
   isInclusion: boolean;
 
   /** The points of the polygon */
   points: Vector3Tuple[];
-}
+};
 
 /**
  * Specification of the safety validation parameters for the show
  */
-export interface ValidationSettings {
+export type ValidationSettings = {
   /** The maximum allowed altitude for drones, in meters, above ground level */
   maxAltitude?: number;
 
@@ -315,7 +315,7 @@ export interface ValidationSettings {
 
   /** The minimum allowed distance between drones, in meters */
   minDistance?: number;
-}
+};
 
 /**
  * Time window.

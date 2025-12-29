@@ -32,10 +32,10 @@ const styles = {
   },
 } as const;
 
-export interface QuickSelectionOverlayProps {
+export type QuickSelectionOverlayProps = {
   text: string | number;
   open: boolean;
-}
+};
 
 const QuickSelectionOverlay = ({ text, open }: QuickSelectionOverlayProps) =>
   open ? (

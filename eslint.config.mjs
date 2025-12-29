@@ -19,7 +19,7 @@ export default defineConfig(
     },
   },
 
-  globalIgnores(['**/build', '**/dist']),
+  globalIgnores(['**/build', '**/dist', 'packages/mavlink']),
 
   {
     // Allow eslint-plugin-react to detect the React version automatically

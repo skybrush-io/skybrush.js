@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import { colorForStatus, Status } from '@skybrush/app-theme-mui';
 
@@ -49,10 +49,10 @@ const presets: Record<string, { color?: string; icon?: React.ReactNode }> = {
   },
 };
 
-export interface MiniListItemIconProps extends ListItemIconProps {
+export type MiniListItemIconProps = {
   color?: string;
   preset?: keyof typeof presets;
-}
+} & ListItemIconProps;
 
 /**
  * Small icon to be used on the left edge of a mini list.

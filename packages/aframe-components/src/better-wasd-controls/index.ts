@@ -133,7 +133,6 @@ AFrame.registerComponent('better-wasd-controls', {
     this.removeKeyEventListeners();
   },
 
-  /* eslint-disable complexity */
   updateVelocity(this: BetterWASDControlsComponent, delta: number) {
     const data = this.data;
     const keys = this.keys;
@@ -202,7 +201,6 @@ AFrame.registerComponent('better-wasd-controls', {
       }
     }
   },
-  /* eslint-enable complexity */
 
   getMovementVector: (function () {
     const directionVector = new THREE.Vector3(0, 0, 0);

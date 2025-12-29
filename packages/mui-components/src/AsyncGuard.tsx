@@ -2,18 +2,18 @@ import Error from '@mui/icons-material/Error';
 import Button from '@mui/material/Button';
 
 import { useAsync } from '@react-hookz/web';
-import React from 'react';
+import type React from 'react';
 
 import BackgroundHint from './BackgroundHint.js';
 import LargeProgressIndicator from './LargeProgressIndicator.js';
 
-export interface AsyncGuardProps<T> {
+export type AsyncGuardProps<T> = {
   children: (value: T) => React.ReactNode;
   errorMessage?: string;
   func: () => Promise<T>;
   loadingMessage?: string;
   style?: React.CSSProperties;
-}
+};
 
 function AsyncGuard<T>({
   children,

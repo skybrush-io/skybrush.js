@@ -40,23 +40,23 @@ import {
 } from './persistence.js';
 import { isAllowedInRedux } from './utils.js';
 
-export interface ExtendedDevToolsOptions extends DevToolsEnhancerOptions {
+export type ExtendedDevToolsOptions = {
   actionsAllowlist?: string | string[];
   actionsDenylist?: string | string[];
   scrubbedActions?: Array<string | ActionCreator<string>>;
   scrubbedPaths?: string[];
-}
+} & DevToolsEnhancerOptions;
 
 // Next line copied from @reduxjs/toolkit/dist/index.d.ts
 type Middlewares<S> = ReadonlyArray<Middleware<{}, S>>;
 
-export interface StoreAndPersistenceConfig<
+export type StoreAndPersistenceConfig<
   S = any,
   A extends Action = UnknownAction,
   M extends Middlewares<S> = Middlewares<S>,
   C extends Record<string, unknown> = Record<string, unknown>,
   P = S,
-> {
+> = {
   devTools?: boolean | ExtendedDevToolsOptions;
   ignoredActions?: Array<string | ActionCreator<string>>;
   ignoredPaths?: string[];
@@ -67,7 +67,7 @@ export interface StoreAndPersistenceConfig<
   reducer: Reducer<S, A, P>;
   sagaOptions?: SagaMiddlewareOptions<C>;
   storage?: StorageConfig<S>;
-}
+};
 
 export type PersistableStore<
   S = any,
@@ -177,7 +177,6 @@ export function configureStoreAndPersistence<
 
       const stateScrubber = produce((state: S) => {
         for (const [path, key] of filteredScrubbedPaths) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const value = get(state, path);
           if (value !== undefined) {
             if (key) {

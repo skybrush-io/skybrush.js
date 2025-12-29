@@ -20,13 +20,13 @@ export function createBarChartDataSeriesStyle({
   };
 }
 
-interface CreateGradientBackgroundOptions {
+type CreateGradientBackgroundOptions = {
   alpha?: number;
   canvas: HTMLCanvasElement;
   color: string | string[];
   height?: number;
   reverse?: boolean;
-}
+};
 
 /**
  * Creates a gradient fill that could be used in a Chart.js background in a bar or
@@ -80,14 +80,14 @@ export function createGradientBackground({
   return gradientFill;
 }
 
-interface CreateChartStyleOptions {
+type CreateChartStyleOptions = {
   animate?: boolean;
   dark?: boolean;
   legend?: boolean;
   rotateTickLabels?: boolean;
   showPoints?: boolean;
   smoothing?: boolean;
-}
+};
 
 /**
  * Creates a generic chart style that fits the style of the application.

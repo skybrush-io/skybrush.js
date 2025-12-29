@@ -4,13 +4,13 @@ import { styled } from '@mui/material/styles';
 
 import Tooltip from './Tooltip.js';
 
-export interface GenericHeaderButtonProps {
+export type GenericHeaderButtonProps = {
   children?: React.ReactNode;
   disabled?: boolean;
   label?: React.ReactNode;
   secondaryLabel?: React.ReactNode;
   tooltip?: React.ReactNode;
-}
+};
 
 const GenericHeaderButtonBase = styled('div', {
   shouldForwardProp: (prop) => prop !== 'disabled',

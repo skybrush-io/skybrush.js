@@ -35,11 +35,11 @@ const DraggableDialogSidebar = styled('div')(({ theme }) =>
   createSecondaryAreaStyle(theme, { inset: 'right' })
 );
 
-export interface DraggableDialogProps extends DialogProps {
+export type DraggableDialogProps = {
   sidebarComponents?: React.ReactNode;
   titleComponents?: React.ReactNode;
   toolbarComponent?: ((id: string) => React.ReactNode) | React.ReactNode;
-}
+} & DialogProps;
 
 const DraggableDialog = ({
   children,

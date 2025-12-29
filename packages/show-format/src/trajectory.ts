@@ -440,11 +440,11 @@ export function trajectorySegmentsInTimeWindow(
   return result;
 }
 
-export interface TrajectoryPlayer {
+export type TrajectoryPlayer = {
   getPositionAt: (time: number, result: Vector3) => Vector3;
   getVelocityAt: (time: number, result: Vector3) => Vector3;
   getVelocityFromRightAt: (time: number, result: Vector3) => Vector3;
-}
+};
 
 /**
  * Factory function that creates a new trajectory player object with a

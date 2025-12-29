@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import Avatar, { type AvatarProps } from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
@@ -59,10 +59,10 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   '&.StyledAvatar-missing': createStyleForStatus(Status.MISSING, theme),
 }));
 
-export interface SemanticAvatarProps extends AvatarProps {
+export type SemanticAvatarProps = {
   status: Status;
   children: React.ReactNode;
-}
+} & AvatarProps;
 
 /**
  * Avatar that represents a single drone, docking station or some other object

@@ -97,7 +97,7 @@ const cssForScrollbars = {
  */
 export const isThemeDark = (theme: Theme) => theme.palette.mode === 'dark';
 
-export interface DarkModeAwareThemeProviderOptions {
+export type DarkModeAwareThemeProviderOptions = {
   primaryColor?:
     | PaletteColorOptions
     | ((isDark: boolean) => PaletteColorOptions);
@@ -105,12 +105,12 @@ export interface DarkModeAwareThemeProviderOptions {
     | PaletteColorOptions
     | ((isDark: boolean) => PaletteColorOptions);
   baseThemeProvider?: typeof ThemeProvider;
-}
+};
 
-export interface DarkModeAwareThemeProviderProps {
+export type DarkModeAwareThemeProviderProps = {
   type: ThemeType;
   children: React.ReactNode;
-}
+};
 
 const themeProviderDefaults: DarkModeAwareThemeProviderOptions = {
   primaryColor: (isDark: boolean) => (isDark ? orange : blue),
@@ -172,8 +172,6 @@ export const createThemeProvider = ({
               default: '#fafafa',
             },
 
-        /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
         // Compatibility with Material UI v4
         text: {
           hint: isThemeDark
@@ -186,8 +184,6 @@ export const createThemeProvider = ({
           main: grey[300],
           dark: grey[400],
         } as any,
-
-        /* eslint-enable @typescript-eslint/no-unsafe-assignment */
       },
 
       typography: {

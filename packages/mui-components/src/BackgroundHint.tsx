@@ -20,13 +20,13 @@ const style = {
   userSelect: 'none',
 } as const;
 
-export interface BackgroundHintProps extends BoxProps {
+export type BackgroundHintProps = {
   button?: React.ReactNode;
   header?: string;
   icon?: React.ReactElement;
   iconColor?: string;
   text?: string;
-}
+} & BoxProps;
 
 /**
  * Component that gives a hint to the user about the usage of the

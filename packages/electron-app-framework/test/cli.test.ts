@@ -4,7 +4,7 @@ import setupCli from '../dist/cli.js';
 
 test('CLI parser ignores -psn_ arguments on macOS', () => {
   let parsed;
-  let parsedArgs: string[] = [];
+  const parsedArgs: string[] = [];
   const parser = setupCli();
 
   // Do not exit when a parsing error occurs

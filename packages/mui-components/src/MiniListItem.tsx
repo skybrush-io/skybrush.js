@@ -5,14 +5,14 @@ import MiniListItemIcon, {
   type MiniListItemIconProps,
 } from './MiniListItemIcon.js';
 
-export interface MiniListItemProps {
+export type MiniListItemProps = {
   gap?: string | number;
   icon?: React.ReactNode;
   iconPreset?: MiniListItemIconProps['preset'];
   inset?: string | number;
   primaryText?: React.ReactNode;
   secondaryText?: React.ReactNode;
-}
+};
 
 /**
  * Generic list item to be used in the "mini-lists" that appear in popup

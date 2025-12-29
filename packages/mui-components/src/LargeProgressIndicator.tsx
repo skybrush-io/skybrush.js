@@ -3,11 +3,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 
-export interface LargeProgressIndicatorProps extends BoxProps {
+export type LargeProgressIndicatorProps = {
   fullHeight?: boolean;
   label?: string;
   visible?: boolean;
-}
+} & BoxProps;
 
 const LargeProgressIndicator = ({
   fullHeight,

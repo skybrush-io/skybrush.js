@@ -95,7 +95,6 @@ export async function loadShowSpecificationAndZip(
   // Configure the parsers. This is static; we simply extend the binary
   // parser not to check the extension of the file that we are about to parse.
   const parsers: Options['parse'] = {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     binary: {
       canParse: (file: FileInfo) => Buffer.isBuffer(file.data),
     } as any,

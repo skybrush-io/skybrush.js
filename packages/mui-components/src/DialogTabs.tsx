@@ -14,10 +14,10 @@ const alignmentProps: Record<string, TabsProps> = {
   draggable: {},
 };
 
-export interface DialogTabsProps extends TabsProps {
+export type DialogTabsProps = {
   alignment: 'left' | 'center' | 'justify';
   dragHandle?: string;
-}
+} & TabsProps;
 
 /**
  * Tab component styled appropriately to be suitable for presentation in the

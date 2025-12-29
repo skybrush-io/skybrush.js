@@ -2,10 +2,10 @@ import { useAsyncEffect } from 'use-async-effect';
 
 let warned = false;
 
-interface WindowWithBridge {
+type WindowWithBridge = {
   preventDisplaySleep: () => unknown;
   restoreDisplaySleep: (token: unknown) => void;
-}
+};
 
 const PreventDisplaySleepHelper = () => {
   useAsyncEffect(
@@ -34,9 +34,9 @@ const PreventDisplaySleepHelper = () => {
   return null;
 };
 
-export interface PreventDisplaySleepProps {
+export type PreventDisplaySleepProps = {
   active?: boolean;
-}
+};
 
 const PreventDisplaySleep = ({ active = true }: PreventDisplaySleepProps) =>
   active ? <PreventDisplaySleepHelper /> : null;

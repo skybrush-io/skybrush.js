@@ -1,9 +1,9 @@
 declare module 'bezier-js' {
-  interface Point {
+  type Point = {
     x: number;
     y: number;
     z: number;
-  }
+  };
 
   class Bezier {
     constructor(

@@ -129,11 +129,11 @@ function createSegmentFunctions(
   ];
 }
 
-export interface YawControlPlayer {
+export type YawControlPlayer = {
   getYawAt: (time: number, result: Euler) => Euler;
   getAngularVelocityAt: (time: number, result: Euler) => Euler;
   getAngularVelocityFromRightAt: (time: number, result: Euler) => Euler;
-}
+};
 
 /**
  * Factory function that creates a new yaw control player object with a

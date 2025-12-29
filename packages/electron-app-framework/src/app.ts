@@ -76,7 +76,7 @@ export function setupApp({
   // Handle certificate errors
   app.on(
     'certificate-error',
-    // eslint-disable-next-line max-params
+
     (event, _webContents, url, _error, _cert, callback) => {
       if (isUnsafeUrlTrusted(url)) {
         event.preventDefault();

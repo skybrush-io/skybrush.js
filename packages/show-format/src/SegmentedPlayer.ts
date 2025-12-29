@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-
 import { bisect } from './utils.js';
 
 export type Segment<Setpoint, Metadata extends unknown[] = unknown[]> = [

@@ -5,10 +5,10 @@ import Select, { type SelectProps } from '@mui/material/Select';
 
 import type { ThemeType } from '@skybrush/app-theme-mui';
 
-export interface ThemeSelectorProps extends Omit<FormControlProps, 'onChange'> {
+export type ThemeSelectorProps = {
   onChange: SelectProps['onChange'];
   value: ThemeType;
-}
+} & Omit<FormControlProps, 'onChange'>;
 
 const ThemeSelector = ({ onChange, value, ...rest }: ThemeSelectorProps) => (
   <FormControl fullWidth variant='filled' {...rest}>
