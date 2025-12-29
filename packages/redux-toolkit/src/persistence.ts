@@ -2,7 +2,7 @@ import localForage from 'localforage';
 import { createMigrate, type PersistConfig } from 'redux-persist';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
 
-// @ts-ignore
+// @ts-expect-error: no declaration file for this file
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2.js';
 
 export type StorageConfig<S, RS = any, HSS = any, ESS = any> = Omit<

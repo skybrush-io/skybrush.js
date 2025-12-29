@@ -23,6 +23,7 @@ export function setupCli(parser: Command = program): Command {
 
   if (process.platform === 'darwin') {
     // Override .parse() method to strip macOS -psn_ arguments from argv
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const { parse } = parser;
     parser.parse = (argv, parseOptions = { from: 'node' }, ...rest) => {
       if (argv === undefined) {

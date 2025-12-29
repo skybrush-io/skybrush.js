@@ -34,7 +34,7 @@ type SyncPoseWithStoreComponent = Component<SyncPoseWithStoreProps> & {
  *         arguments to store the current pose of the camera in the
  *         state store
  */
-const createSyncPoseWithStoreComponent = <T>({
+const createSyncPoseWithStoreComponent = ({
   getCameraPose,
   setCameraPose,
 }: CameraPoseOptions): ComponentDefinition => ({
@@ -87,7 +87,7 @@ const createSyncPoseWithStoreComponent = <T>({
     }
   },
 
-  // @ts-ignore
+  // @ts-expect-error for some reason TypeScript thinks that _synchronize() should not exist
   _synchronize(this: SyncPoseWithStoreComponent) {
     const { position, rotation } = this.el.object3D;
 

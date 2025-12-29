@@ -30,7 +30,6 @@ export const idle = async () =>
     setImmediate(resolve);
   });
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function isNil(x: any): x is null | undefined {
   return x === null || x === undefined;
 }

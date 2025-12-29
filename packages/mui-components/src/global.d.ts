@@ -7,6 +7,8 @@ export {};
 
 declare global {
   namespace React {
+    // We are extending an interface from React typings so we cannot use a type, therefore:
+    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface DOMAttributes<T> {
       onResize?: ReactEventHandler<T> | undefined;
       onResizeCapture?: ReactEventHandler<T> | undefined;

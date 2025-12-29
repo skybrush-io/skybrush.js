@@ -478,7 +478,6 @@ export default function createLightProgramPlayer(
   let lastSliceEndTime: number;
   let endReached: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   let sliceGenerator: Iterator<ExecutorState, void> | null = null;
 
   function storeNextSliceFromExecutor() {

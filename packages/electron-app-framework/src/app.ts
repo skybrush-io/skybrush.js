@@ -118,10 +118,10 @@ export function setupApp({
     );
 
     if (!enableNavigation) {
-      webContents.on('will-navigate', async (event, navigationUrl) => {
+      webContents.on('will-navigate', (event, navigationUrl) => {
         if (!isUrlAllowedForNavigation(navigationUrl)) {
           event.preventDefault();
-          await shell.openExternal(navigationUrl);
+          void shell.openExternal(navigationUrl);
         }
       });
 
@@ -129,7 +129,7 @@ export function setupApp({
         if (!isUrlAllowedForNavigation(url)) {
           // TODO: This breaks structured concurrency, but setWindowOpenHandler
           // does not support callbacks that have a promise as return value...
-          shell.openExternal(url);
+          void shell.openExternal(url);
           return { action: 'deny' };
         }
 

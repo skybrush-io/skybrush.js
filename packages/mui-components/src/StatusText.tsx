@@ -17,7 +17,6 @@ const flashCss = css({
   animationDirection: 'alternate',
 });
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 const styles: Record<Status, SerializedStyles | null> = {
   info: cssByColor.info,
   waiting: cssByColor.info,

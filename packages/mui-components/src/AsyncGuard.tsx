@@ -15,7 +15,7 @@ export type AsyncGuardProps<T> = {
   style?: React.CSSProperties;
 };
 
-function AsyncGuard<T>({
+export function AsyncGuard<T>({
   children,
   func,
   errorMessage,

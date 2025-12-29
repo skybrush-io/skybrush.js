@@ -90,5 +90,6 @@ export const GenericHeaderButton = React.forwardRef(
     return result;
   }
 );
+GenericHeaderButton.displayName = 'GenericHeaderButton';
 
 export default GenericHeaderButton;

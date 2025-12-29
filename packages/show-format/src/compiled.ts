@@ -2,7 +2,6 @@
  * @file Function for processing a Skybrush compiled show file.
  */
 
-// eslint-disable-next-line unicorn/prefer-node-protocol
 import { Buffer } from 'buffer';
 
 import type {

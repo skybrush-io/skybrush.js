@@ -72,6 +72,7 @@ AFrame.registerComponent('sprite', {
     if (this.data.src !== oldData.src) {
       const savedSrc = this.data.src;
       (element.sceneEl!.systems.material as any as MaterialSystem).loadTexture(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         savedSrc,
         { src: savedSrc },
         (texture) => {

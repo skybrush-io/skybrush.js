@@ -10,12 +10,11 @@ import AFrame from '../_aframe.js';
 
 const { Cache } = AFrame.THREE;
 
-export type DeallocateProps = {};
+export type DeallocateProps = object;
 
 AFrame.registerComponent('deallocate', {
   schema: { default: true },
 
-  // @ts-ignore
   sceneOnly: true,
 
   remove() {

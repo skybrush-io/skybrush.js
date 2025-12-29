@@ -47,7 +47,8 @@ export type ExtendedDevToolsOptions = {
   scrubbedPaths?: string[];
 } & DevToolsEnhancerOptions;
 
-// Next line copied from @reduxjs/toolkit/dist/index.d.ts
+// because the next line copied verbatim from @reduxjs/toolkit/dist/index.d.ts:
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Middlewares<S> = ReadonlyArray<Middleware<{}, S>>;
 
 export type StoreAndPersistenceConfig<
@@ -257,8 +258,8 @@ export function configureStoreAndPersistence<
     store: {
       ...store,
       waitUntilStateRestored: async () => stateLoaded.promise,
-      clear: persistor.purge,
-      runSaga: sagaMiddleware.run,
+      clear: persistor.purge.bind(persistor),
+      runSaga: sagaMiddleware.run.bind(sagaMiddleware),
     } as any as PersistableStore<S, A, E>,
     persistor,
   };

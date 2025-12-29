@@ -14,6 +14,7 @@ test('CLI parser ignores -psn_ arguments on macOS', () => {
   parser.option('-p, --port <number>', 'set port number');
   parser.action((rest) => {
     parsedArgs.length = 0;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     parsedArgs.splice(0, 0, ...rest);
   });
 

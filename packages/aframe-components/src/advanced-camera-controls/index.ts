@@ -51,8 +51,9 @@ const KEYS = new Set([
 const HALF_PI = Math.PI / 2;
 
 const isPerspectiveCamera = (x: any): x is AFrame.THREE.PerspectiveCamera =>
-  x && x.isPerspectiveCamera;
-const isVector3 = (x: any): x is AFrame.THREE.Vector3 => x && x.isVector3;
+  Boolean(x) && 'isPerspectiveCamera' in x;
+const isVector3 = (x: any): x is AFrame.THREE.Vector3 =>
+  Boolean(x) && 'isVector3' in x;
 
 const toVector3 = (
   x: Position | PositionObject | AFrame.THREE.Vector3 | null | undefined
@@ -61,7 +62,6 @@ const toVector3 = (
     return new THREE.Vector3();
   }
 
-  // @ts-ignore
   if (isVector3(x)) {
     return x;
   }
@@ -794,8 +794,8 @@ AFrame.registerComponent('advanced-camera-controls', {
   _attachKeyEventListeners(this: AdvancedCameraControlsComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
     if (target) {
-      target.addEventListener('keydown', this._onKeyDown as any);
-      target.addEventListener('keyup', this._onKeyUp as any);
+      target.addEventListener('keydown', this._onKeyDown as EventListener);
+      target.addEventListener('keyup', this._onKeyUp as EventListener);
     }
   },
 
@@ -823,8 +823,8 @@ AFrame.registerComponent('advanced-camera-controls', {
   _removeKeyEventListeners(this: AdvancedCameraControlsComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
     if (target) {
-      target.removeEventListener('keydown', this._onKeyDown as any);
-      target.removeEventListener('keyup', this._onKeyUp as any);
+      target.removeEventListener('keydown', this._onKeyDown as EventListener);
+      target.removeEventListener('keyup', this._onKeyUp as EventListener);
     }
   },
 
@@ -844,9 +844,11 @@ AFrame.registerComponent('advanced-camera-controls', {
   },
 
   _removeVisibilityEventListeners() {
+    /* eslint-disable @typescript-eslint/unbound-method */
     window.removeEventListener('blur', this._onBlur);
     window.removeEventListener('focus', this._onFocus);
     document.removeEventListener('visibilitychange', this._onVisibilityChange);
+    /* eslint-enable @typescript-eslint/unbound-method */
   },
 
   _onBlur(this: AdvancedCameraControlsComponent) {

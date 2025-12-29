@@ -60,7 +60,7 @@ const vector3Equals = (
   value: Vector3Tuple,
   expected: Vector3Tuple,
   eps = 1e-5,
-  messagePrefix = ''
+  _messagePrefix = ''
 ) => {
   expect(Math.abs(value[0] - expected[0])).toBeLessThan(eps);
   expect(Math.abs(value[1] - expected[1])).toBeLessThan(eps);

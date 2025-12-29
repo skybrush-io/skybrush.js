@@ -33,7 +33,7 @@ const LazyTooltip = (props: LazyTooltipProps) => {
     computedProps.content = mounted ? props.content : '';
   }
 
-  // @ts-ignore
+  // @ts-expect-error: apparently the typing of Tippy is incorrect
   return <Tippy {...computedProps} />;
 };
 

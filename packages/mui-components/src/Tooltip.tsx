@@ -16,7 +16,7 @@ const Tooltip = (props: TooltipProps) => {
   const tippyTheme =
     appTheme.palette.mode === 'dark' ? 'dark-border' : 'light-border';
 
-  // @ts-ignore
+  // @ts-expect-error: apparently the typing of Tippy is incorrect
   return <Tippy theme={tippyTheme} {...props} />;
 };
 

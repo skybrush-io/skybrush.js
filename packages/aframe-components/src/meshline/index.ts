@@ -90,7 +90,6 @@ AFrame.registerComponent('meshline', {
     this.el.removeObject3D('mesh');
   },
 
-  // @ts-ignore
   _addListeners(this: MeshlineComponent) {
     // canvas does not fire resize events, need window
     window.addEventListener('resize', this._doUpdate.bind(this));

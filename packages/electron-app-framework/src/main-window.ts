@@ -120,7 +120,7 @@ export const createMainWindowFactory = ({
     });
 
     if (url) {
-      instance.loadURL(url);
+      void instance.loadURL(url);
     }
 
     return instance;

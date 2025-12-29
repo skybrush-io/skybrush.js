@@ -2,8 +2,6 @@
 // replace process.env.NODE_ENV and process.env.DEPLOYMENT during bundling
 // if 'process' is imported; it must be a free global
 
-/* eslint-disable n/prefer-global/process */
-
 // Returns whether we are in production mode
 export const isProduction =
   process.env.NODE_ENV === 'production' || process.env.DEPLOYMENT === '1';
@@ -37,5 +35,3 @@ export function defaultUnsafeUrlHandler(url: string) {
 export function logErrorToConsole(error: Error) {
   console.error(error.stack);
 }
-
-/* eslint-enable n/prefer-global/process */

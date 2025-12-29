@@ -177,16 +177,16 @@ AFrame.registerComponent('altitude-control', {
   attachKeyEventListeners(this: AltitudeControlComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
     if (target) {
-      target.addEventListener('keydown', this.onKeyDown as any);
-      target.addEventListener('keyup', this.onKeyUp as any);
+      target.addEventListener('keydown', this.onKeyDown as EventListener);
+      target.addEventListener('keyup', this.onKeyUp as EventListener);
     }
   },
 
   removeKeyEventListeners(this: AltitudeControlComponent) {
     const target = this.data.embedded ? this.el.sceneEl : window;
     if (target) {
-      target.removeEventListener('keydown', this.onKeyDown as any);
-      target.removeEventListener('keyup', this.onKeyUp as any);
+      target.removeEventListener('keydown', this.onKeyDown as EventListener);
+      target.removeEventListener('keyup', this.onKeyUp as EventListener);
     }
   },
 

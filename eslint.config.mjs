@@ -19,7 +19,13 @@ export default defineConfig(
     },
   },
 
-  globalIgnores(['**/build', '**/dist', 'packages/mavlink']),
+  globalIgnores([
+    '.*',
+    '**/build',
+    '**/dist',
+    'packages/app-theme-material-ui',
+    'packages/mavlink',
+  ]),
 
   {
     // Allow eslint-plugin-react to detect the React version automatically
@@ -93,7 +99,11 @@ export default defineConfig(
       // influences the inferred type).
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
+        {
+          ignoreRestSiblings: true,
+          argsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+        },
       ],
 
       // Allow 'never' in template expressions. This is because we often use template

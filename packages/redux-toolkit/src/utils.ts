@@ -27,7 +27,6 @@ export function noPayload<S>(
 export function stripEvent<F extends (...args: any[]) => any>(
   func: F
 ): (event: Event, ...args: Parameters<F>) => ReturnType<F> {
-  /* eslint-disable @typescript-eslint/no-unsafe-return */
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return (_event: Event, ...args: Parameters<F>) => func(...args);
-  /* eslint-enable @typescript-eslint/no-unsafe-return */
 }

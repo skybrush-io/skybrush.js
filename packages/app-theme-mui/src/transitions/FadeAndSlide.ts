@@ -154,7 +154,6 @@ const FadeAndSlide = React.forwardRef(
     const theme = useTheme();
 
     const enableStrictModeCompat = true;
-    // eslint-disable-next-line @typescript-eslint/ban-types
     const nodeRef = React.useRef<HTMLElement | null>(null);
     const foreignRef: React.Ref<HTMLElement> = useForkRef(
       children.ref as React.Ref<T>,
@@ -199,6 +198,7 @@ const FadeAndSlide = React.forwardRef(
       );
 
       if (onEnter) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         onEnter(node, isAppearing);
       }
     });
@@ -225,6 +225,7 @@ const FadeAndSlide = React.forwardRef(
       );
 
       if (onExit) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         onExit(node);
       }
     });
@@ -234,6 +235,7 @@ const FadeAndSlide = React.forwardRef(
     const handleAddEndListener = (next: () => void) => {
       if (addEndListener) {
         // Old call signature before `react-transition-group` implemented `nodeRef`
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         addEndListener(nodeRef.current as any, next);
       }
     };
@@ -270,5 +272,6 @@ const FadeAndSlide = React.forwardRef(
     );
   }
 );
+FadeAndSlide.displayName = 'FadeAndSlide';
 
 export default FadeAndSlide;
