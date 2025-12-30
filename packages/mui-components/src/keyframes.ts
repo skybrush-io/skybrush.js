@@ -1,4 +1,4 @@
-import { keyframes } from '@mui/styled-engine';
+import { keyframes } from '@mui/material/styles';
 
 export const fade = keyframes`
 from {

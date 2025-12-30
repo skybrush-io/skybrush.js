@@ -1,5 +1,5 @@
-import type { Theme } from '@mui/material';
 import AppBar, { type AppBarProps } from '@mui/material/AppBar';
+import type { Theme } from '@mui/material/styles';
 
 import { isThemeDark } from '@skybrush/app-theme-mui';
 

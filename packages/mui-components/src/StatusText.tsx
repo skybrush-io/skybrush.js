@@ -1,4 +1,5 @@
 import { css, styled } from '@mui/material/styles';
+// eslint-disable-next-line no-restricted-imports
 import type { SerializedStyles } from '@mui/styled-engine';
 import { Colors, type Status } from '@skybrush/app-theme-mui';
 
