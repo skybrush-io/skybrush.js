@@ -4,8 +4,8 @@ export type {
   DroneSpecification,
   DroneType,
   LightProgram,
-  SwarmSpecification,
   PyroProgram,
+  SwarmSpecification,
   Trajectory,
   TrajectoryKeypoint as TrajectorySegment,
   YawControl,
@@ -174,6 +174,21 @@ export type Location = {
 };
 
 /**
+ * Audio data (i.e. background music) associated with the show. May be embedded
+ * in base64 format or may be an external reference to a binary file.
+ */
+export type AudioData = {
+  /** The audio data. */
+  data: Uint8Array | Asset;
+
+  /** The name of the file that the audio data came from */
+  filename?: string;
+
+  /** MIME media type of the audio data. Currently we support MPEG only. */
+  mediaType: 'audio/mpeg';
+};
+
+/**
  * Media settings associated with the show
  */
 export type MediaSettings = {
@@ -181,16 +196,7 @@ export type MediaSettings = {
    * Audio data (i.e. background music) associated with the show. May be embedded
    * in base64 format or may be an external reference to a binary file.
    */
-  audio?: {
-    /** The audio data. */
-    data: Uint8Array | Asset;
-
-    /** The name of the file that the audio data came from */
-    filename?: string;
-
-    /** MIME media type of the audio data */
-    mediaType: 'audio/mpeg';
-  };
+  audio?: AudioData;
 };
 
 /**
