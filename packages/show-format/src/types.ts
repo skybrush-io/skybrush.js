@@ -345,3 +345,12 @@ export type TimeWindow = {
 export type TimedBezierCurve = TimeWindow & {
   points: Vector3Tuple[];
 };
+
+/**
+ * Helper type for functions that write their results into an array with a configurable
+ * offset and step size.
+ */
+export type StrideOptions = {
+  start?: number;
+  step?: number;
+};

@@ -3,6 +3,7 @@ import { Bezier } from 'bezier-js';
 import { iterPairs, slice } from './generators.js';
 import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer.js';
 import type {
+  StrideOptions,
   TimedBezierCurve,
   TimeWindow,
   Trajectory,
@@ -33,6 +34,9 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
   PosVelEvaluator,
   [Vector3Tuple[]]
 > {
+  /** Helper vector used by some functions to avoid an allocation */
+  _vec: Vector3;
+
   /**
    * Constructor.
    *
@@ -42,6 +46,7 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
     validateTrajectory(trajectory);
 
     super(trajectory.points);
+    this._vec = { x: 0, y: 0, z: 0 };
     this._shiftSegments(trajectory.takeoffTime ?? 0);
   }
 
@@ -58,6 +63,33 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
   }
 
   /**
+   * Returns the position of the drone at multiple time instants.
+   *
+   * @param times   the time instants, measured in seconds
+   * @param result  the array in which the positions should be written
+   * @param options options to configure the writing of the results into the result array
+   */
+  getPositionsAt(
+    times: Iterable<number>,
+    result: Float32Array,
+    options: StrideOptions = {}
+  ) {
+    const { start = 0, step = 3 } = options;
+
+    let offset = start;
+    for (const time of times) {
+      const ratio = this._seekTo(time);
+      this._currentSegmentFunc[0](this._vec, ratio);
+
+      result[offset] = this._vec.x;
+      result[offset + 1] = this._vec.y;
+      result[offset + 2] = this._vec.z;
+
+      offset += step;
+    }
+  }
+
+  /**
    * Returns the velocity of the drone at the given time instant. If the
    * velocity is discontinuous at the time instant, the velocity "from the right"
    * takes precedence.
@@ -69,6 +101,34 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[1](result, ratio);
     return result;
+  }
+
+  /**
+   * Returns the velocity of the drone at the given time instant. If the
+   * velocity is discontinuous at the time instant, the velocity "from the right"
+   * takes precedence.
+   *
+   * @param time    the time instant, measured in seconds
+   * @param result  the vector that should be updated with the velocity
+   */
+  getVelocitiesFromRightAt(
+    times: Iterable<number>,
+    result: Float32Array,
+    options: StrideOptions = {}
+  ) {
+    const { start = 0, step = 3 } = options;
+
+    let offset = start;
+    for (const time of times) {
+      const ratio = this._seekTo(time);
+      this._currentSegmentFunc[1](this._vec, ratio);
+
+      result[offset] = this._vec.x;
+      result[offset + 1] = this._vec.y;
+      result[offset + 2] = this._vec.z;
+
+      offset += step;
+    }
   }
 
   protected override _createConstantSegmentFunctions(point: Vector3Tuple) {
@@ -442,8 +502,23 @@ export function trajectorySegmentsInTimeWindow(
 
 export type TrajectoryPlayer = {
   getPositionAt: (time: number, result: Vector3) => Vector3;
+  getPositionsAt: (
+    times: Iterable<number>,
+    result: Float32Array,
+    options?: StrideOptions
+  ) => void;
   getVelocityAt: (time: number, result: Vector3) => Vector3;
+  getVelocitiesAt: (
+    times: Iterable<number>,
+    result: Float32Array,
+    options?: StrideOptions
+  ) => void;
   getVelocityFromRightAt: (time: number, result: Vector3) => Vector3;
+  getVelocitiesFromRightAt: (
+    times: Iterable<number>,
+    result: Float32Array,
+    options?: StrideOptions
+  ) => void;
 };
 
 /**
@@ -456,13 +531,19 @@ function createTrajectoryPlayer(trajectory: Trajectory): TrajectoryPlayer {
   const player = new TrajectoryPlayerImpl(trajectory);
 
   const getPositionAt = player.getPositionAt.bind(player);
+  const getPositionsAt = player.getPositionsAt.bind(player);
   const getVelocityFromRightAt = player.getVelocityFromRightAt.bind(player);
+  const getVelocitiesFromRightAt = player.getVelocitiesFromRightAt.bind(player);
   const getVelocityAt = getVelocityFromRightAt;
+  const getVelocitiesAt = getVelocitiesFromRightAt;
 
   return {
     getPositionAt,
+    getPositionsAt,
     getVelocityAt,
+    getVelocitiesAt,
     getVelocityFromRightAt,
+    getVelocitiesFromRightAt,
   };
 }
 

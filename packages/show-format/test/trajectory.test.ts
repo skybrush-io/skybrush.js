@@ -6,7 +6,7 @@ import {
   trajectorySegmentsInTimeWindow,
   trajectorySegmentsToTimedBezierCurve,
 } from '../dist/index.js';
-import type { Trajectory, Vector3Tuple } from '../dist/types.js';
+import type { StrideOptions, Trajectory, Vector3Tuple } from '../dist/types.js';
 import { shuffle } from '../dist/utils.js';
 
 const trajectory: Trajectory = {
@@ -67,6 +67,18 @@ const vector3Equals = (
   expect(Math.abs(value[2] - expected[2])).toBeLessThan(eps);
 };
 
+const vector3ArrayEquals = (
+  value: Vector3Tuple[],
+  expected: Vector3Tuple[],
+  eps = 1e-5,
+  messagePrefix = ''
+) => {
+  expect(value.length).toEqual(expected.length);
+  for (let i = 0; i < value.length; i++) {
+    vector3Equals(value[i], expected[i], eps, messagePrefix);
+  }
+};
+
 /* ************************************************************************ */
 /* Tests related to evaluating the trajectory at a given point              */
 /* ************************************************************************ */
@@ -118,6 +130,26 @@ const createPositionEvaluator = (trajectory: Trajectory) => {
   };
 };
 
+const createMultiPositionEvaluator = (
+  trajectory: Trajectory,
+  options?: StrideOptions
+) => {
+  const { getPositionsAt } = createTrajectoryPlayer(trajectory);
+  return (ts: number[]): Vector3Tuple[] => {
+    const { start = 0, step = 3 } = options ?? {};
+
+    const arr = new Float32Array(ts.length * step);
+    getPositionsAt(ts, arr, options);
+
+    const result: Vector3Tuple[] = [];
+    for (let i = 0; i < ts.length; i++) {
+      const i3 = i * step + start;
+      result.push([arr[i3], arr[i3 + 1], arr[i3 + 2]]);
+    }
+    return result;
+  };
+};
+
 // TODO: No segments is no longer valid according to the schema
 // test.failing('trajectory evaluation, no segments', (t) => {
 //   const ev = createPositionEvaluator({ version: 1, points: [] });
@@ -137,29 +169,45 @@ const createPositionEvaluator = (trajectory: Trajectory) => {
 
 test('trajectory evaluation, segment before takeoff time', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [-2, 0, 3, 6];
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
   }
 
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
+
   eq(ev(Number.NEGATIVE_INFINITY), expectedPositions[ts[0]]);
 });
 
 test('trajectory evaluation, takeoff segment', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [6, 8, 10, 12];
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
 });
 
 test('trajectory evaluation, first and second curve', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [
     12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44,
@@ -167,46 +215,79 @@ test('trajectory evaluation, first and second curve', () => {
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
 });
 
 test('trajectory evaluation, linear segment', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [44, 50, 56];
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
 });
 
 test('trajectory evaluation, constant segment', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [56, 57, 58, 59, 60];
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
 });
 
 test('trajectory evaluation, landing segment', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [60, 62, 64, 66];
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
 });
 
 test('trajectory evaluation, segment after landing time', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [66, 68, 75, 100];
   for (const t of ts) {
     eq(ev(t), expectedPositions[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
 
   eq(ev(Number.POSITIVE_INFINITY), expectedPositions[ts[ts.length - 1]]);
 });
@@ -236,15 +317,23 @@ test('trajectory evaluation, unsupported segment type', () => {
 
 test('trajectory evaluation, shuffled', () => {
   const ev = createPositionEvaluator(trajectory);
+  const evMany = createMultiPositionEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = Object.keys(expectedPositions).map((x) => Number.parseInt(x, 10));
 
   for (let i = 0; i < 5; i++) {
     shuffle(ts);
+
     for (const t of ts) {
       eq(ev(t), expectedPositions[t]);
     }
+
+    eqArr(
+      evMany(ts),
+      ts.map((t) => expectedPositions[t])
+    );
   }
 });
 
@@ -299,6 +388,26 @@ const createVelocityEvaluator = (trajectory: Trajectory) => {
   };
 };
 
+const createMultiVelocityEvaluator = (
+  trajectory: Trajectory,
+  options?: StrideOptions
+) => {
+  const { getVelocitiesAt } = createTrajectoryPlayer(trajectory);
+  return (ts: number[]): Vector3Tuple[] => {
+    const { start = 0, step = 3 } = options ?? {};
+
+    const arr = new Float32Array(ts.length * step);
+    getVelocitiesAt(ts, arr, options);
+
+    const result: Vector3Tuple[] = [];
+    for (let i = 0; i < ts.length; i++) {
+      const i3 = i * step + start;
+      result.push([arr[i3], arr[i3 + 1], arr[i3 + 2]]);
+    }
+    return result;
+  };
+};
+
 // TODO: No segments is no longer valid according to the schema
 // test.failing('velocity evaluation, no segments', (t) => {
 //   const ev = createVelocityEvaluator({ version: 1, points: [] });
@@ -318,29 +427,45 @@ const createVelocityEvaluator = (trajectory: Trajectory) => {
 
 test('velocity evaluation, segment before takeoff time', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [-2, 0, 3, 6];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
 
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedPositions[t])
+  );
+
   eq(ev(Number.NEGATIVE_INFINITY), expectedVelocities[ts[0]]);
 });
 
 test('velocity evaluation, takeoff segment', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [6, 8, 10, 12];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedVelocities[t])
+  );
 });
 
 test('velocity evaluation, first and second curve', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [
     12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42,
@@ -349,46 +474,79 @@ test('velocity evaluation, first and second curve', () => {
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedVelocities[t])
+  );
 });
 
 test('velocity evaluation, linear segment', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [44, 50, 56];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedVelocities[t])
+  );
 });
 
 test('velocity evaluation, constant segment', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [56, 57, 58, 59, 60];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedVelocities[t])
+  );
 });
 
 test('velocity evaluation, landing segment', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [60, 62, 64, 66];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedVelocities[t])
+  );
 });
 
 test('velocity evaluation, segment after landing time', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = [66, 68, 75, 100];
   for (const t of ts) {
     eq(ev(t), expectedVelocities[t]);
   }
+
+  eqArr(
+    evMany(ts),
+    ts.map((t) => expectedVelocities[t])
+  );
 
   eq(ev(Number.POSITIVE_INFINITY), expectedVelocities[ts[ts.length - 1]]);
 });
@@ -418,15 +576,23 @@ test('velocity evaluation, unsupported segment type', () => {
 
 test('velocity evaluation, shuffled', () => {
   const ev = createVelocityEvaluator(trajectory);
+  const evMany = createMultiVelocityEvaluator(trajectory);
   const eq = vector3Equals;
+  const eqArr = vector3ArrayEquals;
 
   const ts = Object.keys(expectedVelocities).map((x) => Number.parseInt(x, 10));
 
   for (let i = 0; i < 5; i++) {
     shuffle(ts);
+
     for (const t of ts) {
       eq(ev(t), expectedVelocities[t]);
     }
+
+    eqArr(
+      evMany(ts),
+      ts.map((t) => expectedVelocities[t])
+    );
   }
 });
 
