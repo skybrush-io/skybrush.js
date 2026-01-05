@@ -15,11 +15,12 @@ export {
   trajectorySegmentsToTimedBezierCurve,
 } from './trajectory.js';
 export {
-  validateShowSpecification,
   validatePyroProgram,
+  validateShowSpecification,
   validateTrajectory,
   validateYawControl,
 } from './validation.js';
+export { default as Vector3Array } from './vector3-array.js';
 export { default as createYawControlPlayer } from './yaw-control.js';
 
 export type { LightProgramLike, LightProgramPlayer } from './lights.js';
