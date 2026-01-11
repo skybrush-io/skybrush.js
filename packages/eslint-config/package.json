@@ -1,0 +1,33 @@
+{
+  "name": "@skybrush/eslint-config",
+  "version": "0.1.0",
+  "description": "ESLint configuration for Skybrush-related projects",
+  "type": "module",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skybrush-io/skybrush.js.git"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "clean": "rimraf dist/** *.tgz",
+    "prepack": "npm run build",
+    "test": "npx jest"
+  },
+  "peerDependencies": {
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react": "^7.37.5",
+    "typescript-eslint": "^8.52.0"
+  }
+}
