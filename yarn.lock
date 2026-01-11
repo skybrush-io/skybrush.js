@@ -3757,6 +3757,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@skybrush/eslint-config@workspace:packages/eslint-config":
+  version: 0.0.0-use.local
+  resolution: "@skybrush/eslint-config@workspace:packages/eslint-config"
+  peerDependencies:
+    "@eslint/js": ^9.39.2
+    eslint: ^9.39.2
+    eslint-plugin-react: ^7.37.5
+    typescript-eslint: ^8.52.0
+  languageName: unknown
+  linkType: soft
+
 "@skybrush/file-formats-doc@npm:^1.2.0":
   version: 1.2.0
   resolution: "@skybrush/file-formats-doc@npm:1.2.0"
