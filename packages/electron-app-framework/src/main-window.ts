@@ -116,6 +116,10 @@ export const createMainWindowFactory = ({
         instance.webContents.openDevTools({
           mode: 'undocked',
         });
+
+        instance.webContents.on('did-create-window', (childWindow) => {
+          childWindow.webContents.openDevTools({ mode: 'undocked' });
+        });
       }
     });
 
