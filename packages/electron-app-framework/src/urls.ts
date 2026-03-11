@@ -9,8 +9,9 @@ export function getDefaultMainWindowUrlFromRootDir(
   indexPage = 'index.html'
 ): string {
   if (usingWebpackDevServer) {
-    /* Load from webpack-dev-server */
-    return `https://localhost:8080/${indexPage}`;
+    // For "Authority" see: https://www.rfc-editor.org/rfc/rfc3986#section-3.2
+    const authority = process.env['WEBPACK_DEV_SERVER_URL'] ?? 'localhost:8080';
+    return `https://${authority}/${indexPage}`;
   }
 
   if (!rootDir) {
