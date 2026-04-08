@@ -9,9 +9,8 @@ export type GenericHeaderButtonProps = {
   disabled?: boolean;
   label?: React.ReactNode;
   secondaryLabel?: React.ReactNode;
-  style?: React.CSSProperties;
   tooltip?: React.ReactNode;
-};
+} & JSX.IntrinsicElements['div'];
 
 const GenericHeaderButtonBase = styled('div', {
   shouldForwardProp: (prop) => prop !== 'disabled',
