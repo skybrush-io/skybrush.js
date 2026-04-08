@@ -9,6 +9,7 @@ export type GenericHeaderButtonProps = {
   disabled?: boolean;
   label?: React.ReactNode;
   secondaryLabel?: React.ReactNode;
+  style?: React.CSSProperties;
   tooltip?: React.ReactNode;
 };
 
