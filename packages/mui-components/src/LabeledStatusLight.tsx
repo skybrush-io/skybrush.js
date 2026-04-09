@@ -1,30 +1,30 @@
 import type React from 'react';
 
-import Box from '@mui/material/Box';
+import Box, { type BoxProps } from '@mui/material/Box';
 import Typography, { type TypographyProps } from '@mui/material/Typography';
 
 import StatusLight, { type StatusLightProps } from './StatusLight.js';
 
-export type LabeledStatusLightProps = {
-  children: React.ReactNode;
-  color?: TypographyProps['color'];
-} & StatusLightProps;
+export type LabeledStatusLightProps = Pick<
+  StatusLightProps,
+  'size' | 'status'
+> &
+  BoxProps & {
+    children: React.ReactNode;
+    color?: TypographyProps['color'];
+    reversed?: boolean;
+  };
 
 const LabeledStatusLight = ({
   children,
   color = 'textPrimary',
+  reversed = false,
   size = 'normal',
   status,
   ...rest
-}: LabeledStatusLightProps) => (
-  <Box
-    alignItems='center'
-    flex={1}
-    display='flex'
-    flexDirection='row'
-    {...rest}
-  >
-    <StatusLight inline size={size} status={status} />
+}: LabeledStatusLightProps) => {
+  const light = <StatusLight inline size={size} status={status} />;
+  const label = (
     <Box pl={1}>
       <Typography
         noWrap
@@ -34,7 +34,20 @@ const LabeledStatusLight = ({
         {children}
       </Typography>
     </Box>
-  </Box>
-);
+  );
+
+  return (
+    <Box
+      alignItems='center'
+      flex={1}
+      display='flex'
+      flexDirection='row'
+      {...rest}
+    >
+      {reversed ? label : light}
+      {reversed ? light : label}
+    </Box>
+  );
+};
 
 export default LabeledStatusLight;
