@@ -25,15 +25,13 @@ const LabeledStatusLight = ({
 }: LabeledStatusLightProps) => {
   const light = <StatusLight inline size={size} status={status} />;
   const label = (
-    <Box pl={1}>
-      <Typography
-        noWrap
-        variant={size === 'small' ? 'body2' : 'body1'}
-        color={color}
-      >
-        {children}
-      </Typography>
-    </Box>
+    <Typography
+      noWrap
+      variant={size === 'small' ? 'body2' : 'body1'}
+      color={color}
+    >
+      {children}
+    </Typography>
   );
 
   return (
@@ -44,8 +42,8 @@ const LabeledStatusLight = ({
       flexDirection='row'
       {...rest}
     >
-      {reversed ? label : light}
-      {reversed ? light : label}
+      {reversed ? <Box pr={1}>{label}</Box> : light}
+      {reversed ? light : <Box pl={1}>{label}</Box>}
     </Box>
   );
 };
