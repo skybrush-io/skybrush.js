@@ -12,6 +12,7 @@ export type MiniListItemProps = {
   inset?: string | number;
   primaryText?: React.ReactNode;
   secondaryText?: React.ReactNode;
+  secondaryActions?: React.ReactNode;
 };
 
 /**
@@ -24,10 +25,11 @@ const MiniListItem = ({
   iconPreset,
   inset,
   primaryText,
+  secondaryActions,
   secondaryText,
 }: MiniListItemProps) => (
   <ListItem disableGutters sx={inset ? { px: inset } : null}>
-    {iconPreset ? <MiniListItemIcon preset={iconPreset} /> : icon}
+    {iconPreset ? <MiniListItemIcon pad='right' preset={iconPreset} /> : icon}
     {secondaryText ? (
       <Box display='flex' flexDirection='row' flexGrow={1}>
         <Box flexGrow={1}>{primaryText}</Box>
@@ -35,9 +37,12 @@ const MiniListItem = ({
           {secondaryText}
         </Box>
       </Box>
+    ) : secondaryActions ? (
+      <Box flexGrow={1}>{primaryText}</Box>
     ) : (
       primaryText
     )}
+    {secondaryActions}
   </ListItem>
 );
 

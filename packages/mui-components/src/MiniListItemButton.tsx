@@ -5,6 +5,7 @@ import type { MiniListItemProps } from './MiniListItem.js';
 import MiniListItemIcon from './MiniListItemIcon.js';
 
 export type MiniListItemButtonProps = MiniListItemProps & {
+  disabled?: boolean;
   onClick?: () => void;
 };
 
@@ -13,20 +14,23 @@ export type MiniListItemButtonProps = MiniListItemProps & {
  * tooltips, typically in the app header.
  */
 const MiniListItemButton = ({
+  disabled = false,
   gap = 1,
   icon,
   iconPreset,
   inset,
   primaryText,
+  secondaryActions,
   secondaryText,
   onClick,
 }: MiniListItemButtonProps) => (
   <ListItemButton
+    disabled={disabled}
     disableGutters
     sx={inset ? { px: inset } : undefined}
     onClick={onClick}
   >
-    {iconPreset ? <MiniListItemIcon preset={iconPreset} /> : icon}
+    {iconPreset ? <MiniListItemIcon pad='right' preset={iconPreset} /> : icon}
     {secondaryText ? (
       <Box display='flex' flexDirection='row' flexGrow={1}>
         <Box flexGrow={1}>{primaryText}</Box>
@@ -34,9 +38,12 @@ const MiniListItemButton = ({
           {secondaryText}
         </Box>
       </Box>
+    ) : secondaryActions ? (
+      <Box flexGrow={1}>{primaryText}</Box>
     ) : (
       primaryText
     )}
+    {secondaryActions}
   </ListItemButton>
 );
 
