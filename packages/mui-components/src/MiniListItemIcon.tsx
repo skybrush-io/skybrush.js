@@ -14,6 +14,7 @@ import Number1 from '@mui/icons-material/LooksOne';
 import Number2 from '@mui/icons-material/LooksTwo';
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import Refresh from '@mui/icons-material/Refresh';
+import Save from '@mui/icons-material/SaveAlt';
 import ActionSettingsEthernet from '@mui/icons-material/SettingsEthernet';
 import ListItemIcon, {
   type ListItemIconProps,
@@ -81,14 +82,19 @@ const presets: Record<string, { color?: string; icon?: React.ReactNode }> = {
     icon: <Number6 fontSize='small' />,
   },
 
+  refresh: {
+    color: colorForStatus(Status.INFO),
+    icon: <Refresh fontSize='small' />,
+  },
+
+  save: {
+    color: colorForStatus(Status.INFO),
+    icon: <Save fontSize='small' />,
+  },
+
   success: {
     color: colorForStatus(Status.SUCCESS),
     icon: <ActionDone fontSize='small' />,
-  },
-
-  update: {
-    color: colorForStatus(Status.INFO),
-    icon: <Refresh fontSize='small' />,
   },
 
   warning: {
