@@ -1,5 +1,7 @@
-import React from 'react';
-import Draggable from 'react-draggable';
+import React, { useMemo } from 'react';
+import Draggable, {
+  type DraggableProps as DraggableProps_,
+} from 'react-draggable';
 
 import Box from '@mui/material/Box';
 import Dialog, { type DialogProps } from '@mui/material/Dialog';
@@ -11,15 +13,18 @@ import { createSecondaryAreaStyle } from '@skybrush/app-theme-mui';
 
 import DialogToolbar from './DialogToolbar.js';
 
-const DraggablePaper = (props: PaperProps) => {
+type DraggablePaperProps = { DraggableProps?: DraggableProps_ } & PaperProps;
+
+const DraggablePaper = ({ DraggableProps, ...rest }: DraggablePaperProps) => {
   const ref = React.useRef(null);
   return (
     <Draggable
+      {...DraggableProps}
       handle='#draggable-dialog-title'
       cancel={'[class*="MuiDialogContent-root"]'}
       nodeRef={ref}
     >
-      <Paper ref={ref} {...props} />
+      <Paper ref={ref} {...rest} />
     </Draggable>
   );
 };
@@ -36,6 +41,7 @@ const DraggableDialogSidebar = styled('div')(({ theme }) =>
 );
 
 export type DraggableDialogProps = {
+  DraggableProps?: DraggableProps_;
   sidebarComponents?: React.ReactNode;
   titleComponents?: React.ReactNode;
   toolbarComponent?: ((id: string) => React.ReactNode) | React.ReactNode;
@@ -43,6 +49,7 @@ export type DraggableDialogProps = {
 
 const DraggableDialog = ({
   children,
+  DraggableProps,
   sidebarComponents,
   title,
   titleComponents,
@@ -80,8 +87,16 @@ const DraggableDialog = ({
     </>
   );
 
+  const DraggablePaperWithProps = useMemo(() => {
+    const component = (props: PaperProps) => (
+      <DraggablePaper DraggableProps={DraggableProps} {...props} />
+    );
+    component.displayName = 'DraggablePaper';
+    return component;
+  }, [DraggableProps]);
+
   return (
-    <Dialog PaperComponent={DraggablePaper} {...rest}>
+    <Dialog PaperComponent={DraggablePaperWithProps} {...rest}>
       {sidebarComponents ? (
         <Box display='flex' flexDirection='row' alignItems='stretch'>
           <DraggableDialogSidebar>{sidebarComponents}</DraggableDialogSidebar>
