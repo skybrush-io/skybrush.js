@@ -19,6 +19,7 @@ const useStyles = makeStyles({
 export type MiniListItemButtonProps = MiniListItemProps & {
   disabled?: boolean;
   onClick?: () => void;
+  showSecondaryActions?: boolean | 'hover';
 };
 
 /**
@@ -34,14 +35,16 @@ const MiniListItemButton = ({
   primaryText,
   secondaryActions,
   secondaryText,
-  showSecondaryActionsOnHoverOnly,
+  showSecondaryActions = true,
   onClick,
 }: MiniListItemButtonProps) => {
   const classes = useStyles();
   return (
     <ListItemButton
       className={
-        showSecondaryActionsOnHoverOnly ? classes.listItemHoverStyle : undefined
+        showSecondaryActions === 'hover'
+          ? classes.listItemHoverStyle
+          : undefined
       }
       disabled={disabled}
       disableGutters
@@ -61,9 +64,11 @@ const MiniListItemButton = ({
       ) : (
         primaryText
       )}
-      <Box className='MiniListItemSecondaryActions-root'>
-        {secondaryActions}
-      </Box>
+      {showSecondaryActions && (
+        <Box className='MiniListItemSecondaryActions-root'>
+          {secondaryActions}
+        </Box>
+      )}
     </ListItemButton>
   );
 };

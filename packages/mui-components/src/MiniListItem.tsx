@@ -25,7 +25,7 @@ export type MiniListItemProps = {
   primaryText?: React.ReactNode;
   secondaryText?: React.ReactNode;
   secondaryActions?: React.ReactNode;
-  showSecondaryActionsOnHoverOnly?: boolean;
+  showSecondaryActions?: boolean | 'hover';
 };
 
 /**
@@ -40,13 +40,15 @@ const MiniListItem = ({
   primaryText,
   secondaryActions,
   secondaryText,
-  showSecondaryActionsOnHoverOnly,
+  showSecondaryActions = true,
 }: MiniListItemProps) => {
   const classes = useStyles();
   return (
     <ListItem
       className={
-        showSecondaryActionsOnHoverOnly ? classes.listItemHoverStyle : undefined
+        showSecondaryActions === 'hover'
+          ? classes.listItemHoverStyle
+          : undefined
       }
       disableGutters
       sx={inset ? { px: inset } : null}
@@ -64,7 +66,11 @@ const MiniListItem = ({
       ) : (
         primaryText
       )}
-      {secondaryActions}
+      {showSecondaryActions && (
+        <Box className='MiniListItemSecondaryActions-root'>
+          {secondaryActions}
+        </Box>
+      )}
     </ListItem>
   );
 };
