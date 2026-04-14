@@ -1,9 +1,21 @@
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 
+import { makeStyles } from '@skybrush/app-theme-mui';
 import MiniListItemIcon, {
   type MiniListItemIconProps,
 } from './MiniListItemIcon.js';
+
+const useStyles = makeStyles({
+  listItemHoverStyle: {
+    '& .MiniListItemSecondaryActions-root': {
+      display: 'none',
+    },
+    '&:hover .MiniListItemSecondaryActions-root': {
+      display: 'inline-flex',
+    },
+  },
+});
 
 export type MiniListItemProps = {
   gap?: string | number;
@@ -13,6 +25,7 @@ export type MiniListItemProps = {
   primaryText?: React.ReactNode;
   secondaryText?: React.ReactNode;
   secondaryActions?: React.ReactNode;
+  showSecondaryActionsOnHoverOnly?: boolean;
 };
 
 /**
@@ -27,23 +40,33 @@ const MiniListItem = ({
   primaryText,
   secondaryActions,
   secondaryText,
-}: MiniListItemProps) => (
-  <ListItem disableGutters sx={inset ? { px: inset } : null}>
-    {iconPreset ? <MiniListItemIcon pad='right' preset={iconPreset} /> : icon}
-    {secondaryText ? (
-      <Box display='flex' flexDirection='row' flexGrow={1}>
-        <Box flexGrow={1}>{primaryText}</Box>
-        <Box color='text.secondary' ml={gap}>
-          {secondaryText}
+  showSecondaryActionsOnHoverOnly,
+}: MiniListItemProps) => {
+  const classes = useStyles();
+  return (
+    <ListItem
+      className={
+        showSecondaryActionsOnHoverOnly ? classes.listItemHoverStyle : undefined
+      }
+      disableGutters
+      sx={inset ? { px: inset } : null}
+    >
+      {iconPreset ? <MiniListItemIcon pad='right' preset={iconPreset} /> : icon}
+      {secondaryText ? (
+        <Box display='flex' flexDirection='row' flexGrow={1}>
+          <Box flexGrow={1}>{primaryText}</Box>
+          <Box color='text.secondary' ml={gap}>
+            {secondaryText}
+          </Box>
         </Box>
-      </Box>
-    ) : secondaryActions ? (
-      <Box flexGrow={1}>{primaryText}</Box>
-    ) : (
-      primaryText
-    )}
-    {secondaryActions}
-  </ListItem>
-);
+      ) : secondaryActions ? (
+        <Box flexGrow={1}>{primaryText}</Box>
+      ) : (
+        primaryText
+      )}
+      {secondaryActions}
+    </ListItem>
+  );
+};
 
 export default MiniListItem;

@@ -6,6 +6,7 @@ import Add from '@mui/icons-material/Add';
 import ContentClear from '@mui/icons-material/Clear';
 import Delete from '@mui/icons-material/Delete';
 import ActionDone from '@mui/icons-material/Done';
+import Edit from '@mui/icons-material/Edit';
 import Number3 from '@mui/icons-material/Looks3';
 import Number4 from '@mui/icons-material/Looks4';
 import Number5 from '@mui/icons-material/Looks5';
@@ -49,6 +50,10 @@ const presets: Record<string, { color?: string; icon?: React.ReactNode }> = {
   delete: {
     color: colorForStatus(Status.ERROR),
     icon: <Delete fontSize='small' />,
+  },
+
+  edit: {
+    icon: <Edit fontSize='small' />,
   },
 
   empty: {},

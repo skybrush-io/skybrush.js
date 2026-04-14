@@ -1,8 +1,20 @@
 import Box from '@mui/material/Box';
 import ListItemButton from '@mui/material/ListItemButton';
 
+import { makeStyles } from '@skybrush/app-theme-mui';
 import type { MiniListItemProps } from './MiniListItem.js';
 import MiniListItemIcon from './MiniListItemIcon.js';
+
+const useStyles = makeStyles({
+  listItemHoverStyle: {
+    '& .MiniListItemSecondaryActions-root': {
+      display: 'none',
+    },
+    '&:hover .MiniListItemSecondaryActions-root': {
+      display: 'inline-flex',
+    },
+  },
+});
 
 export type MiniListItemButtonProps = MiniListItemProps & {
   disabled?: boolean;
@@ -22,29 +34,38 @@ const MiniListItemButton = ({
   primaryText,
   secondaryActions,
   secondaryText,
+  showSecondaryActionsOnHoverOnly,
   onClick,
-}: MiniListItemButtonProps) => (
-  <ListItemButton
-    disabled={disabled}
-    disableGutters
-    sx={inset ? { px: inset } : undefined}
-    onClick={onClick}
-  >
-    {iconPreset ? <MiniListItemIcon pad='right' preset={iconPreset} /> : icon}
-    {secondaryText ? (
-      <Box display='flex' flexDirection='row' flexGrow={1}>
-        <Box flexGrow={1}>{primaryText}</Box>
-        <Box color='text.secondary' ml={gap}>
-          {secondaryText}
+}: MiniListItemButtonProps) => {
+  const classes = useStyles();
+  return (
+    <ListItemButton
+      className={
+        showSecondaryActionsOnHoverOnly ? classes.listItemHoverStyle : undefined
+      }
+      disabled={disabled}
+      disableGutters
+      sx={inset ? { px: inset } : undefined}
+      onClick={onClick}
+    >
+      {iconPreset ? <MiniListItemIcon pad='right' preset={iconPreset} /> : icon}
+      {secondaryText ? (
+        <Box display='flex' flexDirection='row' flexGrow={1}>
+          <Box flexGrow={1}>{primaryText}</Box>
+          <Box color='text.secondary' ml={gap}>
+            {secondaryText}
+          </Box>
         </Box>
+      ) : secondaryActions ? (
+        <Box flexGrow={1}>{primaryText}</Box>
+      ) : (
+        primaryText
+      )}
+      <Box className='MiniListItemSecondaryActions-root'>
+        {secondaryActions}
       </Box>
-    ) : secondaryActions ? (
-      <Box flexGrow={1}>{primaryText}</Box>
-    ) : (
-      primaryText
-    )}
-    {secondaryActions}
-  </ListItemButton>
-);
+    </ListItemButton>
+  );
+};
 
 export default MiniListItemButton;
