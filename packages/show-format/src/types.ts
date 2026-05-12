@@ -186,6 +186,9 @@ export type AudioData = {
 
   /** MIME media type of the audio data. Currently we support MPEG only. */
   mediaType: 'audio/mpeg';
+
+  /** Start time of the audio relative to the show start, in seconds. */
+  startTime?: number;
 };
 
 /**
