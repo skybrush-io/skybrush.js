@@ -188,7 +188,7 @@ export type AudioData = {
   mediaType: 'audio/mpeg';
 
   /** Start time of the audio relative to the show start, in seconds. */
-  startTime: number;
+  startTime?: number;
 };
 
 /**
