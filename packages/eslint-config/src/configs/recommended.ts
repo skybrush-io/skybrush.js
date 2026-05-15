@@ -61,6 +61,10 @@ const config: ConfigWithExtendsArray = [
         {
           patterns: [{ regex: '^@mui/[^/]+$' }],
         },
+        {
+          name: '@mui/material/Tooltip',
+          message: 'Use Tooltip from @skybrush/mui-components instead',
+        },
       ],
 
       // Use Array<T> for more complex stuff but T[] for simple types.
