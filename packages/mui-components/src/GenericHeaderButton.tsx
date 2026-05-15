@@ -62,6 +62,11 @@ export const GenericHeaderButton = React.forwardRef(
     }: GenericHeaderButtonProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
+    if (disabled) {
+      // Disable the click handler if the button is disabled
+      delete rest.onClick;
+    }
+
     const result = (
       <GenericHeaderButtonBase ref={ref} disabled={disabled} {...rest}>
         <span className='GenericHeaderButton-icon'>{children}</span>
