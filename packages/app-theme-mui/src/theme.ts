@@ -17,6 +17,23 @@ import { defaultFont } from './fonts.js';
 import useConditionalCSS from './hooks/useConditionalCSS.js';
 import useDarkMode from './hooks/useDarkMode.js';
 
+declare module '@mui/material/styles' {
+  interface TypeText {
+    hint: string;
+  }
+
+  interface Color {
+    main: string;
+    dark: string;
+  }
+}
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    grey: true;
+  }
+}
+
 /**
  * Types of themes that we support in this framework.
  */
@@ -177,13 +194,13 @@ export const createThemeProvider = ({
           hint: isThemeDark
             ? 'rgba(255, 255, 255, 0.5)'
             : 'rgba(0, 0, 0, 0.38)',
-        } as any,
+        },
 
         // Compatibility with Material UI v4 and to allow <Button color="gray">
         grey: {
           main: grey[300],
           dark: grey[400],
-        } as any,
+        },
       },
 
       typography: {
@@ -228,7 +245,7 @@ export const createThemeProvider = ({
           root: {
             variants: [
               {
-                props: { variant: 'contained', color: 'grey' as any },
+                props: { variant: 'contained', color: 'grey' },
                 style: {
                   color: baseTheme.palette.getContrastText(
                     baseTheme.palette.grey[300]
@@ -236,7 +253,7 @@ export const createThemeProvider = ({
                 },
               },
               {
-                props: { variant: 'outlined', color: 'grey' as any },
+                props: { variant: 'outlined', color: 'grey' },
                 style: {
                   color: baseTheme.palette.text.primary,
                   borderColor:
@@ -259,7 +276,7 @@ export const createThemeProvider = ({
                 },
               },
               {
-                props: { variant: 'text', color: 'grey' as any },
+                props: { variant: 'text', color: 'grey' },
                 style: {
                   color: baseTheme.palette.text.primary,
                   '&:hover': {
@@ -275,7 +292,7 @@ export const createThemeProvider = ({
         },
 
         defaultProps: {
-          color: 'grey' as any,
+          color: 'grey',
         },
       },
 
