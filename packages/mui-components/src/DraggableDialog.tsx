@@ -13,7 +13,9 @@ import { createSecondaryAreaStyle } from '@skybrush/app-theme-mui';
 
 import DialogToolbar from './DialogToolbar.js';
 
-type DraggablePaperProps = { DraggableProps?: DraggableProps_ } & PaperProps;
+type DraggablePaperProps = {
+  DraggableProps?: Partial<DraggableProps_>;
+} & PaperProps;
 
 const DraggablePaper = ({ DraggableProps, ...rest }: DraggablePaperProps) => {
   const ref = React.useRef(null);
