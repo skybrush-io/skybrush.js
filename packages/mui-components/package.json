@@ -20,7 +20,7 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "clean": "rimraf lib/** *.tgz",
+    "clean": "rimraf dist/** *.tgz",
     "prepack": "npm run build",
     "test": "npx jest"
   },
