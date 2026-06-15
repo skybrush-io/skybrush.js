@@ -43,7 +43,7 @@ const DraggableDialogSidebar = styled('div')(({ theme }) =>
 );
 
 export type DraggableDialogProps = {
-  DraggableProps?: DraggableProps_;
+  DraggableProps?: Partial<DraggableProps_>;
   sidebarComponents?: React.ReactNode;
   titleComponents?: React.ReactNode;
   toolbarComponent?: ((id: string) => React.ReactNode) | React.ReactNode;
