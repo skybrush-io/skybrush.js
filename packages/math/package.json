@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/math",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Math-related utilities for Skybrush",
   "type": "module",
   "author": "CollMot Robotics Ltd",
