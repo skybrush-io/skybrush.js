@@ -4097,6 +4097,7 @@ __metadata:
     "@eslint/js": ^9.39.2
     eslint: ^9.39.2
     eslint-plugin-react: ^7.37.5
+    globals: ^14.0.0
     typescript-eslint: ^8.52.0
   languageName: unknown
   linkType: soft
@@ -14075,15 +14076,15 @@ __metadata:
   linkType: hard
 
 "react-draggable@npm:^4.5.0":
-  version: 4.6.0
-  resolution: "react-draggable@npm:4.6.0"
+  version: 4.7.0
+  resolution: "react-draggable@npm:4.7.0"
   dependencies:
     clsx: ^2.1.1
     prop-types: ^15.8.1
   peerDependencies:
     react: ">= 16.3.0"
     react-dom: ">= 16.3.0"
-  checksum: b1fc6489654d9a1afb6cd97a5eae597ad11654ba039ab2d4c11566ba2017be9019f8ab4388d2d12945bafc0a65ff508b803201a4393800f431ee500aaf1baaf5
+  checksum: ff5ea12868d2fe1cf4291ff17935ed7b9a6e092f8eab8efdfeabe33000312a2de24876185fa1551d97a458a73060c9d6e9d57d4b0d6c4540f610b89a0d574797
   languageName: node
   linkType: hard
 
