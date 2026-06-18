@@ -18,7 +18,8 @@
     "moduleResolution": "nodenext",
     "strict": true,
     "sourceMap": true,
-    "verbatimModuleSyntax": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "verbatimModuleSyntax": true
   },
   "exclude": [
     "**/.*/",
@@ -26,6 +27,6 @@
     "**/node_modules",
     "packages/app-theme-material-ui",
     "packages/mavlink",
-    "packages/mui-components/lib",
-  ],
+    "packages/mui-components/lib"
+  ]
 }

@@ -1,4 +1,5 @@
 import type { SwarmSpecification } from '@skybrush/file-formats-doc/skyc';
+import type { QuaternionWXYZTuple, Vector3Tuple } from '@skybrush/math';
 
 export type {
   DroneSpecification,
@@ -11,6 +12,11 @@ export type {
   YawControl,
   YawControlSetpoint as YawControlSegment,
 } from '@skybrush/file-formats-doc/skyc';
+export type {
+  QuaternionWXYZTuple,
+  Vector3,
+  Vector3Tuple,
+} from '@skybrush/math';
 
 import type Asset from './asset.js';
 
@@ -27,27 +33,8 @@ export const ENVIRONMENT_TYPES: EnvironmentType[] = [
   EnvironmentType.INDOOR,
 ];
 
-/**
- * A single 3D coordinate in .skyc files, in tuple notation.
- */
-export type Vector3Tuple = [number, number, number];
-
-/**
- * A single 3D coordinate in .skyc files, in object notation.
- */
-export type Vector3 = {
-  x: number;
-  y: number;
-  z: number;
-};
-
 /** A single RGB color used by the light program player */
 export type Color = [number, number, number];
-
-/**
- * Quaternion in .skyc files, in tuple notation, in JPL order (wxyz).
- */
-export type Quaternion = [number, number, number, number];
 
 /**
  * Action to perform when the geofence fence is breached
@@ -145,7 +132,7 @@ export type Camera = {
    * axis such that the positive X axis is to the _right_. The coordinate
    * system is right-handed. The default orientation is [1, 0, 0, 0].
    */
-  orientation?: Quaternion;
+  orientation?: QuaternionWXYZTuple;
 
   /**
    * The focal length of the camera, in millimeters. The default is 23mm.

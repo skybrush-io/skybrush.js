@@ -1,7 +1,7 @@
 {
-  "name": "@skybrush/show-format",
-  "version": "5.4.0",
-  "description": "Skybrush show format loader",
+  "name": "@skybrush/math",
+  "version": "0.1.0",
+  "description": "Math-related utilities for Skybrush",
   "type": "module",
   "author": "CollMot Robotics Ltd",
   "homepage": "",
@@ -25,13 +25,11 @@
     "test": "npx jest"
   },
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "9.1.2",
-    "@skybrush/file-formats-doc": "^1.2.0",
-    "@skybrush/math": "^0.1.0",
-    "bezier-js": "^6.1.4",
-    "core-js": "^3.47.0",
-    "denque": "^2.1.0",
-    "js-base64": "^3.7.8",
-    "jszip": "^3.10.1"
+    "lodash-es": "^4.18.1",
+    "monotone-convex-hull-2d": "^1.0.1",
+    "neverthrow": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12"
   }
 }
