@@ -1,9 +1,9 @@
 import {
+  isQuaternionWXYZTuple,
   isVector2PlusTuple,
   isVector2Tuple,
   isVector3Tuple,
 } from '../dist/types.js';
-import { isQuaternionWXYZTuple } from '../src/types.js';
 
 describe('isVector2Tuple', () => {
   test('accepts valid 2D vectors', () => {

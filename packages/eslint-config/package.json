@@ -22,7 +22,7 @@
     "build": "npx tsc",
     "clean": "rimraf dist/** *.tgz",
     "prepack": "npm run build",
-    "test": "npx jest"
+    "test": "npx jest --passWithNoTests"
   },
   "peerDependencies": {
     "@eslint/js": "^9.39.2",

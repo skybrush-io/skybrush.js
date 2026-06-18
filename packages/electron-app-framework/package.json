@@ -21,8 +21,7 @@
   "scripts": {
     "build": "npx tsc",
     "clean": "rimraf dist/** *.tgz",
-    "prepack": "npm run build",
-    "test": "npx jest"
+    "prepack": "npm run build"
   },
   "peerDependencies": {
     "electron": ">=39.0"

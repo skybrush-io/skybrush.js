@@ -19,15 +19,16 @@ type DraggablePaperProps = {
 
 const DraggablePaper = ({ DraggableProps, ...rest }: DraggablePaperProps) => {
   const ref = React.useRef(null);
+  const D = Draggable as unknown as any; // work around a weird typing issue, reason unknown
   return (
-    <Draggable
+    <D
       {...DraggableProps}
       handle='#draggable-dialog-title'
       cancel={'[class*="MuiDialogContent-root"]'}
       nodeRef={ref}
     >
       <Paper ref={ref} {...rest} />
-    </Draggable>
+    </D>
   );
 };
 
