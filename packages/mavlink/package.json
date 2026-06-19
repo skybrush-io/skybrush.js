@@ -24,6 +24,6 @@
     "test": "npx jest"
   },
   "dependencies": {
-    "underscore": "^1.13.7"
+    "underscore": "^1.13.8"
   }
 }
