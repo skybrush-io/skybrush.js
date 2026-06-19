@@ -33,7 +33,7 @@ const DialogTabs = ({
     <Tabs {...alignmentProps[dragHandle ? 'draggable' : alignment]} {...rest}>
       {children}
     </Tabs>
-    {dragHandle && <Box flex={1} id={dragHandle} style={{ cursor: 'move' }} />}
+    {dragHandle && <Box id={dragHandle} sx={{ cursor: 'move', flex: 1 }} />}
   </DialogAppBar>
 );
 

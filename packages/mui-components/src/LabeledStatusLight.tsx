@@ -21,6 +21,7 @@ const LabeledStatusLight = ({
   reversed = false,
   size = 'normal',
   status,
+  sx,
   ...rest
 }: LabeledStatusLightProps) => {
   const light = <StatusLight inline size={size} status={status} />;
@@ -36,14 +37,17 @@ const LabeledStatusLight = ({
 
   return (
     <Box
-      alignItems='center'
-      flex={1}
-      display='flex'
-      flexDirection='row'
+      sx={{
+        alignItems: 'center',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'row',
+        ...sx,
+      }}
       {...rest}
     >
-      {reversed ? <Box pr={1}>{label}</Box> : light}
-      {reversed ? light : <Box pl={1}>{label}</Box>}
+      {reversed ? <Box sx={{ pr: 1 }}>{label}</Box> : light}
+      {reversed ? light : <Box sx={{ pl: 1 }}>{label}</Box>}
     </Box>
   );
 };

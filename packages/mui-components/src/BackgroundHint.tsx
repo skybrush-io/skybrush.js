@@ -35,7 +35,7 @@ export type BackgroundHintProps = {
  * The hint is presented as text in large print placed in the middle of
  * the area dedicated to the component.
  *
- * @return {Object} the rendered component
+ * @return  the rendered component
  */
 const BackgroundHint = ({
   button,
@@ -59,15 +59,17 @@ const BackgroundHint = ({
     <Box sx={style} {...rest}>
       <div>
         {icon && (
-          <Box pb={2}>{React.cloneElement(icon, { style: iconStyle })}</Box>
+          <Box sx={{ pb: 2 }}>
+            {React.cloneElement(icon, { style: iconStyle })}
+          </Box>
         )}
         {header && (
-          <Typography variant='h6' sx={{ marginBottom: '16px' }}>
+          <Typography variant='h6' sx={{ mb: 2 }}>
             {header}
           </Typography>
         )}
         <div>{text}</div>
-        {button && <Box pt={2}>{button}</Box>}
+        {button && <Box sx={{ pt: 2 }}>{button}</Box>}
       </div>
     </Box>
   );

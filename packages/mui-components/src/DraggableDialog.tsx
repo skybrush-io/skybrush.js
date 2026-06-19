@@ -101,11 +101,15 @@ const DraggableDialog = ({
   return (
     <Dialog PaperComponent={DraggablePaperWithProps} {...rest}>
       {sidebarComponents ? (
-        <Box display='flex' flexDirection='row' alignItems='stretch'>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'stretch',
+          }}
+        >
           <DraggableDialogSidebar>{sidebarComponents}</DraggableDialogSidebar>
-          <Box flex={1} overflow='auto'>
-            {dialogBody}
-          </Box>
+          <Box sx={{ flex: 1, overflow: 'auto' }}>{dialogBody}</Box>
         </Box>
       ) : (
         dialogBody

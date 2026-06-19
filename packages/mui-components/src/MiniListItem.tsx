@@ -55,14 +55,18 @@ const MiniListItem = ({
     >
       {iconPreset ? <MiniListItemIcon pad='right' preset={iconPreset} /> : icon}
       {secondaryText ? (
-        <Box display='flex' flexDirection='row' flexGrow={1}>
-          <Box flexGrow={1}>{primaryText}</Box>
-          <Box color='text.secondary' ml={gap}>
-            {secondaryText}
-          </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexGrow: 1,
+          }}
+        >
+          <Box sx={{ flexGrow: 1 }}>{primaryText}</Box>
+          <Box sx={{ color: 'text.secondary', ml: gap }}>{secondaryText}</Box>
         </Box>
       ) : secondaryActions ? (
-        <Box flexGrow={1}>{primaryText}</Box>
+        <Box sx={{ flexGrow: 1 }}>{primaryText}</Box>
       ) : (
         primaryText
       )}

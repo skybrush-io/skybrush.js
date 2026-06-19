@@ -13,20 +13,24 @@ const LargeProgressIndicator = ({
   fullHeight,
   label,
   visible = true,
+  sx,
   ...rest
 }: LargeProgressIndicatorProps) => (
   <Fade in={visible}>
     <Box
-      alignItems='center'
-      flex={1}
-      padding={1}
-      display='flex'
-      flexDirection='column'
-      justifyContent='center'
-      height={fullHeight ? '100%' : undefined}
       {...rest}
+      sx={{
+        alignItems: 'center',
+        flex: 1,
+        padding: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: fullHeight ? '100%' : undefined,
+        ...sx,
+      }}
     >
-      <Box pb={2}>
+      <Box sx={{ pb: 2 }}>
         <CircularProgress color='secondary' />
       </Box>
       {label && (
