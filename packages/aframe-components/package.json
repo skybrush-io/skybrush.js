@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@types/aframe": "^1.2.9",
-    "aframe": "^1.7.1"
+    "aframe": "^1.7.1",
+    "three": ">=0.137"
   }
 }
