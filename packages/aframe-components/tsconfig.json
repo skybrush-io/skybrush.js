@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig",
   "include": ["src/**/*"],
+  "exclude": ["node_modules/meshline/**"],
   "compilerOptions": {
-    "outDir": "./dist"
-  }
+    "outDir": "./dist",
+    "rootDir": "./src",
+  },
 }

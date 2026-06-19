@@ -147,7 +147,7 @@ const StatusPill = ({
   position = 'single',
   status = Status.INFO,
   ...rest
-}: StatusPillProps): JSX.Element => (
+}: StatusPillProps): React.JSX.Element => (
   <StyledDiv
     className={clsx(
       className,

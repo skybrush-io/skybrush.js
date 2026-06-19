@@ -7,3 +7,6 @@
 declare module 'react-transition-group/Transition' {
   export * from 'react-transition-group/Transition.js';
 }
+
+// Allow imports of CSS files as side effects
+declare module '*.css' {}

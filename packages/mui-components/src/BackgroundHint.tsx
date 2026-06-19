@@ -60,7 +60,7 @@ const BackgroundHint = ({
       <div>
         {icon && (
           <Box sx={{ pb: 2 }}>
-            {React.cloneElement(icon, { style: iconStyle })}
+            {React.cloneElement(icon, { style: iconStyle } as any)}
           </Box>
         )}
         {header && (

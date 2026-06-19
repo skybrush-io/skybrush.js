@@ -59,5 +59,8 @@ assets/shows/
 *.tgz
 
 # Yarn
-.yarn
+.yarn/*
+
+# Allow yarn patches
+!.yarn/patches
 

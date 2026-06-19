@@ -3,6 +3,7 @@
   "include": ["src/**/*"],
   "compilerOptions": {
     "outDir": "./dist",
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "rootDir": "./src",
+  },
 }

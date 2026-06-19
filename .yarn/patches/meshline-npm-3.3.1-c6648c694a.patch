@@ -1,0 +1,20 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 5f62a164994ab54b9f5011bb2234d98c62087d9a..22fea385dde39002bcea4d1baeafc8674bb2cadf 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,3 +1,3 @@
+-export * from './MeshLineGeometry';
+-export * from './MeshLineMaterial';
+-export * from './raycast';
++export * from "./MeshLineGeometry.js";
++export * from "./MeshLineMaterial.js";
++export * from "./raycast.js";
+diff --git a/dist/raycast.d.ts b/dist/raycast.d.ts
+index acda7c37904c6ee739ce7a7c54dbe5267eb9f40c..96ea9c4e3654520b63cba493e9681dccd817ea7a 100644
+--- a/dist/raycast.d.ts
++++ b/dist/raycast.d.ts
+@@ -1,3 +1,3 @@
+ import * as THREE from 'three';
+-import type { MeshLineMaterial } from './MeshLineMaterial';
++import type { MeshLineMaterial } from './MeshLineMaterial.js';
+ export declare function raycast(this: THREE.Mesh<THREE.BufferGeometry, MeshLineMaterial>, raycaster: THREE.Raycaster, intersects: THREE.Intersection[]): void;
