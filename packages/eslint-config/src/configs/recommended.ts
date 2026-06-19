@@ -1,6 +1,6 @@
+import eslintReact from '@eslint-react/eslint-plugin';
 import { type ConfigWithExtendsArray } from '@eslint/config-helpers';
 import eslint from '@eslint/js';
-import react from 'eslint-plugin-react';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -8,22 +8,12 @@ const config: ConfigWithExtendsArray = [
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylistic,
-  react.configs.flat.recommended,
-  react.configs.flat['jsx-runtime'],
+  eslintReact.configs['recommended-typescript'],
 
   {
     languageOptions: {
       parserOptions: {
         projectService: true,
-      },
-    },
-  },
-
-  {
-    // Allow eslint-plugin-react to detect the React version automatically
-    settings: {
-      react: {
-        version: 'detect',
       },
     },
   },
@@ -48,22 +38,35 @@ const config: ConfigWithExtendsArray = [
   },
 
   {
+    files: ['webpack/*.js'],
+    rules: {
+      // Allow useAppConfiguration() in Webpack config files; this is not a hook
+      '@eslint-react/rules-of-hooks': 'off',
+      '@eslint-react/no-unnecessary-use-prefix': 'off',
+    },
+  },
+
+  {
     languageOptions: {
       globals: {
         ...globals.browser,
       },
     },
     rules: {
+      'no-restricted-imports': 'off',
+
       // Prevent barrel imports from @mui according to the recommendations
       // on https://mui.com/material-ui/guides/minimizing-bundle-size/
-      'no-restricted-imports': [
+      '@typescript-eslint/no-restricted-imports': [
         'error',
         {
           patterns: [{ regex: '^@mui/[^/]+$' }],
-        },
-        {
-          name: '@mui/material/Tooltip',
-          message: 'Use Tooltip from @skybrush/mui-components instead',
+          paths: [
+            {
+              name: '@mui/material/Tooltip',
+              message: 'Use Tooltip from @skybrush/mui-components instead',
+            },
+          ],
         },
       ],
 
