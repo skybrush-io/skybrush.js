@@ -4384,7 +4384,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skybrush/app-theme-mui@^5.0.3, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
+"@skybrush/app-theme-mui@^5.1.0, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
   version: 0.0.0-use.local
   resolution: "@skybrush/app-theme-mui@workspace:packages/app-theme-mui"
   dependencies:
@@ -4437,7 +4437,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skybrush/math@^1.0.0, @skybrush/math@workspace:packages/math":
+"@skybrush/math@^1.0.1, @skybrush/math@workspace:packages/math":
   version: 0.0.0-use.local
   resolution: "@skybrush/math@workspace:packages/math"
   dependencies:
@@ -4465,7 +4465,7 @@ __metadata:
     "@mui/icons-material": ^9.1.1
     "@mui/material": ^9.1.1
     "@react-hookz/web": ^25.2.0
-    "@skybrush/app-theme-mui": ^5.0.3
+    "@skybrush/app-theme-mui": ^5.1.0
     "@tippyjs/react": ^4.2.6
     "@types/react": ^19.2.17
     clsx: ^2.1.1
@@ -4515,7 +4515,7 @@ __metadata:
   dependencies:
     "@apidevtools/json-schema-ref-parser": 9.1.2
     "@skybrush/file-formats-doc": ^1.4.1
-    "@skybrush/math": ^1.0.0
+    "@skybrush/math": ^1.0.1
     bezier-js: ^6.1.4
     core-js: ^3.49.0
     denque: ^2.1.0

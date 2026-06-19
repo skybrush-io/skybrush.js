@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/show-format",
-  "version": "5.5.0",
+  "version": "5.5.1",
   "description": "Skybrush show format loader",
   "type": "module",
   "author": "CollMot Robotics Ltd",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "9.1.2",
     "@skybrush/file-formats-doc": "^1.4.1",
-    "@skybrush/math": "^1.0.0",
+    "@skybrush/math": "^1.0.1",
     "bezier-js": "^6.1.4",
     "core-js": "^3.49.0",
     "denque": "^2.1.0",
