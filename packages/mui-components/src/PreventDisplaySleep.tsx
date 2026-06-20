@@ -1,10 +1,12 @@
-import { useAsyncEffect } from 'use-async-effect';
+import useAsyncEffect from './hooks/useAsyncEffect.js';
 
 let warned = false;
 
+type PreventDisplaySleepToken = unknown & { readonly '': unique symbol };
+
 type WindowWithBridge = {
-  preventDisplaySleep: () => unknown;
-  restoreDisplaySleep: (token: unknown) => void;
+  preventDisplaySleep: () => PreventDisplaySleepToken;
+  restoreDisplaySleep: (token: PreventDisplaySleepToken) => void;
 };
 
 const PreventDisplaySleepHelper = () => {

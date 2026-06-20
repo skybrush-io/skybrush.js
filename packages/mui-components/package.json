@@ -40,8 +40,7 @@
     "react-badger": "^2.0.30",
     "react-draggable": "^4.7.0",
     "set-harmonic-interval": "^1.0.1",
-    "tippy.js": "^6.3.7",
-    "use-async-effect": "^2.2.7"
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "@emotion/react": "^11.14.0",
