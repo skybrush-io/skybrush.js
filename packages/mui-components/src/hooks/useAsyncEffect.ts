@@ -41,6 +41,3 @@ function useAsyncEffect<T>(
 }
 
 export default useAsyncEffect;
-
-module.exports = useAsyncEffect;
-module.exports.useAsyncEffect = useAsyncEffect;
