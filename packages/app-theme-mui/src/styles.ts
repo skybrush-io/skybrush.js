@@ -5,6 +5,7 @@ import type { Theme } from '@mui/material/styles';
 import { isThemeDark } from './theme.js';
 
 type SecondaryAreaStyleOptions = {
+  flat?: boolean;
   inset?: 'top' | 'bottom' | 'left' | 'right' | 'all' | true;
 };
 
@@ -68,6 +69,7 @@ const createExtraStyleFuncForSecondaryAreaStyle = (
  * used for charts, sidebars and other display widgets.
  */
 export const secondaryAreaStyle = ({
+  flat,
   inset,
 }: SecondaryAreaStyleOptions = {}): ((theme: Theme) => CSSProperties) => {
   const extraStyleFunc = createExtraStyleFuncForSecondaryAreaStyle(inset);
@@ -77,7 +79,9 @@ export const secondaryAreaStyle = ({
 
     return {
       background: dark
-        ? 'linear-gradient(160deg, #2c2c2c 0%, #1f1f1f 100%)'
+        ? flat
+          ? '#1f1f1f'
+          : 'linear-gradient(160deg, #2c2c2c 0%, #1f1f1f 100%)'
         : '#fafafa',
       display: 'flex',
       ...extraStyleFunc(dark),
