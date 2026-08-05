@@ -42,6 +42,7 @@ const BackgroundHint = ({
   header,
   icon,
   iconColor,
+  sx,
   text,
   ...rest
 }: BackgroundHintProps) => {
@@ -56,7 +57,7 @@ const BackgroundHint = ({
   }
 
   return (
-    <Box sx={style} {...rest}>
+    <Box sx={{ ...style, ...sx }} {...rest}>
       <div>
         {icon && (
           <Box sx={{ pb: 2 }}>
