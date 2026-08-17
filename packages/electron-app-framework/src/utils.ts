@@ -2,6 +2,8 @@
 // replace process.env.NODE_ENV and process.env.DEPLOYMENT during bundling
 // if 'process' is imported; it must be a free global
 
+import { BrowserWindow } from 'electron';
+
 // Returns whether we are in production mode
 export const isProduction =
   process.env.NODE_ENV === 'production' || process.env.DEPLOYMENT === '1';
@@ -27,6 +29,31 @@ export function defaultUnsafeUrlHandler(url: string) {
   return usingWebpackDevServer
     ? Boolean(url.match(/^(https|wss):\/\/localhost:.*\//))
     : false;
+}
+
+/**
+ * @returns  the first main window of the application, or undefined if there
+ *     are no windows.
+ */
+export function getFirstMainWindow(): BrowserWindow | undefined {
+  const allWindows = BrowserWindow.getAllWindows();
+  if (allWindows.length === 0) {
+    return undefined;
+  }
+
+  return allWindows[0];
+}
+
+/**
+ * @returns  the first main window
+ * @throws  an error if there are no windows
+ */
+export function getFirstMainWindowOrThrow(): BrowserWindow {
+  const maybeWindow = getFirstMainWindow();
+  if (!maybeWindow) {
+    throw new Error('All windows are closed');
+  }
+  return maybeWindow;
 }
 
 /**
