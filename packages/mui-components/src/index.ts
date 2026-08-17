@@ -31,6 +31,7 @@ import PlayStopButton, { type PlayStopButtonProps } from './PlayStopButton.js';
 import PreventDisplaySleep, {
   type PreventDisplaySleepProps,
 } from './PreventDisplaySleep.js';
+import ProgressButton, { type ProgressButtonProps } from './ProgressButton.js';
 import QuickSelectionOverlay, {
   type QuickSelectionOverlayProps,
 } from './QuickSelectionOverlay.js';
@@ -68,6 +69,7 @@ export {
   PlaybackSlider,
   PlayStopButton,
   PreventDisplaySleep,
+  ProgressButton,
   QuickSelectionOverlay,
   SemanticAvatar,
   SidebarBadge,
@@ -101,6 +103,7 @@ export type {
   PlaybackSliderProps,
   PlayStopButtonProps,
   PreventDisplaySleepProps,
+  ProgressButtonProps,
   QuickSelectionOverlayProps,
   SemanticAvatarProps,
   SidebarBadgeProps,
