@@ -3,6 +3,8 @@ import setupCli from './cli.js';
 import createMainWindowFactory from './main-window.js';
 import {
   defaultUnsafeUrlHandler,
+  getFirstMainWindow,
+  getFirstMainWindowOrThrow,
   isProduction,
   isRunningOnMac,
   usingWebpackDevServer,
@@ -11,6 +13,8 @@ import {
 export {
   createMainWindowFactory,
   defaultUnsafeUrlHandler,
+  getFirstMainWindow,
+  getFirstMainWindowOrThrow,
   isProduction,
   isRunningOnMac,
   setupApp,
