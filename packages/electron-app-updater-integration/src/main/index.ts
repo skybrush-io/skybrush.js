@@ -1,0 +1,206 @@
+import { app } from 'electron';
+import { ipcMain as ipc } from 'electron-better-ipc';
+import electronUpdater, {
+  type AppUpdater,
+  type UpdateInfo as ElectronUpdaterUpdateInfo,
+  type ProgressInfo,
+} from 'electron-updater';
+
+import { getFirstMainWindow } from '@skybrush/electron-app-framework';
+
+import { overrideApi } from '../core/api.js';
+import { IPC_NAMES, NO_UPDATES } from '../core/constants.js';
+import type {
+  CheckForUpdateOptions,
+  UpdateInfo,
+  UpdaterApi,
+} from '../core/types.js';
+
+let _autoUpdater: AppUpdater | null = null;
+
+export type UpdaterConfiguration = {
+  log?: AppUpdater['logger'] | null | undefined;
+};
+
+/**
+ * Initializes the auto-updater integration with the Electron application. This function
+ * should be called once during the app's startup.
+ *
+ * @param log - The logger to use for the auto-updater
+ */
+export function initialize({ log }: UpdaterConfiguration = {}): UpdaterApi {
+  if (_autoUpdater) {
+    throw new Error('Auto-updater is already configured');
+  }
+
+  // Using destructuring to access autoUpdater due to the CommonJS module of 'electron-updater'.
+  // It is a workaround for ESM compatibility issues, see https://github.com/electron-userland/electron-builder/issues/7976.
+  const { autoUpdater } = electronUpdater;
+
+  // Integrate with logger
+  if (log) {
+    autoUpdater.logger = log;
+  }
+
+  // Do not install updates on app quit because that could potentially leave the app
+  // in a broken state if the app quits due to the system shutting down.
+  //
+  // When migrating to electron-updater v7 or later, this will have to be replaced with
+  // autoUpdater.autoInstallEvent = 'onNextLaunch'.
+  autoUpdater.autoInstallOnAppQuit = false;
+
+  // Uncomment the following line to test the auto-updater in dev mode.
+  // In this case you will also need to provide a file named dev-app-update.yml
+  // in the root of your project
+  if (!app.isPackaged) {
+    autoUpdater.forceDevUpdateConfig = true;
+  }
+
+  // Set up IPC handlers for requests coming from the renderer process
+  ipc.answerRenderer(IPC_NAMES.checkForUpdates, checkForUpdates);
+  ipc.answerRenderer(IPC_NAMES.quitAndInstallUpdate, quitAndInstallUpdate);
+
+  // Register a function to be called every time the status of the auto-updater changes.
+  registerUpdateListener(autoUpdater, (info) => {
+    const mainWindow = getFirstMainWindow();
+    if (mainWindow) {
+      ipc
+        .callRenderer(mainWindow, IPC_NAMES.setUpdateInfo, info)
+        .catch((err) => {
+          _autoUpdater?.logger?.error(
+            `Failed to notify renderer about update status: ${err}`
+          );
+        });
+    }
+  });
+
+  _autoUpdater = autoUpdater;
+
+  return overrideApi({
+    checkForUpdates,
+    isSupported: () => true,
+    quitAndInstallUpdate: async (options = {}) => quitAndInstallUpdate(options),
+  });
+}
+
+export function getAutoUpdater() {
+  if (!_autoUpdater) {
+    throw new Error(
+      'Auto-updater is not initialized. Call initialize() first.'
+    );
+  }
+
+  return _autoUpdater;
+}
+
+/**
+ * Checks for updates.
+ *
+ * @param silent - If true, errors will be logged to the logger (if configured) and
+ *        otherwise ignored silently.
+ * @returns - The current state of the updater after the check.
+ */
+async function checkForUpdates(
+  options: CheckForUpdateOptions = {}
+): Promise<UpdateInfo> {
+  const { silent } = options;
+
+  try {
+    const result = await getAutoUpdater().checkForUpdates();
+    return result?.isUpdateAvailable
+      ? Object.freeze({
+          available: true,
+          downloaded: result?.updateInfo?.version ? true : false,
+          downloadProgress: null,
+          version: result?.updateInfo?.version ?? null,
+        })
+      : NO_UPDATES;
+  } catch (err) {
+    if (!silent) {
+      throw err;
+    }
+  }
+
+  return NO_UPDATES;
+}
+
+/**
+ * Quits the application and installs the update.
+ *
+ * @param silent - If true, errors will be logged to the logger (if configured) and
+ *        otherwise ignored silently.
+ */
+function quitAndInstallUpdate(options: CheckForUpdateOptions = {}) {
+  const { silent } = options;
+  const autoUpdater = getAutoUpdater();
+
+  try {
+    autoUpdater.quitAndInstall();
+  } catch (err) {
+    if (!silent) {
+      throw err;
+    }
+  }
+}
+
+/**
+ * Registers a function to be called when the status of the auto-update service changes.
+ *
+ * @param autoUpdater - The auto-updater instance to listen to
+ * @param callback - The function to call when the status changes
+ * @returns - A function that can be called to unregister the callback
+ */
+function registerUpdateListener(
+  autoUpdater: AppUpdater,
+  callback: (info: UpdateInfo) => void
+): () => void {
+  let lastUpdateInfo: ElectronUpdaterUpdateInfo | null = null;
+
+  const handleUpdateAvailable = (info: ElectronUpdaterUpdateInfo) => {
+    lastUpdateInfo = info;
+    callback({
+      available: true,
+      downloaded: false,
+      downloadProgress: autoUpdater.autoDownload ? 0 : null,
+      version: info?.version ?? null,
+    });
+  };
+
+  const handleUpdateDownloaded = (info: ElectronUpdaterUpdateInfo) => {
+    lastUpdateInfo = info;
+    callback({
+      available: true,
+      downloaded: true,
+      downloadProgress: null,
+      version: info?.version ?? null,
+    });
+  };
+
+  const handleUpdateNotAvailable = () => {
+    lastUpdateInfo = null;
+    callback(NO_UPDATES);
+  };
+
+  const handleDownloadProgress = (info: ProgressInfo) => {
+    if (lastUpdateInfo) {
+      callback({
+        available: true,
+        downloaded: false,
+        downloadProgress: Math.round(info.percent * 100) / 100,
+        version: lastUpdateInfo?.version ?? null,
+      });
+    }
+  };
+
+  autoUpdater.on('update-available', handleUpdateAvailable);
+  autoUpdater.on('update-downloaded', handleUpdateDownloaded);
+  autoUpdater.on('update-not-available', handleUpdateNotAvailable);
+  autoUpdater.on('download-progress', handleDownloadProgress);
+
+  return () => {
+    autoUpdater.off('update-available', handleUpdateAvailable);
+    autoUpdater.off('update-downloaded', handleUpdateDownloaded);
+    autoUpdater.off('update-not-available', handleUpdateNotAvailable);
+    autoUpdater.off('download-progress', handleDownloadProgress);
+  };
+}
