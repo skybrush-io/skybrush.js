@@ -15,6 +15,7 @@ export type {
   SelectionHandlerThunk,
 } from './types.js';
 export { isAllowedInRedux, noPayload, stripEvent } from './utils.js';
+export { watch, type ListenerFn } from './watch.js';
 
 export type StorageConfig<S, RS = any, HSS = any, ESS = any> = StorageConfig_<
   S,
