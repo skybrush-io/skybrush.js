@@ -4314,6 +4314,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@skybrush/electron-app-updater-integration@workspace:packages/electron-app-updater-integration":
+  version: 0.0.0-use.local
+  resolution: "@skybrush/electron-app-updater-integration@workspace:packages/electron-app-updater-integration"
+  dependencies:
+    electron: ^42.4.1
+  peerDependencies:
+    electron: ">=39.0"
+  languageName: unknown
+  linkType: soft
+
 "@skybrush/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
   resolution: "@skybrush/eslint-config@workspace:packages/eslint-config"

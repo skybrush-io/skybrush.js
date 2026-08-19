@@ -1,0 +1,32 @@
+{
+  "name": "@skybrush/electron-app-updater-integration",
+  "version": "0.0.0",
+  "description": "Integration of electron-updater with Skybrush desktop applications",
+  "author": "CollMot Robotics Ltd",
+  "type": "module",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skybrush-io/skybrush.js.git"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "clean": "rimraf dist/** *.tgz",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "electron": ">=39.0"
+  },
+  "devDependencies": {
+    "electron": "^42.4.1"
+  }
+}
