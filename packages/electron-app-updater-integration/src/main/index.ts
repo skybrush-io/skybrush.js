@@ -1,6 +1,9 @@
 import { app } from 'electron';
 import { ipcMain as ipc } from 'electron-better-ipc';
-import electronUpdater, {
+
+// Do NOT import anything other than types from electron-updater here. See comment
+// in the initialize() function below for details on why this is necessary.
+import {
   type AppUpdater,
   type UpdateInfo as ElectronUpdaterUpdateInfo,
   type ProgressInfo,
@@ -28,14 +31,26 @@ export type UpdaterConfiguration = {
  *
  * @param log - The logger to use for the auto-updater
  */
-export function initialize({ log }: UpdaterConfiguration = {}): UpdaterApi {
+export async function initialize({
+  log,
+}: UpdaterConfiguration = {}): Promise<UpdaterApi> {
   if (_autoUpdater) {
     throw new Error('Auto-updater is already configured');
   }
 
   // Using destructuring to access autoUpdater due to the CommonJS module of 'electron-updater'.
   // It is a workaround for ESM compatibility issues, see https://github.com/electron-userland/electron-builder/issues/7976.
-  const { autoUpdater } = electronUpdater;
+  //
+  // Also note the deferred import. This is required to prevent the following import
+  // chain during early startup:
+  //
+  // electron-updater -> builder-util-runtime -> debug
+  //
+  // This is needed because 'debug' attempts to modify process.env.DEBUG and this is
+  // disallowed when the app is packaged, unless we patch it over with Webpack by
+  // replacing 'process.env' with a custom object. Search for __runtime_process_env
+  // in downstream code.
+  const { autoUpdater } = await import('electron-updater');
 
   // Integrate with logger
   if (log) {
