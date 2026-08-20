@@ -6,6 +6,7 @@ import {
   checkForUpdates as checkForUpdatesAction,
   installUpdate,
   setCheckInProgress,
+  setInstallInProgress,
   setUpdateError,
   setUpdateInfo,
   setUpdateSupported,
@@ -117,11 +118,14 @@ function* watchActions(
     let updateError: UpdateError | null = null;
 
     if (result.install) {
+      yield put(setInstallInProgress(true));
       try {
         yield quitAndInstallUpdate();
       } catch (error) {
         console.error('Error while installing update:', error);
         updateError = 'installFailed';
+      } finally {
+        yield put(setInstallInProgress(false));
       }
 
       yield put(setUpdateError(updateError));

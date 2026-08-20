@@ -26,11 +26,13 @@ const CheckForUpdatesButton = ({ t = defaultTranslation, ...props }: Props) => {
     installUpdate,
     isCheckingForUpdates,
     isDownloadingUpdate,
+    isInstallingUpdate,
     updateAvailable,
     updateDownloaded,
     updateSupported,
   } = useAutoUpdate();
-  const loading = isCheckingForUpdates || isDownloadingUpdate;
+  const loading =
+    isCheckingForUpdates || isDownloadingUpdate || isInstallingUpdate;
   const chosenAction = updateDownloaded
     ? 'install'
     : updateAvailable

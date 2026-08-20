@@ -12,6 +12,8 @@ type AutoUpdateSliceState = {
   checking: boolean;
   /** Error during the last check or installation attempt, if any. */
   error: UpdateError | null;
+  /** Whether the application is currently installing an update. */
+  installing: boolean;
   /** Whether auto-updates are supported in the current application. */
   supported: boolean;
   /** Information about the available update, if any. */
@@ -21,6 +23,7 @@ type AutoUpdateSliceState = {
 const initialState: AutoUpdateSliceState = {
   checking: false,
   error: null,
+  installing: false,
   supported: false,
   updateInfo: {
     available: false,
@@ -48,6 +51,11 @@ const { actions, reducer, selectors } = createSlice({
       state.checking = payload;
     },
 
+    setInstallInProgress(state, action: PayloadAction<boolean>) {
+      const { payload } = action;
+      state.installing = payload;
+    },
+
     setUpdateError(state, action: PayloadAction<UpdateError | null>) {
       const { payload } = action;
       state.error = payload;
@@ -70,6 +78,7 @@ const { actions, reducer, selectors } = createSlice({
       isCheckingForUpdates: state.checking,
       isDownloadingUpdate:
         typeof state.updateInfo.downloadProgress === 'number',
+      isInstallingUpdate: state.installing,
       downloadProgress: state.updateInfo.downloadProgress,
       updateAvailable: state.updateInfo.available,
       updateDownloaded: state.updateInfo.downloaded,
@@ -82,6 +91,7 @@ export const {
   checkForUpdates,
   installUpdate,
   setCheckInProgress,
+  setInstallInProgress,
   setUpdateError,
   setUpdateInfo,
   setUpdateSupported,
