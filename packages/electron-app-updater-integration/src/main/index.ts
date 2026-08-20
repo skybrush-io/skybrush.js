@@ -50,7 +50,7 @@ export async function initialize({
   // disallowed when the app is packaged, unless we patch it over with Webpack by
   // replacing 'process.env' with a custom object. Search for __runtime_process_env
   // in downstream code.
-  const { autoUpdater } = await import('electron-updater');
+  const { autoUpdater } = (await import('electron-updater')).default;
 
   // Integrate with logger
   if (log) {
