@@ -1,13 +1,8 @@
 import { app } from 'electron';
 import { ipcMain as ipc } from 'electron-better-ipc';
-
-// Do NOT import anything other than types from electron-updater here. See comment
-// in the initialize() function below for details on why this is necessary.
-import {
-  type AppUpdater,
-  type UpdateInfo as ElectronUpdaterUpdateInfo,
-  type ProgressInfo,
-} from 'electron-updater';
+// Do NOT import anything other than types from electron-updater here. Not even types.
+// Even if this means that we need to use 'any' in this file. See the comment in the
+// initialize() function around the deferred import of electron-updater for more details.
 
 import { getFirstMainWindow } from '@skybrush/electron-app-framework';
 
@@ -19,10 +14,16 @@ import type {
   UpdaterApi,
 } from '../core/types.js';
 
-let _autoUpdater: AppUpdater | null = null;
+let _autoUpdater: any | null = null;
+
+type Logger = {
+  info: (message: string) => void;
+  warn: (message: string) => void;
+  error: (message: string) => void;
+};
 
 export type UpdaterConfiguration = {
-  log?: AppUpdater['logger'] | null | undefined;
+  log?: Logger | null | undefined;
 };
 
 /**
@@ -166,12 +167,12 @@ function quitAndInstallUpdate(options: CheckForUpdateOptions = {}) {
  * @returns - A function that can be called to unregister the callback
  */
 function registerUpdateListener(
-  autoUpdater: AppUpdater,
+  autoUpdater: any,
   callback: (info: UpdateInfo) => void
 ): () => void {
-  let lastUpdateInfo: ElectronUpdaterUpdateInfo | null = null;
+  let lastUpdateInfo: any = null;
 
-  const handleUpdateAvailable = (info: ElectronUpdaterUpdateInfo) => {
+  const handleUpdateAvailable = (info: any) => {
     lastUpdateInfo = info;
     callback({
       available: true,
@@ -181,7 +182,7 @@ function registerUpdateListener(
     });
   };
 
-  const handleUpdateDownloaded = (info: ElectronUpdaterUpdateInfo) => {
+  const handleUpdateDownloaded = (info: any) => {
     lastUpdateInfo = info;
     callback({
       available: true,
@@ -196,7 +197,7 @@ function registerUpdateListener(
     callback(NO_UPDATES);
   };
 
-  const handleDownloadProgress = (info: ProgressInfo) => {
+  const handleDownloadProgress = (info: any) => {
     if (lastUpdateInfo) {
       callback({
         available: true,
