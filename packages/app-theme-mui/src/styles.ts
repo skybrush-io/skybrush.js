@@ -9,6 +9,8 @@ type SecondaryAreaStyleOptions = {
   inset?: 'top' | 'bottom' | 'left' | 'right' | 'all' | true;
 };
 
+type DarkAwareStyleFunc = (isDark: boolean) => CSSProperties;
+
 /**
  * Creates a style for a secondary area with an inset appearance that can be
  * used for charts, sidebars and other display widgets.
@@ -18,9 +20,42 @@ export const createSecondaryAreaStyle = (
   options?: SecondaryAreaStyleOptions
 ) => secondaryAreaStyle(options)(theme);
 
-const createExtraStyleFuncForSecondaryAreaStyle = (
+const getGradientAngleForInset = (
   inset: SecondaryAreaStyleOptions['inset']
-): ((isDark: boolean) => CSSProperties) => {
+): number => {
+  switch (inset) {
+    case 'top':
+      return 160;
+    case 'left':
+      return 70;
+    case 'bottom':
+      return 340;
+    case 'right':
+      return 250;
+    default:
+      return 160;
+  }
+};
+
+const createBackgroundFuncForSecondaryAreaStyle = ({
+  flat,
+  inset,
+}: SecondaryAreaStyleOptions): DarkAwareStyleFunc => {
+  const angle = getGradientAngleForInset(inset);
+  return flat
+    ? (dark) => ({
+        background: dark ? '#1f1f1f' : '#fafafa',
+      })
+    : (dark) => ({
+        background: dark
+          ? `linear-gradient(${angle}deg, #2c2c2c 0%, #1f1f1f 100%)`
+          : '#fafafa',
+      });
+};
+
+const createExtraStyleFuncForSecondaryAreaStyle = ({
+  inset,
+}: SecondaryAreaStyleOptions): DarkAwareStyleFunc => {
   switch (inset) {
     case 'top':
       return (dark) => ({
@@ -68,22 +103,17 @@ const createExtraStyleFuncForSecondaryAreaStyle = (
  * Creates a style for a secondary area with an inset appearance that can be
  * used for charts, sidebars and other display widgets.
  */
-export const secondaryAreaStyle = ({
-  flat,
-  inset,
-}: SecondaryAreaStyleOptions = {}): ((theme: Theme) => CSSProperties) => {
-  const extraStyleFunc = createExtraStyleFuncForSecondaryAreaStyle(inset);
+export const secondaryAreaStyle = (
+  options: SecondaryAreaStyleOptions = {}
+): ((theme: Theme) => CSSProperties) => {
+  const backgroundFunc = createBackgroundFuncForSecondaryAreaStyle(options);
+  const extraStyleFunc = createExtraStyleFuncForSecondaryAreaStyle(options);
 
   return (theme: Theme) => {
     const dark = isThemeDark(theme);
-
     return {
-      background: dark
-        ? flat
-          ? '#1f1f1f'
-          : 'linear-gradient(160deg, #2c2c2c 0%, #1f1f1f 100%)'
-        : '#fafafa',
       display: 'flex',
+      ...backgroundFunc(dark),
       ...extraStyleFunc(dark),
     };
   };
