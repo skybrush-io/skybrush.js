@@ -15,7 +15,7 @@ const alignmentProps: Record<string, TabsProps> = {
 };
 
 export type DialogTabsProps = {
-  alignment: 'left' | 'center' | 'justify';
+  alignment?: 'left' | 'center' | 'justify';
   dragHandle?: string;
 } & TabsProps;
 
