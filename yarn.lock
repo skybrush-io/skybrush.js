@@ -4280,7 +4280,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skybrush/app-theme-mui@^5.2.0, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
+"@skybrush/app-theme-mui@^5.2.1, @skybrush/app-theme-mui@workspace:packages/app-theme-mui":
   version: 0.0.0-use.local
   resolution: "@skybrush/app-theme-mui@workspace:packages/app-theme-mui"
   dependencies:
@@ -4320,7 +4320,7 @@ __metadata:
   dependencies:
     "@reduxjs/toolkit": ^2.12.0
     "@skybrush/electron-app-framework": ^5.2.1
-    "@skybrush/mui-components": ^6.7.0
+    "@skybrush/mui-components": ^6.7.1
     "@types/semver": ^7.8.0
     electron: ^42.4.1
     electron-better-ipc: ^2.0.1
@@ -4375,7 +4375,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skybrush/mui-components@^6.7.0, @skybrush/mui-components@workspace:packages/mui-components":
+"@skybrush/mui-components@^6.7.1, @skybrush/mui-components@workspace:packages/mui-components":
   version: 0.0.0-use.local
   resolution: "@skybrush/mui-components@workspace:packages/mui-components"
   dependencies:
@@ -4384,7 +4384,7 @@ __metadata:
     "@mui/icons-material": ^9.1.1
     "@mui/material": ^9.1.1
     "@react-hookz/web": ^25.2.0
-    "@skybrush/app-theme-mui": ^5.2.0
+    "@skybrush/app-theme-mui": ^5.2.1
     "@tippyjs/react": ^4.2.6
     "@types/react": ^19.2.17
     clsx: ^2.1.1
