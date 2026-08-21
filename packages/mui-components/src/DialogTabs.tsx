@@ -17,6 +17,7 @@ const alignmentProps: Record<string, TabsProps> = {
 export type DialogTabsProps = {
   alignment?: 'left' | 'center' | 'justify';
   dragHandle?: string;
+  extraComponents?: React.ReactNode;
 } & TabsProps;
 
 /**
@@ -27,6 +28,7 @@ const DialogTabs = ({
   alignment = 'justify',
   children,
   dragHandle,
+  extraComponents,
   ...rest
 }: DialogTabsProps) => (
   <DialogAppBar style={dragHandle ? { flexDirection: 'row' } : undefined}>
@@ -34,6 +36,7 @@ const DialogTabs = ({
       {children}
     </Tabs>
     {dragHandle && <Box id={dragHandle} sx={{ cursor: 'move', flex: 1 }} />}
+    {extraComponents}
   </DialogAppBar>
 );
 
