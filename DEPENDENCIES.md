@@ -12,6 +12,12 @@ that we use to resolve JSON files from the `.skyc` ZIP bundle. Also, version 15
 switches to ESM, which in turn breaks the Jest test setup that we currently have.
 So it is best to stick with version 9.1.2 unless we start having problems.
 
+## `@babel/*`
+
+We don't really need Babel for transpiling but Jest needs them for tests. So
+we need to keep `@babel/*` in the dev dependencies for as long as we are using
+Jest and Jest is not ready to just use the TypeScript compiler directly.
+
 ## `chart.js`
 
 We only use types from Chart.js so there is no urgent need to upgrade this
