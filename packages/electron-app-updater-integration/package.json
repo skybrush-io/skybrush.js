@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/electron-app-updater-integration",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Integration of electron-updater with Skybrush desktop applications",
   "author": "CollMot Robotics Ltd",
   "type": "module",
@@ -51,7 +51,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
     "@skybrush/electron-app-framework": "^5.2.1",
-    "@skybrush/mui-components": "^6.8.0",
+    "@skybrush/mui-components": "^6.9.0",
     "electron-better-ipc": "^2.0.1",
     "electron-updater": "^6.8.9",
     "react-redux": "^9.3.0",
