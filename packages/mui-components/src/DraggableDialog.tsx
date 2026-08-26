@@ -39,13 +39,21 @@ const styles = {
   },
 } as const;
 
-const DraggableDialogSidebar = styled('div')(({ theme }) =>
-  createSecondaryAreaStyle(theme, { inset: 'right' })
+type DraggableDialogSidebarProps = {
+  flat?: boolean;
+  inset?: 'left' | 'right';
+};
+
+const DraggableDialogSidebar = styled('div', {
+  name: 'DraggableDialogSidebar',
+})<DraggableDialogSidebarProps>(({ flat, inset = 'right', theme }) =>
+  createSecondaryAreaStyle(theme, { flat, inset })
 );
 
 export type DraggableDialogProps = {
   DraggableProps?: Partial<DraggableProps_>;
   sidebarComponents?: React.ReactNode;
+  sidebarPlacement?: 'left' | 'right';
   titleComponents?: React.ReactNode;
   toolbarComponent?: ((id: string) => React.ReactNode) | React.ReactNode;
 } & DialogProps;
@@ -54,6 +62,7 @@ const DraggableDialog = ({
   children,
   DraggableProps,
   sidebarComponents,
+  sidebarPlacement = 'left',
   title,
   titleComponents,
   toolbarComponent,
@@ -104,11 +113,15 @@ const DraggableDialog = ({
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: sidebarPlacement === 'left' ? 'row' : 'row-reverse',
             alignItems: 'stretch',
           }}
         >
-          <DraggableDialogSidebar>{sidebarComponents}</DraggableDialogSidebar>
+          <DraggableDialogSidebar
+            inset={sidebarPlacement === 'left' ? 'right' : 'left'}
+          >
+            {sidebarComponents}
+          </DraggableDialogSidebar>
           <Box sx={{ flex: 1, overflow: 'auto' }}>{dialogBody}</Box>
         </Box>
       ) : (
