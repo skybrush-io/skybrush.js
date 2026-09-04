@@ -1,4 +1,13 @@
-import { validateShowSpecification } from '../dist/index.js';
+import {
+  isValidCamera,
+  isValidLightProgram,
+  isValidPyroProgram,
+  isValidShowSpecification,
+  isValidTrajectory,
+  isValidYawControl,
+  validateLightProgram,
+  validateShowSpecification,
+} from '../dist/index.js';
 import type { ShowSpecification } from '../dist/types.js';
 
 import * as example from './fixtures/test-show.json';
@@ -250,4 +259,65 @@ test('camera without properties is still valid', () => {
 
 test('valid show file', () => {
   validate(example);
+});
+
+test('valid light program', () => {
+  const { lights } = (example.swarm.drones[0] as any).settings;
+  validateLightProgram(lights);
+});
+
+test('invalid light program', () => {
+  expect(() => {
+    validateLightProgram(null);
+  }).toThrow(/must be an object/i);
+
+  expect(() => {
+    validateLightProgram({ version: 2, data: 'B6MQAA==' });
+  }).toThrow(/version 1/i);
+
+  expect(() => {
+    validateLightProgram({ version: 1, data: 42 });
+  }).toThrow(/schema mismatch/i);
+});
+
+test('isValidShowSpecification', () => {
+  expect(isValidShowSpecification(example)).toBe(true);
+  expect(isValidShowSpecification({})).toBe(false);
+  expect(isValidShowSpecification(null)).toBe(false);
+});
+
+test('isValidCamera', () => {
+  const { cameras } = example.environment as any;
+  expect(isValidCamera(cameras[0])).toBe(true);
+  expect(isValidCamera({ position: [1, 2] })).toBe(false);
+  expect(isValidCamera(null)).toBe(false);
+});
+
+test('isValidLightProgram', () => {
+  const { lights } = (example.swarm.drones[0] as any).settings;
+  expect(isValidLightProgram(lights)).toBe(true);
+  expect(isValidLightProgram({ version: 1 })).toBe(false);
+  expect(isValidLightProgram(undefined)).toBe(false);
+});
+
+test('isValidPyroProgram', () => {
+  expect(isValidPyroProgram({ version: 1, events: [], payloads: {} })).toBe(
+    true
+  );
+  expect(isValidPyroProgram({ version: 1, events: 'yes' })).toBe(false);
+  expect(isValidPyroProgram(null)).toBe(false);
+});
+
+test('isValidTrajectory', () => {
+  const { trajectory } = (example.swarm.drones[0] as any).settings;
+  expect(isValidTrajectory(trajectory)).toBe(true);
+  expect(isValidTrajectory({ version: 1, points: [] })).toBe(false);
+  expect(isValidTrajectory(undefined)).toBe(false);
+});
+
+test('isValidYawControl', () => {
+  const { yawControl } = (example.swarm.drones[0] as any).settings;
+  expect(isValidYawControl(yawControl)).toBe(true);
+  expect(isValidYawControl({ version: 1, setpoints: 5 })).toBe(false);
+  expect(isValidYawControl(null)).toBe(false);
 });

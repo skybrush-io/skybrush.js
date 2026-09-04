@@ -1,5 +1,7 @@
 import {
   getCamerasFromShowSpecification,
+  getDefaultCamera,
+  isProbablyPerspectiveCamera,
   validateShowSpecification,
 } from '../dist/index.js';
 import { CameraType, type ShowSpecification } from '../dist/types.js';
@@ -38,4 +40,26 @@ test('retrieve cameras from show specification', () => {
     (spec.environment as any).cameras = 'foo';
     getCamerasFromShowSpecification(spec);
   }).toThrow(/must be an array/);
+});
+
+test('default camera selection', () => {
+  const spec: ShowSpecification = JSON.parse(
+    JSON.stringify(originalSpec)
+  ) as ShowSpecification;
+  validateShowSpecification(spec);
+  const cameras = getCamerasFromShowSpecification(spec);
+
+  // The second camera is marked as the default one in the fixture
+  expect(getDefaultCamera(cameras)).toBe(cameras[1]);
+
+  delete (cameras[1] as any).default;
+  expect(getDefaultCamera(cameras)).toBeUndefined();
+  expect(getDefaultCamera([])).toBeUndefined();
+});
+
+test('perspective camera detection', () => {
+  expect(isProbablyPerspectiveCamera({})).toBe(true);
+  expect(isProbablyPerspectiveCamera({ type: 'perspective' })).toBe(true);
+  expect(isProbablyPerspectiveCamera({ type: 'orthographic' })).toBe(false);
+  expect(isProbablyPerspectiveCamera(undefined)).toBe(false);
 });

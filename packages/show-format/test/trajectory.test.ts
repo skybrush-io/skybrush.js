@@ -1,10 +1,11 @@
 import {
   createTrajectoryPlayer,
+  getTrajectoryDuration,
   splitTimedBezierCurve,
   splitTimedBezierCurveAt,
-  timedBezierCurveToTrajectorySegment,
+  convertTimedBezierCurveToTrajectorySegment,
   trajectorySegmentsInTimeWindow,
-  trajectorySegmentsToTimedBezierCurve,
+  convertTrajectorySegmentsToTimedBezierCurve,
 } from '../dist/index.js';
 import type { StrideOptions, Trajectory, Vector3Tuple } from '../dist/types.js';
 import { shuffle } from '../dist/utils.js';
@@ -610,7 +611,7 @@ test('full trajectory segment creation', () => {
   for (let i = 1; i < nPoints; i++) {
     const previous = points[i - 1];
     const current = points[i];
-    const timedSegment = trajectorySegmentsToTimedBezierCurve(
+    const timedSegment = convertTrajectorySegmentsToTimedBezierCurve(
       previous,
       current
     );
@@ -647,12 +648,12 @@ test('splitting a trajectory', () => {
         trajectoryPoints[iPoint],
       ];
       const [left, right] = splitTimedBezierCurve(
-        trajectorySegmentsToTimedBezierCurve(previous, current),
+        convertTrajectorySegmentsToTimedBezierCurve(previous, current),
         fraction
       );
       points.push(
-        timedBezierCurveToTrajectorySegment(left),
-        timedBezierCurveToTrajectorySegment(right)
+        convertTimedBezierCurveToTrajectorySegment(left),
+        convertTimedBezierCurveToTrajectorySegment(right)
       );
     }
 
@@ -670,7 +671,7 @@ test('splitting a trajectory at a given time', () => {
   // Evaluate at every known point.
   const ts = Object.keys(expectedPositions).map((v) => Number.parseInt(v, 10));
   const [left, right] = splitTimedBezierCurveAt(
-    trajectorySegmentsToTimedBezierCurve(
+    convertTrajectorySegmentsToTimedBezierCurve(
       trajectoryPoints[0],
       trajectoryPoints[1]
     ),
@@ -680,8 +681,8 @@ test('splitting a trajectory at a given time', () => {
     ...trajectory,
     points: [
       trajectoryPoints[0],
-      timedBezierCurveToTrajectorySegment(left),
-      timedBezierCurveToTrajectorySegment(right),
+      convertTimedBezierCurveToTrajectorySegment(left),
+      convertTimedBezierCurveToTrajectorySegment(right),
       ...trajectoryPoints.slice(2),
     ],
   });
@@ -753,4 +754,21 @@ test('sub-trajectory in time window calculation', () => {
       }
     }
   }
+});
+
+test('trajectory duration', () => {
+  // The last keypoint of the fixture is at T=60 and the takeoff time is 6,
+  // so the duration is 66 seconds
+  expect(getTrajectoryDuration(trajectory)).toBe(66);
+
+  expect(
+    getTrajectoryDuration({ ...trajectory, takeoffTime: undefined })
+  ).toBe(60);
+
+  expect(
+    getTrajectoryDuration({
+      version: 1,
+      points: [[0, [0, 0, 0], []]],
+    } as Trajectory)
+  ).toBe(0);
 });

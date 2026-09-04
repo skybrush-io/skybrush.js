@@ -3,6 +3,7 @@ import {
   ENVIRONMENT_TYPES,
   EnvironmentType,
   type Camera,
+  type LightProgram,
   type ShowSpecification,
   type PyroProgram,
   type Trajectory,
@@ -165,6 +166,31 @@ export function validateCamera(camera: unknown): asserts camera is Camera {
 }
 
 /**
+ * Runs some basic checks on a JSON-based light program specification to see
+ * whether it looks like a valid light program specification.
+ *
+ * Raises appropriate errors if the light program specification does not look
+ * like a valid one.
+ *
+ * @param lightProgram  the specification to validate
+ */
+export function validateLightProgram(
+  lightProgram: unknown
+): asserts lightProgram is LightProgram {
+  if (!isObject(lightProgram)) {
+    throw new TypeError('Light program must be an object');
+  }
+
+  if (lightProgram.version !== 1) {
+    throw new Error('Only version 1 light programs are supported');
+  }
+
+  if (typeof lightProgram.data !== 'string') {
+    throw new TypeError('Light program schema mismatch');
+  }
+}
+
+/**
  * Runs checks on an unknown input to see whether it looks like a valid pyro
  * program specification.
  *
@@ -297,5 +323,88 @@ export function validateYawControl(
     typeof yawControl.autoYawOffset !== 'number'
   ) {
     throw new TypeError('Yaw control schema mismatch');
+  }
+}
+
+/**
+ * Returns whether the given object "looks like" a valid show specification.
+ */
+export function isValidShowSpecification(
+  spec: unknown
+): spec is ShowSpecification {
+  try {
+    validateShowSpecification(spec);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns whether the given object "looks like" a valid camera specification.
+ */
+export function isValidCamera(camera: unknown): camera is Camera {
+  try {
+    validateCamera(camera);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns whether the given object "looks like" a valid light program.
+ */
+export function isValidLightProgram(
+  lightProgram: unknown
+): lightProgram is LightProgram {
+  try {
+    validateLightProgram(lightProgram);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns whether the given object "looks like" a valid pyro program.
+ */
+export function isValidPyroProgram(
+  pyroProgram: unknown
+): pyroProgram is PyroProgram {
+  try {
+    validatePyroProgram(pyroProgram);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns whether the given object "looks like" a valid trajectory.
+ */
+export function isValidTrajectory(
+  trajectory: unknown
+): trajectory is Trajectory {
+  try {
+    validateTrajectory(trajectory);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns whether the given object "looks like" a valid yaw control
+ * specification.
+ */
+export function isValidYawControl(
+  yawControl: unknown
+): yawControl is YawControl {
+  try {
+    validateYawControl(yawControl);
+    return true;
+  } catch {
+    return false;
   }
 }

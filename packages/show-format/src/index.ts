@@ -1,12 +1,27 @@
 export { default as Asset } from './asset.js';
-export { getCamerasFromShowSpecification } from './camera.js';
+export {
+  getCamerasFromShowSpecification,
+  getDefaultCamera,
+  isProbablyPerspectiveCamera,
+} from './camera.js';
 export {
   default as loadCompiledShow,
   loadShowSpecificationAndZip,
 } from './compiled.js';
 export { default as createLightProgramPlayer } from './lights.js';
 export {
+  getEnvironmentTypeFromSpecification,
+  getLightProgramsFromSpecification,
+  getPyroProgramsFromSpecification,
+  getShowDurationFromSpecification,
+  getTrajectoriesFromSpecification,
+  getYawControlsFromSpecification,
+} from './show.js';
+export {
   default as createTrajectoryPlayer,
+  convertTimedBezierCurveToTrajectorySegment,
+  convertTrajectorySegmentsToTimedBezierCurve,
+  getTrajectoryDuration,
   splitBezierCurve,
   splitTimedBezierCurve,
   splitTimedBezierCurveAt,
@@ -15,6 +30,14 @@ export {
   trajectorySegmentsToTimedBezierCurve,
 } from './trajectory.js';
 export {
+  isValidCamera,
+  isValidLightProgram,
+  isValidPyroProgram,
+  isValidShowSpecification,
+  isValidTrajectory,
+  isValidYawControl,
+  validateCamera,
+  validateLightProgram,
   validatePyroProgram,
   validateShowSpecification,
   validateTrajectory,

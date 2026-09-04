@@ -24,6 +24,8 @@ type PosVelEvaluator = [
 
 const _DEFAULT_SETPOINT: Vector3Tuple = [0, 0, 0];
 
+// #region Trajectory player implementation
+
 /**
  * Class that takes a trajectory object as its first argument and that can
  * tell the position and velocity of the drone traversing the trajectory at any
@@ -147,6 +149,8 @@ class TrajectoryPlayerImpl extends SegmentedPlayerImpl<
     return _DEFAULT_SETPOINT;
   }
 }
+
+// #endregion
 
 /**
  * Creates a position and a velocity function for a constant segment.
@@ -334,7 +338,7 @@ export function splitBezierCurve(
  *
  * @returns The created `TimedBezierCurve`.
  */
-export function trajectorySegmentsToTimedBezierCurve(
+export function convertTrajectorySegmentsToTimedBezierCurve(
   previous: TrajectorySegment,
   current: TrajectorySegment
 ): TimedBezierCurve {
@@ -362,7 +366,7 @@ export function trajectorySegmentsToTimedBezierCurve(
  *
  * @throws `Error` if the curve has less than 2 control points.
  */
-export function timedBezierCurveToTrajectorySegment(
+export function convertTimedBezierCurveToTrajectorySegment(
   curve: TimedBezierCurve
 ): TrajectorySegment {
   const { duration, startTime, points } = curve;
@@ -374,6 +378,27 @@ export function timedBezierCurveToTrajectorySegment(
   // splice() first index is 1, because the first point is defined by the
   // previous segment (endpoint).
   return [startTime + duration, points.at(-1)!, points.slice(1, -1)];
+}
+
+/**
+ * Returns the duration of a single trajectory, in seconds. Returns zero for
+ * trajectories that have no points.
+ *
+ * @param trajectory  the trajectory to evaluate
+ */
+export function getTrajectoryDuration(trajectory: Trajectory): number {
+  const { points, takeoffTime } = trajectory;
+  const lastPoint = points?.at(-1);
+
+  if (
+    Array.isArray(lastPoint) &&
+    lastPoint.length > 1 &&
+    typeof lastPoint[0] === 'number'
+  ) {
+    return lastPoint[0] + (takeoffTime ?? 0);
+  }
+
+  return 0;
 }
 
 /**
@@ -458,7 +483,7 @@ export function splitTimedBezierCurveAt(
  *
  * @returns The trajectory segments for the subtrajectory.
  */
-export function trajectorySegmentsInTimeWindow(
+export function getTrajectorySegmentsInTimeWindow(
   segments: TrajectorySegment[],
   timeWindow: TimeWindow
 ): TrajectorySegment[] {
@@ -473,7 +498,7 @@ export function trajectorySegmentsInTimeWindow(
     ([prev]) => prev[0] > endTime
   )) {
     // Convert to a data representation that's easier to work with.
-    let curve = trajectorySegmentsToTimedBezierCurve(previous, current);
+    let curve = convertTrajectorySegmentsToTimedBezierCurve(previous, current);
 
     // Split at start time if needed.
     if (curve.startTime < startTime) {
@@ -493,13 +518,94 @@ export function trajectorySegmentsInTimeWindow(
 
     result.push(
       // Convert back to the original data representation.
-      timedBezierCurveToTrajectorySegment(curve)
+      convertTimedBezierCurveToTrajectorySegment(curve)
     );
   }
 
   return result;
 }
 
+// #region Deprecations
+
+const _deprecationWarningsPrinted = {
+  convertTimedBezierCurveToTrajectorySegment: false,
+  convertTrajectorySegmentsToTimedBezierCurve: false,
+  trajectorySegmentsInTimeWindow: false,
+};
+
+/**
+ * Backward compatibility wrapper for `getTrajectorySegmentsInTimeWindow()`.
+ *
+ * @param segments The segments that define a valid trajectory.
+ * @param timeWindow The time window the subtrajectory should be calculated for.
+ *
+ * @returns The trajectory segments for the subtrajectory.
+ */
+export function trajectorySegmentsInTimeWindow(
+  segments: TrajectorySegment[],
+  timeWindow: TimeWindow
+): TrajectorySegment[] {
+  if (!_deprecationWarningsPrinted.trajectorySegmentsInTimeWindow) {
+    _deprecationWarningsPrinted.trajectorySegmentsInTimeWindow = true;
+    console.warn(
+      'trajectorySegmentsInTimeWindow() is deprecated. Use getTrajectorySegmentsInTimeWindow() instead.'
+    );
+  }
+
+  return getTrajectorySegmentsInTimeWindow(segments, timeWindow);
+}
+
+/**
+ * Backward compatibility wrapper for `convertTrajectorySegmentsToTimedBezierCurve()`.
+ *
+ * @param previous The previous segment in the trajectory.
+ * @param current The current segment in the trajectory.
+ *
+ * @returns The created `TimedBezierCurve`.
+ */
+export function trajectorySegmentsToTimedBezierCurve(
+  previous: TrajectorySegment,
+  current: TrajectorySegment
+): TimedBezierCurve {
+  if (
+    !_deprecationWarningsPrinted.convertTrajectorySegmentsToTimedBezierCurve
+  ) {
+    _deprecationWarningsPrinted.convertTrajectorySegmentsToTimedBezierCurve = true;
+    console.warn(
+      'trajectorySegmentsToTimedBezierCurve() is deprecated. Use convertTrajectorySegmentsToTimedBezierCurve() instead.'
+    );
+  }
+
+  return convertTrajectorySegmentsToTimedBezierCurve(previous, current);
+}
+
+/**
+ * Backward compatibility wrapper for `convertTimedBezierCurveToTrajectorySegment()`.
+ *
+ * @param curve The curve to convert.
+ *
+ * @returns The trajectory segment corresponding to the curve.
+ */
+export function timedBezierCurveToTrajectorySegment(
+  curve: TimedBezierCurve
+): TrajectorySegment {
+  if (!_deprecationWarningsPrinted.convertTimedBezierCurveToTrajectorySegment) {
+    _deprecationWarningsPrinted.convertTimedBezierCurveToTrajectorySegment = true;
+    console.warn(
+      'timedBezierCurveToTrajectorySegment() is deprecated. Use convertTimedBezierCurveToTrajectorySegment() instead.'
+    );
+  }
+
+  return convertTimedBezierCurveToTrajectorySegment(curve);
+}
+
+// #endregion
+
+// #region Trajectory player, public API
+
+/**
+ * Interface specification of a trajectory player.
+ */
 export type TrajectoryPlayer = {
   getPositionAt: (time: number, result: Vector3) => Vector3;
   getPositionsAt: (
@@ -546,5 +652,7 @@ function createTrajectoryPlayer(trajectory: Trajectory): TrajectoryPlayer {
     getVelocitiesFromRightAt,
   };
 }
+
+// #endregion
 
 export default createTrajectoryPlayer;
