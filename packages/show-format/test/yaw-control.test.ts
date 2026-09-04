@@ -129,6 +129,74 @@ test('yaw evaluation, shuffled', () => {
 });
 
 /* ************************************************************************ */
+/* Tests related to evaluating the desired yaw at multiple given points    */
+/* ************************************************************************ */
+
+test('yaw evaluation at multiple points, no segments', () => {
+  const { getYawsAt } = createYawControlPlayer({ version: 1, setpoints: [] });
+  const result = new Float32Array(3 * 2);
+
+  getYawsAt(
+    [Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY],
+    result
+  );
+
+  for (const value of result) {
+    expect(value).toBe(0);
+  }
+});
+
+test('yaw evaluation at multiple points, matches getYawAt()', () => {
+  const { getYawAt, getYawsAt } = createYawControlPlayer(yaw);
+
+  const ts = Object.keys(expectedPositions).map((x) => Number.parseInt(x, 10));
+  shuffle(ts);
+
+  const result = new Float32Array(3 * ts.length);
+  getYawsAt(ts, result);
+
+  const vec: EulerAngles = { x: 0, y: 0, z: 0 };
+  ts.forEach((t, i) => {
+    getYawAt(t, vec);
+
+    // Only the Z component is used by yaw control; X and Y must be left
+    // untouched by the evaluator
+    // Values are stored in a Float32Array, so we need a slightly larger
+    // tolerance than for the double-precision evaluation functions
+    expect(result[3 * i]).toBe(0);
+    expect(result[3 * i + 1]).toBe(0);
+    almostEquals(result[3 * i + 2], expectedPositions[t], 1e-3);
+    almostEquals(result[3 * i + 2], (vec.z * 180) / Math.PI, 1e-3);
+  });
+});
+
+test('yaw evaluation at multiple points, stride options', () => {
+  const { getYawsAt } = createYawControlPlayer(yaw);
+
+  const ts = [0, 12, 20, 40, 70];
+  const stride = 4;
+  const start = 2;
+  const result = new Float32Array(start + stride * (ts.length - 1) + 3);
+
+  getYawsAt(ts, result, { start, step: stride });
+
+  ts.forEach((t, i) => {
+    const offset = start + stride * i;
+
+    expect(result[offset]).toBe(0);
+    expect(result[offset + 1]).toBe(0);
+    almostEquals(result[offset + 2], expectedPositions[t], 1e-3);
+  });
+
+  // Values outside the strided slots must be left untouched
+  expect(result[0]).toBe(0);
+  expect(result[1]).toBe(0);
+  for (const index of [3, 6, 7, 10, 11, 14, 15]) {
+    expect(result[index]).toBe(0);
+  }
+});
+
+/* ************************************************************************ */
 /* Tests related to evaluating the yaw angular velocity at a given point    */
 /* ************************************************************************ */
 

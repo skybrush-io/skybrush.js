@@ -1,5 +1,9 @@
 import { type Segment, SegmentedPlayerImpl } from './SegmentedPlayer.js';
-import type { Vector3 as Euler, YawControl } from './types.js';
+import type {
+  StrideOptions,
+  Vector3 as Euler,
+  YawControl,
+} from './types.js';
 import { toRadians } from './utils.js';
 import { validateYawControl } from './validation.js';
 
@@ -28,6 +32,9 @@ type YawEvaluator = [
  * given time instant.
  */
 class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
+  /** Helper vector used by some functions to avoid an allocation */
+  _vec: Euler;
+
   /**
    * Constructor.
    *
@@ -44,6 +51,7 @@ class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
         degreeSegmentToRadianSegment(segment)
       )
     );
+    this._vec = { x: 0, y: 0, z: 0 };
   }
 
   /**
@@ -58,6 +66,31 @@ class YawControlPlayerImpl extends SegmentedPlayerImpl<number, YawEvaluator> {
     const ratio = this._seekTo(time);
     this._currentSegmentFunc[0](result, ratio);
     return result;
+  }
+
+  /**
+   * Returns the rotation of the drone at multiple time instants.
+   *
+   * Angles are returned in radians.
+   *
+   * @param times   the time instants, measured in seconds
+   * @param result  the array in which the rotations should be written
+   * @param options options to configure the writing of the results into the result array
+   */
+  getYawsAt(times: Iterable<number>, result: Float32Array, options: StrideOptions = {}) {
+    const { start = 0, step = 3 } = options;
+
+    let offset = start;
+    for (const time of times) {
+      const ratio = this._seekTo(time);
+      this._currentSegmentFunc[0](this._vec, ratio);
+
+      result[offset] = this._vec.x;
+      result[offset + 1] = this._vec.y;
+      result[offset + 2] = this._vec.z;
+
+      offset += step;
+    }
   }
 
   /**
@@ -131,6 +164,11 @@ function createSegmentFunctions(
 
 export type YawControlPlayer = {
   getYawAt: (time: number, result: Euler) => Euler;
+  getYawsAt: (
+    times: Iterable<number>,
+    result: Float32Array,
+    options?: StrideOptions
+  ) => void;
   getAngularVelocityAt: (time: number, result: Euler) => Euler;
   getAngularVelocityFromRightAt: (time: number, result: Euler) => Euler;
 };
@@ -145,12 +183,14 @@ function createYawControlPlayer(yawControl: YawControl): YawControlPlayer {
   const player = new YawControlPlayerImpl(yawControl);
 
   const getYawAt = player.getYawAt.bind(player);
+  const getYawsAt = player.getYawsAt.bind(player);
   const getAngularVelocityFromRightAt =
     player.getAngularVelocityFromRightAt.bind(player);
   const getAngularVelocityAt = getAngularVelocityFromRightAt;
 
   return {
     getYawAt,
+    getYawsAt,
     getAngularVelocityAt,
     getAngularVelocityFromRightAt,
   };
