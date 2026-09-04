@@ -11,7 +11,7 @@ export type SampleVector<TValue> = ArrayLike<TValue>;
  */
 export type SampleCalculator<TInput, TValue> = (
   player: TInput,
-  timestamps: readonly number[]
+  timestamps: number[]
 ) => SampleVector<TValue>;
 
 /**
@@ -29,7 +29,7 @@ export type SampleCalculator<TInput, TValue> = (
  */
 export function calculateAndAggregateSamples<TInput, TValue, TResult>(
   inputs: Iterable<TInput>,
-  timestamps: readonly number[],
+  timestamps: number[],
   calculate: SampleCalculator<TInput, TValue>,
   aggregate: SampleAggregator<TValue, TResult>
 ): TResult {

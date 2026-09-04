@@ -13,7 +13,7 @@ export type AltitudeEnvelope = MinimumAndMaximumSampleVectors;
 
 const sampleAltitudesAt = (
   player: TrajectoryPlayer,
-  timestamps: readonly number[]
+  timestamps: number[]
 ): SampleVector<number> => {
   const positions = new Float32Array(timestamps.length * 3);
   player.getPositionsAt(timestamps, positions);
@@ -39,7 +39,7 @@ const sampleAltitudesAt = (
  */
 export function getMinimumAndMaximumAltitudesAt(
   players: Iterable<TrajectoryPlayer>,
-  timestamps: readonly number[]
+  timestamps: number[]
 ): AltitudeEnvelope {
   return calculateAndAggregateSamples(
     players,

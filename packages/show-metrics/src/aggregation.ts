@@ -5,8 +5,8 @@ import type { SampleVector } from './sampling.js';
  * consistent result object.
  */
 export type SampleAggregator<TValue, TResult> = (
-  samples: readonly SampleVector<TValue>[],
-  timestamps: readonly number[]
+  samples: SampleVector<TValue>[],
+  timestamps: number[]
 ) => TResult;
 
 /**
@@ -25,14 +25,14 @@ export type MinimumAndMaximumSampleVectors = [
  * this as a SampleAggregator should use `calculateAndAggregateSwarmSamples()`,
  * which verifies that the sample vectors match the timestamp count.
  *
- * @param samplesByDrone Numeric sample vectors.
+ * @param samplesByItems Numeric sample vectors.
  * @param timestamps Time instants corresponding to the sample vector positions.
  */
 export function getMinimumAndMaximumSampleVectors(
-  samplesByDrone: readonly SampleVector<number>[],
-  timestamps: readonly number[]
+  samplesByItems: SampleVector<number>[],
+  timestamps: number[]
 ): MinimumAndMaximumSampleVectors {
-  if (samplesByDrone.length === 0) {
+  if (samplesByItems.length === 0) {
     return [[], []];
   }
 
@@ -43,7 +43,7 @@ export function getMinimumAndMaximumSampleVectors(
     let minimumValue = Number.POSITIVE_INFINITY;
     let maximumValue = Number.NEGATIVE_INFINITY;
 
-    for (const samples of samplesByDrone) {
+    for (const samples of samplesByItems) {
       const value = samples[index]!;
       minimumValue = Math.min(minimumValue, value);
       maximumValue = Math.max(maximumValue, value);

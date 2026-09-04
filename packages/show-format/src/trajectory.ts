@@ -381,6 +381,20 @@ export function convertTimedBezierCurveToTrajectorySegment(
 }
 
 /**
+ * Returns the first point of a trajectory.
+ */
+export const getFirstPointOfTrajectory = (
+  trajectory: Trajectory
+): Vector3Tuple | undefined => trajectory.points.at(0)?.[1];
+
+/**
+ * Returns the last point of a trajectory.
+ */
+export const getLastPointOfTrajectory = (
+  trajectory: Trajectory
+): Vector3Tuple | undefined => trajectory.points.at(-1)?.[1];
+
+/**
  * Returns the duration of a single trajectory, in seconds. Returns zero for
  * trajectories that have no points.
  *
