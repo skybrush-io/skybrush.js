@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/show-metrics",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Metrics calculated from Skybrush drone show trajectories",
   "type": "module",
   "author": "CollMot Robotics Ltd",
