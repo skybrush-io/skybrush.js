@@ -4356,7 +4356,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skybrush/math@^1.0.1, @skybrush/math@workspace:packages/math":
+"@skybrush/math@^1.1.0, @skybrush/math@workspace:packages/math":
   version: 0.0.0-use.local
   resolution: "@skybrush/math@workspace:packages/math"
   dependencies:
@@ -4433,7 +4433,7 @@ __metadata:
   dependencies:
     "@apidevtools/json-schema-ref-parser": 9.1.2
     "@skybrush/file-formats-doc": ^1.4.1
-    "@skybrush/math": ^1.0.1
+    "@skybrush/math": ^1.1.0
     bezier-js: ^6.1.4
     core-js: ^3.49.0
     denque: ^2.1.0
