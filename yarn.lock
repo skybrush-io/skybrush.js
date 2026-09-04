@@ -4427,7 +4427,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skybrush/show-format@^5.6.1, @skybrush/show-format@workspace:packages/show-format":
+"@skybrush/show-format@^5.7.0, @skybrush/show-format@workspace:packages/show-format":
   version: 0.0.0-use.local
   resolution: "@skybrush/show-format@workspace:packages/show-format"
   dependencies:
@@ -4446,7 +4446,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skybrush/show-metrics@workspace:packages/show-metrics"
   dependencies:
-    "@skybrush/show-format": ^5.6.1
+    "@skybrush/show-format": ^5.7.0
   languageName: unknown
   linkType: soft
 
