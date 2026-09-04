@@ -68,10 +68,10 @@ const expectedPositions: Record<number, number> = {
 };
 
 const createYawEvaluator = (yawProgram: YawControl) => {
-  const { getYawAt } = createYawControlPlayer(yawProgram);
+  const { getPoseAt } = createYawControlPlayer(yawProgram);
   const vec: EulerAngles = { x: 0, y: 0, z: 0 };
   return (time: number) => {
-    getYawAt(time, vec);
+    getPoseAt(time, vec);
     return vec.z;
   };
 };
@@ -128,15 +128,41 @@ test('yaw evaluation, shuffled', () => {
   }
 });
 
+test('deprecated getYawAt() warns once and delegates to getPoseAt()', () => {
+  const { getPoseAt, getYawAt } = createYawControlPlayer(yaw);
+  const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const vecA: EulerAngles = { x: 0, y: 0, z: 0 };
+  const vecB: EulerAngles = { x: 0, y: 0, z: 0 };
+
+  getYawAt(12, vecA);
+  expect(warn).toHaveBeenCalledTimes(1);
+  expect(warn).toHaveBeenCalledWith(
+    'getYawAt() is deprecated. Use getPoseAt() instead.'
+  );
+
+  getYawAt(20, vecB);
+  expect(warn).toHaveBeenCalledTimes(1);
+
+  // Results must still match the non-deprecated function
+  for (const t of [12, 20]) {
+    const expected: EulerAngles = { x: 0, y: 0, z: 0 };
+    getPoseAt(t, expected);
+    expect(t === 12 ? vecA : vecB).toEqual(expected);
+  }
+
+  warn.mockRestore();
+});
+
 /* ************************************************************************ */
 /* Tests related to evaluating the desired yaw at multiple given points    */
 /* ************************************************************************ */
 
 test('yaw evaluation at multiple points, no segments', () => {
-  const { getYawsAt } = createYawControlPlayer({ version: 1, setpoints: [] });
+  const { getPosesAt } = createYawControlPlayer({ version: 1, setpoints: [] });
   const result = new Float32Array(3 * 2);
 
-  getYawsAt(
+  getPosesAt(
     [Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY],
     result
   );
@@ -146,18 +172,18 @@ test('yaw evaluation at multiple points, no segments', () => {
   }
 });
 
-test('yaw evaluation at multiple points, matches getYawAt()', () => {
-  const { getYawAt, getYawsAt } = createYawControlPlayer(yaw);
+test('yaw evaluation at multiple points, matches getPoseAt()', () => {
+  const { getPoseAt, getPosesAt } = createYawControlPlayer(yaw);
 
   const ts = Object.keys(expectedPositions).map((x) => Number.parseInt(x, 10));
   shuffle(ts);
 
   const result = new Float32Array(3 * ts.length);
-  getYawsAt(ts, result);
+  getPosesAt(ts, result);
 
   const vec: EulerAngles = { x: 0, y: 0, z: 0 };
   ts.forEach((t, i) => {
-    getYawAt(t, vec);
+    getPoseAt(t, vec);
 
     // Only the Z component is used by yaw control; X and Y must be left
     // untouched by the evaluator
@@ -170,15 +196,98 @@ test('yaw evaluation at multiple points, matches getYawAt()', () => {
   });
 });
 
+test('pose coordinate evaluation, matches getPoseAt()', () => {
+  const { getPoseAt, getPoseCoordinateAt } = createYawControlPlayer(yaw);
+
+  const ts = Object.keys(expectedPositions).map((x) => Number.parseInt(x, 10));
+  shuffle(ts);
+
+  const vec: EulerAngles = { x: 0, y: 0, z: 0 };
+  for (const t of ts) {
+    getPoseAt(t, vec);
+
+    expect(getPoseCoordinateAt(t, 'x')).toBe(vec.x);
+    expect(getPoseCoordinateAt(t, 'y')).toBe(vec.y);
+    expect(getPoseCoordinateAt(t, 'z')).toBe(vec.z);
+  }
+});
+
+test('pose coordinate evaluation at multiple points, matches getPosesAt()', () => {
+  const { getPosesAt, getPoseCoordinatesAt } = createYawControlPlayer(yaw);
+
+  const ts = Object.keys(expectedPositions).map((x) => Number.parseInt(x, 10));
+  shuffle(ts);
+
+  const expected = new Float32Array(3 * ts.length);
+  getPosesAt(ts, expected);
+
+  const keyToOffset = { x: 0, y: 1, z: 2 } as const;
+  for (const key of ['x', 'y', 'z'] as const) {
+    const result = new Float32Array(ts.length);
+    getPoseCoordinatesAt(ts, key, result);
+
+    ts.forEach((_, i) => {
+      expect(result[i]).toBe(expected[3 * i + keyToOffset[key]]);
+    });
+  }
+});
+
+test('pose coordinate evaluation at multiple points, stride options', () => {
+  const { getPoseCoordinatesAt } = createYawControlPlayer(yaw);
+
+  const ts = [0, 12, 20, 40, 70];
+  const stride = 3;
+  const start = 1;
+  const result = new Float32Array(start + stride * (ts.length - 1) + 1);
+
+  getPoseCoordinatesAt(ts, 'z', result, { start, step: stride });
+
+  ts.forEach((t, i) => {
+    almostEquals(result[start + stride * i], expectedPositions[t], 1e-3);
+  });
+
+  // Values outside the strided slots must be left untouched
+  expect(result[0]).toBe(0);
+  for (const index of [2, 5, 8, 11]) {
+    expect(result[index]).toBe(0);
+  }
+});
+
+test('deprecated getYawsAt() warns once and delegates to getPosesAt()', () => {
+  const { getPosesAt, getYawsAt } = createYawControlPlayer(yaw);
+  const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const ts = [0, 12, 20, 40, 70];
+  const resultA = new Float32Array(3 * ts.length);
+  const resultB = new Float32Array(3 * ts.length);
+
+  getYawsAt(ts, resultA);
+  expect(warn).toHaveBeenCalledTimes(1);
+  expect(warn).toHaveBeenCalledWith(
+    'getYawsAt() is deprecated. Use getPosesAt() instead.'
+  );
+
+  getYawsAt(ts, resultB);
+  expect(warn).toHaveBeenCalledTimes(1);
+
+  // Results must still match the non-deprecated function
+  const resultC = new Float32Array(3 * ts.length);
+  getPosesAt(ts, resultC);
+  expect(Array.from(resultA)).toEqual(Array.from(resultC));
+  expect(Array.from(resultB)).toEqual(Array.from(resultC));
+
+  warn.mockRestore();
+});
+
 test('yaw evaluation at multiple points, stride options', () => {
-  const { getYawsAt } = createYawControlPlayer(yaw);
+  const { getPosesAt } = createYawControlPlayer(yaw);
 
   const ts = [0, 12, 20, 40, 70];
   const stride = 4;
   const start = 2;
   const result = new Float32Array(start + stride * (ts.length - 1) + 3);
 
-  getYawsAt(ts, result, { start, step: stride });
+  getPosesAt(ts, result, { start, step: stride });
 
   ts.forEach((t, i) => {
     const offset = start + stride * i;
@@ -303,4 +412,76 @@ test('yaw angular velocity evaluation, shuffled', () => {
       eq(ev(t), expectedVelocities[t]);
     }
   }
+});
+
+/* ************************************************************************ */
+/* Tests related to evaluating the yaw angular velocity at multiple       */
+/* given points                                                             */
+/* ************************************************************************ */
+
+test('yaw angular velocity evaluation at multiple points, matches getAngularVelocityFromRightAt()', () => {
+  const { getAngularVelocityFromRightAt, getAngularVelocitiesFromRightAt } =
+    createYawControlPlayer(yaw);
+
+  const ts = Object.keys(expectedVelocities).map((x) =>
+    Number.parseInt(x, 10)
+  );
+  shuffle(ts);
+
+  const result = new Float32Array(3 * ts.length);
+  getAngularVelocitiesFromRightAt(ts, result);
+
+  const vec: EulerAngles = { x: 0, y: 0, z: 0 };
+  ts.forEach((t, i) => {
+    getAngularVelocityFromRightAt(t, vec);
+
+    // Only the Z component is used by yaw control; X and Y must be left
+    // untouched by the evaluator. Values are stored in a Float32Array, so we
+    // need a slightly larger tolerance than for the double-precision
+    // evaluation functions.
+    expect(result[3 * i]).toBe(0);
+    expect(result[3 * i + 1]).toBe(0);
+    almostEquals(result[3 * i + 2], expectedVelocities[t], 1e-3);
+    almostEquals(result[3 * i + 2], (vec.z * 180) / Math.PI, 1e-3);
+  });
+});
+
+test('yaw angular velocity evaluation at multiple points, stride options', () => {
+  const { getAngularVelocitiesFromRightAt } = createYawControlPlayer(yaw);
+
+  const ts = [0, 12, 20, 40, 70];
+  const stride = 4;
+  const start = 2;
+  const result = new Float32Array(start + stride * (ts.length - 1) + 3);
+
+  getAngularVelocitiesFromRightAt(ts, result, { start, step: stride });
+
+  ts.forEach((t, i) => {
+    const offset = start + stride * i;
+
+    expect(result[offset]).toBe(0);
+    expect(result[offset + 1]).toBe(0);
+    almostEquals(result[offset + 2], expectedVelocities[t], 1e-3);
+  });
+
+  // Values outside the strided slots must be left untouched
+  expect(result[0]).toBe(0);
+  expect(result[1]).toBe(0);
+  for (const index of [3, 6, 7, 10, 11, 14, 15]) {
+    expect(result[index]).toBe(0);
+  }
+});
+
+test('getAngularVelocitiesAt() is an alias of getAngularVelocitiesFromRightAt()', () => {
+  const { getAngularVelocitiesAt, getAngularVelocitiesFromRightAt } =
+    createYawControlPlayer(yaw);
+
+  const ts = [0, 12, 20, 40, 70];
+  const resultA = new Float32Array(3 * ts.length);
+  const resultB = new Float32Array(3 * ts.length);
+
+  getAngularVelocitiesAt(ts, resultA);
+  getAngularVelocitiesFromRightAt(ts, resultB);
+
+  expect(Array.from(resultA)).toEqual(Array.from(resultB));
 });
