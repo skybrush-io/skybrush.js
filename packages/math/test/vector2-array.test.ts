@@ -1,0 +1,246 @@
+import { Vector2Array } from '../dist/vector-arrays.js';
+
+describe('Vector2Array', () => {
+  test('constructor allocates buffer and length', () => {
+    const v = new Vector2Array(4);
+    expect(v.length).toBe(4);
+    expect(v.buffer.byteLength).toBe(4 * 2 * 4);
+  });
+
+  test('constructor uses custom factory', () => {
+    const factory = jest.fn(() => new Float32Array(6));
+    const v = new Vector2Array(3, { factory });
+    expect(factory).toHaveBeenCalledWith(6);
+    expect(v.length).toBe(3);
+  });
+
+  test('set and get work for various indices', () => {
+    const v = new Vector2Array(3);
+    v.set(0, { x: 1, y: 2 });
+    v.set(1, { x: 4, y: 5 });
+    v.set(2, { x: -1, y: -2 });
+
+    expect(v.get(0)).toEqual({ x: 1, y: 2 });
+    expect(v.get(1)).toEqual({ x: 4, y: 5 });
+    expect(v.get(2)).toEqual({ x: -1, y: -2 });
+  });
+
+  test('at supports negative indices and out-of-range returns undefined', () => {
+    const v = new Vector2Array(3);
+    v.set(0, { x: 10, y: 20 });
+    v.set(1, { x: 11, y: 21 });
+    v.set(2, { x: 12, y: 22 });
+
+    // negative index -1 -> last element
+    expect(v.at(-1)).toEqual({ x: 12, y: 22 });
+    // negative index -3 -> first element
+    expect(v.at(-3)).toEqual({ x: 10, y: 20 });
+    // out-of-range positive
+    expect(v.at(5)).toBeUndefined();
+    // out-of-range negative beyond length
+    expect(v.at(-10)).toBeUndefined();
+  });
+
+  test('from accepts Float32Array and discards trailing components', () => {
+    const raw = new Float32Array([1, 2, 3, 4, 5]); // 5 elements -> 2 full vectors
+    const v = Vector2Array.from(raw);
+    expect(v.length).toBe(2);
+    expect(v.get(0)).toEqual({ x: 1, y: 2 });
+    expect(v.get(1)).toEqual({ x: 3, y: 4 });
+  });
+
+  test('from throws for non-Float32Array inputs', () => {
+    // @ts-expect-error - intentionally passing wrong type to test runtime guard
+    expect(() => Vector2Array.from([1, 2, 3, 4])).toThrow(
+      'Cannot convert object to Vector2Array'
+    );
+  });
+
+  test('getInto and getIntoArray copy values into provided containers', () => {
+    const v = new Vector2Array(2);
+    v.set(0, { x: 2, y: 3 });
+    v.set(1, { x: 5, y: 6 });
+
+    const obj = { x: 0, y: 0 };
+    v.getInto(obj, 1);
+    expect(obj).toEqual({ x: 5, y: 6 });
+
+    const arr = [0, 0];
+    v.getIntoArray(arr, 0);
+    expect(arr).toEqual([2, 3]);
+  });
+
+  test('getX, getY return columns as Float32Array', () => {
+    const v = new Vector2Array(3);
+    v.set(0, { x: 1, y: 10 });
+    v.set(1, { x: 2, y: 20 });
+    v.set(2, { x: 3, y: 30 });
+
+    expect(Array.from(v.getX())).toEqual([1, 2, 3]);
+    expect(Array.from(v.getY())).toEqual([10, 20, 30]);
+  });
+
+  test('copyInto copies with start and step correctly', () => {
+    const src = new Vector2Array(2);
+    src.set(0, { x: 1, y: 1 });
+    src.set(1, { x: 2, y: 2 });
+
+    const dest = new Vector2Array(5); // dest initially zeros
+    // copy into dest starting at index 1, step 2 -> fills indices 1 and 3
+    src.copyInto(dest, { start: 1, step: 2 });
+
+    expect(dest.get(0)).toEqual({ x: 0, y: 0 });
+    expect(dest.get(1)).toEqual({ x: 1, y: 1 });
+    expect(dest.get(2)).toEqual({ x: 0, y: 0 });
+    expect(dest.get(3)).toEqual({ x: 2, y: 2 });
+    // index 4 remains untouched
+    expect(dest.get(4)).toEqual({ x: 0, y: 0 });
+  });
+
+  test('fillWithScalar sets all components and returns this', () => {
+    const v = new Vector2Array(3);
+    const returned = v.fillWithScalar(7);
+    expect(returned).toBe(v);
+    for (let i = 0; i < 3; i++) {
+      expect(v.get(i)).toEqual({ x: 7, y: 7 });
+    }
+  });
+
+  test('addScalar is no-op for 0 and adds to every component otherwise', () => {
+    const v = new Vector2Array(2);
+    v.set(0, { x: 1, y: 2 });
+    v.set(1, { x: 4, y: 5 });
+
+    v.addScalar(0);
+    expect(v.get(0)).toEqual({ x: 1, y: 2 });
+
+    v.addScalar(2);
+    expect(v.get(0)).toEqual({ x: 3, y: 4 });
+    expect(v.get(1)).toEqual({ x: 6, y: 7 });
+  });
+
+  test('multiplyWithScalar handles 1 (no-op), other scalars and 0 (fills zeros)', () => {
+    const v = new Vector2Array(2);
+    v.set(0, { x: 2, y: 3 });
+    v.set(1, { x: -1, y: -2 });
+
+    v.multiplyWithScalar(1);
+    expect(v.get(0)).toEqual({ x: 2, y: 3 });
+    expect(v.get(1)).toEqual({ x: -1, y: -2 });
+
+    v.multiplyWithScalar(2);
+    expect(v.get(0)).toEqual({ x: 4, y: 6 });
+    expect(v.get(1)).toEqual({ x: -2, y: -4 });
+
+    v.multiplyWithScalar(0);
+    expect(v.get(0)).toEqual({ x: 0, y: 0 });
+    expect(v.get(1)).toEqual({ x: 0, y: 0 });
+  });
+
+  test('derivative computes centered finite differences and copies endpoints', () => {
+    // create a linear ramp in x and y to make derivatives constant
+    const n = 6;
+    const v = new Vector2Array(n);
+    for (let i = 0; i < n; i++) {
+      v.set(i, { x: i * 1.5, y: i * -2 });
+    }
+
+    // default numSteps=1, dt=1 -> derivative should be (f(i+1)-f(i-1))/2
+    const d = v.derivative();
+    // interior points 1..n-2 should show constant derivatives
+    for (let i = 1; i < n - 1; i++) {
+      expect(d.get(i).x).toBeCloseTo(1.5);
+      expect(d.get(i).y).toBeCloseTo(-2);
+    }
+    // endpoints copied from nearest interior
+    expect(d.get(0)).toEqual(d.get(1));
+    expect(d.get(n - 1)).toEqual(d.get(n - 2));
+  });
+
+  test('derivative respects numSteps and dt and returns zeros for too-small arrays', () => {
+    const v = new Vector2Array(4);
+    for (let i = 0; i < 4; i++) {
+      v.set(i, { x: i * 2, y: 0 });
+    }
+
+    const d = v.derivative({ numSteps: 1, dt: 0.5 });
+    expect(d.get(1).x).toBeCloseTo(4);
+    expect(d.get(2).x).toBeCloseTo(4);
+
+    // invalid numSteps should throw
+    expect(() => v.derivative({ numSteps: 0 })).toThrow(
+      'numSteps must be positive'
+    );
+
+    // small arrays: length < 2*numSteps+1 -> derivative filled with zeros
+    const small = new Vector2Array(2);
+    small.set(0, { x: 1, y: 1 });
+    small.set(1, { x: 2, y: 2 });
+    const ds = small.derivative({ numSteps: 1 });
+    expect(ds.get(0)).toEqual({ x: 0, y: 0 });
+    expect(ds.get(1)).toEqual({ x: 0, y: 0 });
+
+    // single-vector array
+    const single = new Vector2Array(1);
+    single.set(0, { x: 5, y: 5 });
+    const dSingle = single.derivative();
+    expect(dSingle.get(0)).toEqual({ x: 0, y: 0 });
+  });
+
+  test('derivative supports larger numSteps', () => {
+    // x = i^2 -> midpoint estimate with k=2, dt=1 is ((i+2)^2-(i-2)^2)/(2*2) = 2i
+    const n = 7;
+    const v = new Vector2Array(n);
+    for (let i = 0; i < n; i++) {
+      v.set(i, { x: i * i, y: 0 });
+    }
+
+    const d = v.derivative({ numSteps: 2 });
+    // interior points 2..n-3
+    for (let i = 2; i < n - 2; i++) {
+      expect(d.get(i).x).toBeCloseTo(2 * i);
+      expect(d.get(i).y).toBe(0);
+    }
+    // endpoints copied from nearest computable rows
+    expect(d.get(0)).toEqual(d.get(2));
+    expect(d.get(1)).toEqual(d.get(2));
+    expect(d.get(n - 1)).toEqual(d.get(n - 3));
+  });
+
+  test('slice returns a new Vector2Array with correct contents', () => {
+    const v = new Vector2Array(5);
+    for (let i = 0; i < 5; i++) {
+      v.set(i, { x: i + 1, y: i + 10 });
+    }
+
+    const s = v.slice(1, 4); // should include indices 1,2,3
+    expect(s.length).toBe(3);
+    expect(s.get(0)).toEqual({ x: 2, y: 11 });
+    expect(s.get(2)).toEqual({ x: 4, y: 13 });
+  });
+
+  test('toArray converts to regular JS array of objects', () => {
+    const v = new Vector2Array(3);
+    v.set(0, { x: 1, y: 2 });
+    v.set(1, { x: 4, y: 5 });
+    v.set(2, { x: 7, y: 8 });
+
+    const arr = v.toArray();
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr.length).toBe(3);
+    expect(arr[1]).toEqual({ x: 4, y: 5 });
+  });
+
+  test('release returns underlying Float32Array and invalidates the instance', () => {
+    const v = new Vector2Array(2);
+    v.set(0, { x: 1, y: 1 });
+    v.set(1, { x: 2, y: 2 });
+
+    const raw = v.release();
+    expect(raw).toBeInstanceOf(Float32Array);
+    // after release, the instance should have length 0
+    expect(v.length).toBe(0);
+    // the returned raw data should contain the original values
+    expect(Array.from(raw.slice(0, 4))).toEqual([1, 1, 2, 2]);
+  });
+});

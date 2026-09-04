@@ -6,4 +6,5 @@ export * from './dynamics.js';
 export * from './polar.js';
 export * from './polygons.js';
 export * from './types.js';
+export * from './vector-arrays.js';
 export * from './vectors.js';

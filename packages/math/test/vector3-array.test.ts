@@ -1,10 +1,17 @@
-import Vector3Array from '../dist/vector3-array.js';
+import { Vector3Array } from '../dist/vector-arrays.js';
 
 describe('Vector3Array', () => {
   test('constructor allocates buffer and length', () => {
     const v = new Vector3Array(4);
     expect(v.length).toBe(4);
     expect(v.buffer.byteLength).toBe(4 * 3 * 4);
+  });
+
+  test('constructor uses custom factory', () => {
+    const factory = jest.fn(() => new Float32Array(9));
+    const v = new Vector3Array(3, { factory });
+    expect(factory).toHaveBeenCalledWith(9);
+    expect(v.length).toBe(3);
   });
 
   test('set and get work for various indices', () => {
@@ -174,6 +181,12 @@ describe('Vector3Array', () => {
     const ds = small.derivative({ numSteps: 1 });
     expect(ds.get(0)).toEqual({ x: 0, y: 0, z: 0 });
     expect(ds.get(1)).toEqual({ x: 0, y: 0, z: 0 });
+
+    // single-vector array
+    const single = new Vector3Array(1);
+    single.set(0, { x: 5, y: 5, z: 5 });
+    const dSingle = single.derivative();
+    expect(dSingle.get(0)).toEqual({ x: 0, y: 0, z: 0 });
   });
 
   test('slice returns a new Vector3Array with correct contents', () => {
