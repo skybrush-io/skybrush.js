@@ -18,10 +18,11 @@ export {
   getYawControlsFromSpecification,
 } from './show.js';
 export {
-  default as createTrajectoryPlayer,
   convertTimedBezierCurveToTrajectorySegment,
   convertTrajectorySegmentsToTimedBezierCurve,
+  default as createTrajectoryPlayer,
   getTrajectoryDuration,
+  getTrajectorySegmentsInTimeWindow,
   splitBezierCurve,
   splitTimedBezierCurve,
   splitTimedBezierCurveAt,
