@@ -4,6 +4,16 @@ export type Vector3 = { x: number; y: number; z: number };
 export type Vector3Tuple = [number, number, number];
 
 /**
+ * Keys of the individual coordinates (X and Y) of a 2D vector.
+ */
+export type Vector2Coordinate = 'x' | 'y' | 'z';
+
+/**
+ * Keys of the individual coordinates (X, Y and Z) of a 3D vector.
+ */
+export type Vector3Coordinate = 'x' | 'y' | 'z';
+
+/**
  * Utility type for 2D coordinates with an arbitrary number of additional
  * dimensions. It is useful when a function ignores additional dimenstions
  * and we want to allow for example 3D coordinates as input without data
