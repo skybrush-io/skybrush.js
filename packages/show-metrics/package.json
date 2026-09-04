@@ -1,0 +1,30 @@
+{
+  "name": "@skybrush/show-metrics",
+  "version": "0.1.0",
+  "description": "Metrics calculated from Skybrush drone show trajectories",
+  "type": "module",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "GPL-3.0-or-later",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skybrush-io/skybrush.js.git"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "clean": "rimraf dist/** *.tgz",
+    "prepack": "npm run build",
+    "test": "npx jest"
+  },
+  "dependencies": {
+    "@skybrush/show-format": "^5.6.1"
+  }
+}
