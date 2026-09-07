@@ -97,6 +97,9 @@ export type Environment = {
 
   /** The proposed show origin and orientation that locate the show in the real world */
   location?: Location;
+
+  /** Optional terrain model of the show location. */
+  terrain?: Terrain;
 };
 
 /**
@@ -176,6 +179,41 @@ export type AudioData = {
 
   /** Start time of the audio relative to the show start, in seconds. */
   startTime?: number;
+};
+
+/**
+ * Binary terrain model data associated with the show. May be embedded
+ * in the show specification or may be an external reference to a binary file.
+ */
+export type TerrainModelData = {
+  /** Binary GLB data, or a placeholder Asset if assets were not loaded. */
+  data: Uint8Array | Asset;
+  /** MIME type; currently only GLB is supported. */
+  mediaType: 'model/gltf-binary';
+};
+
+/**
+ * Transformation that positions a terrain model in the show coordinate system.
+ * Defaults to the identity transform (no translation, no rotation, unit scale).
+ */
+export type TerrainTransform = {
+  /**
+   * Translation of the model origin in meters, relative to the show origin.
+   * Default [0,0,0].
+   */
+  position?: Vector3Tuple;
+  /** Orientation as quaternion WXYZ. Default [1,0,0,0]. */
+  rotation?: QuaternionWXYZTuple;
+  /** Per-axis scale. Default [1,1,1]. */
+  scale?: Vector3Tuple;
+};
+
+/**
+ * A terrain model of the show location.
+ */
+export type Terrain = {
+  model: TerrainModelData;
+  transform?: TerrainTransform;
 };
 
 /**
