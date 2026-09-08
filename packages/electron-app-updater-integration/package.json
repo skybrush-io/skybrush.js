@@ -38,7 +38,7 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "electron": ">=44",
+    "electron": ">=39",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },
