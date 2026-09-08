@@ -3,7 +3,6 @@ import {
   type App,
   type BrowserWindowConstructorOptions,
 } from 'electron';
-import windowStateKeeper from 'electron-window-state';
 
 import { getUrlsFromRootDir } from './urls.js';
 
@@ -48,7 +47,6 @@ export const createMainWindowFactory = ({
   ...rest
 }: MainWindowOptions = {}): ((app: App) => BrowserWindow) => {
   let instance: BrowserWindow | undefined;
-  let windowState: windowStateKeeper.State;
 
   if (rootDir === undefined) {
     throw new TypeError('rootDir must be specified');
@@ -56,6 +54,8 @@ export const createMainWindowFactory = ({
 
   const { url, preload } =
     typeof rootDir === 'string' ? getUrlsFromRootDir(rootDir) : rootDir();
+
+  const [width, height] = size;
 
   if (preload) {
     webPreferences = {
@@ -69,23 +69,12 @@ export const createMainWindowFactory = ({
       return instance;
     }
 
-    if (!windowState) {
-      windowState = windowStateKeeper({
-        defaultWidth: size[0],
-        defaultHeight: size[1],
-        fullScreen: false,
-      });
-    }
-
-    const { x, y, width, height } = windowState;
     instance = new BrowserWindow({
       name: 'main-window', // needed by window state persistence
       title: app.name,
       show: false,
       windowStatePersistence: true,
       backgroundColor,
-      x,
-      y,
       width,
       height,
       ...rest,
@@ -99,10 +88,7 @@ export const createMainWindowFactory = ({
       instance.removeMenu();
     }
 
-    windowState.manage(instance);
-
     instance.on('closed', () => {
-      windowState.unmanage();
       instance = undefined;
     });
 
