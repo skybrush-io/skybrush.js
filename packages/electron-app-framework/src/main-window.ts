@@ -79,8 +79,10 @@ export const createMainWindowFactory = ({
 
     const { x, y, width, height } = windowState;
     instance = new BrowserWindow({
+      name: 'main-window', // needed by window state persistence
       title: app.name,
       show: false,
+      windowStatePersistence: true,
       backgroundColor,
       x,
       y,

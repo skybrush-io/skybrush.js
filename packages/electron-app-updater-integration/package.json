@@ -38,13 +38,13 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "electron": ">=39.0",
+    "electron": ">=44",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },
   "devDependencies": {
     "@types/semver": "^7.8.0",
-    "electron": "^42.4.1",
+    "electron": "^44",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

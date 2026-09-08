@@ -24,14 +24,13 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "electron": ">=39.0"
+    "electron": ">=44"
   },
   "dependencies": {
     "commander": "^15.0.0",
-    "electron-unhandled": "^5.0.0",
-    "electron-window-state": "^5.0.3"
+    "electron-unhandled": "^5.0.0"
   },
   "devDependencies": {
-    "electron": "^42.4.1"
+    "electron": "^44"
   }
 }
