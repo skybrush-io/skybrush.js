@@ -78,11 +78,13 @@ const { actions, reducer, selectors } = createSlice({
 
   selectors: {
     selectAutoUpdateState: createSelector(
-      (state: AutoUpdateSliceState) => state.error,
-      (state) => state.checking,
-      (state) => state.installing,
-      (state) => state.supported,
-      (state) => state.updateInfo,
+      [
+        (state: AutoUpdateSliceState) => state.error,
+        (state: AutoUpdateSliceState) => state.checking,
+        (state: AutoUpdateSliceState) => state.installing,
+        (state: AutoUpdateSliceState) => state.supported,
+        (state: AutoUpdateSliceState) => state.updateInfo,
+      ],
       (error, checking, installing, supported, updateInfo) => ({
         error,
         isCheckingForUpdates: checking,
