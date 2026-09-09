@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/show-metrics",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Metrics calculated from Skybrush drone show trajectories",
   "type": "module",
   "author": "CollMot Robotics Ltd",
@@ -25,6 +25,6 @@
     "test": "npx jest"
   },
   "dependencies": {
-    "@skybrush/show-format": "^5.8.0"
+    "@skybrush/show-format": "^5.8.1"
   }
 }
