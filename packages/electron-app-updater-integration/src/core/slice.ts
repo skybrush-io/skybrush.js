@@ -3,7 +3,11 @@
  * of the application.
  */
 
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSelector,
+  createSlice,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
 
 import type { UpdateError, UpdateInfo } from './types.js';
 
@@ -73,17 +77,23 @@ const { actions, reducer, selectors } = createSlice({
   },
 
   selectors: {
-    selectAutoUpdateState: (state) => ({
-      error: state.error,
-      isCheckingForUpdates: state.checking,
-      isDownloadingUpdate:
-        typeof state.updateInfo.downloadProgress === 'number',
-      isInstallingUpdate: state.installing,
-      downloadProgress: state.updateInfo.downloadProgress,
-      updateAvailable: state.updateInfo.available,
-      updateDownloaded: state.updateInfo.downloaded,
-      updateSupported: state.supported,
-    }),
+    selectAutoUpdateState: createSelector(
+      (state: AutoUpdateSliceState) => state.error,
+      (state) => state.checking,
+      (state) => state.installing,
+      (state) => state.supported,
+      (state) => state.updateInfo,
+      (error, checking, installing, supported, updateInfo) => ({
+        error,
+        isCheckingForUpdates: checking,
+        isDownloadingUpdate: typeof updateInfo.downloadProgress === 'number',
+        isInstallingUpdate: installing,
+        downloadProgress: updateInfo.downloadProgress,
+        updateAvailable: updateInfo.available,
+        updateDownloaded: updateInfo.downloaded,
+        updateSupported: supported,
+      })
+    ),
   },
 });
 
