@@ -1,6 +1,6 @@
-import Denque from 'denque';
 import { atob } from 'js-base64';
 
+import Denque from './denque.js';
 import type { Color, LightProgram } from './types.js';
 import { isArrayBuffer, isObject } from './utils.js';
 

@@ -30,7 +30,6 @@
     "@skybrush/math": "^1.1.0",
     "bezier-js": "^6.1.4",
     "core-js": "^3.49.0",
-    "denque": "^2.1.0",
     "js-base64": "^3.7.8",
     "jszip": "^3.10.1"
   }
