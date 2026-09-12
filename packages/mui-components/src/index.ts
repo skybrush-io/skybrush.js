@@ -9,6 +9,9 @@ import FormHeader, { type FormHeaderProps } from './FormHeader.js';
 import GenericHeaderButton, {
   type GenericHeaderButtonProps,
 } from './GenericHeaderButton.js';
+import LabeledProgressBar, {
+  type LabeledProgressBarProps,
+} from './LabeledProgressBar.js';
 import LabeledStatusLight, {
   type LabeledStatusLightProps,
 } from './LabeledStatusLight.js';
@@ -57,6 +60,7 @@ export {
   DraggableDialog,
   FormHeader,
   GenericHeaderButton,
+  LabeledProgressBar,
   LabeledStatusLight,
   LargeProgressIndicator,
   LazyTooltip,
@@ -92,6 +96,7 @@ export type {
   DraggableDialogProps,
   FormHeaderProps,
   GenericHeaderButtonProps,
+  LabeledProgressBarProps,
   LabeledStatusLightProps,
   LargeProgressIndicatorProps,
   LazyTooltipProps,
