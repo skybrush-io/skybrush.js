@@ -1,6 +1,6 @@
 {
   "name": "@skybrush/ssdp-lite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SSDP client and server library for Skybrush, TypeScript port of node-ssdp-lite",
   "type": "module",
   "author": "CollMot Robotics Ltd",
