@@ -1,0 +1,27 @@
+{
+  "name": "@skybrush/ssdp-lite",
+  "version": "1.0.0",
+  "description": "SSDP client and server library for Skybrush, TypeScript port of node-ssdp-lite",
+  "type": "module",
+  "author": "CollMot Robotics Ltd",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.collmot.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skybrush-io/skybrush.js.git"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "clean": "rimraf dist/** *.tgz",
+    "prepack": "npm run build",
+    "test": "npx jest"
+  }
+}

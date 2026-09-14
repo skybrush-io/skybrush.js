@@ -4448,6 +4448,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@skybrush/ssdp-lite@workspace:packages/ssdp-lite":
+  version: 0.0.0-use.local
+  resolution: "@skybrush/ssdp-lite@workspace:packages/ssdp-lite"
+  languageName: unknown
+  linkType: soft
+
 "@standard-schema/spec@npm:^1.0.0":
   version: 1.1.0
   resolution: "@standard-schema/spec@npm:1.1.0"
