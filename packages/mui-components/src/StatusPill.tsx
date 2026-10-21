@@ -21,15 +21,15 @@ const StyledDiv = styled('div')(({ theme }) => ({
   whiteSpace: 'nowrap',
 
   '&.StatusPill-position-left': {
-    borderRadius: theme.spacing(1, 0, 0, 1),
+    borderRadius: theme.spacing(0.75, 0, 0, 0.75),
   },
 
   '&.StatusPill-position-right': {
-    borderRadius: theme.spacing(0, 1, 1, 0),
+    borderRadius: theme.spacing(0, 0.75, 0.75, 0),
   },
 
   '&.StatusPill-position-single': {
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.spacing(0.75),
   },
 
   '&.StatusPill-position-middle': {},
@@ -40,6 +40,15 @@ const StyledDiv = styled('div')(({ theme }) => ({
 
   '&.StatusPill-inline': {
     display: 'inline-block',
+  },
+
+  '&.StatusPill-centerOverflow': {
+    display: 'flex',
+    justifyContent: 'center',
+
+    '&.StatusPill-inline': {
+      display: 'inline-flex',
+    },
   },
 
   '&.StatusPill-status-off': createStyleForStatus(Status.OFF, theme),
@@ -127,6 +136,11 @@ const StyledDiv = styled('div')(({ theme }) => ({
 }));
 
 export type StatusPillProps = Readonly<{
+  /**
+   * Keeps overflowing content centered, clipping it equally on both sides.
+   * Incompatible with `text-overflow: ellipsis`.
+   */
+  centerOverflow?: boolean;
   children?: React.ReactNode;
   className?: string;
   inline?: boolean;
@@ -140,6 +154,7 @@ export type StatusPillProps = Readonly<{
  * line of additional textual information.
  */
 const StatusPill = ({
+  centerOverflow,
   children,
   className,
   inline,
@@ -152,6 +167,7 @@ const StatusPill = ({
     className={clsx(
       className,
       inline ? 'StatusPill-inline' : 'StatusPill-fullWidth',
+      centerOverflow && 'StatusPill-centerOverflow',
       `StatusPill-position-${position}`,
       hollow
         ? `StatusPill-status-hollow-${status}`
