@@ -20,6 +20,7 @@ const GenericHeaderButtonBase = styled('div', {
   minWidth: 48,
   opacity: disabled ? 0.25 : 1,
   padding: theme.spacing(0.5, 1),
+  overflow: 'hidden',
   textOverflow: 'ellipsis',
   textShadow: '0px 1px 2px rgba(0, 0, 0, 0.65)',
 
